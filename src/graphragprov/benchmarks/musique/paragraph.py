@@ -12,3 +12,9 @@ class MusiqueParagraph:
     @property
     def unit_id(self) -> str:
         return source_unit_id(self.text)
+
+    @property
+    def short_unit_id(self) -> str:
+        """Return a short source-unit identifier for human display."""
+
+        return self.unit_id[:14]
