@@ -25,3 +25,12 @@ def test_read_first_real_case() -> None:
     assert case.paragraphs[0].index == 0
     assert case.paragraphs[0].title == "History of the Internet"
     assert case.paragraphs[0].text.startswith("Precursors to the web browser")
+    assert case.hop_count == 2
+    assert len(case.decomposition) == 2
+
+    first_hop = case.decomposition[0]
+
+    assert first_hop.hop_id == 153573
+    assert first_hop.question == ("What series is Mickey's Safari in Letterland from?")
+    assert first_hop.answer == "Mickey Mouse"
+    assert first_hop.paragraph_support_index is None
