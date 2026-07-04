@@ -9,6 +9,7 @@ class MusiqueCase:
     case_id: str
     question: str
     answer: str
+    answer_aliases: tuple[str, ...]
     answerable: bool
     paragraphs: tuple[MusiqueParagraph, ...]
     decomposition: tuple[MusiqueHop, ...]

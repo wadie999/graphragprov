@@ -72,6 +72,7 @@ def _parse_case(row: dict[str, Any]) -> MusiqueCase:
         case_id=row["id"],
         question=row["question"],
         answer=row["answer"],
+        answer_aliases=tuple(row.get("answer_aliases", [])),
         answerable=row["answerable"],
         paragraphs=paragraphs,
         decomposition=decomposition,
