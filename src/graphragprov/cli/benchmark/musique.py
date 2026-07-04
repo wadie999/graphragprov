@@ -153,6 +153,9 @@ def _print_unit(unit: MusiqueSourceUnit) -> None:
     print(f"Full unit ID: {unit.unit_id}")
     print(f"Occurrences: {len(unit.occurrences)}")
 
+    print("\nTitle:")
+    print(unit.title)
+
     print("\nText:")
     print(unit.text)
 
@@ -162,5 +165,4 @@ def _print_unit(unit: MusiqueSourceUnit) -> None:
         print("\n" + "-" * 80)
         print(f"Case: {occurrence.case_id}")
         print(f"Paragraph index: {occurrence.paragraph_index}")
-        print(f"Title: {occurrence.title}")
         print(f"Supporting: {occurrence.is_supporting}")

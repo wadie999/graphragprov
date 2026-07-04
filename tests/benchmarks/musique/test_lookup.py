@@ -24,7 +24,10 @@ def test_find_source_unit() -> None:
 
     assert occurrence.case_id == case.case_id
     assert occurrence.paragraph_index == paragraph.index
-    assert occurrence.title == paragraph.title
+    assert unit.unit_id == paragraph.unit_id
+    assert unit.title == paragraph.title
+    assert unit.text == paragraph.text
+    assert unit.occurrences
 
 
 @pytest.mark.skipif(

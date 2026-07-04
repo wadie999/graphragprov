@@ -5,5 +5,4 @@ from dataclasses import dataclass
 class MusiqueUnitOccurrence:
     case_id: str
     paragraph_index: int
-    title: str
     is_supporting: bool

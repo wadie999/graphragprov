@@ -14,6 +14,7 @@ def find_unit(path: Path, unit_reference: str) -> MusiqueSourceUnit:
         )
 
     matched_id: str | None = None
+    title: str | None = None
     text: str | None = None
     occurrences: list[MusiqueUnitOccurrence] = []
 
@@ -24,6 +25,7 @@ def find_unit(path: Path, unit_reference: str) -> MusiqueSourceUnit:
 
             if matched_id is None:
                 matched_id = paragraph.unit_id
+                title = paragraph.title
                 text = paragraph.text
             elif paragraph.unit_id != matched_id:
                 raise ValueError(f"Ambiguous MuSiQue source-unit prefix: {unit_reference}")
@@ -32,16 +34,16 @@ def find_unit(path: Path, unit_reference: str) -> MusiqueSourceUnit:
                 MusiqueUnitOccurrence(
                     case_id=case.case_id,
                     paragraph_index=paragraph.index,
-                    title=paragraph.title,
                     is_supporting=case.is_supporting(paragraph.index),
                 )
             )
 
-    if matched_id is None or text is None:
+    if matched_id is None or title is None or text is None:
         raise KeyError(f"MuSiQue source unit not found: {unit_reference}")
 
     return MusiqueSourceUnit(
         unit_id=matched_id,
+        title=title,
         text=text,
         occurrences=tuple(occurrences),
     )
