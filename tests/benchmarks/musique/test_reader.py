@@ -34,3 +34,9 @@ def test_read_first_real_case() -> None:
     assert first_hop.question == ("What series is Mickey's Safari in Letterland from?")
     assert first_hop.answer == "Mickey Mouse"
     assert first_hop.paragraph_support_index is None
+    assert case.answer_aliases == ()
+
+    paragraph = case.paragraphs[0]
+
+    assert paragraph.unit_id.startswith("u_")
+    assert len(paragraph.unit_id) == 66
