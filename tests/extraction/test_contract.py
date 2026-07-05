@@ -5,6 +5,7 @@ from graphragprov.extraction import (
     ExtractionResult,
     GroundedStatement,
     GroundedValue,
+    LiteralDatatype,
     TextSegment,
     TextSpan,
 )
@@ -143,3 +144,37 @@ def test_json_round_trip() -> None:
 
     assert restored == result
     restored.validate_against(SOURCE)
+
+
+def test_entity_object_has_no_datatype() -> None:
+    statement = valid_result().statements[0]
+
+    assert statement.object_datatype is None
+    assert not statement.object_is_literal
+    assert "datatype" not in statement.to_dict()["object"]
+
+
+def test_literal_object_preserves_datatype() -> None:
+    original = valid_result().statements[0]
+
+    statement = GroundedStatement(
+        subject=original.subject,
+        predicate=original.predicate,
+        object=original.object,
+        object_datatype=LiteralDatatype.STRING,
+    )
+
+    assert statement.object_is_literal
+    assert statement.to_dict()["object"]["datatype"] == "string"
+
+    restored = GroundedStatement.from_dict(statement.to_dict())
+
+    assert restored == statement
+
+
+def test_unknown_literal_datatype_is_rejected() -> None:
+    data = valid_result().statements[0].to_dict()
+    data["object"]["datatype"] = "unknown"
+
+    with pytest.raises(ValueError):
+        GroundedStatement.from_dict(data)
