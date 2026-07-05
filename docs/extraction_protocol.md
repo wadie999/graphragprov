@@ -18,7 +18,6 @@ Each source unit is processed independently.
 
 The extractor receives only:
 
-- `unit_id`;
 - title;
 - paragraph text;
 - extraction instructions;
@@ -81,7 +80,6 @@ Example:
 
 ```json
 {
-  "unit_id": "u_<sha256>",
   "statements": [
     {
       "subject": {
