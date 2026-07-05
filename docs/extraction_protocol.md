@@ -4,123 +4,194 @@ Protocol version: `grounded-rdf-v1`
 
 ## Purpose
 
-This protocol converts one immutable source unit into zero or more RDF-like statements grounded in exact character spans from that source.
+Convert one immutable source unit into zero or more RDF-like statements grounded in exact source fragments.
 
 A source unit contains:
 
-- a stable source-unit identifier;
+- a stable `unit_id`;
 - an exact title;
 - an exact paragraph text.
 
-The extractor processes each source unit independently.
+Each source unit is processed independently.
 
-## Extractor input
+## Extraction input
 
 The extractor receives only:
 
-- the source-unit identifier;
-- the complete title;
-- the complete paragraph text;
-- the required output structure;
-- the extraction and grounding rules.
+- `unit_id`;
+- title;
+- paragraph text;
+- extraction instructions;
+- required JSON structure.
 
-The title and paragraph text are supplied exactly as stored. They are not trimmed, lowercased, normalized, rewritten, or concatenated into a new source string.
+It must not receive:
 
-## Information excluded from extraction
-
-The extractor must not receive:
-
-- the benchmark question;
-- the benchmark answer;
+- benchmark questions or answers;
 - answer aliases;
-- question-decomposition hops;
-- gold supporting-paragraph labels;
-- other paragraphs from the same benchmark case;
-- results produced by other source units.
+- decomposition hops;
+- supporting-paragraph labels;
+- other paragraphs;
+- previous extraction results.
 
-This makes graph construction question-blind and paragraph-independent.
+Graph construction is therefore question-blind and source-unit independent.
 
-## Role of the title
+## Title and text
 
-The title is part of the extraction source.
+The title and paragraph jointly form the source unit, but remain separate source segments:
 
-It may provide information that is required to understand the paragraph, such as:
+- `title`
+- `text`
 
-- the identity of an entity omitted from the paragraph body;
-- the referent of a pronoun;
-- the expansion of an abbreviated reference;
-- the topic represented by the paragraph.
+The title may support entity identification, pronoun resolution, abbreviated references, or an omitted subject.
 
-Seeing the title does not make it evidence for every extracted statement.
+Seeing the title does not make it evidence for every statement. A title fragment is recorded only when it contributes to the extracted component.
 
-A title span is attached to a statement component only when that title fragment contributes textual evidence for the component.
+The title and text must never be trimmed, normalized, rewritten, or artificially concatenated for provenance.
 
 ## Extracted statements
 
-The extractor returns zero or more RDF-like statements:
+The extractor returns zero or more statements:
 
 ```text
 (subject, predicate, object)
 ```
 
-Every subject, predicate, and object contains:
+Each component contains:
 
-- a normalized output value;
-- one or more evidence spans.
+- a semantic `value`;
+- one or more evidence references.
+
+Semantic values may differ from their surface evidence. For example, the value `Albert Einstein` may be supported by the title fragment `Albert Einstein` and the text fragment `He`.
 
 An empty statement list is valid when no fully grounded statement can be extracted.
 
-## Evidence spans
+## Model-facing evidence references
 
-Each evidence span identifies:
+The language model does not calculate character offsets.
 
-- `segment`: either `title` or `text`;
-- `start`: inclusive character offset;
-- `end`: exclusive character offset;
-- `quote`: the exact selected substring.
+For each evidence fragment, it returns:
 
-Offsets are relative to the original selected segment.
+- `segment`: `title` or `text`;
+- `quote`: an exact non-empty substring;
+- `occurrence`: the one-based occurrence of that quote in the segment.
 
-Offsets are never calculated over prompt labels, separators, JSON formatting, or an artificial concatenation of the title and paragraph text.
+Occurrences are counted from left to right.
 
-A statement component may use several evidence spans when its interpretation depends on several source fragments.
+Example:
+
+```json
+{
+  "unit_id": "u_<sha256>",
+  "statements": [
+    {
+      "subject": {
+        "value": "Albert Einstein",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Albert Einstein",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "He",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "bornIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "born in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Ulm",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ulm",
+            "occurrence": 1
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+## Deterministic localization
+
+The system converts every evidence reference into an exact span:
+
+```text
+(segment, start, end, quote)
+```
+
+Where:
+
+- `start` is inclusive;
+- `end` is exclusive;
+- offsets are relative to the selected original segment;
+- `quote` must equal `segment[start:end]` exactly.
+
+No approximate matching, case folding, whitespace normalization, or Unicode normalization is allowed.
 
 ## Validation
 
 An extraction result is accepted only when:
 
-- its source-unit identifier matches the processed source unit;
-- every statement component contains evidence;
-- every span is inside its declared segment;
-- every span satisfies `0 <= start < end`;
-- every quote exactly equals `segment[start:end]`.
+- its `unit_id` matches the source unit;
+- every subject, predicate, and object has evidence;
+- every referenced quote and occurrence exists;
+- every resolved span is inside its declared segment;
+- every quote exactly matches the resolved source characters.
 
-No approximate matching or normalization is used during validation.
+## Extraction boundaries
 
-## Interpretation of grounding
+The extractor may perform locally supported interpretation such as:
 
-A valid evidence span proves that the extracted component is connected to the declared source characters.
+- pronoun resolution;
+- title-based subject recovery;
+- list expansion;
+- abbreviated-reference resolution.
 
-It does not by itself prove that:
+The extraction stage must not automatically add:
 
-- the extracted RDF statement is semantically correct;
-- a pronoun was resolved correctly;
-- the chosen predicate is ontologically appropriate;
+- inverse statements;
+- symmetric or transitive statements;
+- ontology-derived statements;
+- external knowledge;
+- cross-source links;
+- global entity canonicalization.
+
+These operations, when needed, must be implemented as separate explicit stages.
+
+## Interpretation
+
+Exact grounding shows which source fragments support a generated statement.
+
+It does not prove that:
+
+- the statement is semantically correct;
+- a coreference was resolved correctly;
+- the selected predicate is the only valid formalization;
 - the source text is factually true.
 
-The protocol exposes the textual basis of extraction so these decisions can be inspected and evaluated separately.
+These questions must be evaluated separately.
 
 ## Reproducibility
 
 Every extraction run must preserve:
 
-- the protocol version;
-- the prompt version;
-- the exact source unit;
-- the exact rendered prompt;
-- the model and provider configuration;
-- the unmodified model response;
-- the parsed extraction result;
-- the validation outcome.
-
-Provider integration and run persistence are defined in later components.
+- protocol and prompt versions;
+- exact source unit;
+- exact rendered prompt;
+- model and provider configuration;
+- unmodified model response;
+- parsed result;
+- localization and validation outcome.
