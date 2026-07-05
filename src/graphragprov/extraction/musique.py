@@ -6,6 +6,34 @@ from graphragprov.benchmarks.musique import load_case
 from graphragprov.config import musique_dataset_path
 from graphragprov.domain.source_unit import SourceUnit
 from graphragprov.extraction.prompt import build_extraction_prompt
+from graphragprov.extraction.run import (
+    GenerateResponse,
+    GroundedExtractionRun,
+    run_grounded_extraction,
+)
+
+
+def run_musique_grounded_extraction(
+    *,
+    case_id: str,
+    paragraph_index: int,
+    expected_hops: int,
+    generate_response: GenerateResponse,
+    path: Path | None = None,
+) -> GroundedExtractionRun:
+    """Run grounded extraction on one MuSiQue paragraph."""
+
+    source = load_musique_source_unit(
+        case_id=case_id,
+        paragraph_index=paragraph_index,
+        expected_hops=expected_hops,
+        path=path,
+    )
+
+    return run_grounded_extraction(
+        source,
+        generate_response,
+    )
 
 
 def load_musique_source_unit(
