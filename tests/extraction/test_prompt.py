@@ -76,3 +76,11 @@ def test_prompt_allows_empty_extraction() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
     assert '"statements": []' in prompt
+
+
+def test_prompt_infers_object_kind_from_datatype() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert '"kind"' not in prompt
+    assert "An object without a datatype is an entity." in prompt
+    assert "An object with a datatype is a scalar literal." in prompt
