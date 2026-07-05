@@ -42,8 +42,7 @@ The required output structure is:
       },
       "object": {
         "value": "<readable entity value or normalized literal>",
-        "kind": "entity or literal",
-        "datatype": "<required only when kind is literal>",
+        "datatype": "<include only when the object is a literal>",
         "evidence": [
           {
             "segment": "title or text",
@@ -133,12 +132,12 @@ instanceOf
 
 The subject is always an entity.
 
-The object is either:
+An object without a datatype is an entity.
 
-- an entity: a semantic thing that may participate in other relationships;
-- a literal: a scalar value.
+An object with a datatype is a scalar literal. The datatype field is required
+for literals and must not be included for entities.
 
-Use kind "entity" for:
+Treat the following as entities:
 
 - people;
 - places;
@@ -154,11 +153,11 @@ Use kind "entity" for:
 - traits;
 - other semantic concepts.
 
-Use kind "literal" only for scalar values.
+Use typed literals only for scalar values.
 
 5. LITERAL DATATYPES
 
-When kind is "literal", datatype is required.
+When an object is a literal, include its datatype.
 
 Allowed datatypes are:
 
@@ -370,7 +369,6 @@ Valid output:
       },
       "object": {
         "value": "Ulm",
-        "kind": "entity",
         "evidence": [
           {
             "segment": "text",
@@ -408,7 +406,6 @@ Valid output:
       },
       "object": {
         "value": "1879-03-14",
-        "kind": "literal",
         "datatype": "date",
         "evidence": [
           {
