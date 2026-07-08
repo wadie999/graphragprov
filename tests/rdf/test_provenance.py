@@ -65,45 +65,6 @@ def _ada_statement(
     )
 
 
-def test_occurrence_token_is_deterministic_and_canonicalizes_evidence() -> None:
-    unit_id = source_unit_id(
-        title="Ada Lovelace",
-        text="She was born in London in 1815.",
-    )
-
-    title_span = TextSpan(
-        segment=TextSegment.TITLE,
-        start=0,
-        end=12,
-        quote="Ada Lovelace",
-    )
-    pronoun_span = TextSpan(
-        segment=TextSegment.TEXT,
-        start=0,
-        end=3,
-        quote="She",
-    )
-
-    ordered_statement = _ada_statement(
-        subject_evidence=(title_span, pronoun_span),
-    )
-    reordered_statement = _ada_statement(
-        subject_evidence=(pronoun_span, title_span, title_span),
-    )
-
-    expected = (
-        "po1:"
-        "u_aaa084a0b97f06589d126bc53babd3a041ce85ef266998d0e84d8fb3e305c2a0"
-        ":s=tl:0-12+tx:0-3"
-        ":p=tx:8-15"
-        ":o=tx:16-22"
-        ":t=5e4dedbc0eb29cbbbcf4086c1bce4684093bee8cd91a125ed4edb328092f5328"
-    )
-
-    assert occurrence_token(unit_id=unit_id, statement=ordered_statement) == expected
-    assert occurrence_token(unit_id=unit_id, statement=reordered_statement) == expected
-
-
 def test_different_semantic_statements_with_same_evidence_have_different_tokens() -> None:
     unit_id = source_unit_id(
         title="Ada Lovelace",
@@ -241,3 +202,35 @@ def test_noncanonical_source_unit_id_is_rejected() -> None:
             unit_id="u_0a5e4e80",
             statement=_ada_statement(),
         )
+
+
+def test_occurrence_token_is_deterministic_and_canonicalizes_evidence() -> None:
+    unit_id = source_unit_id(
+        title="Ada Lovelace",
+        text="She was born in London in 1815.",
+    )
+
+    title_span = TextSpan(
+        segment=TextSegment.TITLE,
+        start=0,
+        end=12,
+        quote="Ada Lovelace",
+    )
+    pronoun_span = TextSpan(
+        segment=TextSegment.TEXT,
+        start=0,
+        end=3,
+        quote="She",
+    )
+
+    ordered_statement = _ada_statement(
+        subject_evidence=(title_span, pronoun_span),
+    )
+    reordered_statement = _ada_statement(
+        subject_evidence=(pronoun_span, title_span, title_span),
+    )
+
+    expected = "u_aaa084a0b97f0658:s=tl:0-12+tx:0-3:p=tx:8-15:o=tx:16-22:t=5e4dedbc"
+
+    assert occurrence_token(unit_id=unit_id, statement=ordered_statement) == expected
+    assert occurrence_token(unit_id=unit_id, statement=reordered_statement) == expected

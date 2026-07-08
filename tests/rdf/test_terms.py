@@ -59,13 +59,13 @@ def test_entity_and_predicate_namespaces_are_distinct() -> None:
     assert predicate_iri("bornIn") == URIRef("urn:graphragprov:predicate:bornIn")
 
 
-def test_unit_graph_iri_contains_the_complete_source_unit_id() -> None:
+def test_unit_graph_iri_contains_the_compact_source_unit_id() -> None:
     unit_id = source_unit_id(
         title="Ada Lovelace",
         text="She was born in London.",
     )
 
-    assert unit_graph_iri(unit_id) == URIRef(f"urn:graphragprov:unit:{unit_id}")
+    assert unit_graph_iri(unit_id) == URIRef("urn:graphragprov:unit:u_8e3c34a7682742fa")
 
 
 def test_entity_object_becomes_an_entity_iri() -> None:

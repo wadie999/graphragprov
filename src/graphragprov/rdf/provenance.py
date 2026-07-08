@@ -143,17 +143,11 @@ def span_location_token(span: TextSpan) -> str:
 
 
 def _evidence_token(evidence: Iterable[TextSpan]) -> str:
-    return "+".join(
-        span_location_token(span)
-        for span in canonical_evidence(evidence)
-    )
+    return "+".join(span_location_token(span) for span in canonical_evidence(evidence))
 
 
 def _evidence_locations(evidence: Iterable[TextSpan]) -> list[str]:
-    return [
-        span_location_token(span)
-        for span in canonical_evidence(evidence)
-    ]
+    return [span_location_token(span) for span in canonical_evidence(evidence)]
 
 
 def _statement_payload(statement: GroundedStatement) -> dict[str, object]:

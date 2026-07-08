@@ -23,9 +23,7 @@ def serialize_extraction_trig_star(
     for statement in extraction.statements:
         subject, predicate, object_ = rdf_triple(statement)
 
-        triples.add(
-            f"{subject.n3()} {predicate.n3()} {object_.n3()} ."
-        )
+        triples.add(f"{subject.n3()} {predicate.n3()} {object_.n3()} .")
 
         token = occurrence_token(
             unit_id=source.unit_id,
@@ -40,27 +38,12 @@ def serialize_extraction_trig_star(
     sections: list[str] = []
 
     if triples:
-        sections.append(
-            "\n".join(
-                f"    {triple}"
-                for triple in sorted(triples)
-            )
-        )
+        sections.append("\n".join(f"    {triple}" for triple in sorted(triples)))
 
     if annotations:
-        sections.append(
-            "\n".join(
-                f"    {annotation}"
-                for annotation in sorted(annotations)
-            )
-        )
+        sections.append("\n".join(f"    {annotation}" for annotation in sorted(annotations)))
 
     body = "\n\n".join(sections)
     graph_iri = unit_graph_iri(source.unit_id)
 
-    return (
-        f"@prefix textprov: <{PROV}> .\n\n"
-        f"GRAPH {graph_iri.n3()} {{\n"
-        f"{body}\n"
-        "}\n"
-    )
+    return f"@prefix textprov: <{PROV}> .\n\nGRAPH {graph_iri.n3()} {{\n{body}\n}}\n"
