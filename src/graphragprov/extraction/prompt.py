@@ -252,6 +252,7 @@ Return:
 when no fully grounded statement can be extracted.
 """.strip()
 
+
 def build_extraction_prompt(source: SourceUnit) -> str:
     """Render the deterministic prompt for one immutable source unit."""
 
