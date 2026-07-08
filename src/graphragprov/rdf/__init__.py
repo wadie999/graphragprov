@@ -4,6 +4,8 @@ from graphragprov.rdf.dataset import (
     build_extraction_dataset,
     serialize_extraction_trig,
 )
+from graphragprov.rdf.star import serialize_extraction_trig_star
+
 from graphragprov.rdf.provenance import occurrence_token
 from graphragprov.rdf.terms import (
     entity_iri,
@@ -26,4 +28,5 @@ __all__ = [
     "span_iri",
     "statement_object",
     "unit_graph_iri",
+    "serialize_extraction_trig_star",
 ]
