@@ -1,45 +1,66 @@
-"""GraphDB-compatible TriG-star serialization."""
+"""Minimal GraphDB-compatible TriG-star serialization for NPCS."""
 
 from rdflib import Literal
 
 from graphragprov.domain.source_unit import SourceUnit
 from graphragprov.extraction.result import ExtractionResult
-from graphragprov.rdf.dataset import build_extraction_dataset
 from graphragprov.rdf.provenance import occurrence_token
 from graphragprov.rdf.terms import rdf_triple, unit_graph_iri
-from graphragprov.rdf.vocabulary import GP
+from graphragprov.rdf.vocabulary import PROV
 
 
 def serialize_extraction_trig_star(
     source: SourceUnit,
     extraction: ExtractionResult,
 ) -> str:
-    """Serialize one grounded extraction as deterministic TriG-star.
+    """Serialize RDF triples and their grounded provenance annotations."""
 
-    The output preserves the complete standard RDF representation and adds
-    one RDF-star occurrence annotation for each distinct grounded statement.
-    """
+    extraction.validate_against(source)
 
-    dataset = build_extraction_dataset(source, extraction)
-    graph_iri = unit_graph_iri(source.unit_id)
-    graph = dataset.graph(graph_iri)
-
-    lines = {
-        f"{subject.n3()} {predicate.n3()} {object_.n3()} ." for subject, predicate, object_ in graph
-    }
+    triples: set[str] = set()
+    annotations: set[str] = set()
 
     for statement in extraction.statements:
         subject, predicate, object_ = rdf_triple(statement)
+
+        triples.add(
+            f"{subject.n3()} {predicate.n3()} {object_.n3()} ."
+        )
+
         token = occurrence_token(
             unit_id=source.unit_id,
             statement=statement,
         )
 
-        lines.add(
+        annotations.add(
             f"<< {subject.n3()} {predicate.n3()} {object_.n3()} >> "
-            f"{GP.occurrenceOf.n3()} {Literal(token).n3()} ."
+            f"textprov:occurrenceOf {Literal(token).n3()} ."
         )
 
-    body = "\n".join(f"    {line}" for line in sorted(lines))
+    sections: list[str] = []
 
-    return f"GRAPH {graph_iri.n3()} {{\n{body}\n}}\n"
+    if triples:
+        sections.append(
+            "\n".join(
+                f"    {triple}"
+                for triple in sorted(triples)
+            )
+        )
+
+    if annotations:
+        sections.append(
+            "\n".join(
+                f"    {annotation}"
+                for annotation in sorted(annotations)
+            )
+        )
+
+    body = "\n\n".join(sections)
+    graph_iri = unit_graph_iri(source.unit_id)
+
+    return (
+        f"@prefix textprov: <{PROV}> .\n\n"
+        f"GRAPH {graph_iri.n3()} {{\n"
+        f"{body}\n"
+        "}\n"
+    )

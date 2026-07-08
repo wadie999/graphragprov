@@ -1,5 +1,5 @@
-"""Vocabulary used by grounded RDF datasets."""
+"""Vocabulary required by the NPCS RDF-star representation."""
 
 from rdflib import Namespace
 
-GP = Namespace("urn:graphragprov:vocab:")
+PROV = Namespace("http://example.org/")
