@@ -7,6 +7,7 @@ from hashlib import sha256
 
 from graphragprov.extraction.span import TextSegment, TextSpan
 from graphragprov.extraction.statement import GroundedStatement
+from graphragprov.hashing import validate_source_unit_id
 
 TOKEN_VERSION = "po1"
 STATEMENT_FORMAT_VERSION = "statement-v1"
@@ -82,7 +83,7 @@ def occurrence_token(
     recover each quote.
     """
 
-    _validate_unit_id(unit_id)
+    validate_source_unit_id(unit_id)
 
     subject_evidence = _encode_evidence(statement.subject.evidence)
     predicate_evidence = _encode_evidence(statement.predicate.evidence)
