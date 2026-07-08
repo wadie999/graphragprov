@@ -81,31 +81,36 @@ def test_entity_object_becomes_an_entity_iri() -> None:
 
 
 @pytest.mark.parametrize(
-    ("datatype", "expected_iri"),
+    ("datatype", "value", "expected_iri"),
     [
-        (LiteralDatatype.STRING, XSD.string),
-        (LiteralDatatype.INTEGER, XSD.integer),
-        (LiteralDatatype.DECIMAL, XSD.decimal),
-        (LiteralDatatype.BOOLEAN, XSD.boolean),
-        (LiteralDatatype.YEAR, XSD.gYear),
-        (LiteralDatatype.YEAR_MONTH, XSD.gYearMonth),
-        (LiteralDatatype.DATE, XSD.date),
-        (LiteralDatatype.DATE_TIME, XSD.dateTime),
+        (LiteralDatatype.STRING, "Ada Lovelace", XSD.string),
+        (LiteralDatatype.INTEGER, "2018", XSD.integer),
+        (LiteralDatatype.DECIMAL, "2018.0", XSD.decimal),
+        (LiteralDatatype.BOOLEAN, "true", XSD.boolean),
+        (LiteralDatatype.YEAR, "2018", XSD.gYear),
+        (LiteralDatatype.YEAR_MONTH, "2018-03", XSD.gYearMonth),
+        (LiteralDatatype.DATE, "2018-03-06", XSD.date),
+        (
+            LiteralDatatype.DATE_TIME,
+            "2018-03-06T12:30:00",
+            XSD.dateTime,
+        ),
     ],
 )
 def test_literal_objects_preserve_their_datatype(
     datatype: LiteralDatatype,
+    value: str,
     expected_iri: URIRef,
 ) -> None:
     statement = _statement(
-        object_value="2018",
+        object_value=value,
         datatype=datatype,
     )
 
     rdf_object = statement_object(statement)
 
     assert isinstance(rdf_object, Literal)
-    assert str(rdf_object) == "2018"
+    assert str(rdf_object) == value
     assert rdf_object.datatype == expected_iri
 
 
