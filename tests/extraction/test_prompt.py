@@ -61,15 +61,16 @@ def test_prompt_does_not_request_reasoning() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
     assert '"reasoning"' not in prompt
-    assert "Do not return Markdown, explanations, reasoning" in prompt
+    assert "Do not return Markdown, reasoning, comments, code fences" in prompt
 
 
 def test_prompt_forbids_automatic_inverse_statements() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
-    assert "Do not automatically generate:" in prompt
-    assert "inverse statements" in prompt
-    assert "hasInstance" in prompt
+    assert (
+        "Do not automatically add inverse, symmetric, transitive, ontology-derived, or"
+    ) in prompt
+    assert "cross-source statements." in prompt
 
 
 def test_prompt_allows_empty_extraction() -> None:
