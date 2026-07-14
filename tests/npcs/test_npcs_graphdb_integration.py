@@ -4,23 +4,87 @@ import os
 
 import pytest
 
+from graphragprov.domain import SourceUnit
 from graphragprov.graphdb import GraphDBClient
 from graphragprov.graphdb.client import (
     GRAPHDB_REPOSITORY_ENV,
     GRAPHDB_URL_ENV,
 )
+from graphragprov.hashing import source_unit_id
 from graphragprov.npcs import NPCSClient
 from graphragprov.npcs.client import NPCS_URL_ENV
+from graphragprov.provenance import (
+    DecodedProvenance,
+    SourceRegistry,
+    decode_provenance_polynomial,
+)
 from graphragprov.query import execute_provenance_query
 
 GRAPH = "urn:graphragprov:unit:u_38162077dce1d7d1"
 
 EXPECTED_ANSWER = "urn:graphragprov:entity:Florida%20Department%20of%20Corrections"
 
+BROWARD_TITLE = "Broward Correctional Institution"
+
+BROWARD_TEXT = (
+    "The Broward Correctional Institution (BCI) was a correctional "
+    "facility located in the former Country Estates CDP and in "
+    "Southwest Ranches, Florida, operated by the Florida Department "
+    "of Corrections. The Region IV Correctional Facility Office is "
+    "located on the grounds of Broward Correctional Institution in "
+    "the former Country Estates CDP. The prison was in proximity to "
+    "Pembroke Pines. It was located along Sheridan Street, near "
+    "U.S. Route 27."
+)
+
+BROWARD_SOURCE = SourceUnit(
+    unit_id=source_unit_id(
+        title=BROWARD_TITLE,
+        text=BROWARD_TEXT,
+    ),
+    title=BROWARD_TITLE,
+    text=BROWARD_TEXT,
+)
+
+SOURCE_REGISTRY = SourceRegistry((BROWARD_SOURCE,))
+
 TOKEN_OPERATOR = "u_38162077dce1d7d1:s=tx:4-36:p=tx:148-159:o=tx:164-197:t=4b79dc23"
+
 TOKEN_OFFICE = "u_38162077dce1d7d1:s=tx:203-241:p=tx:242-270:o=tx:271-303:t=5dae8a89"
+
 TOKEN_SOUTHWEST = "u_38162077dce1d7d1:s=tx:4-36:p=tx:113-119:o=tx:120-146:t=2605283e"
+
 TOKEN_COUNTRY_ESTATES = "u_38162077dce1d7d1:s=tx:4-36:p=tx:71-81:o=tx:86-112:t=4d7e942b"
+
+EXPECTED_EVIDENCE_QUOTES: dict[
+    str,
+    tuple[
+        tuple[str, ...],
+        tuple[str, ...],
+        tuple[str, ...],
+    ],
+] = {
+    TOKEN_OPERATOR: (
+        ("Broward Correctional Institution",),
+        ("operated by",),
+        ("Florida Department of Corrections",),
+    ),
+    TOKEN_OFFICE: (
+        ("Region IV Correctional Facility Office",),
+        ("is located on the grounds of",),
+        ("Broward Correctional Institution",),
+    ),
+    TOKEN_SOUTHWEST: (
+        ("Broward Correctional Institution",),
+        ("and in",),
+        ("Southwest Ranches, Florida",),
+    ),
+    TOKEN_COUNTRY_ESTATES: (
+        ("Broward Correctional Institution",),
+        ("located in",),
+        ("former Country Estates CDP",),
+    ),
+}
 
 QUERY_ONE_STATEMENT = f"""
 SELECT ?answer
@@ -83,48 +147,63 @@ WHERE {{
 """
 
 
+def canonical_derivations(
+    *derivations: tuple[str, ...],
+) -> tuple[tuple[str, ...], ...]:
+    """Return the same canonical ordering used by the polynomial parser."""
+
+    return tuple(sorted(tuple(sorted(derivation)) for derivation in derivations))
+
+
 @pytest.mark.parametrize(
     (
         "sparql",
-        "expected_tokens",
-        "expected_product_count",
+        "expected_derivations",
     ),
     [
         (
             QUERY_ONE_STATEMENT,
-            {TOKEN_OPERATOR},
-            1,
+            canonical_derivations((TOKEN_OPERATOR,)),
         ),
         (
             QUERY_ONE_JOIN,
-            {TOKEN_OFFICE, TOKEN_OPERATOR},
-            1,
+            canonical_derivations(
+                (
+                    TOKEN_OFFICE,
+                    TOKEN_OPERATOR,
+                )
+            ),
         ),
         (
             QUERY_TWO_JOINS,
-            {
-                TOKEN_OFFICE,
-                TOKEN_SOUTHWEST,
-                TOKEN_OPERATOR,
-            },
-            1,
+            canonical_derivations(
+                (
+                    TOKEN_OFFICE,
+                    TOKEN_SOUTHWEST,
+                    TOKEN_OPERATOR,
+                )
+            ),
         ),
         (
             QUERY_ALTERNATIVE_DERIVATIONS,
-            {
-                TOKEN_OFFICE,
-                TOKEN_SOUTHWEST,
-                TOKEN_COUNTRY_ESTATES,
-                TOKEN_OPERATOR,
-            },
-            2,
+            canonical_derivations(
+                (
+                    TOKEN_OFFICE,
+                    TOKEN_SOUTHWEST,
+                    TOKEN_OPERATOR,
+                ),
+                (
+                    TOKEN_OFFICE,
+                    TOKEN_COUNTRY_ESTATES,
+                    TOKEN_OPERATOR,
+                ),
+            ),
         ),
     ],
 )
 def test_real_npcs_graphdb_query_path(
     sparql: str,
-    expected_tokens: set[str],
-    expected_product_count: int,
+    expected_derivations: tuple[tuple[str, ...], ...],
 ) -> None:
     _require_services()
 
@@ -137,16 +216,22 @@ def test_real_npcs_graphdb_query_path(
     assert _answers(execution.original_result) == {EXPECTED_ANSWER}
     assert _answers(execution.rewritten_result) == {EXPECTED_ANSWER}
 
-    assert "http://example.org/occurrenceOf" in (execution.rewritten_query)
+    assert "http://example.org/occurrenceOf" in execution.rewritten_query
     assert "finalprovennacevariable" in execution.rewritten_query
 
     polynomial = _polynomial(execution.rewritten_result)
 
-    for token in expected_tokens:
-        assert token in polynomial
+    decoded = decode_provenance_polynomial(
+        polynomial,
+        registry=SOURCE_REGISTRY,
+    )
 
-    assert polynomial.startswith("⊕(")
-    assert polynomial.count("⊗") == expected_product_count
+    assert _decoded_token_derivations(decoded) == expected_derivations
+
+    _assert_exact_source_evidence(
+        decoded,
+        expected_derivations=expected_derivations,
+    )
 
 
 def _require_services() -> None:
@@ -194,6 +279,43 @@ def _polynomial(
     assert value
 
     return value
+
+
+def _decoded_token_derivations(
+    decoded: DecodedProvenance,
+) -> tuple[tuple[str, ...], ...]:
+    return tuple(
+        tuple(occurrence.token for occurrence in derivation.occurrences)
+        for derivation in decoded.derivations
+    )
+
+
+def _assert_exact_source_evidence(
+    decoded: DecodedProvenance,
+    *,
+    expected_derivations: tuple[tuple[str, ...], ...],
+) -> None:
+    expected_tokens = {token for derivation in expected_derivations for token in derivation}
+
+    observed_tokens: set[str] = set()
+
+    for derivation in decoded.derivations:
+        for occurrence in derivation.occurrences:
+            observed_tokens.add(occurrence.token)
+
+            assert occurrence.source == BROWARD_SOURCE
+
+            expected = EXPECTED_EVIDENCE_QUOTES[occurrence.token]
+
+            subject_quotes = tuple(span.quote for span in occurrence.subject_evidence)
+            predicate_quotes = tuple(span.quote for span in occurrence.predicate_evidence)
+            object_quotes = tuple(span.quote for span in occurrence.object_evidence)
+
+            assert subject_quotes == expected[0]
+            assert predicate_quotes == expected[1]
+            assert object_quotes == expected[2]
+
+    assert observed_tokens == expected_tokens
 
 
 def _bindings(
