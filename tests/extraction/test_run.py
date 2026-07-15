@@ -1,14 +1,18 @@
 import json
 
 from graphragprov.domain import SourceUnit
-from graphragprov.extraction.run import run_grounded_extraction
+from graphragprov.extraction.run import (
+    GroundedExtractionFailure,
+    GroundedExtractionRun,
+    run_grounded_extraction,
+    run_grounded_extraction_outcome,
+)
 
 SOURCE = SourceUnit(
     unit_id="u_system_owned",
     title="Albert Einstein",
     text="He was born in Ulm.",
 )
-
 
 MODEL_RESPONSE = json.dumps(
     {
@@ -54,6 +58,11 @@ MODEL_RESPONSE = json.dumps(
     }
 )
 
+INVALID_EVIDENCE_RESPONSE = MODEL_RESPONSE.replace(
+    '"quote": "Ulm"',
+    '"quote": "1955"',
+)
+
 
 def test_runs_one_grounded_extraction() -> None:
     received_prompts: list[str] = []
@@ -83,3 +92,58 @@ def test_runs_one_grounded_extraction() -> None:
     assert statement.object.value == "Ulm"
     assert statement.object.evidence[0].start == 15
     assert statement.object.evidence[0].end == 18
+
+
+def test_returns_successful_extraction_outcome() -> None:
+    outcome = run_grounded_extraction_outcome(
+        SOURCE,
+        generate_response=lambda _: MODEL_RESPONSE,
+    )
+
+    assert isinstance(
+        outcome,
+        GroundedExtractionRun,
+    )
+    assert outcome.source == SOURCE
+    assert outcome.response == MODEL_RESPONSE
+    assert outcome.extraction.unit_id == SOURCE.unit_id
+
+
+def test_preserves_provider_failure_as_outcome() -> None:
+    def failing_model(_: str) -> str:
+        raise RuntimeError("provider unavailable")
+
+    outcome = run_grounded_extraction_outcome(
+        SOURCE,
+        generate_response=failing_model,
+    )
+
+    assert isinstance(
+        outcome,
+        GroundedExtractionFailure,
+    )
+    assert outcome.source == SOURCE
+    assert SOURCE.title in outcome.prompt
+    assert SOURCE.text in outcome.prompt
+    assert outcome.response is None
+    assert outcome.stage == "provider"
+    assert outcome.error_type == "RuntimeError"
+    assert outcome.error_message == "provider unavailable"
+
+
+def test_preserves_invalid_raw_response_as_outcome() -> None:
+    outcome = run_grounded_extraction_outcome(
+        SOURCE,
+        generate_response=lambda _: INVALID_EVIDENCE_RESPONSE,
+    )
+
+    assert isinstance(
+        outcome,
+        GroundedExtractionFailure,
+    )
+    assert outcome.source == SOURCE
+    assert outcome.response == INVALID_EVIDENCE_RESPONSE
+    assert outcome.stage == "response_validation"
+    assert outcome.error_type == "ValueError"
+    assert "response.statements[0].object.evidence[0]" in outcome.error_message
+    assert "quote '1955' does not occur" in outcome.error_message
