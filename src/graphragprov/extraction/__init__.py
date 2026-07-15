@@ -5,6 +5,9 @@ from graphragprov.extraction.artifacts import (
     load_or_run_grounded_extraction,
 )
 from graphragprov.extraction.batch import (
+    GroundedExtractionBatchItem,
+    GroundedExtractionBatchResult,
+    load_or_run_grounded_extraction_batch,
     load_or_run_grounded_extractions,
 )
 from graphragprov.extraction.grounded_value import GroundedValue
@@ -19,12 +22,15 @@ from graphragprov.extraction.statement import (
 __all__ = [
     "CachedGroundedExtraction",
     "ExtractionResult",
+    "GroundedExtractionBatchItem",
+    "GroundedExtractionBatchResult",
     "GroundedStatement",
     "GroundedValue",
     "LiteralDatatype",
     "TextSegment",
     "TextSpan",
     "load_or_run_grounded_extraction",
+    "load_or_run_grounded_extraction_batch",
     "load_or_run_grounded_extractions",
     "parse_extraction_response",
 ]
