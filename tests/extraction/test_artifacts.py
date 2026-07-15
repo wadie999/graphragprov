@@ -6,8 +6,16 @@ import pytest
 from graphragprov.domain import SourceUnit
 from graphragprov.extraction.artifacts import (
     extraction_artifact_directory,
+    has_grounded_extraction_outcome,
+    load_grounded_extraction_outcome,
     load_grounded_extraction_run,
     load_or_run_grounded_extraction,
+    save_grounded_extraction_outcome,
+)
+from graphragprov.extraction.run import (
+    GroundedExtractionFailure,
+    GroundedExtractionRun,
+    run_grounded_extraction_outcome,
 )
 from graphragprov.hashing import source_unit_id
 
@@ -67,6 +75,11 @@ MODEL_RESPONSE = json.dumps(
     }
 )
 
+INVALID_EVIDENCE_RESPONSE = MODEL_RESPONSE.replace(
+    '"quote": "Ulm"',
+    '"quote": "1955"',
+)
+
 
 def test_runs_and_saves_missing_extraction(
     tmp_path: Path,
@@ -97,6 +110,7 @@ def test_runs_and_saves_missing_extraction(
     assert (directory / "prompt.txt").is_file()
     assert (directory / "response.txt").is_file()
     assert (directory / "extraction.json").is_file()
+    assert not (directory / "error.json").exists()
 
 
 def test_reuses_complete_extraction_without_model_call(
@@ -265,6 +279,158 @@ def test_direct_load_rejects_incomplete_artifact(
         match="incomplete extraction artifact",
     ):
         load_grounded_extraction_run(
+            SOURCE,
+            directory,
+        )
+
+
+def test_successful_outcome_round_trip(
+    tmp_path: Path,
+) -> None:
+    outcome = run_grounded_extraction_outcome(
+        SOURCE,
+        generate_response=lambda _: MODEL_RESPONSE,
+    )
+
+    assert isinstance(
+        outcome,
+        GroundedExtractionRun,
+    )
+
+    directory = extraction_artifact_directory(
+        tmp_path,
+        SOURCE,
+    )
+
+    save_grounded_extraction_outcome(
+        outcome,
+        directory,
+    )
+
+    assert has_grounded_extraction_outcome(directory)
+    assert (
+        load_grounded_extraction_outcome(
+            SOURCE,
+            directory,
+        )
+        == outcome
+    )
+
+
+def test_response_validation_failure_preserves_raw_response(
+    tmp_path: Path,
+) -> None:
+    outcome = run_grounded_extraction_outcome(
+        SOURCE,
+        generate_response=lambda _: INVALID_EVIDENCE_RESPONSE,
+    )
+
+    assert isinstance(
+        outcome,
+        GroundedExtractionFailure,
+    )
+    assert outcome.stage == "response_validation"
+    assert outcome.response == INVALID_EVIDENCE_RESPONSE
+
+    directory = extraction_artifact_directory(
+        tmp_path,
+        SOURCE,
+    )
+
+    save_grounded_extraction_outcome(
+        outcome,
+        directory,
+    )
+
+    assert (directory / "response.txt").read_text(encoding="utf-8") == INVALID_EVIDENCE_RESPONSE
+    assert (directory / "error.json").is_file()
+    assert not (directory / "extraction.json").exists()
+
+    restored = load_grounded_extraction_outcome(
+        SOURCE,
+        directory,
+    )
+
+    assert restored == outcome
+
+
+def test_provider_failure_round_trip_preserves_missing_response(
+    tmp_path: Path,
+) -> None:
+    def failing_model(_: str) -> str:
+        raise RuntimeError("provider unavailable")
+
+    outcome = run_grounded_extraction_outcome(
+        SOURCE,
+        generate_response=failing_model,
+    )
+
+    assert isinstance(
+        outcome,
+        GroundedExtractionFailure,
+    )
+    assert outcome.stage == "provider"
+    assert outcome.response is None
+
+    directory = extraction_artifact_directory(
+        tmp_path,
+        SOURCE,
+    )
+
+    save_grounded_extraction_outcome(
+        outcome,
+        directory,
+    )
+
+    assert (directory / "response.txt").read_text(encoding="utf-8") == ""
+
+    restored = load_grounded_extraction_outcome(
+        SOURCE,
+        directory,
+    )
+
+    assert restored == outcome
+
+
+def test_rejects_coexisting_success_and_failure_artifacts(
+    tmp_path: Path,
+) -> None:
+    outcome = run_grounded_extraction_outcome(
+        SOURCE,
+        generate_response=lambda _: MODEL_RESPONSE,
+    )
+
+    assert isinstance(
+        outcome,
+        GroundedExtractionRun,
+    )
+
+    directory = extraction_artifact_directory(
+        tmp_path,
+        SOURCE,
+    )
+
+    save_grounded_extraction_outcome(
+        outcome,
+        directory,
+    )
+
+    (directory / "error.json").write_text(
+        "{}\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="both a successful extraction and a failure",
+    ):
+        has_grounded_extraction_outcome(directory)
+
+    with pytest.raises(
+        ValueError,
+        match="both a successful extraction and a failure",
+    ):
+        load_grounded_extraction_outcome(
             SOURCE,
             directory,
         )
