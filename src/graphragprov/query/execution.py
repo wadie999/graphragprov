@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from graphragprov.graphdb import GraphDBClient
 from graphragprov.npcs import NPCSClient
 
+PROVENANCE_VARIABLE = "finalprovennacevariable"
+
 
 @dataclass(frozen=True)
 class ProvenanceQueryExecution:
@@ -60,3 +62,39 @@ def execute_provenance_query(
         rewritten_query=rewritten_query,
         rewritten_result=rewritten_result,
     )
+
+
+def extract_provenance_polynomial(
+    execution: ProvenanceQueryExecution,
+) -> str:
+    """Extract one non-empty NPCS polynomial from a rewritten result."""
+
+    results = execution.rewritten_result.get("results")
+
+    if not isinstance(results, dict):
+        raise ValueError("rewritten query result has no results object")
+
+    bindings = results.get("bindings")
+
+    if not isinstance(bindings, list):
+        raise ValueError("rewritten query result has no bindings list")
+
+    if len(bindings) != 1:
+        raise ValueError("rewritten provenance query must return exactly one binding")
+
+    row = bindings[0]
+
+    if not isinstance(row, dict):
+        raise ValueError("rewritten query binding must be an object")
+
+    provenance = row.get(PROVENANCE_VARIABLE)
+
+    if not isinstance(provenance, dict):
+        raise ValueError(f"rewritten query binding has no {PROVENANCE_VARIABLE!r} value")
+
+    value = provenance.get("value")
+
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("provenance polynomial must be a non-empty string")
+
+    return value

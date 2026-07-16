@@ -7,6 +7,11 @@ import pytest
 from graphragprov.graphdb import GraphDBClient
 from graphragprov.npcs import NPCSClient
 from graphragprov.query import execute_provenance_query
+from graphragprov.query.execution import (
+    PROVENANCE_VARIABLE,
+    ProvenanceQueryExecution,
+    extract_provenance_polynomial,
+)
 
 
 def test_execute_provenance_query_connects_npcs_and_graphdb(
@@ -44,7 +49,7 @@ def test_execute_provenance_query_connects_npcs_and_graphdb(
                         "type": "uri",
                         "value": "urn:answer",
                     },
-                    "finalprovennacevariable": {
+                    PROVENANCE_VARIABLE: {
                         "type": "literal",
                         "value": "⊕((⊗token,))",
                     },
@@ -102,6 +107,7 @@ def test_execute_provenance_query_connects_npcs_and_graphdb(
     assert execution.original_result == original_result
     assert execution.rewritten_query == rewritten_query
     assert execution.rewritten_result == rewritten_result
+    assert extract_provenance_polynomial(execution) == "⊕((⊗token,))"
     assert json.loads(execution.to_json()) == execution.to_dict()
 
 
@@ -123,3 +129,75 @@ def test_empty_query_is_rejected() -> None:
             graphdb=graphdb,
             npcs=npcs,
         )
+
+
+@pytest.mark.parametrize(
+    "bindings",
+    [
+        [],
+        [
+            {PROVENANCE_VARIABLE: {"value": "first"}},
+            {PROVENANCE_VARIABLE: {"value": "second"}},
+        ],
+    ],
+)
+def test_polynomial_requires_exactly_one_binding(
+    bindings: list[dict[str, object]],
+) -> None:
+    execution = _execution_with_bindings(bindings)
+
+    with pytest.raises(
+        ValueError,
+        match="exactly one binding",
+    ):
+        extract_provenance_polynomial(execution)
+
+
+def test_polynomial_binding_is_required() -> None:
+    execution = _execution_with_bindings([{"answer": {"value": "urn:answer"}}])
+
+    with pytest.raises(
+        ValueError,
+        match=PROVENANCE_VARIABLE,
+    ):
+        extract_provenance_polynomial(execution)
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "",
+        "   ",
+        42,
+        None,
+    ],
+)
+def test_polynomial_must_be_non_empty_string(
+    value: object,
+) -> None:
+    execution = _execution_with_bindings([{PROVENANCE_VARIABLE: {"value": value}}])
+
+    with pytest.raises(
+        ValueError,
+        match="non-empty string",
+    ):
+        extract_provenance_polynomial(execution)
+
+
+def _execution_with_bindings(
+    bindings: list[dict[str, object]],
+) -> ProvenanceQueryExecution:
+    return ProvenanceQueryExecution(
+        original_query="SELECT ?answer WHERE {}",
+        original_result={
+            "results": {
+                "bindings": [],
+            }
+        },
+        rewritten_query=("SELECT ?answer ?finalprovennacevariable WHERE {}"),
+        rewritten_result={
+            "results": {
+                "bindings": bindings,
+            }
+        },
+    )
