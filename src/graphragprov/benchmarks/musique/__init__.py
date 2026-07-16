@@ -17,6 +17,10 @@ from graphragprov.benchmarks.musique.reader import (
     load_case,
     read_first_case,
 )
+from graphragprov.benchmarks.musique.result import (
+    MusiqueCaseResult,
+    MusiqueCaseResultStatus,
+)
 from graphragprov.benchmarks.musique.selection import (
     select_cases,
 )
@@ -26,6 +30,8 @@ from graphragprov.benchmarks.musique.source_unit import (
 
 __all__ = [
     "MusiqueCase",
+    "MusiqueCaseResult",
+    "MusiqueCaseResultStatus",
     "MusiqueHop",
     "MusiqueParagraph",
     "MusiqueSourceUnit",
