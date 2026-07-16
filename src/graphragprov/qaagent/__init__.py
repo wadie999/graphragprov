@@ -7,11 +7,21 @@ from graphragprov.qaagent.config import (
     QADecompositionVisibility,
     QAGraphScope,
 )
+from graphragprov.qaagent.trace import (
+    QAAnswerProvenance,
+    QAProvenanceStatus,
+    QAQueryAttempt,
+    QAQueryPurpose,
+)
 
 __all__ = [
     "QAAgentConfiguration",
+    "QAAnswerProvenance",
     "QAAnswerVisibility",
     "QAContextMode",
     "QADecompositionVisibility",
     "QAGraphScope",
+    "QAProvenanceStatus",
+    "QAQueryAttempt",
+    "QAQueryPurpose",
 ]
