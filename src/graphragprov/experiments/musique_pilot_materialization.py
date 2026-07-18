@@ -20,7 +20,13 @@ from graphragprov.extraction import (
     GroundedExtractionBatchResult,
     load_or_run_grounded_extraction_batch,
 )
+from graphragprov.extraction.batch import (
+    GroundedExtractionBatchItem,
+)
 from graphragprov.extraction.prompt import PROMPT_VERSION
+from graphragprov.extraction.run import (
+    GroundedExtractionFailure,
+)
 from graphragprov.graphdb import (
     GraphDBClient,
     GraphMaterializationSummary,
@@ -67,7 +73,16 @@ def parse_arguments() -> argparse.Namespace:
             "Use this only when resuming the same materialization."
         ),
     )
-
+    parser.add_argument(
+        "--retry-failures",
+        action="store_true",
+        help=("Rerun cached failed extractions while continuing to reuse cached successes."),
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help=("Print statement validation and correction progress for every source unit."),
+    )
     return parser.parse_args()
 
 
@@ -126,6 +141,8 @@ def main() -> None:
         source_units,
         cache_root=cache_root,
         generate_response=generate_response,
+        retry_failures=arguments.retry_failures,
+        progress=(_print_extraction_progress if arguments.verbose else None),
     )
 
     materialization = materialize_grounded_extractions(
@@ -345,6 +362,58 @@ def _write_manifest(
         + "\n",
         encoding="utf-8",
     )
+
+
+def _print_extraction_progress(
+    index: int,
+    total: int,
+    item: GroundedExtractionBatchItem,
+) -> None:
+    outcome = item.outcome
+    cache_status = "cached" if item.reused else "executed"
+
+    print()
+    print(f"[{index:02d}/{total:02d}] {outcome.source.title}")
+    print(f"  unit:    {outcome.source.unit_id}")
+
+    if isinstance(
+        outcome,
+        GroundedExtractionFailure,
+    ):
+        print(f"  outcome: {cache_status} failure")
+        print(f"  stage:   {outcome.stage}")
+        print(f"  error:   {outcome.error_type}: {outcome.error_message}")
+        return
+
+    print(f"  outcome: {cache_status} success")
+
+    correction = outcome.correction
+
+    if correction is None:
+        print("  rejected initially: 0")
+        print(f"  final statements:   {len(outcome.extraction.statements)}")
+        return
+
+    print(f"  valid initially:      {correction.initial_valid_statement_count}")
+    print(f"  rejected initially:   {len(correction.requested_rejections)}")
+
+    for rejection in correction.requested_rejections:
+        print(f"    [{rejection.statement_index}] {rejection.error_message}")
+
+    print(
+        "  correction response:  "
+        + ("received" if correction.response is not None else "unavailable")
+    )
+    print(f"  corrected valid:      {correction.corrected_valid_statement_count}")
+    print(f"  still invalid:        {len(correction.remaining_rejections)}")
+
+    for rejection in correction.remaining_rejections:
+        print(f"    [{rejection.statement_index}] {rejection.error_message}")
+
+    if correction.error_message is not None:
+        print(f"  correction error:    {correction.error_type}: {correction.error_message}")
+
+    print(f"  final statements:     {len(outcome.extraction.statements)}")
 
 
 if __name__ == "__main__":

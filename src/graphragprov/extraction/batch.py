@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -30,6 +30,12 @@ class GroundedExtractionBatchItem:
 
     outcome: GroundedExtractionOutcome
     reused: bool
+
+
+GroundedExtractionProgress = Callable[
+    [int, int, GroundedExtractionBatchItem],
+    None,
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -109,27 +115,57 @@ def load_or_run_grounded_extraction_batch(
     *,
     cache_root: Path,
     generate_response: GenerateResponse,
+    retry_failures: bool = False,
+    progress: GroundedExtractionProgress | None = None,
 ) -> GroundedExtractionBatchResult:
     """Extract every unique source while preserving failures.
 
-    Every completed outcome is persisted immediately. A failed source
-    therefore does not prevent later sources from being processed.
+    Completed successes are always reused. Cached failures are reused unless
+    ``retry_failures`` is true. Every newly executed outcome is persisted
+    immediately.
     """
+
+    unique_sources = _unique_sources(sources)
 
     items: list[GroundedExtractionBatchItem] = []
 
-    for source in _unique_sources(sources):
+    total = len(unique_sources)
+
+    for index, source in enumerate(
+        unique_sources,
+        start=1,
+    ):
         directory = extraction_artifact_directory(
             cache_root,
             source,
         )
 
         if has_grounded_extraction_outcome(directory):
-            outcome = load_grounded_extraction_outcome(
+            cached_outcome = load_grounded_extraction_outcome(
                 source,
                 directory,
             )
-            reused = True
+
+            should_retry = retry_failures and isinstance(
+                cached_outcome,
+                GroundedExtractionFailure,
+            )
+
+            if should_retry:
+                outcome = run_grounded_extraction_outcome(
+                    source,
+                    generate_response,
+                )
+
+                save_grounded_extraction_outcome(
+                    outcome,
+                    directory,
+                )
+
+                reused = False
+            else:
+                outcome = cached_outcome
+                reused = True
         else:
             outcome = run_grounded_extraction_outcome(
                 source,
@@ -140,14 +176,22 @@ def load_or_run_grounded_extraction_batch(
                 outcome,
                 directory,
             )
+
             reused = False
 
-        items.append(
-            GroundedExtractionBatchItem(
-                outcome=outcome,
-                reused=reused,
-            )
+        item = GroundedExtractionBatchItem(
+            outcome=outcome,
+            reused=reused,
         )
+
+        items.append(item)
+
+        if progress is not None:
+            progress(
+                index,
+                total,
+                item,
+            )
 
     return GroundedExtractionBatchResult(items=tuple(items))
 

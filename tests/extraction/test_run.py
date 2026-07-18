@@ -131,7 +131,7 @@ def test_preserves_provider_failure_as_outcome() -> None:
     assert outcome.error_message == "provider unavailable"
 
 
-def test_preserves_invalid_raw_response_as_outcome() -> None:
+def test_preserves_invalid_raw_response_and_drops_invalid_statement() -> None:
     outcome = run_grounded_extraction_outcome(
         SOURCE,
         generate_response=lambda _: INVALID_EVIDENCE_RESPONSE,
@@ -139,11 +139,18 @@ def test_preserves_invalid_raw_response_as_outcome() -> None:
 
     assert isinstance(
         outcome,
-        GroundedExtractionFailure,
+        GroundedExtractionRun,
     )
-    assert outcome.source == SOURCE
+
     assert outcome.response == INVALID_EVIDENCE_RESPONSE
-    assert outcome.stage == "response_validation"
-    assert outcome.error_type == "ValueError"
-    assert "response.statements[0].object.evidence[0]" in outcome.error_message
-    assert "quote '1955' does not occur" in outcome.error_message
+    assert outcome.extraction.statements == ()
+
+    assert outcome.correction is not None
+    assert outcome.correction.response == INVALID_EVIDENCE_RESPONSE
+    assert len(outcome.correction.requested_rejections) == 1
+    assert len(outcome.correction.remaining_rejections) == 1
+
+    rejection = outcome.correction.remaining_rejections[0]
+
+    assert rejection.statement_index == 0
+    assert "quote '1955' does not occur" in rejection.error_message

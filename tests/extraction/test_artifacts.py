@@ -317,7 +317,7 @@ def test_successful_outcome_round_trip(
     )
 
 
-def test_response_validation_failure_preserves_raw_response(
+def test_invalid_statement_preserves_raw_response_and_saves_valid_outcome(
     tmp_path: Path,
 ) -> None:
     outcome = run_grounded_extraction_outcome(
@@ -327,10 +327,13 @@ def test_response_validation_failure_preserves_raw_response(
 
     assert isinstance(
         outcome,
-        GroundedExtractionFailure,
+        GroundedExtractionRun,
     )
-    assert outcome.stage == "response_validation"
     assert outcome.response == INVALID_EVIDENCE_RESPONSE
+    assert outcome.extraction.statements == ()
+    assert outcome.correction is not None
+    assert len(outcome.correction.requested_rejections) == 1
+    assert len(outcome.correction.remaining_rejections) == 1
 
     directory = extraction_artifact_directory(
         tmp_path,
@@ -343,15 +346,22 @@ def test_response_validation_failure_preserves_raw_response(
     )
 
     assert (directory / "response.txt").read_text(encoding="utf-8") == INVALID_EVIDENCE_RESPONSE
-    assert (directory / "error.json").is_file()
-    assert not (directory / "extraction.json").exists()
+    assert (directory / "extraction.json").is_file()
+    assert not (directory / "error.json").exists()
 
     restored = load_grounded_extraction_outcome(
         SOURCE,
         directory,
     )
 
-    assert restored == outcome
+    assert isinstance(
+        restored,
+        GroundedExtractionRun,
+    )
+    assert restored.source == outcome.source
+    assert restored.prompt == outcome.prompt
+    assert restored.response == outcome.response
+    assert restored.extraction == outcome.extraction
 
 
 def test_provider_failure_round_trip_preserves_missing_response(
