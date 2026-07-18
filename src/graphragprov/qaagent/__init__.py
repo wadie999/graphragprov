@@ -7,6 +7,14 @@ from graphragprov.qaagent.config import (
     QADecompositionVisibility,
     QAGraphScope,
 )
+from graphragprov.qaagent.observation import (
+    QAAgentObservation,
+    QAObservedObjectType,
+    QAObservedTriple,
+    SPARQLQueryExecutor,
+    build_semantic_triple_observation_query,
+    observe_semantic_triples,
+)
 from graphragprov.qaagent.response import (
     QAAgentDecision,
     QAAgentDecisionStatus,
@@ -26,14 +34,20 @@ __all__ = [
     "QAAgentConfiguration",
     "QAAgentDecision",
     "QAAgentDecisionStatus",
+    "QAAgentObservation",
     "QAAnswerProvenance",
     "QAAnswerVisibility",
     "QAContextMode",
     "QADecompositionVisibility",
     "QAGraphScope",
+    "QAObservedObjectType",
+    "QAObservedTriple",
     "QAProvenanceStatus",
     "QAQueryAttempt",
     "QAQueryPurpose",
+    "SPARQLQueryExecutor",
+    "build_semantic_triple_observation_query",
     "compile_scoped_select_query",
+    "observe_semantic_triples",
     "parse_qa_agent_response",
 ]
