@@ -7,6 +7,9 @@ from graphragprov.qaagent.config import (
     QADecompositionVisibility,
     QAGraphScope,
 )
+from graphragprov.qaagent.scope import (
+    compile_scoped_select_query,
+)
 from graphragprov.qaagent.trace import (
     QAAnswerProvenance,
     QAProvenanceStatus,
@@ -24,4 +27,5 @@ __all__ = [
     "QAProvenanceStatus",
     "QAQueryAttempt",
     "QAQueryPurpose",
+    "compile_scoped_select_query",
 ]
