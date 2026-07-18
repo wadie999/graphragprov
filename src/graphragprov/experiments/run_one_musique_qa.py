@@ -27,7 +27,7 @@ from graphragprov.qaagent import (
     run_tuple_qa_agent,
 )
 
-_RESULT_FORMAT = "musique-one-shot-qa-v1"
+_RESULT_FORMAT = "musique-multi-turn-qa-v1"
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -54,13 +54,23 @@ def parse_arguments() -> argparse.Namespace:
         default=16_384,
     )
     parser.add_argument(
+        "--max-turns",
+        type=int,
+        default=5,
+        help=(
+            "Maximum number of QA-agent turns. "
+            "Each unsuccessful query response is shown "
+            "to the agent on the following turn."
+        ),
+    )
+    parser.add_argument(
         "--output",
         type=Path,
     )
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Recompute the case even when its result already exists.",
+        help=("Recompute the case even when its result already exists."),
     )
 
     return parser.parse_args()
@@ -71,6 +81,9 @@ def main() -> None:
 
     if arguments.max_tokens <= 0:
         raise SystemExit("--max-tokens must be positive")
+
+    if arguments.max_turns <= 0:
+        raise SystemExit("--max-turns must be positive")
 
     dataset_path = musique_dataset_path()
 
@@ -109,17 +122,18 @@ def main() -> None:
         graph_scope="case_all",
         answer_visibility="hidden",
         decomposition_visibility="hop_count",
-        max_turns=1,
+        max_turns=arguments.max_turns,
     )
 
     print("Running MuSiQue graph QA")
-    print(f"Case:       {case.case_id}")
-    print(f"Hop count:  {case.hop_count}")
-    print(f"Question:   {case.question}")
-    print(f"Expected:   {case.answer}")
-    print(f"Paragraphs: {len(case.paragraphs)}")
-    print(f"Graph units:{len(source_units):>3}")
-    print(f"Model:      {arguments.model}")
+    print(f"Case:          {case.case_id}")
+    print(f"Hop count:     {case.hop_count}")
+    print(f"Question:      {case.question}")
+    print(f"Expected:      {case.answer}")
+    print(f"Paragraphs:    {len(case.paragraphs)}")
+    print(f"Scoped graphs: {len(source_units)}")
+    print(f"Max turns:     {arguments.max_turns}")
+    print(f"Model:         {arguments.model}")
     print()
 
     result = run_tuple_qa_agent(
@@ -137,6 +151,7 @@ def main() -> None:
         case=case,
         model=arguments.model,
         max_tokens=arguments.max_tokens,
+        max_turns=arguments.max_turns,
         result=result,
     )
 
@@ -188,6 +203,7 @@ def _build_result_payload(
     case: MusiqueCase,
     model: str,
     max_tokens: int,
+    max_turns: int,
     result: QAAgentRunResult,
 ) -> dict[str, object]:
     return {
@@ -205,6 +221,10 @@ def _build_result_payload(
         "model": {
             "name": model,
             "max_tokens": max_tokens,
+        },
+        "execution": {
+            "max_turns": max_turns,
+            "executed_query_count": len(result.query_attempts),
         },
         "qa_agent": result.to_dict(),
     }
@@ -236,18 +256,27 @@ def _print_result(
     *,
     output_path: Path,
 ) -> None:
-    print("DeepSeek decision")
-    print(f"Status:    {result.decision.status}")
-    print(f"Rationale: {result.decision.rationale}")
-    print(f"Observed:  {len(result.observation.triples)} semantic triples")
+    print("Final DeepSeek decision")
+    print(f"Status:     {result.decision.status}")
+    print(f"Rationale:  {result.decision.rationale}")
+    print(f"Observed:   {len(result.observation.triples)} semantic triples")
+    print(f"Queries run: {len(result.query_attempts)}")
 
     if result.decision.assumptions:
-        print("Assumptions:")
+        print("Final assumptions:")
 
         for assumption in result.decision.assumptions:
             print(f"  - {assumption}")
 
+    if not result.query_attempts:
+        print()
+        print("No SPARQL query was executed.")
+
     for attempt in result.query_attempts:
+        print()
+        print("=" * 72)
+        print(f"Turn {attempt.turn_index}")
+        print("=" * 72)
         print()
         print("Generated semantic SPARQL:")
         print(attempt.semantic_sparql)
@@ -258,6 +287,7 @@ def _print_result(
         print(f"Provenance status: {attempt.provenance_status}")
 
         if attempt.execution is not None:
+            print()
             print("Original GraphDB result:")
             print(
                 json.dumps(

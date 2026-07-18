@@ -1,7 +1,8 @@
-"""Execution of one-shot graph QA agents."""
+"""Execution of configurable multi-turn graph QA agents."""
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from typing import cast
@@ -22,9 +23,7 @@ from graphragprov.qaagent.response import (
     QAAgentDecision,
     parse_qa_agent_response,
 )
-from graphragprov.qaagent.scope import (
-    compile_scoped_select_query,
-)
+from graphragprov.qaagent.scope import compile_scoped_select_query
 from graphragprov.qaagent.trace import (
     QAAnswerProvenance,
     QAQueryAttempt,
@@ -39,7 +38,11 @@ GenerateQAResponse = Callable[[str], str]
 
 @dataclass(frozen=True, slots=True)
 class QAAgentRunResult:
-    """Complete observable result of one QA-agent run."""
+    """Complete observable result of one multi-turn QA-agent run.
+
+    ``prompt``, ``raw_response``, and ``decision`` describe the final agent
+    turn. ``query_attempts`` preserves every executed query in order.
+    """
 
     configuration: QAAgentConfiguration
     observation: QAAgentObservation
@@ -55,17 +58,29 @@ class QAAgentRunResult:
         if not self.raw_response.strip():
             raise ValueError("QA-agent raw response must not be empty")
 
-        if self.decision.status == "query":
-            if len(self.query_attempts) != 1:
-                raise ValueError("one-shot query decision requires one query attempt")
-        elif self.query_attempts:
-            raise ValueError("non-query decision must not contain query attempts")
+        if len(self.query_attempts) > self.configuration.max_turns:
+            raise ValueError("query-attempt count exceeds configured maximum turns")
+
+        expected_turn_indices = tuple(
+            range(
+                1,
+                len(self.query_attempts) + 1,
+            )
+        )
+
+        actual_turn_indices = tuple(attempt.turn_index for attempt in self.query_attempts)
+
+        if actual_turn_indices != expected_turn_indices:
+            raise ValueError("query-attempt turn indices must be consecutive and start at one")
+
+        if self.decision.status == "query" and not self.query_attempts:
+            raise ValueError("final query decision requires a query attempt")
 
     def to_dict(self) -> dict[str, object]:
         """Return a deterministic JSON-serializable run record."""
 
         return {
-            "configuration": self.configuration.to_dict(),
+            "configuration": (self.configuration.to_dict()),
             "observation": self.observation.to_dict(),
             "prompt": self.prompt,
             "raw_response": self.raw_response,
@@ -87,13 +102,15 @@ def run_tuple_qa_agent(
     expected_answer: str | None = None,
     decomposition: tuple[str, ...] = (),
 ) -> QAAgentRunResult:
-    """Run one tuple-context DeepSeek QA turn over GraphDB."""
+    """Run a bounded tuple-context QA loop over GraphDB.
+
+    The semantic graph observation is loaded once. After each unsuccessful
+    query, the next model turn receives the previous semantic SPARQL,
+    decision, provenance status, and actual GraphDB response.
+    """
 
     if configuration.context_mode != "tuples":
         raise NotImplementedError("the current runner supports only context_mode='tuples'")
-
-    if configuration.max_turns != 1:
-        raise NotImplementedError("the current tuple runner supports exactly one turn")
 
     resolved_unit_ids = None if source_unit_ids is None else tuple(source_unit_ids)
 
@@ -107,7 +124,7 @@ def run_tuple_qa_agent(
         source_unit_ids=resolved_unit_ids,
     )
 
-    prompt = build_tuple_qa_prompt(
+    base_prompt = build_tuple_qa_prompt(
         question=question,
         hop_count=hop_count,
         observation=observation,
@@ -116,56 +133,109 @@ def run_tuple_qa_agent(
         decomposition=decomposition,
     )
 
-    raw_response = generate_response(prompt)
+    attempts: list[QAQueryAttempt] = []
+    completed_turns: list[
+        tuple[
+            QAAgentDecision,
+            QAQueryAttempt,
+        ]
+    ] = []
 
-    decision = parse_qa_agent_response(raw_response)
+    final_prompt: str | None = None
+    final_raw_response: str | None = None
+    final_decision: QAAgentDecision | None = None
 
-    if decision.status != "query":
-        return QAAgentRunResult(
-            configuration=configuration,
-            observation=observation,
-            prompt=prompt,
-            raw_response=raw_response,
-            decision=decision,
-            query_attempts=(),
+    for turn_index in range(
+        1,
+        configuration.max_turns + 1,
+    ):
+        prompt = _build_turn_prompt(
+            base_prompt=base_prompt,
+            completed_turns=completed_turns,
+            turn_index=turn_index,
+            max_turns=configuration.max_turns,
         )
 
-    assert decision.sparql is not None
+        raw_response = generate_response(prompt)
+        decision = parse_qa_agent_response(raw_response)
 
-    semantic_sparql = decision.sparql.strip()
+        final_prompt = prompt
+        final_raw_response = raw_response
+        final_decision = decision
 
-    scoped_sparql = compile_scoped_select_query(
-        semantic_sparql,
-        source_unit_ids=resolved_unit_ids,
-    )
+        if decision.status != "query":
+            return QAAgentRunResult(
+                configuration=configuration,
+                observation=observation,
+                prompt=prompt,
+                raw_response=raw_response,
+                decision=decision,
+                query_attempts=tuple(attempts),
+            )
 
-    attempt = execute_qa_query_attempt(
-        semantic_sparql=semantic_sparql,
-        scoped_sparql=scoped_sparql,
-        graphdb=graphdb,
-        npcs=npcs,
-        registry=registry,
-    )
+        assert decision.sparql is not None
+
+        semantic_sparql = decision.sparql.strip()
+
+        scoped_sparql = compile_scoped_select_query(
+            semantic_sparql,
+            source_unit_ids=resolved_unit_ids,
+        )
+
+        attempt = execute_qa_query_attempt(
+            turn_index=turn_index,
+            semantic_sparql=semantic_sparql,
+            scoped_sparql=scoped_sparql,
+            graphdb=graphdb,
+            npcs=npcs,
+            registry=registry,
+        )
+
+        attempts.append(attempt)
+
+        if attempt.provenance_status == "decoded":
+            return QAAgentRunResult(
+                configuration=configuration,
+                observation=observation,
+                prompt=prompt,
+                raw_response=raw_response,
+                decision=decision,
+                query_attempts=tuple(attempts),
+            )
+
+        completed_turns.append(
+            (
+                decision,
+                attempt,
+            )
+        )
+
+    if final_prompt is None or final_raw_response is None or final_decision is None:
+        raise AssertionError("QA-agent configuration allowed no turns")
 
     return QAAgentRunResult(
         configuration=configuration,
         observation=observation,
-        prompt=prompt,
-        raw_response=raw_response,
-        decision=decision,
-        query_attempts=(attempt,),
+        prompt=final_prompt,
+        raw_response=final_raw_response,
+        decision=final_decision,
+        query_attempts=tuple(attempts),
     )
 
 
 def execute_qa_query_attempt(
     *,
+    turn_index: int,
     semantic_sparql: str,
     scoped_sparql: str,
     graphdb: GraphDBClient,
     npcs: NPCSClient,
     registry: SourceRegistry,
 ) -> QAQueryAttempt:
-    """Execute and provenance-decode one final QA query."""
+    """Execute and provenance-decode one QA query attempt."""
+
+    if turn_index < 1:
+        raise ValueError("query-attempt turn index must be positive")
 
     try:
         execution = execute_provenance_query(
@@ -175,7 +245,7 @@ def execute_qa_query_attempt(
         )
     except Exception as error:
         return QAQueryAttempt(
-            turn_index=1,
+            turn_index=turn_index,
             purpose="final",
             semantic_sparql=semantic_sparql,
             scoped_sparql=scoped_sparql,
@@ -197,7 +267,7 @@ def execute_qa_query_attempt(
 
         if not original_bindings and not rewritten_bindings:
             return QAQueryAttempt(
-                turn_index=1,
+                turn_index=turn_index,
                 purpose="final",
                 semantic_sparql=semantic_sparql,
                 scoped_sparql=scoped_sparql,
@@ -224,7 +294,7 @@ def execute_qa_query_attempt(
         )
     except Exception as error:
         return QAQueryAttempt(
-            turn_index=1,
+            turn_index=turn_index,
             purpose="final",
             semantic_sparql=semantic_sparql,
             scoped_sparql=scoped_sparql,
@@ -235,7 +305,7 @@ def execute_qa_query_attempt(
         )
 
     return QAQueryAttempt(
-        turn_index=1,
+        turn_index=turn_index,
         purpose="final",
         semantic_sparql=semantic_sparql,
         scoped_sparql=scoped_sparql,
@@ -245,6 +315,80 @@ def execute_qa_query_attempt(
     )
 
 
+def _build_turn_prompt(
+    *,
+    base_prompt: str,
+    completed_turns: list[
+        tuple[
+            QAAgentDecision,
+            QAQueryAttempt,
+        ]
+    ],
+    turn_index: int,
+    max_turns: int,
+) -> str:
+    """Append real execution feedback for a subsequent agent turn."""
+
+    if not completed_turns:
+        return base_prompt
+
+    history_payload = [
+        {
+            "turn": attempt.turn_index,
+            "decision": decision.to_dict(),
+            "execution_feedback": (_query_attempt_feedback(attempt)),
+        }
+        for decision, attempt in completed_turns
+    ]
+
+    return "\n".join(
+        [
+            base_prompt,
+            "",
+            "MULTI-TURN EXECUTION FEEDBACK",
+            (f"You are now on turn {turn_index} of at most {max_turns}."),
+            ("The previous SPARQL queries were executed against the real scoped GraphDB dataset."),
+            (
+                "Use the database responses below as feedback. "
+                "Diagnose entity identity, predicate, join, or "
+                "query-shape problems and revise the query."
+            ),
+            ("Do not repeat an unsuccessful query unchanged."),
+            ("Return exactly the same JSON decision schema required by the original instructions."),
+            "",
+            "Previous turns:",
+            json.dumps(
+                history_payload,
+                ensure_ascii=False,
+                indent=2,
+                sort_keys=True,
+            ),
+        ]
+    )
+
+
+def _query_attempt_feedback(
+    attempt: QAQueryAttempt,
+) -> dict[str, object]:
+    """Return concise model-facing feedback from one real query execution."""
+
+    feedback: dict[str, object] = {
+        "semantic_sparql": (attempt.semantic_sparql),
+        "provenance_status": (attempt.provenance_status),
+    }
+
+    if attempt.execution is not None:
+        feedback["graphdb_result"] = attempt.execution.original_result
+
+    if attempt.error_type is not None:
+        feedback["error_type"] = attempt.error_type
+
+    if attempt.error_message is not None:
+        feedback["error_message"] = attempt.error_message
+
+    return feedback
+
+
 def _decode_answer_provenance(
     binding: dict[str, object],
     *,
@@ -252,7 +396,10 @@ def _decode_answer_provenance(
 ) -> QAAnswerProvenance:
     provenance_binding = binding.get(PROVENANCE_VARIABLE)
 
-    if not isinstance(provenance_binding, dict):
+    if not isinstance(
+        provenance_binding,
+        dict,
+    ):
         raise ValueError(f"rewritten answer binding has no {PROVENANCE_VARIABLE!r} value")
 
     polynomial = provenance_binding.get("value")
