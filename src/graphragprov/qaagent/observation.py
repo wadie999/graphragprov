@@ -25,6 +25,7 @@ class SPARQLQueryExecutor(Protocol):
         sparql: str,
     ) -> dict[str, object]:
         """Execute a SPARQL query."""
+        ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -93,6 +94,26 @@ class QAObservedTriple:
             ).n3()
 
         return f"{subject} {predicate} {object_term} {graph} ."
+
+    def to_ntriple(self) -> str:
+        """Serialize the semantic statement without its named graph."""
+
+        subject = URIRef(self.subject_iri).n3()
+        predicate = URIRef(self.predicate_iri).n3()
+
+        if self.object_type == "uri":
+            object_term = URIRef(self.object_value).n3()
+        else:
+            datatype = URIRef(self.object_datatype) if self.object_datatype is not None else None
+
+            object_term = RDFLiteral(
+                self.object_value,
+                datatype=datatype,
+                lang=self.object_language,
+                normalize=False,
+            ).n3()
+
+        return f"{subject} {predicate} {object_term} ."
 
     def to_dict(self) -> dict[str, object]:
         """Return a deterministic JSON-serializable tuple."""

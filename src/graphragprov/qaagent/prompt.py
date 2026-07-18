@@ -54,7 +54,7 @@ def build_tuple_qa_prompt(
 
         metadata.append(f"Expected answer for oracle query synthesis: {expected_answer}")
 
-    tuple_lines = [triple.to_nquad() for triple in observation.triples]
+    tuple_lines = [triple.to_ntriple() for triple in observation.triples]
 
     if not tuple_lines:
         tuple_lines = ["(no semantic triples were observed)"]
@@ -68,7 +68,7 @@ def build_tuple_qa_prompt(
             "",
             *metadata,
             "",
-            "Semantic RDF tuples in N-Quads form:",
+            "Semantic RDF triples:",
             *tuple_lines,
             "",
             "Determine whether the question can be answered from this graph.",
