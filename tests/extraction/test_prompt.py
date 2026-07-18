@@ -14,7 +14,7 @@ SOURCE = SourceUnit(
 
 
 def test_prompt_version_is_stable() -> None:
-    assert PROMPT_VERSION == "grounded-rdf-v1"
+    assert PROMPT_VERSION == "grounded-rdf-v2"
 
 
 def test_prompt_rendering_is_deterministic() -> None:
@@ -46,42 +46,116 @@ def test_prompt_does_not_expose_source_unit_id() -> None:
 def test_prompt_requests_grounded_json_statements() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
-    assert '"statements"' in prompt
-    assert '"subject"' in prompt
-    assert '"predicate"' in prompt
-    assert '"object"' in prompt
-    assert '"value"' in prompt
-    assert '"evidence"' in prompt
-    assert '"segment"' in prompt
-    assert '"quote"' in prompt
-    assert '"occurrence"' in prompt
+    for field in (
+        '"statements"',
+        '"subject"',
+        '"predicate"',
+        '"object"',
+        '"value"',
+        '"evidence"',
+        '"segment"',
+        '"quote"',
+        '"occurrence"',
+    ):
+        assert field in prompt
 
 
 def test_prompt_does_not_request_reasoning() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
     assert '"reasoning"' not in prompt
-    assert "Do not return Markdown, reasoning, comments, code fences" in prompt
+    assert "Do not return Markdown" in prompt
+    assert "reasoning" in prompt
+    assert "code fences" in prompt
 
 
-def test_prompt_forbids_automatic_inverse_statements() -> None:
+def test_prompt_requires_atomic_graph_nodes() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
-    assert (
-        "Do not automatically add inverse, symmetric, transitive, ontology-derived, or"
-    ) in prompt
-    assert "cross-source statements." in prompt
+    assert "A triple is NOT a compressed sentence." in prompt
+    assert "Subjects and entity objects must be atomic semantic nodes." in prompt
+    assert "Do not use a complete sentence, clause, definition" in prompt
+
+
+def test_prompt_requires_dimensional_splitting() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "DIMENSIONAL SPLITTING" in prompt
+    assert "Grant Green -> nationality -> American" in prompt
+    assert "Grant Green -> occupation -> guitarist" in prompt
+    assert "Grant Green -> genre -> jazz" in prompt
+
+
+def test_prompt_requires_list_distribution() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "LIST DISTRIBUTION" in prompt
+    assert "emit one statement" in prompt
+    assert "per object" in prompt
+    assert "Full-time employment -> oftenIncludesBenefit -> annual leave" in prompt
+    assert "Full-time employment -> oftenIncludesBenefit -> health insurance" in prompt
+
+
+def test_prompt_separates_entities_from_literals() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "An object without `datatype` is an entity." in prompt
+    assert "Use a literal only for a scalar value." in prompt
+    assert "A semantic description, definition, sentence, clause, list" in prompt
+    assert '"kind"' not in prompt
+
+
+def test_prompt_requires_minimal_predicate_triggers() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "Predicate evidence must be the shortest exact phrase" in prompt
+    assert '"does not define"' in prompt
+    assert '"commonly require"' in prompt
+
+
+def test_prompt_requires_local_factual_support() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "inside the same sentence or local clause" in prompt
+    assert "Do not borrow an object mention from an earlier sentence" in prompt
+    assert 'The subject is "Companies", not "Full-time employment".' in prompt
+
+
+def test_prompt_requires_exact_verbatim_grounding() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "STRICT VERBATIM GROUNDING" in prompt
+    assert "exact, non-empty substring" in prompt
+    assert "Do not silently normalize evidence quotes." in prompt
+    assert "select the occurrence participating" in prompt
+    assert "sentence or clause" in prompt
+
+
+def test_prompt_forbids_automatic_derived_statements() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "Do not automatically add:" in prompt
+    assert "- inverse statements;" in prompt
+    assert "- symmetric statements;" in prompt
+    assert "- transitive statements;" in prompt
+    assert "- ontology-derived statements;" in prompt
+    assert "- cross-source statements." in prompt
+
+
+def test_prompt_contains_few_shot_examples() -> None:
+    prompt = build_extraction_prompt(SOURCE)
+
+    assert "FEW-SHOT EXAMPLE 1" in prompt
+    assert "FEW-SHOT EXAMPLE 2" in prompt
+    assert "FEW-SHOT EXAMPLE 3" in prompt
+
+    assert '"value": "Maria Torres"' in prompt
+    assert '"value": "supermarket chain"' in prompt
+    assert '"value": "annual leave"' in prompt
+    assert '"value": "35 to 40 hours per week"' in prompt
 
 
 def test_prompt_allows_empty_extraction() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
     assert '"statements": []' in prompt
-
-
-def test_prompt_infers_object_kind_from_datatype() -> None:
-    prompt = build_extraction_prompt(SOURCE)
-
-    assert '"kind"' not in prompt
-    assert "An object without a datatype is an entity." in prompt
-    assert "An object with a datatype is a scalar literal." in prompt

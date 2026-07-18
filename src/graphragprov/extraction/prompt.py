@@ -6,27 +6,36 @@ import json
 
 from graphragprov.domain.source_unit import SourceUnit
 
-PROMPT_VERSION = "grounded-rdf-v1"
+PROMPT_VERSION = "grounded-rdf-v2"
 
 
 SYSTEM_PROMPT = """
-You convert one source unit into grounded RDF-like statements.
+You convert one immutable source unit into a useful grounded knowledge graph.
 
-A source unit contains two immutable source segments:
+A source unit contains two source segments:
 
 - title
 - text
 
-Your task is semantic: identify useful subject-predicate-object statements and
-identify the exact source fragments that support each component.
+Your task has two equally important requirements:
 
-A deterministic Python locator will later convert your evidence references into
-character offsets. It performs exact substring matching only. It cannot decide
-which occurrence you intended when the same quote appears several times.
-Therefore, you must provide the correct segment, exact quote, and one-based
-occurrence number.
+1. GRAPH QUALITY:
+   extract atomic, reusable, highly connective subject-predicate-object facts;
 
-Return ONLY one valid JSON object with this structure:
+2. EXACT GROUNDING:
+   identify the exact source fragments supporting every subject, predicate,
+   and object.
+
+A triple is NOT a compressed sentence.
+
+Its subject and object must be reusable graph nodes or scalar values, and its
+predicate must be one concise relation between them.
+
+A deterministic Python locator converts evidence references into character
+offsets using exact substring matching. It cannot repair quotes or infer which
+repeated occurrence you intended.
+
+Return ONLY one valid JSON object with this exact structure:
 
 {
   "statements": [
@@ -37,7 +46,7 @@ Return ONLY one valid JSON object with this structure:
           {
             "segment": "title or text",
             "quote": "<exact source substring>",
-            "occurrence": Int
+            "occurrence": 1
           }
         ]
       },
@@ -47,18 +56,18 @@ Return ONLY one valid JSON object with this structure:
           {
             "segment": "title or text",
             "quote": "<exact source substring>",
-            "occurrence": Int
+            "occurrence": 1
           }
         ]
       },
       "object": {
-        "value": "<readable entity value or normalized literal>",
-        "datatype": "<include only for literal objects>",
+        "value": "<readable entity value or normalized scalar>",
+        "datatype": "<include only for scalar literals>",
         "evidence": [
           {
             "segment": "title or text",
             "quote": "<exact source substring>",
-            "occurrence": Int
+            "occurrence": 1
           }
         ]
       }
@@ -66,112 +75,157 @@ Return ONLY one valid JSON object with this structure:
   ]
 }
 
-Do not return Markdown, reasoning, comments, code fences, unit IDs, or character
-offsets.
+Do not return Markdown, explanations, reasoning, comments, code fences, source
+unit IDs, or character offsets.
 
-GROUNDING
 
-Every subject, predicate, and object must contain at least one evidence item.
+======================================================================
+LAW 1 — ATOMIC GRAPH NODES
+======================================================================
 
-Each quote must be an exact, non-empty substring of its declared segment.
-Preserve capitalization, punctuation, spelling, whitespace, and Unicode exactly.
+Subjects and entity objects must be atomic semantic nodes.
 
-Occurrences are counted independently inside each segment, from left to right.
+Good nodes include:
 
-For example, if the text contains the word "Ulm" twice, occurrence 1 means the
-first "Ulm" in the text and occurrence 2 means the second.
+- people;
+- organizations;
+- locations;
+- works;
+- events;
+- occupations;
+- nationalities;
+- genres;
+- formats;
+- materials;
+- categories;
+- technologies;
+- concise abstract concepts.
 
-Choose the occurrence that participates in the sentence or clause expressing
-the statement. Do not select an earlier identical mention merely because it is
-easier to find.
+Do not use a complete sentence, clause, definition, explanation, or list as a
+subject or object.
 
-Evidence should reflect the role of each component:
+BAD object:
 
-- subject evidence identifies or refers to the subject;
-- predicate evidence expresses the relationship;
-- object evidence identifies or expresses the object.
+"employment in which a person works a minimum number of hours defined as such
+by his or her employer"
 
-For example, in:
+GOOD decomposition:
 
-"The institute was a research facility."
+Full-time employment -> instanceOf -> employment
+Full-time employment -> determinedBy -> employer
 
-"was a" supports the relation `instanceOf`, while "research facility" supports
-the object.
+BAD object:
 
-TITLE AND LOCAL REFERENCES
+"benefits that are not typically offered to part-time, temporary, or flexible
+workers, such as annual leave, sick leave, and health insurance"
 
-The title is part of the source because paragraphs often begin with references
-such as:
+GOOD decomposition:
 
-"He..."
-"She..."
-"It..."
-"The company..."
-"The album..."
+Full-time employment -> oftenIncludesBenefit -> annual leave
+Full-time employment -> oftenIncludesBenefit -> sick leave
+Full-time employment -> oftenIncludesBenefit -> health insurance
 
-The title may reveal which entity these local expressions refer to.
+Entity values should normally be short noun phrases, not propositions.
 
-For example:
+Do not create a string literal merely to store an entire sentence fragment.
 
-Title:
-"Maria Torres"
 
-Text:
-"She founded Lumen Works."
+======================================================================
+LAW 2 — DIMENSIONAL SPLITTING
+======================================================================
 
-The subject value may be "Maria Torres", supported by both:
+Split compound descriptions into independently useful facts when each dimension
+is explicitly supported.
 
-- title quote "Maria Torres";
-- text quote "She".
+BAD:
 
-Use the title only when it contributes to interpreting the statement.
+Grant Green -> occupation -> American jazz guitarist
 
-If the text already explicitly names the entity in the relevant sentence, the
-title usually does not need to be included as additional evidence.
+GOOD:
 
-For pronouns, abbreviations, aliases, or descriptions, preserve the local
-expression as evidence and add the title or another text fragment only when it
-is needed to establish the resolved semantic value.
+Grant Green -> nationality -> American
+Grant Green -> occupation -> guitarist
+Grant Green -> genre -> jazz
 
-SEMANTIC STATEMENTS
+BAD:
 
-Represent each independently meaningful fact as one
-subject-predicate-object statement.
+DeSoto Records -> instanceOf -> American record label
 
-Split lists when one relation applies independently to several objects.
+GOOD:
 
-For example:
+DeSoto Records -> nationality -> American
+DeSoto Records -> instanceOf -> record label
 
-"released CDs and vinyl"
+Split dimensions such as:
 
-should produce one statement for CDs and one statement for vinyl.
+- nationality;
+- occupation;
+- genre;
+- ownership type;
+- material;
+- format;
+- location;
+- organizational type;
+- technical characteristic.
 
-Keep entity values readable:
+Do not split meaningless grammatical fragments. Every resulting statement must
+express a real, independently useful fact supported by the source.
 
-"Albert Einstein"
-"New York City"
-"Lumen Works"
 
-Do not generate storage identifiers such as:
+======================================================================
+LAW 3 — LIST DISTRIBUTION
+======================================================================
 
-"AlbertEinstein"
-"NewYorkCity"
+When one relation applies independently to several objects, emit one statement
+per object.
 
-Use concise lowerCamelCase predicates, such as:
+BAD:
 
-bornIn
-foundedBy
-locatedIn
-publicationDate
-commonlyKnownAs
-instanceOf
+Album -> releasedAs -> CDs and vinyl
+
+GOOD:
+
+Album -> releasedAs -> CDs
+Album -> releasedAs -> vinyl
+
+BAD:
+
+Full-time employment -> oftenIncludesBenefit ->
+annual leave, sick leave, and health insurance
+
+GOOD:
+
+Full-time employment -> oftenIncludesBenefit -> annual leave
+Full-time employment -> oftenIncludesBenefit -> sick leave
+Full-time employment -> oftenIncludesBenefit -> health insurance
+
+Do not keep comma-separated or conjunction-separated semantic lists inside one
+object node.
+
+
+======================================================================
+LAW 4 — ENTITY AND LITERAL SEPARATION
+======================================================================
 
 The subject is always an entity.
 
-An object without a datatype is an entity.
+An object without `datatype` is an entity.
 
-An object with a datatype is a scalar literal. Include `datatype` only for
-literal objects.
+Use entities for semantic concepts that may connect different paragraphs,
+including:
+
+- American;
+- employee-owned;
+- jazz;
+- guitarist;
+- record label;
+- annual leave;
+- health insurance;
+- CDs;
+- employment;
+- employer.
+
+Use a literal only for a scalar value.
 
 Allowed literal datatypes are:
 
@@ -184,7 +238,17 @@ yearMonth
 date
 dateTime
 
-Use normalized values:
+Use `string` only for scalar expressions that cannot be safely normalized using
+another datatype, such as:
+
+"35 to 40 hours per week"
+"over 40 records"
+"the 1950s"
+
+A semantic description, definition, sentence, clause, list, category, or
+concept is not a string literal.
+
+Normalize scalar values:
 
 integer:
 "4"
@@ -208,11 +272,11 @@ date:
 "2018-03-06"
 
 dateTime:
-an ISO 8601 date-time using only precision present in the source
+an ISO 8601 date-time using only precision explicitly present in the source
 
-The evidence quote remains the exact original wording.
+The evidence quote always preserves the original source wording.
 
-For example:
+Example:
 
 Source wording:
 "6 March 2018"
@@ -226,22 +290,246 @@ Datatype:
 Object evidence quote:
 "6 March 2018"
 
-Do not invent missing precision. Expressions such as "the 1980s", "around
-2018", or "more than 40 items" should remain strings.
+Do not invent missing precision.
 
-BOUNDARIES
+Expressions such as "the 1980s", "around 2018", "more than 40 items", or
+"35 to 40 hours per week" should remain string literals.
+
+
+======================================================================
+LAW 5 — CONCISE RELATIONS AND MINIMAL TRIGGERS
+======================================================================
+
+Predicate values must be concise lowerCamelCase relations, normally containing
+one to four lexical words.
+
+Good predicates include:
+
+instanceOf
+bornIn
+foundedBy
+foundedInYear
+locatedIn
+headquarteredIn
+nationality
+occupation
+genre
+ownershipType
+commonlyKnownAs
+oftenIncludesBenefit
+determinedBy
+generallyPaysMoreThan
+commonlyRequiresWeeklyHours
+
+Do not place a sentence or clause in the predicate value.
+
+Predicate evidence must be the shortest exact phrase that expresses the
+relationship in the relevant clause.
+
+BAD predicate evidence:
+
+"The Fair Labor Standards Act does not define full-time employment or
+part-time employment"
+
+GOOD predicate evidence:
+
+"does not define"
+
+BAD predicate evidence:
+
+"Companies commonly require from 35 to 40 hours per week to be defined as
+full-time"
+
+GOOD predicate evidence:
+
+"commonly require"
+
+Predicate evidence may overlap object evidence when the source construction
+requires it, but do not copy the entire sentence unless the entire sentence is
+truly the minimal relational expression.
+
+
+======================================================================
+LAW 6 — LOCAL FACTUAL SUPPORT
+======================================================================
+
+The subject, predicate, and object of one statement must normally be supported
+inside the same sentence or local clause.
+
+Do not borrow an object mention from an earlier sentence merely because the
+same word occurs there.
+
+Predicate evidence and object evidence must come from the clause that asserts
+their relationship.
+
+Subject identity evidence may additionally use:
+
+- the title;
+- a local pronoun;
+- an abbreviation;
+- an alias;
+- an omitted subject resolved from the immediately relevant context.
+
+Cross-sentence interpretation is allowed only for locally justified identity or
+coreference resolution, not for constructing a relation from unrelated pieces.
+
+Before emitting a statement, verify:
+
+- who actually performs or bears the relation;
+- what the relation connects;
+- whether the object belongs to that same assertion.
+
+Example:
+
+"Companies commonly require from 35 to 40 hours per week to be defined as
+full-time."
+
+The subject is "Companies", not "Full-time employment".
+
+
+======================================================================
+LAW 7 — STRICT VERBATIM GROUNDING
+======================================================================
+
+Every subject, predicate, and object must contain at least one evidence item.
+
+Each evidence quote must be an exact, non-empty substring of its declared
+segment.
+
+Preserve exactly:
+
+- capitalization;
+- punctuation;
+- spelling;
+- whitespace;
+- hyphens;
+- quotation marks;
+- Unicode characters.
+
+Do not silently normalize evidence quotes.
+
+Occurrences are counted independently inside each segment from left to right.
+
+Use occurrence 1 unless the exact same quote occurs multiple times in that
+segment.
+
+When a quote appears several times, select the occurrence participating in the
+sentence or clause expressing the statement.
+
+Evidence roles must be respected:
+
+- subject evidence identifies or locally refers to the subject;
+- predicate evidence expresses the relation;
+- object evidence identifies or expresses the object.
+
+Do not use an entire sentence as evidence for every component when smaller,
+role-specific exact fragments exist.
+
+
+======================================================================
+LAW 8 — TITLE AND LOCAL REFERENCES
+======================================================================
+
+The title is part of the source because paragraph text may begin with:
+
+"He..."
+"She..."
+"It..."
+"They..."
+"The company..."
+"The album..."
+"The organization..."
+
+Use the title only when it contributes to resolving the local subject or
+object.
+
+Example:
+
+Title:
+"Maria Torres"
+
+Text:
+"She founded Lumen Works."
+
+The subject value may be "Maria Torres", supported by:
+
+- title quote "Maria Torres";
+- text quote "She".
+
+If the relevant sentence explicitly names the entity, title evidence is usually
+unnecessary.
+
+Do not attach the title entity as the subject of every sentence automatically.
+The grammatical and semantic role expressed in the text determines the subject.
+
+
+======================================================================
+LAW 9 — SOURCE BOUNDARIES
+======================================================================
 
 Use only the supplied title and text.
 
-Do not use external knowledge, benchmark questions, benchmark answers, other
-paragraphs, previous extractions, or assumptions about the wider document.
+Do not use:
 
-You may perform locally supported interpretation such as pronoun resolution,
-abbreviation resolution, alias resolution, omitted-subject recovery, and list
-distribution.
+- external knowledge;
+- benchmark questions;
+- benchmark answers;
+- other paragraphs;
+- previous extractions;
+- assumptions about the wider document.
 
-Do not automatically add inverse, symmetric, transitive, ontology-derived, or
-cross-source statements.
+You may perform locally supported:
+
+- pronoun resolution;
+- abbreviation resolution;
+- alias resolution;
+- omitted-subject recovery;
+- list distribution;
+- dimensional splitting.
+
+Do not automatically add:
+
+- inverse statements;
+- symmetric statements;
+- transitive statements;
+- ontology-derived statements;
+- cross-source statements.
+
+An inverse relation may be useful for querying, but it must not be extracted
+unless the inverse fact is itself explicitly asserted by the source.
+
+
+======================================================================
+LAW 10 — SELECTIVE COVERAGE
+======================================================================
+
+Extract concrete, independently useful facts.
+
+Prefer facts that create meaningful graph topology:
+
+- entity identity;
+- type or category;
+- location;
+- authorship;
+- creation;
+- membership;
+- leadership;
+- dates;
+- quantities;
+- traits;
+- formats;
+- relationships between named or reusable concepts.
+
+Ignore:
+
+- rhetorical filler;
+- vague commentary;
+- unsupported interpretation;
+- navigation text;
+- document structure;
+- statements that cannot be represented as an atomic grounded fact.
+
+Do not sacrifice graph quality merely to cover every sentence.
 
 Return:
 
@@ -249,7 +537,542 @@ Return:
   "statements": []
 }
 
-when no fully grounded statement can be extracted.
+when no useful fully grounded atomic statement can be extracted.
+
+
+======================================================================
+FEW-SHOT EXAMPLE 1 — TITLE-AWARE COREFERENCE
+======================================================================
+
+SOURCE:
+
+Title:
+"Maria Torres"
+
+Text:
+"She founded Lumen Works."
+
+OUTPUT:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Maria Torres",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Maria Torres",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "She",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "founded",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "founded",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Lumen Works",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Lumen Works",
+            "occurrence": 1
+          }
+        ]
+      }
+    }
+  ]
+}
+
+
+======================================================================
+FEW-SHOT EXAMPLE 2 — DIMENSIONAL SPLITTING
+======================================================================
+
+SOURCE:
+
+Title:
+"Publix Super Markets, Inc."
+
+Text:
+"Publix Super Markets, Inc., commonly known as Publix, is an employee-owned,
+American supermarket chain headquartered in Lakeland, Florida. Founded in 1930
+by George W. Jenkins."
+
+OUTPUT:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Publix Super Markets, Inc.",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Publix Super Markets, Inc.",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "commonlyKnownAs",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "commonly known as",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Publix",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Publix",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Publix",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Publix",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "is",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "supermarket chain",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "supermarket chain",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Publix",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Publix",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "ownershipType",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "employee-owned",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "employee-owned",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "employee-owned",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Publix",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Publix",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "American",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Publix",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Publix",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "headquarteredIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "headquartered in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Lakeland",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Lakeland",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Publix Super Markets, Inc.",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Publix Super Markets, Inc.",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "foundedInYear",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Founded in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1930",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "1930",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Publix Super Markets, Inc.",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Publix Super Markets, Inc.",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "foundedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Founded",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "George W. Jenkins",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "George W. Jenkins",
+            "occurrence": 1
+          }
+        ]
+      }
+    }
+  ]
+}
+
+
+======================================================================
+FEW-SHOT EXAMPLE 3 — ATOMIC DEFINITIONS AND LIST DISTRIBUTION
+======================================================================
+
+SOURCE:
+
+Title:
+"Full-time employment"
+
+Text:
+"Full-time employment is employment in which a person works a minimum number
+of hours defined as such by his or her employer. It often comes with benefits
+such as annual leave, sick leave, and health insurance. Companies commonly
+require from 35 to 40 hours per week to be defined as full-time."
+
+OUTPUT:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Full-time employment",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Full-time employment",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "is",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "employment",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "employment",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Full-time employment",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Full-time employment",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "determinedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "defined as such by",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "employer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "employer",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Full-time employment",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Full-time employment",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "It",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "oftenIncludesBenefit",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "often comes with benefits",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "annual leave",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "annual leave",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Full-time employment",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Full-time employment",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "It",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "oftenIncludesBenefit",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "often comes with benefits",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "sick leave",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "sick leave",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Full-time employment",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Full-time employment",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "It",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "oftenIncludesBenefit",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "often comes with benefits",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "health insurance",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "health insurance",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Companies",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Companies",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "commonlyRequiresWeeklyHours",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "commonly require",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "35 to 40 hours per week",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "35 to 40 hours per week",
+            "occurrence": 1
+          }
+        ]
+      }
+    }
+  ]
+}
 """.strip()
 
 
