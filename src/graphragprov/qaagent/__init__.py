@@ -7,6 +7,11 @@ from graphragprov.qaagent.config import (
     QADecompositionVisibility,
     QAGraphScope,
 )
+from graphragprov.qaagent.response import (
+    QAAgentDecision,
+    QAAgentDecisionStatus,
+    parse_qa_agent_response,
+)
 from graphragprov.qaagent.scope import (
     compile_scoped_select_query,
 )
@@ -19,6 +24,8 @@ from graphragprov.qaagent.trace import (
 
 __all__ = [
     "QAAgentConfiguration",
+    "QAAgentDecision",
+    "QAAgentDecisionStatus",
     "QAAnswerProvenance",
     "QAAnswerVisibility",
     "QAContextMode",
@@ -28,4 +35,5 @@ __all__ = [
     "QAQueryAttempt",
     "QAQueryPurpose",
     "compile_scoped_select_query",
+    "parse_qa_agent_response",
 ]
