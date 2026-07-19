@@ -33,6 +33,7 @@ from graphragprov.providers.deepseek import (
     deepseek_generator,
 )
 
+
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
