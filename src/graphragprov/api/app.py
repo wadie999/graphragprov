@@ -2,10 +2,15 @@
 
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as distribution_version
+from pathlib import Path
 
 from fastapi import FastAPI
 
 from graphragprov.api.router import router
+from graphragprov.experiments import (
+    FilesystemMusiqueExperimentRepository,
+    MusiqueExperimentRepository,
+)
 
 _APPLICATION_TITLE = "GraphRAGProv API"
 _APPLICATION_DESCRIPTION = (
@@ -14,13 +19,22 @@ _APPLICATION_DESCRIPTION = (
 )
 
 
-def create_app() -> FastAPI:
+def create_app(
+    *,
+    experiment_repository: MusiqueExperimentRepository | None = None,
+) -> FastAPI:
     """Create one independently configurable FastAPI application."""
 
     application = FastAPI(
         title=_APPLICATION_TITLE,
         description=_APPLICATION_DESCRIPTION,
         version=_package_version(),
+    )
+
+    application.state.experiment_repository = (
+        experiment_repository
+        if experiment_repository is not None
+        else FilesystemMusiqueExperimentRepository(Path("runs"))
     )
 
     application.include_router(router)
