@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Protocol
 
 from graphragprov.experiments.manifest import (
+    MusiqueMaterializationCase,
     MusiqueMaterializationManifest,
     load_musique_materialization_manifest,
 )
@@ -24,12 +25,36 @@ class ExperimentNotFoundError(LookupError):
     """Raised when a requested experiment does not exist."""
 
 
+class ExperimentCaseNotFoundError(LookupError):
+    """Raised when a case does not belong to an experiment."""
+
+
 @dataclass(frozen=True, slots=True)
 class StoredMusiqueExperiment:
     """One validated experiment together with its persistence identity."""
 
     experiment_id: str
     manifest: MusiqueMaterializationManifest
+
+    def list_cases(self) -> tuple[MusiqueMaterializationCase, ...]:
+        """Return the benchmark cases recorded by this experiment."""
+
+        return self.manifest.cases
+
+    def get_case(
+        self,
+        case_id: str,
+    ) -> MusiqueMaterializationCase:
+        """Return one benchmark case recorded by this experiment."""
+
+        for case in self.manifest.cases:
+            if case.case_id == case_id:
+                return case
+
+        raise ExperimentCaseNotFoundError(
+            f"case does not exist in experiment "
+            f"{self.experiment_id}: {case_id}"
+        )
 
 
 class MusiqueExperimentRepository(Protocol):
@@ -45,8 +70,8 @@ class MusiqueExperimentRepository(Protocol):
     ) -> StoredMusiqueExperiment:
         """Return one stored and validated experiment."""
         ...
-        
-        
+
+
 @dataclass(frozen=True, slots=True)
 class FilesystemMusiqueExperimentRepository:
     """Read experiments stored as direct children of one directory."""
@@ -60,7 +85,9 @@ class FilesystemMusiqueExperimentRepository:
             return ()
 
         if not self.root.is_dir():
-            raise NotADirectoryError(f"experiment root is not a directory: {self.root}")
+            raise NotADirectoryError(
+                f"experiment root is not a directory: {self.root}"
+            )
 
         experiments: list[StoredMusiqueExperiment] = []
 
@@ -76,7 +103,9 @@ class FilesystemMusiqueExperimentRepository:
             if not manifest_path.is_file():
                 continue
 
-            experiment_id = validate_experiment_id(experiment_directory.name)
+            experiment_id = validate_experiment_id(
+                experiment_directory.name
+            )
 
             experiments.append(
                 StoredMusiqueExperiment(
@@ -105,7 +134,9 @@ class FilesystemMusiqueExperimentRepository:
 
         return StoredMusiqueExperiment(
             experiment_id=validated_id,
-            manifest=load_musique_materialization_manifest(manifest_path),
+            manifest=load_musique_materialization_manifest(
+                manifest_path
+            ),
         )
 
 

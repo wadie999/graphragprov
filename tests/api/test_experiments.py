@@ -224,3 +224,125 @@ def _stored_experiment() -> StoredMusiqueExperiment:
         experiment_id="musique_pilot",
         manifest=manifest,
     )
+    
+def test_list_experiment_cases_returns_public_metadata() -> None:
+    repository = StubExperimentRepository(
+        experiments=(_stored_experiment(),)
+    )
+
+    with TestClient(
+        create_app(experiment_repository=repository)
+    ) as client:
+        response = client.get(
+            "/api/v1/experiments/musique_pilot/cases"
+        )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "experiment_id": "musique_pilot",
+        "items": [
+            {
+                "experiment_id": "musique_pilot",
+                "case_id": "case-2-hop",
+                "question": "First question?",
+                "hop_count": 2,
+                "answerable": True,
+                "paragraph_count": 2,
+            },
+            {
+                "experiment_id": "musique_pilot",
+                "case_id": "case-4-hop",
+                "question": "Second question?",
+                "hop_count": 4,
+                "answerable": True,
+                "paragraph_count": 2,
+            },
+        ],
+        "total": 2,
+    }
+
+
+def test_get_experiment_case_returns_one_public_resource() -> None:
+    repository = StubExperimentRepository(
+        experiments=(_stored_experiment(),)
+    )
+
+    with TestClient(
+        create_app(experiment_repository=repository)
+    ) as client:
+        response = client.get(
+            "/api/v1/experiments/"
+            "musique_pilot/cases/case-4-hop"
+        )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "experiment_id": "musique_pilot",
+        "case_id": "case-4-hop",
+        "question": "Second question?",
+        "hop_count": 4,
+        "answerable": True,
+        "paragraph_count": 2,
+    }
+
+
+def test_experiment_case_response_hides_gold_metadata() -> None:
+    repository = StubExperimentRepository(
+        experiments=(_stored_experiment(),)
+    )
+
+    with TestClient(
+        create_app(experiment_repository=repository)
+    ) as client:
+        response = client.get(
+            "/api/v1/experiments/"
+            "musique_pilot/cases/case-2-hop"
+        )
+
+    payload = response.json()
+
+    assert "answer" not in payload
+    assert "answer_aliases" not in payload
+    assert "gold_support_indices" not in payload
+    assert "paragraph_indices" not in payload
+
+
+def test_get_experiment_case_returns_not_found_error() -> None:
+    repository = StubExperimentRepository(
+        experiments=(_stored_experiment(),)
+    )
+
+    with TestClient(
+        create_app(experiment_repository=repository)
+    ) as client:
+        response = client.get(
+            "/api/v1/experiments/"
+            "musique_pilot/cases/missing"
+        )
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": {
+            "code": "experiment_case_not_found",
+            "message": (
+                "case does not exist in experiment "
+                "musique_pilot: missing"
+            ),
+        }
+    }
+
+
+def test_list_experiment_cases_reports_missing_experiment() -> None:
+    repository = StubExperimentRepository(experiments=())
+
+    with TestClient(
+        create_app(experiment_repository=repository)
+    ) as client:
+        response = client.get(
+            "/api/v1/experiments/missing/cases"
+        )
+
+    assert response.status_code == 404
+    assert response.json()["detail"]["code"] == (
+        "experiment_not_found"
+    )

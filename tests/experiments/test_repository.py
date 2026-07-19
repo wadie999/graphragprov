@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from graphragprov.experiments import (
+    ExperimentCaseNotFoundError,
     ExperimentNotFoundError,
     FilesystemMusiqueExperimentRepository,
     InvalidExperimentIdError,
@@ -164,3 +165,43 @@ def _store_experiment(
         root / experiment_id / "materialization.json",
         manifest,
     )
+    
+    
+def test_stored_experiment_returns_one_case(
+    tmp_path: Path,
+) -> None:
+    _store_experiment(
+        tmp_path,
+        experiment_id="musique_pilot",
+        case_id="case-1",
+    )
+
+    repository = FilesystemMusiqueExperimentRepository(tmp_path)
+    experiment = repository.get_experiment("musique_pilot")
+
+    case = experiment.get_case("case-1")
+
+    assert case.case_id == "case-1"
+    assert case.question == "Where was the person born?"
+
+
+def test_stored_experiment_reports_missing_case(
+    tmp_path: Path,
+) -> None:
+    _store_experiment(
+        tmp_path,
+        experiment_id="musique_pilot",
+        case_id="case-1",
+    )
+
+    repository = FilesystemMusiqueExperimentRepository(tmp_path)
+    experiment = repository.get_experiment("musique_pilot")
+
+    with pytest.raises(
+        ExperimentCaseNotFoundError,
+        match=(
+            "case does not exist in experiment "
+            "musique_pilot: missing"
+        ),
+    ):
+        experiment.get_case("missing")

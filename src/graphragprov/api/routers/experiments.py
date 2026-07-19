@@ -8,8 +8,10 @@ from pydantic import BaseModel
 
 from graphragprov.api.dependencies import ExperimentRepositoryDependency
 from graphragprov.experiments import (
+    ExperimentCaseNotFoundError,
     ExperimentNotFoundError,
     InvalidExperimentIdError,
+    MusiqueMaterializationCase,
     StoredMusiqueExperiment,
 )
 
@@ -44,6 +46,25 @@ class ExperimentListResponse(BaseModel):
     total: int
 
 
+class ExperimentCaseResponse(BaseModel):
+    """Public benchmark-case metadata within one experiment."""
+
+    experiment_id: str
+    case_id: str
+    question: str
+    hop_count: int
+    answerable: bool
+    paragraph_count: int
+
+
+class ExperimentCaseListResponse(BaseModel):
+    """Collection of benchmark cases belonging to one experiment."""
+
+    experiment_id: str
+    items: tuple[ExperimentCaseResponse, ...]
+    total: int
+
+
 @router.get(
     "",
     response_model=ExperimentListResponse,
@@ -55,7 +76,10 @@ def list_experiments(
     """Return all validated experiments available to the API."""
 
     experiments = repository.list_experiments()
-    items = tuple(_to_experiment_response(experiment) for experiment in experiments)
+    items = tuple(
+        _to_experiment_response(experiment)
+        for experiment in experiments
+    )
 
     return ExperimentListResponse(
         items=items,
@@ -74,8 +98,87 @@ def get_experiment(
 ) -> ExperimentResponse:
     """Return public metadata for one validated experiment."""
 
+    experiment = _load_experiment(
+        experiment_id,
+        repository,
+    )
+
+    return _to_experiment_response(experiment)
+
+
+@router.get(
+    "/{experiment_id}/cases",
+    response_model=ExperimentCaseListResponse,
+    summary="List cases in an experiment",
+)
+def list_experiment_cases(
+    experiment_id: str,
+    repository: ExperimentRepositoryDependency,
+) -> ExperimentCaseListResponse:
+    """Return public case metadata for one experiment."""
+
+    experiment = _load_experiment(
+        experiment_id,
+        repository,
+    )
+
+    items = tuple(
+        _to_case_response(
+            experiment_id=experiment.experiment_id,
+            case=case,
+        )
+        for case in experiment.list_cases()
+    )
+
+    return ExperimentCaseListResponse(
+        experiment_id=experiment.experiment_id,
+        items=items,
+        total=len(items),
+    )
+
+
+@router.get(
+    "/{experiment_id}/cases/{case_id}",
+    response_model=ExperimentCaseResponse,
+    summary="Get a case from an experiment",
+)
+def get_experiment_case(
+    experiment_id: str,
+    case_id: str,
+    repository: ExperimentRepositoryDependency,
+) -> ExperimentCaseResponse:
+    """Return one public case resource from an experiment."""
+
+    experiment = _load_experiment(
+        experiment_id,
+        repository,
+    )
+
     try:
-        experiment = repository.get_experiment(experiment_id)
+        case = experiment.get_case(case_id)
+    except ExperimentCaseNotFoundError as error:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "code": "experiment_case_not_found",
+                "message": str(error),
+            },
+        ) from error
+
+    return _to_case_response(
+        experiment_id=experiment.experiment_id,
+        case=case,
+    )
+
+
+def _load_experiment(
+    experiment_id: str,
+    repository: ExperimentRepositoryDependency,
+) -> StoredMusiqueExperiment:
+    """Load one experiment and translate domain errors to HTTP errors."""
+
+    try:
+        return repository.get_experiment(experiment_id)
     except InvalidExperimentIdError as error:
         raise HTTPException(
             status_code=422,
@@ -93,8 +196,6 @@ def get_experiment(
             },
         ) from error
 
-    return _to_experiment_response(experiment)
-
 
 def _to_experiment_response(
     experiment: StoredMusiqueExperiment,
@@ -108,12 +209,35 @@ def _to_experiment_response(
         status=manifest.status,
         created_at=manifest.created_at,
         case_count=len(manifest.cases),
-        hop_counts=tuple(sorted({case.hop_count for case in manifest.cases})),
+        hop_counts=tuple(
+            sorted({case.hop_count for case in manifest.cases})
+        ),
         prompt_version=manifest.prompt_version,
         extraction_model=manifest.model,
         requested_source_count=manifest.requested_source_count,
-        successful_extraction_count=manifest.successful_extraction_count,
+        successful_extraction_count=(
+            manifest.successful_extraction_count
+        ),
         failed_extraction_count=manifest.failed_extraction_count,
-        materialized_source_count=manifest.materialization.source_count,
+        materialized_source_count=(
+            manifest.materialization.source_count
+        ),
         statement_count=manifest.materialization.statement_count,
+    )
+
+
+def _to_case_response(
+    *,
+    experiment_id: str,
+    case: MusiqueMaterializationCase,
+) -> ExperimentCaseResponse:
+    """Project a case snapshot into its safe HTTP representation."""
+
+    return ExperimentCaseResponse(
+        experiment_id=experiment_id,
+        case_id=case.case_id,
+        question=case.question,
+        hop_count=case.hop_count,
+        answerable=case.answerable,
+        paragraph_count=len(case.paragraph_indices),
     )

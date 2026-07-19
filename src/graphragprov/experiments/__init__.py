@@ -10,6 +10,7 @@ from graphragprov.experiments.manifest import (
     write_musique_materialization_manifest,
 )
 from graphragprov.experiments.repository import (
+    ExperimentCaseNotFoundError,
     ExperimentNotFoundError,
     FilesystemMusiqueExperimentRepository,
     InvalidExperimentIdError,
@@ -20,6 +21,7 @@ from graphragprov.experiments.repository import (
 
 __all__ = [
     "MUSIQUE_MATERIALIZATION_FORMAT",
+    "ExperimentCaseNotFoundError",
     "ExperimentNotFoundError",
     "FilesystemMusiqueExperimentRepository",
     "InvalidExperimentIdError",
