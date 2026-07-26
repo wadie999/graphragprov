@@ -12,9 +12,7 @@ from graphragprov.experiments import (
     FilesystemMusiqueExperimentRepository,
     MusiqueExperimentRepository,
 )
-from graphragprov.experiments.run_one_musique_qa import (
-    run_musique_case_qa,
-)
+from graphragprov.experiments.run_one_musique_qa import run_musique_case_qa
 
 _APPLICATION_TITLE = "GraphRAGProv API"
 _APPLICATION_DESCRIPTION = (
@@ -31,9 +29,7 @@ def create_app(
     """Create one independently configurable FastAPI application."""
 
     application = FastAPI(
-        title=_APPLICATION_TITLE,
-        description=_APPLICATION_DESCRIPTION,
-        version=_package_version(),
+        title=_APPLICATION_TITLE, description=_APPLICATION_DESCRIPTION, version=_package_version()
     )
 
     application.state.experiment_repository = (
@@ -43,9 +39,7 @@ def create_app(
     )
 
     application.state.musique_qa_runner = (
-        musique_qa_runner
-        if musique_qa_runner is not None
-        else run_musique_case_qa
+        musique_qa_runner if musique_qa_runner is not None else run_musique_case_qa
     )
 
     application.include_router(router)
