@@ -6,11 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from graphragprov.benchmarks.musique import (
-    MusiqueCase,
-    MusiqueHop,
-    MusiqueParagraph,
-)
+from graphragprov.benchmarks.musique import MusiqueCase, MusiqueHop, MusiqueParagraph
 from graphragprov.domain import SourceUnit
 from graphragprov.experiments import (
     MUSIQUE_MATERIALIZATION_FORMAT,
@@ -25,10 +21,7 @@ from graphragprov.extraction import (
 )
 from graphragprov.extraction.prompt import build_extraction_prompt
 from graphragprov.extraction.run import GroundedExtractionRun
-from graphragprov.graphdb import (
-    GraphDBClient,
-    GraphMaterializationSummary,
-)
+from graphragprov.graphdb import GraphDBClient, GraphMaterializationSummary
 from graphragprov.rdf import unit_graph_iri
 
 
@@ -76,6 +69,7 @@ def test_manifest_is_built_from_existing_application_results() -> None:
         },
     }
 
+
 def test_manifest_json_round_trip_preserves_contract() -> None:
     manifest = _manifest()
 
@@ -99,10 +93,7 @@ def test_manifest_rejects_inconsistent_counts() -> None:
     payload = _manifest().to_dict()
     payload["successful_extraction_count"] = 0
 
-    with pytest.raises(
-        ValueError,
-        match="extraction counts are inconsistent",
-    ):
+    with pytest.raises(ValueError, match="extraction counts are inconsistent"):
         MusiqueMaterializationManifest.from_json(json.dumps(payload))
 
 
@@ -110,19 +101,12 @@ def test_manifest_rejects_unknown_format() -> None:
     payload = _manifest().to_dict()
     payload["format"] = "unknown-format"
 
-    with pytest.raises(
-        ValueError,
-        match="unsupported materialization manifest format",
-    ):
+    with pytest.raises(ValueError, match="unsupported materialization manifest format"):
         MusiqueMaterializationManifest.from_json(json.dumps(payload))
 
 
 def _manifest() -> MusiqueMaterializationManifest:
-    paragraph = MusiqueParagraph(
-        index=0,
-        title="Person",
-        text="The person was born in Toulouse.",
-    )
+    paragraph = MusiqueParagraph(index=0, title="Person", text="The person was born in Toulouse.")
 
     case = MusiqueCase(
         case_id="case-1",
@@ -142,35 +126,21 @@ def _manifest() -> MusiqueMaterializationManifest:
         gold_support_indices=(0,),
     )
 
-    source = SourceUnit(
-        unit_id=paragraph.unit_id,
-        title=paragraph.title,
-        text=paragraph.text,
-    )
+    source = SourceUnit(unit_id=paragraph.unit_id, title=paragraph.title, text=paragraph.text)
 
     run = GroundedExtractionRun(
         source=source,
         prompt=build_extraction_prompt(source),
         response='{"statements":[]}',
-        extraction=ExtractionResult(
-            unit_id=source.unit_id,
-            statements=(),
-        ),
+        extraction=ExtractionResult(unit_id=source.unit_id, statements=()),
     )
 
     batch = GroundedExtractionBatchResult(
-        items=(
-            GroundedExtractionBatchItem(
-                outcome=run,
-                reused=False,
-            ),
-        )
+        items=(GroundedExtractionBatchItem(outcome=run, reused=False),)
     )
 
     materialization = GraphMaterializationSummary(
-        source_count=1,
-        statement_count=0,
-        graph_iris=(str(unit_graph_iri(source.unit_id)),),
+        source_count=1, statement_count=0, graph_iris=(str(unit_graph_iri(source.unit_id)),)
     )
 
     return MusiqueMaterializationManifest.from_execution(
@@ -182,18 +152,7 @@ def _manifest() -> MusiqueMaterializationManifest:
         model="test-model",
         max_tokens=4096,
         cache_root=Path("runs/test/extractions"),
-        graphdb=GraphDBClient(
-            base_url="http://localhost:7200",
-            repository="test-repository",
-        ),
+        graphdb=GraphDBClient(base_url="http://localhost:7200", repository="test-repository"),
         existing_statement_count=0,
-        created_at=datetime(
-            2026,
-            7,
-            18,
-            16,
-            7,
-            40,
-            tzinfo=UTC,
-        ),
+        created_at=datetime(2026, 7, 18, 16, 7, 40, tzinfo=UTC),
     )

@@ -40,16 +40,11 @@ def load_case(path: Path, case_id: str) -> MusiqueCase:
 
 
 def _parse_case(row: dict[str, Any]) -> MusiqueCase:
-    raw_paragraphs = sorted(
-        row["paragraphs"],
-        key=lambda paragraph: paragraph["idx"],
-    )
+    raw_paragraphs = sorted(row["paragraphs"], key=lambda paragraph: paragraph["idx"])
 
     paragraphs = tuple(
         MusiqueParagraph(
-            index=paragraph["idx"],
-            title=paragraph["title"],
-            text=paragraph["paragraph_text"],
+            index=paragraph["idx"], title=paragraph["title"], text=paragraph["paragraph_text"]
         )
         for paragraph in raw_paragraphs
     )

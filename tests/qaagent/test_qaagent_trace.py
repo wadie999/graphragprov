@@ -6,41 +6,20 @@ from typing import cast
 import pytest
 
 from graphragprov.provenance import DecodedProvenance
-from graphragprov.qaagent import (
-    QAAnswerProvenance,
-    QAQueryAttempt,
-)
+from graphragprov.qaagent import QAAnswerProvenance, QAQueryAttempt
 from graphragprov.query import ProvenanceQueryExecution
 
 
 class _DecodedProvenanceStub:
     def to_dict(self) -> dict[str, object]:
-        return {
-            "derivations": [
-                {
-                    "occurrences": [
-                        {
-                            "token": "token-1",
-                        }
-                    ]
-                }
-            ]
-        }
+        return {"derivations": [{"occurrences": [{"token": "token-1"}]}]}
 
 
 def test_decoded_query_attempt_is_json_serializable() -> None:
-    decoded = cast(
-        DecodedProvenance,
-        _DecodedProvenanceStub(),
-    )
+    decoded = cast(DecodedProvenance, _DecodedProvenanceStub())
 
     answer_provenance = QAAnswerProvenance(
-        binding={
-            "answer": {
-                "type": "uri",
-                "value": "urn:answer",
-            }
-        },
+        binding={"answer": {"type": "uri", "value": "urn:answer"}},
         polynomial="⊕((⊗token-1,))",
         decoded=decoded,
     )
@@ -57,16 +36,7 @@ def test_decoded_query_attempt_is_json_serializable() -> None:
 
     payload = attempt.to_dict()
 
-    assert (
-        json.loads(
-            json.dumps(
-                payload,
-                ensure_ascii=False,
-                sort_keys=True,
-            )
-        )
-        == payload
-    )
+    assert json.loads(json.dumps(payload, ensure_ascii=False, sort_keys=True)) == payload
 
     assert payload["turn_index"] == 1
     assert payload["purpose"] == "final"
@@ -75,48 +45,23 @@ def test_decoded_query_attempt_is_json_serializable() -> None:
 
 
 def test_answer_provenance_requires_binding() -> None:
-    decoded = cast(
-        DecodedProvenance,
-        _DecodedProvenanceStub(),
-    )
+    decoded = cast(DecodedProvenance, _DecodedProvenanceStub())
 
-    with pytest.raises(
-        ValueError,
-        match="binding must not be empty",
-    ):
-        QAAnswerProvenance(
-            binding={},
-            polynomial="⊕((⊗token-1,))",
-            decoded=decoded,
-        )
+    with pytest.raises(ValueError, match="binding must not be empty"):
+        QAAnswerProvenance(binding={}, polynomial="⊕((⊗token-1,))", decoded=decoded)
 
 
 def test_answer_provenance_requires_polynomial() -> None:
-    decoded = cast(
-        DecodedProvenance,
-        _DecodedProvenanceStub(),
-    )
+    decoded = cast(DecodedProvenance, _DecodedProvenanceStub())
 
-    with pytest.raises(
-        ValueError,
-        match="polynomial must not be empty",
-    ):
+    with pytest.raises(ValueError, match="polynomial must not be empty"):
         QAAnswerProvenance(
-            binding={
-                "answer": {
-                    "value": "urn:answer",
-                }
-            },
-            polynomial="   ",
-            decoded=decoded,
+            binding={"answer": {"value": "urn:answer"}}, polynomial="   ", decoded=decoded
         )
 
 
 def test_decoded_status_requires_answer_provenance() -> None:
-    with pytest.raises(
-        ValueError,
-        match="requires answer provenances",
-    ):
+    with pytest.raises(ValueError, match="requires answer provenances"):
         QAQueryAttempt(
             turn_index=1,
             purpose="final",
@@ -128,25 +73,13 @@ def test_decoded_status_requires_answer_provenance() -> None:
 
 
 def test_answer_provenance_requires_decoded_status() -> None:
-    decoded = cast(
-        DecodedProvenance,
-        _DecodedProvenanceStub(),
-    )
+    decoded = cast(DecodedProvenance, _DecodedProvenanceStub())
 
     answer_provenance = QAAnswerProvenance(
-        binding={
-            "answer": {
-                "value": "urn:answer",
-            }
-        },
-        polynomial="⊕((⊗token-1,))",
-        decoded=decoded,
+        binding={"answer": {"value": "urn:answer"}}, polynomial="⊕((⊗token-1,))", decoded=decoded
     )
 
-    with pytest.raises(
-        ValueError,
-        match="require decoded provenance status",
-    ):
+    with pytest.raises(ValueError, match="require decoded provenance status"):
         QAQueryAttempt(
             turn_index=1,
             purpose="candidate",
@@ -159,10 +92,7 @@ def test_answer_provenance_requires_decoded_status() -> None:
 
 
 def test_no_answers_status_requires_execution() -> None:
-    with pytest.raises(
-        ValueError,
-        match="requires query execution",
-    ):
+    with pytest.raises(ValueError, match="requires query execution"):
         QAQueryAttempt(
             turn_index=1,
             purpose="inspection",
@@ -173,10 +103,7 @@ def test_no_answers_status_requires_execution() -> None:
 
 
 def test_failed_status_requires_error_message() -> None:
-    with pytest.raises(
-        ValueError,
-        match="requires an error message",
-    ):
+    with pytest.raises(ValueError, match="requires an error message"):
         QAQueryAttempt(
             turn_index=1,
             purpose="final",
@@ -187,10 +114,7 @@ def test_failed_status_requires_error_message() -> None:
 
 
 def test_turn_index_must_be_positive() -> None:
-    with pytest.raises(
-        ValueError,
-        match="turn index must be positive",
-    ):
+    with pytest.raises(ValueError, match="turn index must be positive"):
         QAQueryAttempt(
             turn_index=0,
             purpose="inspection",
@@ -203,30 +127,15 @@ def _execution() -> ProvenanceQueryExecution:
     return ProvenanceQueryExecution(
         original_query="SELECT ?answer FROM <urn:graph> WHERE {}",
         original_result={
-            "results": {
-                "bindings": [
-                    {
-                        "answer": {
-                            "type": "uri",
-                            "value": "urn:answer",
-                        }
-                    }
-                ]
-            }
+            "results": {"bindings": [{"answer": {"type": "uri", "value": "urn:answer"}}]}
         },
         rewritten_query=("SELECT ?answer ?finalprovennacevariable FROM <urn:graph> WHERE {}"),
         rewritten_result={
             "results": {
                 "bindings": [
                     {
-                        "answer": {
-                            "type": "uri",
-                            "value": "urn:answer",
-                        },
-                        "finalprovennacevariable": {
-                            "type": "literal",
-                            "value": "⊕((⊗token-1,))",
-                        },
+                        "answer": {"type": "uri", "value": "urn:answer"},
+                        "finalprovennacevariable": {"type": "literal", "value": "⊕((⊗token-1,))"},
                     }
                 ]
             }

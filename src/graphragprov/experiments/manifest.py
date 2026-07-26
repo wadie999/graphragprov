@@ -16,10 +16,7 @@ from graphragprov.hashing import validate_source_unit_id
 
 MUSIQUE_MATERIALIZATION_FORMAT = "musique-pilot-materialization-v2"
 
-MusiqueMaterializationStatus = Literal[
-    "complete",
-    "partial",
-]
+MusiqueMaterializationStatus = Literal["complete", "partial"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,14 +46,10 @@ class MusiqueMaterializationCase:
             raise ValueError("materialization answer aliases must not contain empty values")
 
         _validate_ordered_indices(
-            self.paragraph_indices,
-            name="paragraph indices",
-            allow_empty=False,
+            self.paragraph_indices, name="paragraph indices", allow_empty=False
         )
         _validate_ordered_indices(
-            self.gold_support_indices,
-            name="gold support indices",
-            allow_empty=True,
+            self.gold_support_indices, name="gold support indices", allow_empty=True
         )
 
         if not set(self.gold_support_indices).issubset(self.paragraph_indices):
@@ -115,18 +108,13 @@ class MusiqueMaterializationCase:
             hop_count=_require_integer(data["hop_count"], "case.hop_count"),
             question=_require_string(data["question"], "case.question"),
             answer=_require_string(data["answer"], "case.answer"),
-            answer_aliases=_require_string_tuple(
-                data["answer_aliases"],
-                "case.answer_aliases",
-            ),
+            answer_aliases=_require_string_tuple(data["answer_aliases"], "case.answer_aliases"),
             answerable=_require_boolean(data["answerable"], "case.answerable"),
             paragraph_indices=_require_integer_tuple(
-                data["paragraph_indices"],
-                "case.paragraph_indices",
+                data["paragraph_indices"], "case.paragraph_indices"
             ),
             gold_support_indices=_require_integer_tuple(
-                data["gold_support_indices"],
-                "case.gold_support_indices",
+                data["gold_support_indices"], "case.gold_support_indices"
             ),
         )
 
@@ -157,10 +145,7 @@ class MusiqueMaterializationFailure:
             if not value.strip():
                 raise ValueError(f"materialization failure {name} must not be empty")
 
-        if self.stage not in {
-            "provider",
-            "response_validation",
-        }:
+        if self.stage not in {"provider", "response_validation"}:
             raise ValueError("materialization failure stage is invalid")
 
     def to_dict(self) -> dict[str, object]:
@@ -198,10 +183,7 @@ class MusiqueMaterializationFailure:
 
         raw_stage = _require_string(data["stage"], "failure.stage")
 
-        if raw_stage not in {
-            "provider",
-            "response_validation",
-        }:
+        if raw_stage not in {"provider", "response_validation"}:
             raise ValueError("failure.stage is invalid")
 
         return cls(
@@ -209,18 +191,11 @@ class MusiqueMaterializationFailure:
             title=_require_string(data["title"], "failure.title"),
             stage=cast(ExtractionFailureStage, raw_stage),
             error_type=_require_string(data["error_type"], "failure.error_type"),
-            error_message=_require_string(
-                data["error_message"],
-                "failure.error_message",
-            ),
+            error_message=_require_string(data["error_message"], "failure.error_message"),
             response_available=_require_boolean(
-                data["response_available"],
-                "failure.response_available",
+                data["response_available"], "failure.response_available"
             ),
-            response_path=_require_string(
-                data["response_path"],
-                "failure.response_path",
-            ),
+            response_path=_require_string(data["response_path"], "failure.response_path"),
             error_path=_require_string(data["error_path"], "failure.error_path"),
         )
 
@@ -257,24 +232,14 @@ class MusiqueMaterializationGraphDB:
         """Parse GraphDB experiment metadata."""
 
         _validate_fields(
-            data,
-            required={
-                "base_url",
-                "repository",
-                "statements_before_run",
-            },
-            location="graphdb",
+            data, required={"base_url", "repository", "statements_before_run"}, location="graphdb"
         )
 
         return cls(
             base_url=_require_string(data["base_url"], "graphdb.base_url"),
-            repository=_require_string(
-                data["repository"],
-                "graphdb.repository",
-            ),
+            repository=_require_string(data["repository"], "graphdb.repository"),
             statements_before_run=_require_integer(
-                data["statements_before_run"],
-                "graphdb.statements_before_run",
+                data["statements_before_run"], "graphdb.statements_before_run"
             ),
         )
 
@@ -303,10 +268,7 @@ class MusiqueMaterializationManifest:
     materialization: GraphMaterializationSummary
 
     def __post_init__(self) -> None:
-        if self.status not in {
-            "complete",
-            "partial",
-        }:
+        if self.status not in {"complete", "partial"}:
             raise ValueError("materialization status must be complete or partial")
 
         if self.created_at.tzinfo is None or self.created_at.utcoffset() is None:
@@ -479,12 +441,7 @@ class MusiqueMaterializationManifest:
     def to_json(self) -> str:
         """Serialize the manifest deterministically."""
 
-        return json.dumps(
-            self.to_dict(),
-            ensure_ascii=False,
-            indent=2,
-            sort_keys=True,
-        )
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=2, sort_keys=True)
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> MusiqueMaterializationManifest:
@@ -523,16 +480,10 @@ class MusiqueMaterializationManifest:
 
         raw_status = _require_string(data["status"], "manifest.status")
 
-        if raw_status not in {
-            "complete",
-            "partial",
-        }:
+        if raw_status not in {"complete", "partial"}:
             raise ValueError("manifest.status must be complete or partial")
 
-        created_at_text = _require_string(
-            data["created_at"],
-            "manifest.created_at",
-        )
+        created_at_text = _require_string(data["created_at"], "manifest.created_at")
 
         try:
             created_at = datetime.fromisoformat(created_at_text)
@@ -542,41 +493,22 @@ class MusiqueMaterializationManifest:
         raw_cases = _require_list(data["cases"], "manifest.cases")
         raw_failures = _require_list(data["failures"], "manifest.failures")
         graphdb_data = _require_object(data["graphdb"], "manifest.graphdb")
-        materialization_data = _require_object(
-            data["materialization"],
-            "manifest.materialization",
-        )
+        materialization_data = _require_object(data["materialization"], "manifest.materialization")
 
         _validate_fields(
             materialization_data,
-            required={
-                "source_count",
-                "statement_count",
-                "graph_iris",
-            },
+            required={"source_count", "statement_count", "graph_iris"},
             location="manifest.materialization",
         )
 
         return cls(
             status=cast(MusiqueMaterializationStatus, raw_status),
             created_at=created_at,
-            dataset_path=_require_string(
-                data["dataset_path"],
-                "manifest.dataset_path",
-            ),
-            prompt_version=_require_string(
-                data["prompt_version"],
-                "manifest.prompt_version",
-            ),
+            dataset_path=_require_string(data["dataset_path"], "manifest.dataset_path"),
+            prompt_version=_require_string(data["prompt_version"], "manifest.prompt_version"),
             model=_require_string(data["model"], "manifest.model"),
-            max_tokens=_require_integer(
-                data["max_tokens"],
-                "manifest.max_tokens",
-            ),
-            cache_root=_require_string(
-                data["cache_root"],
-                "manifest.cache_root",
-            ),
+            max_tokens=_require_integer(data["max_tokens"], "manifest.max_tokens"),
+            cache_root=_require_string(data["cache_root"], "manifest.cache_root"),
             graphdb=MusiqueMaterializationGraphDB.from_dict(graphdb_data),
             cases=tuple(
                 MusiqueMaterializationCase.from_dict(
@@ -585,32 +517,25 @@ class MusiqueMaterializationManifest:
                 for index, value in enumerate(raw_cases)
             ),
             paragraph_occurrence_count=_require_integer(
-                data["paragraph_occurrence_count"],
-                "manifest.paragraph_occurrence_count",
+                data["paragraph_occurrence_count"], "manifest.paragraph_occurrence_count"
             ),
             requested_source_count=_require_integer(
-                data["requested_source_count"],
-                "manifest.requested_source_count",
+                data["requested_source_count"], "manifest.requested_source_count"
             ),
             successful_extraction_count=_require_integer(
-                data["successful_extraction_count"],
-                "manifest.successful_extraction_count",
+                data["successful_extraction_count"], "manifest.successful_extraction_count"
             ),
             failed_extraction_count=_require_integer(
-                data["failed_extraction_count"],
-                "manifest.failed_extraction_count",
+                data["failed_extraction_count"], "manifest.failed_extraction_count"
             ),
             new_outcome_count=_require_integer(
-                data["new_outcome_count"],
-                "manifest.new_outcome_count",
+                data["new_outcome_count"], "manifest.new_outcome_count"
             ),
             reused_outcome_count=_require_integer(
-                data["reused_outcome_count"],
-                "manifest.reused_outcome_count",
+                data["reused_outcome_count"], "manifest.reused_outcome_count"
             ),
             source_unit_ids=_require_string_tuple(
-                data["source_unit_ids"],
-                "manifest.source_unit_ids",
+                data["source_unit_ids"], "manifest.source_unit_ids"
             ),
             failures=tuple(
                 MusiqueMaterializationFailure.from_dict(
@@ -620,16 +545,14 @@ class MusiqueMaterializationManifest:
             ),
             materialization=GraphMaterializationSummary(
                 source_count=_require_integer(
-                    materialization_data["source_count"],
-                    "manifest.materialization.source_count",
+                    materialization_data["source_count"], "manifest.materialization.source_count"
                 ),
                 statement_count=_require_integer(
                     materialization_data["statement_count"],
                     "manifest.materialization.statement_count",
                 ),
                 graph_iris=_require_string_tuple(
-                    materialization_data["graph_iris"],
-                    "manifest.materialization.graph_iris",
+                    materialization_data["graph_iris"], "manifest.materialization.graph_iris"
                 ),
             ),
         )
@@ -646,37 +569,23 @@ class MusiqueMaterializationManifest:
         return cls.from_dict(_require_object(raw_data, "manifest"))
 
 
-def load_musique_materialization_manifest(
-    path: Path,
-) -> MusiqueMaterializationManifest:
+def load_musique_materialization_manifest(path: Path) -> MusiqueMaterializationManifest:
     """Load and validate one materialization manifest from disk."""
 
     return MusiqueMaterializationManifest.from_json(path.read_text(encoding="utf-8"))
 
 
 def write_musique_materialization_manifest(
-    path: Path,
-    manifest: MusiqueMaterializationManifest,
+    path: Path, manifest: MusiqueMaterializationManifest
 ) -> None:
     """Persist one validated materialization manifest."""
 
-    path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    path.parent.mkdir(parents=True, exist_ok=True)
 
-    path.write_text(
-        manifest.to_json() + "\n",
-        encoding="utf-8",
-    )
+    path.write_text(manifest.to_json() + "\n", encoding="utf-8")
 
 
-def _validate_ordered_indices(
-    values: tuple[int, ...],
-    *,
-    name: str,
-    allow_empty: bool,
-) -> None:
+def _validate_ordered_indices(values: tuple[int, ...], *, name: str, allow_empty: bool) -> None:
     if not values and not allow_empty:
         raise ValueError(f"materialization {name} must not be empty")
 
@@ -687,12 +596,7 @@ def _validate_ordered_indices(
         raise ValueError(f"materialization {name} must be unique and ordered")
 
 
-def _validate_fields(
-    data: dict[str, Any],
-    *,
-    required: set[str],
-    location: str,
-) -> None:
+def _validate_fields(data: dict[str, Any], *, required: set[str], location: str) -> None:
     fields = set(data)
     missing = required - fields
     unexpected = fields - required
@@ -706,68 +610,48 @@ def _validate_fields(
         )
 
 
-def _require_object(
-    value: Any,
-    location: str,
-) -> dict[str, Any]:
+def _require_object(value: Any, location: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{location} must be an object")
 
     return cast(dict[str, Any], value)
 
 
-def _require_list(
-    value: Any,
-    location: str,
-) -> list[Any]:
+def _require_list(value: Any, location: str) -> list[Any]:
     if not isinstance(value, list):
         raise ValueError(f"{location} must be a list")
 
     return value
 
 
-def _require_integer(
-    value: Any,
-    location: str,
-) -> int:
+def _require_integer(value: Any, location: str) -> int:
     if type(value) is not int:
         raise ValueError(f"{location} must be an integer")
 
     return value
 
 
-def _require_boolean(
-    value: Any,
-    location: str,
-) -> bool:
+def _require_boolean(value: Any, location: str) -> bool:
     if type(value) is not bool:
         raise ValueError(f"{location} must be a boolean")
 
     return value
 
 
-def _require_string(
-    value: Any,
-    location: str,
-) -> str:
+def _require_string(value: Any, location: str) -> str:
     if not isinstance(value, str):
         raise ValueError(f"{location} must be a string")
 
     return value
 
-def _require_string_tuple(
-    value: Any,
-    location: str,
-) -> tuple[str, ...]:
+
+def _require_string_tuple(value: Any, location: str) -> tuple[str, ...]:
     values = _require_list(value, location)
 
     return tuple(_require_string(item, f"{location}[{index}]") for index, item in enumerate(values))
 
 
-def _require_integer_tuple(
-    value: Any,
-    location: str,
-) -> tuple[int, ...]:
+def _require_integer_tuple(value: Any, location: str) -> tuple[int, ...]:
     values = _require_list(value, location)
 
     return tuple(

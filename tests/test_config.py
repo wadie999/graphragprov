@@ -20,10 +20,7 @@ def test_default_musique_dataset_path(monkeypatch: MonkeyPatch) -> None:
     assert musique_dataset_path() == expected
 
 
-def test_musique_dataset_path_can_be_configured(
-    monkeypatch: MonkeyPatch,
-    tmp_path: Path,
-) -> None:
+def test_musique_dataset_path_can_be_configured(monkeypatch: MonkeyPatch, tmp_path: Path) -> None:
     dataset_path = tmp_path / "musique.jsonl"
     monkeypatch.setenv("MUSIQUE_DATASET_PATH", str(dataset_path))
 

@@ -11,17 +11,12 @@ from graphragprov.extraction.musique import (
 DATASET_PATH = musique_dataset_path()
 
 pytestmark = pytest.mark.skipif(
-    not DATASET_PATH.exists(),
-    reason="local MuSiQue dataset is unavailable",
+    not DATASET_PATH.exists(), reason="local MuSiQue dataset is unavailable"
 )
 
 
 def first_three_hop_case() -> MusiqueCase:
-    return select_cases(
-        DATASET_PATH,
-        hop_count=3,
-        limit=1,
-    )[0]
+    return select_cases(DATASET_PATH, hop_count=3, limit=1)[0]
 
 
 def test_loads_musique_paragraph_as_source_unit() -> None:
@@ -29,10 +24,7 @@ def test_loads_musique_paragraph_as_source_unit() -> None:
     paragraph = case.paragraphs[0]
 
     source = load_musique_source_unit(
-        case_id=case.case_id,
-        paragraph_index=paragraph.index,
-        expected_hops=3,
-        path=DATASET_PATH,
+        case_id=case.case_id, paragraph_index=paragraph.index, expected_hops=3, path=DATASET_PATH
     )
 
     assert source.unit_id == paragraph.unit_id
@@ -45,10 +37,7 @@ def test_builds_prompt_from_loaded_source_unit() -> None:
     paragraph = case.paragraphs[0]
 
     prompt = build_musique_extraction_prompt(
-        case_id=case.case_id,
-        paragraph_index=paragraph.index,
-        expected_hops=3,
-        path=DATASET_PATH,
+        case_id=case.case_id, paragraph_index=paragraph.index, expected_hops=3, path=DATASET_PATH
     )
 
     assert paragraph.title in prompt
@@ -73,10 +62,7 @@ def test_rejects_unknown_paragraph_index() -> None:
 
     with pytest.raises(ValueError, match="has no paragraph"):
         load_musique_source_unit(
-            case_id=case.case_id,
-            paragraph_index=999_999,
-            expected_hops=3,
-            path=DATASET_PATH,
+            case_id=case.case_id, paragraph_index=999_999, expected_hops=3, path=DATASET_PATH
         )
 
 

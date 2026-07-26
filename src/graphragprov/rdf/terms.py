@@ -54,11 +54,7 @@ def statement_object(statement: GroundedStatement) -> RdfObject:
 
     datatype = _LITERAL_DATATYPES[statement.object_datatype]
 
-    return Literal(
-        statement.object.value,
-        datatype=datatype,
-        normalize=False,
-    )
+    return Literal(statement.object.value, datatype=datatype, normalize=False)
 
 
 def rdf_triple(statement: GroundedStatement) -> RdfTriple:

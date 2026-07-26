@@ -33,19 +33,10 @@ class ProvenancePolynomial:
     def to_dict(self) -> dict[str, object]:
         """Return a deterministic JSON-serializable representation."""
 
-        return {
-            "derivations": [
-                {
-                    "tokens": list(derivation),
-                }
-                for derivation in self.derivations
-            ]
-        }
+        return {"derivations": [{"tokens": list(derivation)} for derivation in self.derivations]}
 
 
-def parse_provenance_polynomial(
-    value: str,
-) -> ProvenancePolynomial:
+def parse_provenance_polynomial(value: str) -> ProvenancePolynomial:
     """Parse one NPCS sum-of-products provenance value.
 
     NPCS currently emits values following this grammar:
@@ -63,9 +54,7 @@ def parse_provenance_polynomial(
 
     canonical_derivations = tuple(sorted(tuple(sorted(derivation)) for derivation in derivations))
 
-    return ProvenancePolynomial(
-        derivations=canonical_derivations,
-    )
+    return ProvenancePolynomial(derivations=canonical_derivations)
 
 
 class _PolynomialParser:
@@ -131,10 +120,7 @@ class _PolynomialParser:
             token = self._value[token_start : self._index]
 
             if not token:
-                self._fail(
-                    "provenance product contains an empty token",
-                    index=token_start,
-                )
+                self._fail("provenance product contains an empty token", index=token_start)
 
             try:
                 decode_occurrence_token(token)
@@ -171,12 +157,7 @@ class _PolynomialParser:
     def _at_end(self) -> bool:
         return self._index == len(self._value)
 
-    def _fail(
-        self,
-        message: str,
-        *,
-        index: int | None = None,
-    ) -> None:
+    def _fail(self, message: str, *, index: int | None = None) -> None:
         position = self._index if index is None else index
 
         raise ValueError(f"{message} at index {position}")

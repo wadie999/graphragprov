@@ -1080,12 +1080,7 @@ def build_extraction_prompt(source: SourceUnit) -> str:
     """Render the deterministic prompt for one immutable source unit."""
 
     source_json = json.dumps(
-        {
-            "title": source.title,
-            "text": source.text,
-        },
-        ensure_ascii=False,
-        indent=2,
+        {"title": source.title, "text": source.text}, ensure_ascii=False, indent=2
     )
 
     return f"{SYSTEM_PROMPT}\n\nSOURCE UNIT TO EXTRACT\n\n{source_json}\n"

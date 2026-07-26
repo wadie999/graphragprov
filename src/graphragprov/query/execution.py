@@ -33,19 +33,11 @@ class ProvenanceQueryExecution:
     def to_json(self) -> str:
         """Serialize the complete execution record deterministically."""
 
-        return json.dumps(
-            self.to_dict(),
-            ensure_ascii=False,
-            indent=2,
-            sort_keys=True,
-        )
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=2, sort_keys=True)
 
 
 def execute_provenance_query(
-    *,
-    sparql: str,
-    graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    *, sparql: str, graphdb: GraphDBClient, npcs: NPCSClient
 ) -> ProvenanceQueryExecution:
     """Execute an original query and its NPCS rewrite against GraphDB."""
 
@@ -64,9 +56,7 @@ def execute_provenance_query(
     )
 
 
-def extract_provenance_polynomial(
-    execution: ProvenanceQueryExecution,
-) -> str:
+def extract_provenance_polynomial(execution: ProvenanceQueryExecution) -> str:
     """Extract one non-empty NPCS polynomial from a rewritten result."""
 
     results = execution.rewritten_result.get("results")

@@ -32,10 +32,7 @@ class GroundedExtractionBatchItem:
     reused: bool
 
 
-GroundedExtractionProgress = Callable[
-    [int, int, GroundedExtractionBatchItem],
-    None,
-]
+GroundedExtractionProgress = Callable[[int, int, GroundedExtractionBatchItem], None]
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,27 +46,17 @@ class GroundedExtractionBatchResult:
         """Return all successful extraction runs."""
 
         return tuple(
-            item.outcome
-            for item in self.items
-            if isinstance(
-                item.outcome,
-                GroundedExtractionRun,
-            )
+            item.outcome for item in self.items if isinstance(item.outcome, GroundedExtractionRun)
         )
 
     @property
-    def failures(
-        self,
-    ) -> tuple[GroundedExtractionFailure, ...]:
+    def failures(self) -> tuple[GroundedExtractionFailure, ...]:
         """Return all failed extraction outcomes."""
 
         return tuple(
             item.outcome
             for item in self.items
-            if isinstance(
-                item.outcome,
-                GroundedExtractionFailure,
-            )
+            if isinstance(item.outcome, GroundedExtractionFailure)
         )
 
     @property
@@ -86,10 +73,7 @@ class GroundedExtractionBatchResult:
 
 
 def load_or_run_grounded_extractions(
-    sources: Iterable[SourceUnit],
-    *,
-    cache_root: Path,
-    generate_response: GenerateResponse,
+    sources: Iterable[SourceUnit], *, cache_root: Path, generate_response: GenerateResponse
 ) -> tuple[CachedGroundedExtraction, ...]:
     """Strictly extract each unique source unit once.
 
@@ -101,9 +85,7 @@ def load_or_run_grounded_extractions(
     for source in _unique_sources(sources):
         results.append(
             load_or_run_grounded_extraction(
-                source,
-                cache_root=cache_root,
-                generate_response=generate_response,
+                source, cache_root=cache_root, generate_response=generate_response
             )
         )
 
@@ -131,80 +113,44 @@ def load_or_run_grounded_extraction_batch(
 
     total = len(unique_sources)
 
-    for index, source in enumerate(
-        unique_sources,
-        start=1,
-    ):
-        directory = extraction_artifact_directory(
-            cache_root,
-            source,
-        )
+    for index, source in enumerate(unique_sources, start=1):
+        directory = extraction_artifact_directory(cache_root, source)
 
         if has_grounded_extraction_outcome(directory):
-            cached_outcome = load_grounded_extraction_outcome(
-                source,
-                directory,
-            )
+            cached_outcome = load_grounded_extraction_outcome(source, directory)
 
-            should_retry = retry_failures and isinstance(
-                cached_outcome,
-                GroundedExtractionFailure,
-            )
+            should_retry = retry_failures and isinstance(cached_outcome, GroundedExtractionFailure)
 
             if should_retry:
-                outcome = run_grounded_extraction_outcome(
-                    source,
-                    generate_response,
-                )
+                outcome = run_grounded_extraction_outcome(source, generate_response)
 
-                save_grounded_extraction_outcome(
-                    outcome,
-                    directory,
-                )
+                save_grounded_extraction_outcome(outcome, directory)
 
                 reused = False
             else:
                 outcome = cached_outcome
                 reused = True
         else:
-            outcome = run_grounded_extraction_outcome(
-                source,
-                generate_response,
-            )
+            outcome = run_grounded_extraction_outcome(source, generate_response)
 
-            save_grounded_extraction_outcome(
-                outcome,
-                directory,
-            )
+            save_grounded_extraction_outcome(outcome, directory)
 
             reused = False
 
-        item = GroundedExtractionBatchItem(
-            outcome=outcome,
-            reused=reused,
-        )
+        item = GroundedExtractionBatchItem(outcome=outcome, reused=reused)
 
         items.append(item)
 
         if progress is not None:
-            progress(
-                index,
-                total,
-                item,
-            )
+            progress(index, total, item)
 
     return GroundedExtractionBatchResult(items=tuple(items))
 
 
-def _unique_sources(
-    sources: Iterable[SourceUnit],
-) -> tuple[SourceUnit, ...]:
+def _unique_sources(sources: Iterable[SourceUnit]) -> tuple[SourceUnit, ...]:
     """Deduplicate sources while preserving first-seen order."""
 
-    sources_by_id: dict[
-        str,
-        SourceUnit,
-    ] = {}
+    sources_by_id: dict[str, SourceUnit] = {}
 
     for source in sources:
         existing = sources_by_id.get(source.unit_id)

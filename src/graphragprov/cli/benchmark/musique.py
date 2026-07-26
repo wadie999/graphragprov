@@ -14,47 +14,20 @@ from graphragprov.config import musique_dataset_path
 def configure_musique_parser(parser: argparse.ArgumentParser) -> None:
     """Register MuSiQue inspection commands."""
 
-    commands = parser.add_subparsers(
-        dest="musique_command",
-        required=True,
-    )
+    commands = parser.add_subparsers(dest="musique_command", required=True)
 
-    list_parser = commands.add_parser(
-        "list",
-        help="List MuSiQue cases.",
-    )
-    list_parser.add_argument(
-        "--hops",
-        type=int,
-        choices=(2, 3, 4),
-        required=True,
-    )
-    list_parser.add_argument(
-        "--limit",
-        type=int,
-        default=10,
-    )
-    list_parser.add_argument(
-        "--answerable-only",
-        action="store_true",
-    )
+    list_parser = commands.add_parser("list", help="List MuSiQue cases.")
+    list_parser.add_argument("--hops", type=int, choices=(2, 3, 4), required=True)
+    list_parser.add_argument("--limit", type=int, default=10)
+    list_parser.add_argument("--answerable-only", action="store_true")
     list_parser.set_defaults(handler=_handle_list)
 
-    case_parser = commands.add_parser(
-        "case",
-        help="Inspect one MuSiQue case.",
-    )
+    case_parser = commands.add_parser("case", help="Inspect one MuSiQue case.")
     case_parser.add_argument("case_id")
-    case_parser.add_argument(
-        "--supports-only",
-        action="store_true",
-    )
+    case_parser.add_argument("--supports-only", action="store_true")
     case_parser.set_defaults(handler=_handle_case)
 
-    unit_parser = commands.add_parser(
-        "unit",
-        help="Inspect one MuSiQue source unit.",
-    )
+    unit_parser = commands.add_parser("unit", help="Inspect one MuSiQue source unit.")
     unit_parser.add_argument("unit_reference")
     unit_parser.set_defaults(handler=_handle_unit)
 
@@ -78,24 +51,15 @@ def _handle_list(arguments: argparse.Namespace) -> int:
 
 
 def _handle_case(arguments: argparse.Namespace) -> int:
-    case = load_case(
-        path=_require_dataset(),
-        case_id=arguments.case_id,
-    )
+    case = load_case(path=_require_dataset(), case_id=arguments.case_id)
 
-    _print_case(
-        case,
-        supports_only=arguments.supports_only,
-    )
+    _print_case(case, supports_only=arguments.supports_only)
 
     return 0
 
 
 def _handle_unit(arguments: argparse.Namespace) -> int:
-    unit = find_unit(
-        path=_require_dataset(),
-        unit_reference=arguments.unit_reference,
-    )
+    unit = find_unit(path=_require_dataset(), unit_reference=arguments.unit_reference)
 
     _print_unit(unit)
     return 0
@@ -110,11 +74,7 @@ def _require_dataset() -> Path:
     return path
 
 
-def _print_case(
-    case: MusiqueCase,
-    *,
-    supports_only: bool,
-) -> None:
+def _print_case(case: MusiqueCase, *, supports_only: bool) -> None:
     print(f"Case: {case.case_id}")
     print(f"Hops: {case.hop_count}")
     print(f"Answerable: {case.answerable}")

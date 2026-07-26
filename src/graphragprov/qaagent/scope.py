@@ -32,36 +32,12 @@ _SELECT_PATTERN = re.compile(
     flags=re.IGNORECASE | re.VERBOSE,
 )
 
-_WHERE_PATTERN = re.compile(
-    r"\bWHERE\b",
-    flags=re.IGNORECASE,
-)
+_WHERE_PATTERN = re.compile(r"\bWHERE\b", flags=re.IGNORECASE)
 
-_FORBIDDEN_PATTERNS: tuple[
-    tuple[str, re.Pattern[str]],
-    ...,
-] = (
-    (
-        "FROM",
-        re.compile(
-            r"\bFROM\b",
-            flags=re.IGNORECASE,
-        ),
-    ),
-    (
-        "GRAPH",
-        re.compile(
-            r"\bGRAPH\b",
-            flags=re.IGNORECASE,
-        ),
-    ),
-    (
-        "SERVICE",
-        re.compile(
-            r"\bSERVICE\b",
-            flags=re.IGNORECASE,
-        ),
-    ),
+_FORBIDDEN_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("FROM", re.compile(r"\bFROM\b", flags=re.IGNORECASE)),
+    ("GRAPH", re.compile(r"\bGRAPH\b", flags=re.IGNORECASE)),
+    ("SERVICE", re.compile(r"\bSERVICE\b", flags=re.IGNORECASE)),
     (
         "update operation",
         re.compile(
@@ -76,9 +52,7 @@ _FORBIDDEN_PATTERNS: tuple[
 
 
 def compile_scoped_select_query(
-    semantic_sparql: str,
-    *,
-    source_unit_ids: Iterable[str] | None,
+    semantic_sparql: str, *, source_unit_ids: Iterable[str] | None
 ) -> str:
     """Compile semantic SPARQL with a backend-controlled dataset.
 
@@ -112,9 +86,7 @@ def compile_scoped_select_query(
     return f"{query_head}\n{dataset}\n{query_body}"
 
 
-def _validate_semantic_select(
-    query: str,
-) -> None:
+def _validate_semantic_select(query: str) -> None:
     if not query:
         raise ValueError("semantic SPARQL must not be empty")
 

@@ -11,10 +11,7 @@ from pathlib import Path
 from graphragprov.extraction.musique import load_musique_source_unit
 from graphragprov.extraction.parser import parse_extraction_response
 from graphragprov.extraction.prompt import build_extraction_prompt
-from graphragprov.providers.deepseek import (
-    DEFAULT_DEEPSEEK_MODEL,
-    deepseek_generator,
-)
+from graphragprov.providers.deepseek import DEFAULT_DEEPSEEK_MODEL, deepseek_generator
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -37,9 +34,7 @@ def main() -> None:
         raise SystemExit("DEEPSEEK_API_KEY is not set")
 
     source = load_musique_source_unit(
-        case_id=arguments.case_id,
-        paragraph_index=arguments.paragraph,
-        expected_hops=arguments.hops,
+        case_id=arguments.case_id, paragraph_index=arguments.paragraph, expected_hops=arguments.hops
     )
 
     prompt = build_extraction_prompt(source)
@@ -56,11 +51,7 @@ def main() -> None:
 
     source_path.write_text(
         json.dumps(
-            {
-                "unit_id": source.unit_id,
-                "title": source.title,
-                "text": source.text,
-            },
+            {"unit_id": source.unit_id, "title": source.title, "text": source.text},
             ensure_ascii=False,
             indent=2,
         ),
@@ -70,18 +61,13 @@ def main() -> None:
     prompt_path.write_text(prompt, encoding="utf-8")
 
     generate_response = deepseek_generator(
-        api_key=api_key,
-        model=arguments.model,
-        max_tokens=arguments.max_tokens,
+        api_key=api_key, model=arguments.model, max_tokens=arguments.max_tokens
     )
 
     try:
         response = generate_response(prompt)
     except Exception as error:
-        error_path.write_text(
-            f"provider: {type(error).__name__}: {error}\n",
-            encoding="utf-8",
-        )
+        error_path.write_text(f"provider: {type(error).__name__}: {error}\n", encoding="utf-8")
         raise
 
     response_path.write_text(response, encoding="utf-8")
@@ -89,16 +75,10 @@ def main() -> None:
     try:
         extraction = parse_extraction_response(source, response)
     except Exception as error:
-        error_path.write_text(
-            f"parsing: {type(error).__name__}: {error}\n",
-            encoding="utf-8",
-        )
+        error_path.write_text(f"parsing: {type(error).__name__}: {error}\n", encoding="utf-8")
         raise
 
-    extraction_path.write_text(
-        extraction.to_json(),
-        encoding="utf-8",
-    )
+    extraction_path.write_text(extraction.to_json(), encoding="utf-8")
 
     print(f"Run:        {run_directory}")
     print(f"Statements: {len(extraction.statements)}")

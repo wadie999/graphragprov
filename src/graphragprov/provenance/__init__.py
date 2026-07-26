@@ -6,10 +6,7 @@ from graphragprov.provenance.decoding import (
     DecodedProvenanceOccurrence,
     decode_provenance_polynomial,
 )
-from graphragprov.provenance.polynomial import (
-    ProvenancePolynomial,
-    parse_provenance_polynomial,
-)
+from graphragprov.provenance.polynomial import ProvenancePolynomial, parse_provenance_polynomial
 from graphragprov.provenance.registry import SourceRegistry
 
 __all__ = [

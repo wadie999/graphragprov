@@ -6,24 +6,11 @@ import json
 from dataclasses import dataclass
 from typing import Literal, cast
 
-QAAgentDecisionStatus = Literal[
-    "query",
-    "ambiguous",
-    "unanswerable",
-]
+QAAgentDecisionStatus = Literal["query", "ambiguous", "unanswerable"]
 
-_DECISION_STATUSES: tuple[QAAgentDecisionStatus, ...] = (
-    "query",
-    "ambiguous",
-    "unanswerable",
-)
+_DECISION_STATUSES: tuple[QAAgentDecisionStatus, ...] = ("query", "ambiguous", "unanswerable")
 
-_REQUIRED_FIELDS = {
-    "status",
-    "sparql",
-    "rationale",
-    "assumptions",
-}
+_REQUIRED_FIELDS = {"status", "sparql", "rationale", "assumptions"}
 
 
 @dataclass(frozen=True, slots=True)
@@ -64,9 +51,7 @@ class QAAgentDecision:
         }
 
 
-def parse_qa_agent_response(
-    payload: str,
-) -> QAAgentDecision:
+def parse_qa_agent_response(payload: str) -> QAAgentDecision:
     """Parse and validate one structured QA-agent response."""
 
     if not payload.strip():
@@ -127,8 +112,5 @@ def parse_qa_agent_response(
         assumptions.append(assumption)
 
     return QAAgentDecision(
-        status=status,
-        sparql=sparql,
-        rationale=rationale,
-        assumptions=tuple(assumptions),
+        status=status, sparql=sparql, rationale=rationale, assumptions=tuple(assumptions)
     )

@@ -28,9 +28,7 @@ def build_tuple_qa_prompt(
     if hop_count <= 0:
         raise ValueError("QA hop count must be positive")
 
-    metadata = [
-        f"Question: {question}",
-    ]
+    metadata = [f"Question: {question}"]
 
     if configuration.decomposition_visibility == "hop_count":
         metadata.append(f"Expected reasoning depth: {hop_count} hops")
@@ -40,13 +38,7 @@ def build_tuple_qa_prompt(
 
         metadata.append("Gold decomposition:")
 
-        metadata.extend(
-            f"{index}. {step}"
-            for index, step in enumerate(
-                decomposition,
-                start=1,
-            )
-        )
+        metadata.extend(f"{index}. {step}" for index, step in enumerate(decomposition, start=1))
 
     if configuration.answer_visibility == "oracle":
         if expected_answer is None or not expected_answer.strip():

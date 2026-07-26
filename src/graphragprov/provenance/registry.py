@@ -26,10 +26,7 @@ class SourceRegistry:
 
         validate_source_unit_id(source.unit_id)
 
-        expected_unit_id = source_unit_id(
-            title=source.title,
-            text=source.text,
-        )
+        expected_unit_id = source_unit_id(title=source.title, text=source.text)
 
         if source.unit_id != expected_unit_id:
             raise ValueError("source unit ID does not match its exact title and text")

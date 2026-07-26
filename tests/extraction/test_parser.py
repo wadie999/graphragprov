@@ -3,11 +3,7 @@ import json
 import pytest
 
 from graphragprov.domain import SourceUnit
-from graphragprov.extraction import (
-    LiteralDatatype,
-    TextSegment,
-    parse_extraction_response,
-)
+from graphragprov.extraction import LiteralDatatype, TextSegment, parse_extraction_response
 
 SOURCE = SourceUnit(
     unit_id="u_system_owned",
@@ -23,75 +19,35 @@ def valid_response() -> dict[str, object]:
                 "subject": {
                     "value": "Albert Einstein",
                     "evidence": [
-                        {
-                            "segment": "title",
-                            "quote": "Albert Einstein",
-                            "occurrence": 1,
-                        },
-                        {
-                            "segment": "text",
-                            "quote": "He",
-                            "occurrence": 1,
-                        },
+                        {"segment": "title", "quote": "Albert Einstein", "occurrence": 1},
+                        {"segment": "text", "quote": "He", "occurrence": 1},
                     ],
                 },
                 "predicate": {
                     "value": "bornIn",
-                    "evidence": [
-                        {
-                            "segment": "text",
-                            "quote": "born in",
-                            "occurrence": 1,
-                        }
-                    ],
+                    "evidence": [{"segment": "text", "quote": "born in", "occurrence": 1}],
                 },
                 "object": {
                     "value": "Ulm",
-                    "evidence": [
-                        {
-                            "segment": "text",
-                            "quote": "Ulm",
-                            "occurrence": 1,
-                        }
-                    ],
+                    "evidence": [{"segment": "text", "quote": "Ulm", "occurrence": 1}],
                 },
             },
             {
                 "subject": {
                     "value": "Albert Einstein",
                     "evidence": [
-                        {
-                            "segment": "title",
-                            "quote": "Albert Einstein",
-                            "occurrence": 1,
-                        },
-                        {
-                            "segment": "text",
-                            "quote": "He",
-                            "occurrence": 1,
-                        },
+                        {"segment": "title", "quote": "Albert Einstein", "occurrence": 1},
+                        {"segment": "text", "quote": "He", "occurrence": 1},
                     ],
                 },
                 "predicate": {
                     "value": "birthDate",
-                    "evidence": [
-                        {
-                            "segment": "text",
-                            "quote": "born",
-                            "occurrence": 1,
-                        }
-                    ],
+                    "evidence": [{"segment": "text", "quote": "born", "occurrence": 1}],
                 },
                 "object": {
                     "value": "1879-03-14",
                     "datatype": "date",
-                    "evidence": [
-                        {
-                            "segment": "text",
-                            "quote": "14 March 1879",
-                            "occurrence": 1,
-                        }
-                    ],
+                    "evidence": [{"segment": "text", "quote": "14 March 1879", "occurrence": 1}],
                 },
             },
         ]
@@ -99,10 +55,7 @@ def valid_response() -> dict[str, object]:
 
 
 def test_parses_valid_fake_model_response() -> None:
-    result = parse_extraction_response(
-        SOURCE,
-        json.dumps(valid_response()),
-    )
+    result = parse_extraction_response(SOURCE, json.dumps(valid_response()))
 
     assert result.unit_id == SOURCE.unit_id
     assert len(result.statements) == 2
@@ -120,10 +73,7 @@ def test_parses_valid_fake_model_response() -> None:
 
 
 def test_localizes_title_and_text_evidence_independently() -> None:
-    result = parse_extraction_response(
-        SOURCE,
-        json.dumps(valid_response()),
-    )
+    result = parse_extraction_response(SOURCE, json.dumps(valid_response()))
 
     evidence = result.statements[0].subject.evidence
 
@@ -150,10 +100,7 @@ def test_localizes_repeated_quote_occurrence() -> None:
 
     evidence[0]["occurrence"] = 2
 
-    result = parse_extraction_response(
-        SOURCE,
-        json.dumps(response),
-    )
+    result = parse_extraction_response(SOURCE, json.dumps(response))
 
     span = result.statements[0].object.evidence[0]
 
@@ -162,10 +109,7 @@ def test_localizes_repeated_quote_occurrence() -> None:
 
 
 def test_accepts_empty_statement_list() -> None:
-    result = parse_extraction_response(
-        SOURCE,
-        '{"statements": []}',
-    )
+    result = parse_extraction_response(SOURCE, '{"statements": []}')
 
     assert result.unit_id == SOURCE.unit_id
     assert result.statements == ()
@@ -173,10 +117,7 @@ def test_accepts_empty_statement_list() -> None:
 
 def test_rejects_malformed_json() -> None:
     with pytest.raises(ValueError, match="invalid extraction JSON"):
-        parse_extraction_response(
-            SOURCE,
-            '{"statements": [}',
-        )
+        parse_extraction_response(SOURCE, '{"statements": [}')
 
 
 def test_rejects_model_supplied_unit_id() -> None:
@@ -184,10 +125,7 @@ def test_rejects_model_supplied_unit_id() -> None:
     response["unit_id"] = "u_model_supplied"
 
     with pytest.raises(ValueError, match="unexpected field.*unit_id"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))
 
 
 def test_rejects_model_supplied_offsets() -> None:
@@ -208,10 +146,7 @@ def test_rejects_model_supplied_offsets() -> None:
     evidence[0]["end"] = 15
 
     with pytest.raises(ValueError, match="unexpected field"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))
 
 
 def test_rejects_missing_evidence() -> None:
@@ -228,10 +163,7 @@ def test_rejects_missing_evidence() -> None:
     subject["evidence"] = []
 
     with pytest.raises(ValueError, match="evidence must not be empty"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))
 
 
 def test_rejects_invalid_segment() -> None:
@@ -251,10 +183,7 @@ def test_rejects_invalid_segment() -> None:
     evidence[0]["segment"] = "paragraph"
 
     with pytest.raises(ValueError, match="must be 'title' or 'text'"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))
 
 
 def test_rejects_missing_occurrence() -> None:
@@ -274,10 +203,7 @@ def test_rejects_missing_occurrence() -> None:
     del evidence[0]["occurrence"]
 
     with pytest.raises(ValueError, match="missing required field.*occurrence"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))
 
 
 def test_rejects_occurrence_out_of_range() -> None:
@@ -297,10 +223,7 @@ def test_rejects_occurrence_out_of_range() -> None:
     evidence[0]["occurrence"] = 3
 
     with pytest.raises(ValueError, match="occurrence 3 does not exist"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))
 
 
 def test_rejects_unknown_datatype() -> None:
@@ -317,10 +240,7 @@ def test_rejects_unknown_datatype() -> None:
     object_data["datatype"] = "timestamp"
 
     with pytest.raises(ValueError, match="datatype must be one of"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))
 
 
 def test_rejects_invalid_normalized_date() -> None:
@@ -337,7 +257,4 @@ def test_rejects_invalid_normalized_date() -> None:
     object_data["value"] = "1879-13-40"
 
     with pytest.raises(ValueError, match="not a valid calendar date"):
-        parse_extraction_response(
-            SOURCE,
-            json.dumps(response),
-        )
+        parse_extraction_response(SOURCE, json.dumps(response))

@@ -8,24 +8,13 @@ import os
 import re
 from pathlib import Path
 
-from graphragprov.benchmarks.musique import (
-    MusiqueCase,
-    collect_musique_source_units,
-    select_cases,
-)
+from graphragprov.benchmarks.musique import MusiqueCase, collect_musique_source_units, select_cases
 from graphragprov.config import musique_dataset_path
 from graphragprov.graphdb import GraphDBClient
 from graphragprov.npcs import NPCSClient
 from graphragprov.provenance import SourceRegistry
-from graphragprov.providers.deepseek import (
-    DEFAULT_DEEPSEEK_MODEL,
-    deepseek_generator,
-)
-from graphragprov.qaagent import (
-    QAAgentConfiguration,
-    QAAgentRunResult,
-    run_tuple_qa_agent,
-)
+from graphragprov.providers.deepseek import DEFAULT_DEEPSEEK_MODEL, deepseek_generator
+from graphragprov.qaagent import QAAgentConfiguration, QAAgentRunResult, run_tuple_qa_agent
 
 _RESULT_FORMAT = "musique-multi-turn-qa-v1"
 
@@ -38,21 +27,9 @@ def parse_arguments() -> argparse.Namespace:
         )
     )
 
-    parser.add_argument(
-        "--hop-count",
-        type=int,
-        choices=(2, 3, 4),
-        default=2,
-    )
-    parser.add_argument(
-        "--model",
-        default=DEFAULT_DEEPSEEK_MODEL,
-    )
-    parser.add_argument(
-        "--max-tokens",
-        type=int,
-        default=16_384,
-    )
+    parser.add_argument("--hop-count", type=int, choices=(2, 3, 4), default=2)
+    parser.add_argument("--model", default=DEFAULT_DEEPSEEK_MODEL)
+    parser.add_argument("--max-tokens", type=int, default=16_384)
     parser.add_argument(
         "--max-turns",
         type=int,
@@ -63,10 +40,7 @@ def parse_arguments() -> argparse.Namespace:
             "to the agent on the following turn."
         ),
     )
-    parser.add_argument(
-        "--output",
-        type=Path,
-    )
+    parser.add_argument("--output", type=Path)
     parser.add_argument(
         "--force",
         action="store_true",
@@ -87,10 +61,7 @@ def main() -> None:
 
     dataset_path = musique_dataset_path()
 
-    case = _select_case(
-        dataset_path,
-        hop_count=arguments.hop_count,
-    )
+    case = _select_case(dataset_path, hop_count=arguments.hop_count)
 
     output_path = arguments.output if arguments.output is not None else _default_output_path(case)
 
@@ -112,9 +83,7 @@ def main() -> None:
     npcs = NPCSClient.from_environment()
 
     generate_response = deepseek_generator(
-        api_key=api_key,
-        model=arguments.model,
-        max_tokens=arguments.max_tokens,
+        api_key=api_key, model=arguments.model, max_tokens=arguments.max_tokens
     )
 
     configuration = QAAgentConfiguration(
@@ -155,27 +124,13 @@ def main() -> None:
         result=result,
     )
 
-    _write_result(
-        output_path,
-        payload,
-    )
+    _write_result(output_path, payload)
 
-    _print_result(
-        result,
-        output_path=output_path,
-    )
+    _print_result(result, output_path=output_path)
 
 
-def _select_case(
-    dataset_path: Path,
-    *,
-    hop_count: int,
-) -> MusiqueCase:
-    selected = select_cases(
-        dataset_path,
-        hop_count=hop_count,
-        limit=1,
-    )
+def _select_case(dataset_path: Path, *, hop_count: int) -> MusiqueCase:
+    selected = select_cases(dataset_path, hop_count=hop_count, limit=1)
 
     if len(selected) != 1:
         raise ValueError(f"could not select one answerable {hop_count}-hop MuSiQue case")
@@ -183,14 +138,8 @@ def _select_case(
     return selected[0]
 
 
-def _default_output_path(
-    case: MusiqueCase,
-) -> Path:
-    case_component = re.sub(
-        r"[^A-Za-z0-9._-]+",
-        "_",
-        case.case_id,
-    ).strip("_")
+def _default_output_path(case: MusiqueCase) -> Path:
+    case_component = re.sub(r"[^A-Za-z0-9._-]+", "_", case.case_id).strip("_")
 
     if not case_component:
         raise ValueError("case ID cannot produce an empty output path")
@@ -199,12 +148,7 @@ def _default_output_path(
 
 
 def _build_result_payload(
-    *,
-    case: MusiqueCase,
-    model: str,
-    max_tokens: int,
-    max_turns: int,
-    result: QAAgentRunResult,
+    *, case: MusiqueCase, model: str, max_tokens: int, max_turns: int, result: QAAgentRunResult
 ) -> dict[str, object]:
     return {
         "format": _RESULT_FORMAT,
@@ -218,44 +162,21 @@ def _build_result_payload(
             "paragraph_indices": [paragraph.index for paragraph in case.paragraphs],
             "gold_support_indices": list(case.gold_support_indices),
         },
-        "model": {
-            "name": model,
-            "max_tokens": max_tokens,
-        },
-        "execution": {
-            "max_turns": max_turns,
-            "executed_query_count": len(result.query_attempts),
-        },
+        "model": {"name": model, "max_tokens": max_tokens},
+        "execution": {"max_turns": max_turns, "executed_query_count": len(result.query_attempts)},
         "qa_agent": result.to_dict(),
     }
 
 
-def _write_result(
-    path: Path,
-    payload: dict[str, object],
-) -> None:
-    path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+def _write_result(path: Path, payload: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
 
     path.write_text(
-        json.dumps(
-            payload,
-            ensure_ascii=False,
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n",
-        encoding="utf-8",
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
 
-def _print_result(
-    result: QAAgentRunResult,
-    *,
-    output_path: Path,
-) -> None:
+def _print_result(result: QAAgentRunResult, *, output_path: Path) -> None:
     print("Final DeepSeek decision")
     print(f"Status:     {result.decision.status}")
     print(f"Rationale:  {result.decision.rationale}")
@@ -291,10 +212,7 @@ def _print_result(
             print("Original GraphDB result:")
             print(
                 json.dumps(
-                    attempt.execution.original_result,
-                    ensure_ascii=False,
-                    indent=2,
-                    sort_keys=True,
+                    attempt.execution.original_result, ensure_ascii=False, indent=2, sort_keys=True
                 )
             )
 
@@ -302,10 +220,7 @@ def _print_result(
             print()
             print(f"Decoded answer provenance records: {len(attempt.answer_provenances)}")
 
-            for index, provenance in enumerate(
-                attempt.answer_provenances,
-                start=1,
-            ):
+            for index, provenance in enumerate(attempt.answer_provenances, start=1):
                 derivation_count = len(provenance.decoded.derivations)
 
                 print(f"  Answer {index}: {derivation_count} derivation(s)")

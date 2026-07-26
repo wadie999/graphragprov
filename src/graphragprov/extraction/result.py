@@ -21,27 +21,15 @@ class ExtractionResult:
 
         for statement_index, statement in enumerate(self.statements):
             self._validate_value(
-                statement.subject,
-                source,
-                f"statements[{statement_index}].subject",
+                statement.subject, source, f"statements[{statement_index}].subject"
             )
             self._validate_value(
-                statement.predicate,
-                source,
-                f"statements[{statement_index}].predicate",
+                statement.predicate, source, f"statements[{statement_index}].predicate"
             )
-            self._validate_value(
-                statement.object,
-                source,
-                f"statements[{statement_index}].object",
-            )
+            self._validate_value(statement.object, source, f"statements[{statement_index}].object")
 
     @staticmethod
-    def _validate_value(
-        grounded_value: GroundedValue,
-        source: SourceUnit,
-        location: str,
-    ) -> None:
+    def _validate_value(grounded_value: GroundedValue, source: SourceUnit, location: str) -> None:
         for evidence_index, span in enumerate(grounded_value.evidence):
             try:
                 span.validate_against(source)
@@ -64,11 +52,7 @@ class ExtractionResult:
         )
 
     def to_json(self) -> str:
-        return json.dumps(
-            self.to_dict(),
-            ensure_ascii=False,
-            indent=2,
-        )
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=2)
 
     @classmethod
     def from_json(cls, payload: str) -> "ExtractionResult":

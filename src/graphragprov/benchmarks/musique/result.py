@@ -30,10 +30,7 @@ class MusiqueCaseResult:
     answer_aliases: tuple[str, ...]
     source_unit_ids: tuple[str, ...]
     gold_support_indices: tuple[int, ...]
-    extraction_failures: tuple[
-        dict[str, object],
-        ...,
-    ] = ()
+    extraction_failures: tuple[dict[str, object], ...] = ()
     materialization: dict[str, object] | None = None
     sparql: str | None = None
     query_execution: dict[str, object] | None = None
@@ -95,9 +92,4 @@ class MusiqueCaseResult:
     def to_json(self) -> str:
         """Serialize the result deterministically."""
 
-        return json.dumps(
-            self.to_dict(),
-            ensure_ascii=False,
-            indent=2,
-            sort_keys=True,
-        )
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=2, sort_keys=True)

@@ -8,15 +8,8 @@ import pytest
 
 from graphragprov.domain.source_unit import SourceUnit
 from graphragprov.extraction.result import ExtractionResult
-from graphragprov.graphdb.client import (
-    GRAPHDB_REPOSITORY_ENV,
-    GRAPHDB_URL_ENV,
-    GraphDBClient,
-)
-from graphragprov.rdf.provenance import (
-    compact_unit_id,
-    occurrence_token,
-)
+from graphragprov.graphdb.client import GRAPHDB_REPOSITORY_ENV, GRAPHDB_URL_ENV, GraphDBClient
+from graphragprov.rdf.provenance import compact_unit_id, occurrence_token
 from graphragprov.rdf.terms import rdf_triple, unit_graph_iri
 
 GRAPHDB_INTEGRATION_RUN_ENV = "GRAPHRAGPROV_GRAPHDB_INTEGRATION_RUN"
@@ -41,26 +34,17 @@ def test_real_extraction_round_trip_is_idempotent() -> None:
 
     expected_triples = {_triple_key(statement) for statement in extraction.statements}
     expected_tokens = {
-        occurrence_token(
-            unit_id=source.unit_id,
-            statement=statement,
-        )
+        occurrence_token(unit_id=source.unit_id, statement=statement)
         for statement in extraction.statements
     }
 
     client.upload_trig_star(rdf_content)
 
-    first_triple_count, first_tokens = _repository_snapshot(
-        client=client,
-        graph=graph,
-    )
+    first_triple_count, first_tokens = _repository_snapshot(client=client, graph=graph)
 
     client.upload_trig_star(rdf_content)
 
-    second_triple_count, second_tokens = _repository_snapshot(
-        client=client,
-        graph=graph,
-    )
+    second_triple_count, second_tokens = _repository_snapshot(client=client, graph=graph)
 
     assert first_triple_count == len(expected_triples)
     assert first_tokens == expected_tokens
@@ -77,11 +61,7 @@ def test_real_extraction_round_trip_is_idempotent() -> None:
 
 
 def _integration_run_directory() -> Path:
-    required_variables = (
-        GRAPHDB_URL_ENV,
-        GRAPHDB_REPOSITORY_ENV,
-        GRAPHDB_INTEGRATION_RUN_ENV,
-    )
+    required_variables = (GRAPHDB_URL_ENV, GRAPHDB_REPOSITORY_ENV, GRAPHDB_INTEGRATION_RUN_ENV)
 
     missing = [variable for variable in required_variables if not os.getenv(variable)]
 
@@ -93,11 +73,7 @@ def _integration_run_directory() -> Path:
     if not run_directory.is_dir():
         pytest.fail(f"integration run directory does not exist: {run_directory}")
 
-    required_files = (
-        "source.json",
-        "extraction.json",
-        "extraction-minimal.trig",
-    )
+    required_files = ("source.json", "extraction.json", "extraction-minimal.trig")
 
     for filename in required_files:
         path = run_directory / filename
@@ -127,28 +103,16 @@ def _read_source(run_directory: Path) -> SourceUnit:
     if not isinstance(text, str):
         raise TypeError("source text must be a string")
 
-    return SourceUnit(
-        unit_id=unit_id,
-        title=title,
-        text=text,
-    )
+    return SourceUnit(unit_id=unit_id, title=title, text=text)
 
 
 def _triple_key(statement: object) -> tuple[str, str, str]:
     subject, predicate, object_ = rdf_triple(statement)  # type: ignore[arg-type]
 
-    return (
-        subject.n3(),
-        predicate.n3(),
-        object_.n3(),
-    )
+    return (subject.n3(), predicate.n3(), object_.n3())
 
 
-def _repository_snapshot(
-    *,
-    client: GraphDBClient,
-    graph: str,
-) -> tuple[int, set[str]]:
+def _repository_snapshot(*, client: GraphDBClient, graph: str) -> tuple[int, set[str]]:
     triple_result = client.query(
         f"""
         SELECT (COUNT(*) AS ?count)
@@ -180,10 +144,7 @@ def _repository_snapshot(
         """
     )
 
-    return (
-        _single_count(triple_result),
-        _token_values(token_result),
-    )
+    return (_single_count(triple_result), _token_values(token_result))
 
 
 def _single_count(result: dict[str, object]) -> int:
@@ -206,9 +167,7 @@ def _single_count(result: dict[str, object]) -> int:
     return int(value)
 
 
-def _token_values(
-    result: dict[str, object],
-) -> set[str]:
+def _token_values(result: dict[str, object]) -> set[str]:
     results = result.get("results")
     assert isinstance(results, dict)
 

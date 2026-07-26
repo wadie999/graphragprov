@@ -41,10 +41,7 @@ class StoredMusiqueExperiment:
 
         return self.manifest.cases
 
-    def get_case(
-        self,
-        case_id: str,
-    ) -> MusiqueMaterializationCase:
+    def get_case(self, case_id: str) -> MusiqueMaterializationCase:
         """Return one benchmark case recorded by this experiment."""
 
         for case in self.manifest.cases:
@@ -52,8 +49,7 @@ class StoredMusiqueExperiment:
                 return case
 
         raise ExperimentCaseNotFoundError(
-            f"case does not exist in experiment "
-            f"{self.experiment_id}: {case_id}"
+            f"case does not exist in experiment {self.experiment_id}: {case_id}"
         )
 
 
@@ -64,10 +60,7 @@ class MusiqueExperimentRepository(Protocol):
         """Return every stored and validated experiment."""
         ...
 
-    def get_experiment(
-        self,
-        experiment_id: str,
-    ) -> StoredMusiqueExperiment:
+    def get_experiment(self, experiment_id: str) -> StoredMusiqueExperiment:
         """Return one stored and validated experiment."""
         ...
 
@@ -85,16 +78,11 @@ class FilesystemMusiqueExperimentRepository:
             return ()
 
         if not self.root.is_dir():
-            raise NotADirectoryError(
-                f"experiment root is not a directory: {self.root}"
-            )
+            raise NotADirectoryError(f"experiment root is not a directory: {self.root}")
 
         experiments: list[StoredMusiqueExperiment] = []
 
-        for experiment_directory in sorted(
-            self.root.iterdir(),
-            key=lambda path: path.name,
-        ):
+        for experiment_directory in sorted(self.root.iterdir(), key=lambda path: path.name):
             if not experiment_directory.is_dir():
                 continue
 
@@ -103,40 +91,29 @@ class FilesystemMusiqueExperimentRepository:
             if not manifest_path.is_file():
                 continue
 
-            experiment_id = validate_experiment_id(
-                experiment_directory.name
-            )
+            experiment_id = validate_experiment_id(experiment_directory.name)
 
             experiments.append(
                 StoredMusiqueExperiment(
                     experiment_id=experiment_id,
-                    manifest=load_musique_materialization_manifest(
-                        manifest_path
-                    ),
+                    manifest=load_musique_materialization_manifest(manifest_path),
                 )
             )
 
         return tuple(experiments)
 
-    def get_experiment(
-        self,
-        experiment_id: str,
-    ) -> StoredMusiqueExperiment:
+    def get_experiment(self, experiment_id: str) -> StoredMusiqueExperiment:
         """Load one experiment by its safe directory identifier."""
 
         validated_id = validate_experiment_id(experiment_id)
         manifest_path = self.root / validated_id / _MANIFEST_FILENAME
 
         if not manifest_path.is_file():
-            raise ExperimentNotFoundError(
-                f"experiment does not exist: {validated_id}"
-            )
+            raise ExperimentNotFoundError(f"experiment does not exist: {validated_id}")
 
         return StoredMusiqueExperiment(
             experiment_id=validated_id,
-            manifest=load_musique_materialization_manifest(
-                manifest_path
-            ),
+            manifest=load_musique_materialization_manifest(manifest_path),
         )
 
 

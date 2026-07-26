@@ -19,10 +19,7 @@ from graphragprov.extraction.statement import GroundedStatement
 
 GenerateResponse = Callable[[str], str]
 
-ExtractionFailureStage = Literal[
-    "provider",
-    "response_validation",
-]
+ExtractionFailureStage = Literal["provider", "response_validation"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -31,16 +28,10 @@ class GroundedExtractionCorrection:
 
     prompt: str
     response: str | None
-    requested_rejections: tuple[
-        RejectedExtractionStatement,
-        ...,
-    ]
+    requested_rejections: tuple[RejectedExtractionStatement, ...]
     initial_valid_statement_count: int
     corrected_valid_statement_count: int = 0
-    remaining_rejections: tuple[
-        RejectedExtractionStatement,
-        ...,
-    ] = ()
+    remaining_rejections: tuple[RejectedExtractionStatement, ...] = ()
     error_type: str | None = None
     error_message: str | None = None
 
@@ -72,8 +63,7 @@ GroundedExtractionOutcome = GroundedExtractionRun | GroundedExtractionFailure
 
 
 def run_grounded_extraction(
-    source: SourceUnit,
-    generate_response: GenerateResponse,
+    source: SourceUnit, generate_response: GenerateResponse
 ) -> GroundedExtractionRun:
     """Run extraction, correct rejected statements, and retain valid ones.
 
@@ -86,16 +76,12 @@ def run_grounded_extraction(
     response = generate_response(prompt)
 
     return _build_successful_run(
-        source=source,
-        prompt=prompt,
-        response=response,
-        generate_response=generate_response,
+        source=source, prompt=prompt, response=response, generate_response=generate_response
     )
 
 
 def run_grounded_extraction_outcome(
-    source: SourceUnit,
-    generate_response: GenerateResponse,
+    source: SourceUnit, generate_response: GenerateResponse
 ) -> GroundedExtractionOutcome:
     """Run extraction and represent unrecoverable failures as outcomes."""
 
@@ -115,10 +101,7 @@ def run_grounded_extraction_outcome(
 
     try:
         return _build_successful_run(
-            source=source,
-            prompt=prompt,
-            response=response,
-            generate_response=generate_response,
+            source=source, prompt=prompt, response=response, generate_response=generate_response
         )
     except Exception as error:
         return GroundedExtractionFailure(
@@ -132,28 +115,17 @@ def run_grounded_extraction_outcome(
 
 
 def _build_successful_run(
-    *,
-    source: SourceUnit,
-    prompt: str,
-    response: str,
-    generate_response: GenerateResponse,
+    *, source: SourceUnit, prompt: str, response: str, generate_response: GenerateResponse
 ) -> GroundedExtractionRun:
-    initial = parse_extraction_response_partially(
-        source,
-        response,
-    )
+    initial = parse_extraction_response_partially(source, response)
 
     if not initial.rejected_statements:
         return GroundedExtractionRun(
-            source=source,
-            prompt=prompt,
-            response=response,
-            extraction=initial.extraction,
+            source=source, prompt=prompt, response=response, extraction=initial.extraction
         )
 
     correction_prompt = _build_correction_prompt(
-        source=source,
-        rejected_statements=initial.rejected_statements,
+        source=source, rejected_statements=initial.rejected_statements
     )
 
     try:
@@ -176,10 +148,7 @@ def _build_successful_run(
         )
 
     try:
-        corrected = parse_extraction_response_partially(
-            source,
-            correction_response,
-        )
+        corrected = parse_extraction_response_partially(source, correction_response)
     except Exception as error:
         return GroundedExtractionRun(
             source=source,
@@ -197,11 +166,7 @@ def _build_successful_run(
             ),
         )
 
-    extraction = _merge_extractions(
-        source=source,
-        initial=initial,
-        corrected=corrected,
-    )
+    extraction = _merge_extractions(source=source, initial=initial, corrected=corrected)
 
     return GroundedExtractionRun(
         source=source,
@@ -220,24 +185,15 @@ def _build_successful_run(
 
 
 def _merge_extractions(
-    *,
-    source: SourceUnit,
-    initial: ParsedExtractionResponse,
-    corrected: ParsedExtractionResponse,
+    *, source: SourceUnit, initial: ParsedExtractionResponse, corrected: ParsedExtractionResponse
 ) -> ExtractionResult:
     statements: list[GroundedStatement] = []
 
-    for statement in (
-        *initial.extraction.statements,
-        *corrected.extraction.statements,
-    ):
+    for statement in (*initial.extraction.statements, *corrected.extraction.statements):
         if statement not in statements:
             statements.append(statement)
 
-    extraction = ExtractionResult(
-        unit_id=source.unit_id,
-        statements=tuple(statements),
-    )
+    extraction = ExtractionResult(unit_id=source.unit_id, statements=tuple(statements))
 
     extraction.validate_against(source)
 
@@ -245,12 +201,7 @@ def _merge_extractions(
 
 
 def _build_correction_prompt(
-    *,
-    source: SourceUnit,
-    rejected_statements: tuple[
-        RejectedExtractionStatement,
-        ...,
-    ],
+    *, source: SourceUnit, rejected_statements: tuple[RejectedExtractionStatement, ...]
 ) -> str:
     rejected_payload = [
         {
@@ -276,11 +227,7 @@ def _build_correction_prompt(
             source.text,
             "",
             "Rejected statements and validator errors:",
-            json.dumps(
-                rejected_payload,
-                ensure_ascii=False,
-                indent=2,
-            ),
+            json.dumps(rejected_payload, ensure_ascii=False, indent=2),
             "",
             "Correction rules:",
             ("- Return only corrected replacements for the rejected statements."),

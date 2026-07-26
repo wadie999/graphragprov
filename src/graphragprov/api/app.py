@@ -19,16 +19,11 @@ _APPLICATION_DESCRIPTION = (
 )
 
 
-def create_app(
-    *,
-    experiment_repository: MusiqueExperimentRepository | None = None,
-) -> FastAPI:
+def create_app(*, experiment_repository: MusiqueExperimentRepository | None = None) -> FastAPI:
     """Create one independently configurable FastAPI application."""
 
     application = FastAPI(
-        title=_APPLICATION_TITLE,
-        description=_APPLICATION_DESCRIPTION,
-        version=_package_version(),
+        title=_APPLICATION_TITLE, description=_APPLICATION_DESCRIPTION, version=_package_version()
     )
 
     application.state.experiment_repository = (

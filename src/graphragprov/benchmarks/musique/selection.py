@@ -5,11 +5,7 @@ from graphragprov.benchmarks.musique.reader import iter_cases
 
 
 def select_cases(
-    path: Path,
-    hop_count: int,
-    limit: int,
-    *,
-    answerable_only: bool = True,
+    path: Path, hop_count: int, limit: int, *, answerable_only: bool = True
 ) -> tuple[MusiqueCase, ...]:
     """Select MuSiQue cases in their original dataset order."""
 

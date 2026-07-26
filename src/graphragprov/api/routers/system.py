@@ -14,11 +14,7 @@ class HealthResponse(BaseModel):
     status: Literal["ok"] = "ok"
 
 
-@router.get(
-    "/health",
-    response_model=HealthResponse,
-    summary="Check API liveness",
-)
+@router.get("/health", response_model=HealthResponse, summary="Check API liveness")
 def read_health() -> HealthResponse:
     """Confirm that the HTTP process is running."""
 

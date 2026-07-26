@@ -9,29 +9,14 @@ from typing import cast
 
 from graphragprov.graphdb import GraphDBClient
 from graphragprov.npcs import NPCSClient
-from graphragprov.provenance import (
-    SourceRegistry,
-    decode_provenance_polynomial,
-)
+from graphragprov.provenance import SourceRegistry, decode_provenance_polynomial
 from graphragprov.qaagent.config import QAAgentConfiguration
-from graphragprov.qaagent.observation import (
-    QAAgentObservation,
-    observe_semantic_triples,
-)
+from graphragprov.qaagent.observation import QAAgentObservation, observe_semantic_triples
 from graphragprov.qaagent.prompt import build_tuple_qa_prompt
-from graphragprov.qaagent.response import (
-    QAAgentDecision,
-    parse_qa_agent_response,
-)
+from graphragprov.qaagent.response import QAAgentDecision, parse_qa_agent_response
 from graphragprov.qaagent.scope import compile_scoped_select_query
-from graphragprov.qaagent.trace import (
-    QAAnswerProvenance,
-    QAQueryAttempt,
-)
-from graphragprov.query import (
-    PROVENANCE_VARIABLE,
-    execute_provenance_query,
-)
+from graphragprov.qaagent.trace import QAAnswerProvenance, QAQueryAttempt
+from graphragprov.query import PROVENANCE_VARIABLE, execute_provenance_query
 
 GenerateQAResponse = Callable[[str], str]
 
@@ -61,12 +46,7 @@ class QAAgentRunResult:
         if len(self.query_attempts) > self.configuration.max_turns:
             raise ValueError("query-attempt count exceeds configured maximum turns")
 
-        expected_turn_indices = tuple(
-            range(
-                1,
-                len(self.query_attempts) + 1,
-            )
-        )
+        expected_turn_indices = tuple(range(1, len(self.query_attempts) + 1))
 
         actual_turn_indices = tuple(attempt.turn_index for attempt in self.query_attempts)
 
@@ -114,15 +94,9 @@ def run_tuple_qa_agent(
 
     resolved_unit_ids = None if source_unit_ids is None else tuple(source_unit_ids)
 
-    _validate_scope(
-        configuration=configuration,
-        source_unit_ids=resolved_unit_ids,
-    )
+    _validate_scope(configuration=configuration, source_unit_ids=resolved_unit_ids)
 
-    observation = observe_semantic_triples(
-        graphdb=graphdb,
-        source_unit_ids=resolved_unit_ids,
-    )
+    observation = observe_semantic_triples(graphdb=graphdb, source_unit_ids=resolved_unit_ids)
 
     base_prompt = build_tuple_qa_prompt(
         question=question,
@@ -134,21 +108,13 @@ def run_tuple_qa_agent(
     )
 
     attempts: list[QAQueryAttempt] = []
-    completed_turns: list[
-        tuple[
-            QAAgentDecision,
-            QAQueryAttempt,
-        ]
-    ] = []
+    completed_turns: list[tuple[QAAgentDecision, QAQueryAttempt]] = []
 
     final_prompt: str | None = None
     final_raw_response: str | None = None
     final_decision: QAAgentDecision | None = None
 
-    for turn_index in range(
-        1,
-        configuration.max_turns + 1,
-    ):
+    for turn_index in range(1, configuration.max_turns + 1):
         prompt = _build_turn_prompt(
             base_prompt=base_prompt,
             completed_turns=completed_turns,
@@ -178,8 +144,7 @@ def run_tuple_qa_agent(
         semantic_sparql = decision.sparql.strip()
 
         scoped_sparql = compile_scoped_select_query(
-            semantic_sparql,
-            source_unit_ids=resolved_unit_ids,
+            semantic_sparql, source_unit_ids=resolved_unit_ids
         )
 
         attempt = execute_qa_query_attempt(
@@ -203,12 +168,7 @@ def run_tuple_qa_agent(
                 query_attempts=tuple(attempts),
             )
 
-        completed_turns.append(
-            (
-                decision,
-                attempt,
-            )
-        )
+        completed_turns.append((decision, attempt))
 
     if final_prompt is None or final_raw_response is None or final_decision is None:
         raise AssertionError("QA-agent configuration allowed no turns")
@@ -238,11 +198,7 @@ def execute_qa_query_attempt(
         raise ValueError("query-attempt turn index must be positive")
 
     try:
-        execution = execute_provenance_query(
-            sparql=scoped_sparql,
-            graphdb=graphdb,
-            npcs=npcs,
-        )
+        execution = execute_provenance_query(sparql=scoped_sparql, graphdb=graphdb, npcs=npcs)
     except Exception as error:
         return QAQueryAttempt(
             turn_index=turn_index,
@@ -255,15 +211,9 @@ def execute_qa_query_attempt(
         )
 
     try:
-        original_bindings = _bindings(
-            execution.original_result,
-            result_name="original",
-        )
+        original_bindings = _bindings(execution.original_result, result_name="original")
 
-        rewritten_bindings = _bindings(
-            execution.rewritten_result,
-            result_name="rewritten",
-        )
+        rewritten_bindings = _bindings(execution.rewritten_result, result_name="rewritten")
 
         if not original_bindings and not rewritten_bindings:
             return QAQueryAttempt(
@@ -286,11 +236,7 @@ def execute_qa_query_attempt(
             )
 
         answer_provenances = tuple(
-            _decode_answer_provenance(
-                binding,
-                registry=registry,
-            )
-            for binding in rewritten_bindings
+            _decode_answer_provenance(binding, registry=registry) for binding in rewritten_bindings
         )
     except Exception as error:
         return QAQueryAttempt(
@@ -318,12 +264,7 @@ def execute_qa_query_attempt(
 def _build_turn_prompt(
     *,
     base_prompt: str,
-    completed_turns: list[
-        tuple[
-            QAAgentDecision,
-            QAQueryAttempt,
-        ]
-    ],
+    completed_turns: list[tuple[QAAgentDecision, QAQueryAttempt]],
     turn_index: int,
     max_turns: int,
 ) -> str:
@@ -357,19 +298,12 @@ def _build_turn_prompt(
             ("Return exactly the same JSON decision schema required by the original instructions."),
             "",
             "Previous turns:",
-            json.dumps(
-                history_payload,
-                ensure_ascii=False,
-                indent=2,
-                sort_keys=True,
-            ),
+            json.dumps(history_payload, ensure_ascii=False, indent=2, sort_keys=True),
         ]
     )
 
 
-def _query_attempt_feedback(
-    attempt: QAQueryAttempt,
-) -> dict[str, object]:
+def _query_attempt_feedback(attempt: QAQueryAttempt) -> dict[str, object]:
     """Return concise model-facing feedback from one real query execution."""
 
     feedback: dict[str, object] = {
@@ -390,16 +324,11 @@ def _query_attempt_feedback(
 
 
 def _decode_answer_provenance(
-    binding: dict[str, object],
-    *,
-    registry: SourceRegistry,
+    binding: dict[str, object], *, registry: SourceRegistry
 ) -> QAAnswerProvenance:
     provenance_binding = binding.get(PROVENANCE_VARIABLE)
 
-    if not isinstance(
-        provenance_binding,
-        dict,
-    ):
+    if not isinstance(provenance_binding, dict):
         raise ValueError(f"rewritten answer binding has no {PROVENANCE_VARIABLE!r} value")
 
     polynomial = provenance_binding.get("value")
@@ -412,23 +341,12 @@ def _decode_answer_provenance(
     if not answer_binding:
         raise ValueError("rewritten result contains provenance without an answer binding")
 
-    decoded = decode_provenance_polynomial(
-        polynomial,
-        registry=registry,
-    )
+    decoded = decode_provenance_polynomial(polynomial, registry=registry)
 
-    return QAAnswerProvenance(
-        binding=answer_binding,
-        polynomial=polynomial,
-        decoded=decoded,
-    )
+    return QAAnswerProvenance(binding=answer_binding, polynomial=polynomial, decoded=decoded)
 
 
-def _bindings(
-    result: dict[str, object],
-    *,
-    result_name: str,
-) -> tuple[dict[str, object], ...]:
+def _bindings(result: dict[str, object], *, result_name: str) -> tuple[dict[str, object], ...]:
     raw_results = result.get("results")
 
     if not isinstance(raw_results, dict):
@@ -445,20 +363,13 @@ def _bindings(
         if not isinstance(binding, dict):
             raise ValueError(f"{result_name} query binding {index} must be an object")
 
-        bindings.append(
-            cast(
-                dict[str, object],
-                binding,
-            )
-        )
+        bindings.append(cast(dict[str, object], binding))
 
     return tuple(bindings)
 
 
 def _validate_scope(
-    *,
-    configuration: QAAgentConfiguration,
-    source_unit_ids: tuple[str, ...] | None,
+    *, configuration: QAAgentConfiguration, source_unit_ids: tuple[str, ...] | None
 ) -> None:
     if configuration.graph_scope == "repository_all":
         if source_unit_ids is not None:

@@ -17,10 +17,7 @@ class GroundedValue:
             raise ValueError("grounded value must contain evidence")
 
     def to_dict(self) -> dict[str, Any]:
-        return {
-            "value": self.value,
-            "evidence": [span.to_dict() for span in self.evidence],
-        }
+        return {"value": self.value, "evidence": [span.to_dict() for span in self.evidence]}
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "GroundedValue":

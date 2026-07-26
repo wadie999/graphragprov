@@ -9,10 +9,7 @@ from graphragprov.rdf.terms import rdf_triple, unit_graph_iri
 from graphragprov.rdf.vocabulary import PROV
 
 
-def serialize_extraction_trig_star(
-    source: SourceUnit,
-    extraction: ExtractionResult,
-) -> str:
+def serialize_extraction_trig_star(source: SourceUnit, extraction: ExtractionResult) -> str:
     """Serialize RDF triples and their grounded provenance annotations."""
 
     extraction.validate_against(source)
@@ -25,10 +22,7 @@ def serialize_extraction_trig_star(
 
         triples.add(f"{subject.n3()} {predicate.n3()} {object_.n3()} .")
 
-        token = occurrence_token(
-            unit_id=source.unit_id,
-            statement=statement,
-        )
+        token = occurrence_token(unit_id=source.unit_id, statement=statement)
 
         annotations.add(
             f"<< {subject.n3()} {predicate.n3()} {object_.n3()} >> "
