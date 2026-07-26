@@ -15,9 +15,7 @@ from graphragprov.qaagent.observation import (
     build_semantic_triple_observation_query,
     observe_semantic_triples,
 )
-from graphragprov.qaagent.prompt import (
-    build_tuple_qa_prompt,
-)
+from graphragprov.qaagent.prompt import build_tuple_qa_prompt
 from graphragprov.qaagent.response import (
     QAAgentDecision,
     QAAgentDecisionStatus,
@@ -29,9 +27,7 @@ from graphragprov.qaagent.run import (
     execute_qa_query_attempt,
     run_tuple_qa_agent,
 )
-from graphragprov.qaagent.scope import (
-    compile_scoped_select_query,
-)
+from graphragprov.qaagent.scope import compile_scoped_select_query
 from graphragprov.qaagent.trace import (
     QAAnswerProvenance,
     QAProvenanceStatus,

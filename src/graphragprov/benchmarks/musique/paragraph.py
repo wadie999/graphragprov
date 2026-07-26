@@ -11,10 +11,7 @@ class MusiqueParagraph:
 
     @property
     def unit_id(self) -> str:
-        return source_unit_id(
-            title=self.title,
-            text=self.text,
-        )
+        return source_unit_id(title=self.title, text=self.text)
 
     @property
     def short_unit_id(self) -> str:

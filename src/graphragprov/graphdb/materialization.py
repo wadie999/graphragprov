@@ -14,10 +14,7 @@ from graphragprov.rdf.terms import unit_graph_iri
 class TriGStarUploader(Protocol):
     """Minimal upload contract required by graph materialization."""
 
-    def upload_trig_star(
-        self,
-        content: str | bytes,
-    ) -> None:
+    def upload_trig_star(self, content: str | bytes) -> None:
         """Upload one TriG-star document."""
 
 
@@ -40,9 +37,7 @@ class GraphMaterializationSummary:
 
 
 def materialize_grounded_extractions(
-    runs: Iterable[GroundedExtractionRun],
-    *,
-    graphdb: TriGStarUploader,
+    runs: Iterable[GroundedExtractionRun], *, graphdb: TriGStarUploader
 ) -> GraphMaterializationSummary:
     """Serialize and upload each unique grounded source extraction once.
 
@@ -50,10 +45,7 @@ def materialize_grounded_extractions(
     rerunning a completed or partially completed materialization idempotent.
     """
 
-    runs_by_unit_id: dict[
-        str,
-        GroundedExtractionRun,
-    ] = {}
+    runs_by_unit_id: dict[str, GroundedExtractionRun] = {}
 
     graph_iris: list[str] = []
     statement_count = 0
@@ -72,10 +64,7 @@ def materialize_grounded_extractions(
 
         run.extraction.validate_against(run.source)
 
-        trig_star = serialize_extraction_trig_star(
-            run.source,
-            run.extraction,
-        )
+        trig_star = serialize_extraction_trig_star(run.source, run.extraction)
 
         graphdb.upload_trig_star(trig_star)
 

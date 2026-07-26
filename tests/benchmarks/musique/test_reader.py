@@ -6,10 +6,7 @@ from graphragprov.config import musique_dataset_path
 DATASET_PATH = musique_dataset_path()
 
 
-@pytest.mark.skipif(
-    not DATASET_PATH.is_file(),
-    reason="The MuSiQue dataset is not installed.",
-)
+@pytest.mark.skipif(not DATASET_PATH.is_file(), reason="The MuSiQue dataset is not installed.")
 def test_read_first_real_case() -> None:
     case = read_first_case(DATASET_PATH)
 

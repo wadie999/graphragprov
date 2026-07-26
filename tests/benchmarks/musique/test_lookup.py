@@ -6,10 +6,7 @@ from graphragprov.config import musique_dataset_path
 DATASET_PATH = musique_dataset_path()
 
 
-@pytest.mark.skipif(
-    not DATASET_PATH.is_file(),
-    reason="The MuSiQue dataset is not installed.",
-)
+@pytest.mark.skipif(not DATASET_PATH.is_file(), reason="The MuSiQue dataset is not installed.")
 def test_find_source_unit() -> None:
     case = read_first_case(DATASET_PATH)
     paragraph = case.paragraphs[0]
@@ -30,10 +27,7 @@ def test_find_source_unit() -> None:
     assert unit.occurrences
 
 
-@pytest.mark.skipif(
-    not DATASET_PATH.is_file(),
-    reason="The MuSiQue dataset is not installed.",
-)
+@pytest.mark.skipif(not DATASET_PATH.is_file(), reason="The MuSiQue dataset is not installed.")
 def test_missing_source_unit_raises_key_error() -> None:
     missing_id = f"u_{'0' * 64}"
 

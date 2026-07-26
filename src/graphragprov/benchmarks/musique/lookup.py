@@ -42,8 +42,5 @@ def find_unit(path: Path, unit_reference: str) -> MusiqueSourceUnit:
         raise KeyError(f"MuSiQue source unit not found: {unit_reference}")
 
     return MusiqueSourceUnit(
-        unit_id=matched_id,
-        title=title,
-        text=text,
-        occurrences=tuple(occurrences),
+        unit_id=matched_id, title=title, text=text, occurrences=tuple(occurrences)
     )

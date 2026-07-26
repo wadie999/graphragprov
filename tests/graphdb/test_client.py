@@ -21,24 +21,14 @@ from graphragprov.graphdb.client import (
 
 
 class _FakeResponse:
-    def __init__(
-        self,
-        *,
-        status: int,
-        body: bytes = b"",
-    ) -> None:
+    def __init__(self, *, status: int, body: bytes = b"") -> None:
         self._status = status
         self._body = body
 
     def __enter__(self) -> "_FakeResponse":
         return self
 
-    def __exit__(
-        self,
-        exception_type: object,
-        exception: object,
-        traceback: object,
-    ) -> None:
+    def __exit__(self, exception_type: object, exception: object, traceback: object) -> None:
         return None
 
     def getcode(self) -> int:
@@ -48,25 +38,11 @@ class _FakeResponse:
         return self._body
 
 
-def test_client_is_created_from_environment(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    monkeypatch.setenv(
-        GRAPHDB_URL_ENV,
-        "http://localhost:7200/",
-    )
-    monkeypatch.setenv(
-        GRAPHDB_REPOSITORY_ENV,
-        "graph repo",
-    )
-    monkeypatch.setenv(
-        GRAPHDB_USERNAME_ENV,
-        "wadie",
-    )
-    monkeypatch.setenv(
-        GRAPHDB_PASSWORD_ENV,
-        "secret",
-    )
+def test_client_is_created_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(GRAPHDB_URL_ENV, "http://localhost:7200/")
+    monkeypatch.setenv(GRAPHDB_REPOSITORY_ENV, "graph repo")
+    monkeypatch.setenv(GRAPHDB_USERNAME_ENV, "wadie")
+    monkeypatch.setenv(GRAPHDB_PASSWORD_ENV, "secret")
 
     client = GraphDBClient.from_environment()
 
@@ -77,29 +53,17 @@ def test_client_is_created_from_environment(
     assert client.repository_endpoint == ("http://localhost:7200/repositories/graph%20repo")
 
 
-def test_upload_trig_star_sends_expected_request(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_upload_trig_star_sends_expected_request(monkeypatch: pytest.MonkeyPatch) -> None:
     captured_requests: list[tuple[Request, float]] = []
 
-    def fake_urlopen(
-        request: Request,
-        *,
-        timeout: float,
-    ) -> _FakeResponse:
+    def fake_urlopen(request: Request, *, timeout: float) -> _FakeResponse:
         captured_requests.append((request, timeout))
         return _FakeResponse(status=204)
 
-    monkeypatch.setattr(
-        client_module,
-        "urlopen",
-        fake_urlopen,
-    )
+    monkeypatch.setattr(client_module, "urlopen", fake_urlopen)
 
     client = GraphDBClient(
-        base_url="http://localhost:7200",
-        repository="graphragprov",
-        timeout_seconds=12.0,
+        base_url="http://localhost:7200", repository="graphragprov", timeout_seconds=12.0
     )
 
     content = (
@@ -120,50 +84,23 @@ def test_upload_trig_star_sends_expected_request(
     assert timeout == 12.0
 
 
-def test_query_sends_sparql_and_decodes_json(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_query_sends_sparql_and_decodes_json(monkeypatch: pytest.MonkeyPatch) -> None:
     captured_requests: list[Request] = []
 
     response_payload = {
-        "head": {
-            "vars": ["count"],
-        },
-        "results": {
-            "bindings": [
-                {
-                    "count": {
-                        "type": "literal",
-                        "value": "8",
-                    }
-                }
-            ]
-        },
+        "head": {"vars": ["count"]},
+        "results": {"bindings": [{"count": {"type": "literal", "value": "8"}}]},
     }
 
-    def fake_urlopen(
-        request: Request,
-        *,
-        timeout: float,
-    ) -> _FakeResponse:
+    def fake_urlopen(request: Request, *, timeout: float) -> _FakeResponse:
         del timeout
         captured_requests.append(request)
 
-        return _FakeResponse(
-            status=200,
-            body=json.dumps(response_payload).encode(),
-        )
+        return _FakeResponse(status=200, body=json.dumps(response_payload).encode())
 
-    monkeypatch.setattr(
-        client_module,
-        "urlopen",
-        fake_urlopen,
-    )
+    monkeypatch.setattr(client_module, "urlopen", fake_urlopen)
 
-    client = GraphDBClient(
-        base_url="http://localhost:7200",
-        repository="graphragprov",
-    )
+    client = GraphDBClient(base_url="http://localhost:7200", repository="graphragprov")
 
     sparql = "SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }"
 
@@ -181,36 +118,18 @@ def test_query_sends_sparql_and_decodes_json(
 
     form = parse_qs(request.data.decode())
 
-    assert form == {
-        "query": [sparql],
-    }
+    assert form == {"query": [sparql]}
 
 
-def test_connection_failure_becomes_graphdb_error(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    def failing_urlopen(
-        request: Request,
-        *,
-        timeout: float,
-    ) -> _FakeResponse:
+def test_connection_failure_becomes_graphdb_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    def failing_urlopen(request: Request, *, timeout: float) -> _FakeResponse:
         del request
         del timeout
         raise URLError("connection refused")
 
-    monkeypatch.setattr(
-        client_module,
-        "urlopen",
-        failing_urlopen,
-    )
+    monkeypatch.setattr(client_module, "urlopen", failing_urlopen)
 
-    client = GraphDBClient(
-        base_url="http://localhost:7200",
-        repository="graphragprov",
-    )
+    client = GraphDBClient(base_url="http://localhost:7200", repository="graphragprov")
 
-    with pytest.raises(
-        GraphDBError,
-        match="could not reach GraphDB: connection refused",
-    ):
+    with pytest.raises(GraphDBError, match="could not reach GraphDB: connection refused"):
         client.query("ASK { ?s ?p ?o }")

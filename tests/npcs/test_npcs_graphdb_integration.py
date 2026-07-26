@@ -6,18 +6,11 @@ import pytest
 
 from graphragprov.domain import SourceUnit
 from graphragprov.graphdb import GraphDBClient
-from graphragprov.graphdb.client import (
-    GRAPHDB_REPOSITORY_ENV,
-    GRAPHDB_URL_ENV,
-)
+from graphragprov.graphdb.client import GRAPHDB_REPOSITORY_ENV, GRAPHDB_URL_ENV
 from graphragprov.hashing import source_unit_id
 from graphragprov.npcs import NPCSClient
 from graphragprov.npcs.client import NPCS_URL_ENV
-from graphragprov.provenance import (
-    DecodedProvenance,
-    SourceRegistry,
-    decode_provenance_polynomial,
-)
+from graphragprov.provenance import DecodedProvenance, SourceRegistry, decode_provenance_polynomial
 from graphragprov.query import execute_provenance_query
 
 GRAPH = "urn:graphragprov:unit:u_38162077dce1d7d1"
@@ -38,10 +31,7 @@ BROWARD_TEXT = (
 )
 
 BROWARD_SOURCE = SourceUnit(
-    unit_id=source_unit_id(
-        title=BROWARD_TITLE,
-        text=BROWARD_TEXT,
-    ),
+    unit_id=source_unit_id(title=BROWARD_TITLE, text=BROWARD_TEXT),
     title=BROWARD_TITLE,
     text=BROWARD_TEXT,
 )
@@ -56,14 +46,7 @@ TOKEN_SOUTHWEST = "u_38162077dce1d7d1:s=tx:4-36:p=tx:113-119:o=tx:120-146:t=2605
 
 TOKEN_COUNTRY_ESTATES = "u_38162077dce1d7d1:s=tx:4-36:p=tx:71-81:o=tx:86-112:t=4d7e942b"
 
-EXPECTED_EVIDENCE_QUOTES: dict[
-    str,
-    tuple[
-        tuple[str, ...],
-        tuple[str, ...],
-        tuple[str, ...],
-    ],
-] = {
+EXPECTED_EVIDENCE_QUOTES: dict[str, tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]]] = {
     TOKEN_OPERATOR: (
         ("Broward Correctional Institution",),
         ("operated by",),
@@ -147,70 +130,34 @@ WHERE {{
 """
 
 
-def canonical_derivations(
-    *derivations: tuple[str, ...],
-) -> tuple[tuple[str, ...], ...]:
+def canonical_derivations(*derivations: tuple[str, ...]) -> tuple[tuple[str, ...], ...]:
     """Return the same canonical ordering used by the polynomial parser."""
 
     return tuple(sorted(tuple(sorted(derivation)) for derivation in derivations))
 
 
 @pytest.mark.parametrize(
-    (
-        "sparql",
-        "expected_derivations",
-    ),
+    ("sparql", "expected_derivations"),
     [
-        (
-            QUERY_ONE_STATEMENT,
-            canonical_derivations((TOKEN_OPERATOR,)),
-        ),
-        (
-            QUERY_ONE_JOIN,
-            canonical_derivations(
-                (
-                    TOKEN_OFFICE,
-                    TOKEN_OPERATOR,
-                )
-            ),
-        ),
-        (
-            QUERY_TWO_JOINS,
-            canonical_derivations(
-                (
-                    TOKEN_OFFICE,
-                    TOKEN_SOUTHWEST,
-                    TOKEN_OPERATOR,
-                )
-            ),
-        ),
+        (QUERY_ONE_STATEMENT, canonical_derivations((TOKEN_OPERATOR,))),
+        (QUERY_ONE_JOIN, canonical_derivations((TOKEN_OFFICE, TOKEN_OPERATOR))),
+        (QUERY_TWO_JOINS, canonical_derivations((TOKEN_OFFICE, TOKEN_SOUTHWEST, TOKEN_OPERATOR))),
         (
             QUERY_ALTERNATIVE_DERIVATIONS,
             canonical_derivations(
-                (
-                    TOKEN_OFFICE,
-                    TOKEN_SOUTHWEST,
-                    TOKEN_OPERATOR,
-                ),
-                (
-                    TOKEN_OFFICE,
-                    TOKEN_COUNTRY_ESTATES,
-                    TOKEN_OPERATOR,
-                ),
+                (TOKEN_OFFICE, TOKEN_SOUTHWEST, TOKEN_OPERATOR),
+                (TOKEN_OFFICE, TOKEN_COUNTRY_ESTATES, TOKEN_OPERATOR),
             ),
         ),
     ],
 )
 def test_real_npcs_graphdb_query_path(
-    sparql: str,
-    expected_derivations: tuple[tuple[str, ...], ...],
+    sparql: str, expected_derivations: tuple[tuple[str, ...], ...]
 ) -> None:
     _require_services()
 
     execution = execute_provenance_query(
-        sparql=sparql,
-        graphdb=GraphDBClient.from_environment(),
-        npcs=NPCSClient.from_environment(),
+        sparql=sparql, graphdb=GraphDBClient.from_environment(), npcs=NPCSClient.from_environment()
     )
 
     assert _answers(execution.original_result) == {EXPECTED_ANSWER}
@@ -221,25 +168,15 @@ def test_real_npcs_graphdb_query_path(
 
     polynomial = _polynomial(execution.rewritten_result)
 
-    decoded = decode_provenance_polynomial(
-        polynomial,
-        registry=SOURCE_REGISTRY,
-    )
+    decoded = decode_provenance_polynomial(polynomial, registry=SOURCE_REGISTRY)
 
     assert _decoded_token_derivations(decoded) == expected_derivations
 
-    _assert_exact_source_evidence(
-        decoded,
-        expected_derivations=expected_derivations,
-    )
+    _assert_exact_source_evidence(decoded, expected_derivations=expected_derivations)
 
 
 def _require_services() -> None:
-    required = (
-        GRAPHDB_URL_ENV,
-        GRAPHDB_REPOSITORY_ENV,
-        NPCS_URL_ENV,
-    )
+    required = (GRAPHDB_URL_ENV, GRAPHDB_REPOSITORY_ENV, NPCS_URL_ENV)
 
     missing = [variable for variable in required if not os.getenv(variable)]
 
@@ -247,9 +184,7 @@ def _require_services() -> None:
         pytest.skip("NPCS and GraphDB integration requires: " + ", ".join(missing))
 
 
-def _answers(
-    result: dict[str, object],
-) -> set[str]:
+def _answers(result: dict[str, object]) -> set[str]:
     bindings = _bindings(result)
     answers: set[str] = set()
 
@@ -265,9 +200,7 @@ def _answers(
     return answers
 
 
-def _polynomial(
-    result: dict[str, object],
-) -> str:
+def _polynomial(result: dict[str, object]) -> str:
     bindings = _bindings(result)
     assert len(bindings) == 1
 
@@ -281,9 +214,7 @@ def _polynomial(
     return value
 
 
-def _decoded_token_derivations(
-    decoded: DecodedProvenance,
-) -> tuple[tuple[str, ...], ...]:
+def _decoded_token_derivations(decoded: DecodedProvenance) -> tuple[tuple[str, ...], ...]:
     return tuple(
         tuple(occurrence.token for occurrence in derivation.occurrences)
         for derivation in decoded.derivations
@@ -291,9 +222,7 @@ def _decoded_token_derivations(
 
 
 def _assert_exact_source_evidence(
-    decoded: DecodedProvenance,
-    *,
-    expected_derivations: tuple[tuple[str, ...], ...],
+    decoded: DecodedProvenance, *, expected_derivations: tuple[tuple[str, ...], ...]
 ) -> None:
     expected_tokens = {token for derivation in expected_derivations for token in derivation}
 
@@ -318,9 +247,7 @@ def _assert_exact_source_evidence(
     assert observed_tokens == expected_tokens
 
 
-def _bindings(
-    result: dict[str, object],
-) -> list[dict[str, object]]:
+def _bindings(result: dict[str, object]) -> list[dict[str, object]]:
     results = result.get("results")
     assert isinstance(results, dict)
 

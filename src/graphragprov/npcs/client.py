@@ -55,28 +55,18 @@ class NPCSClient:
             raise ValueError("SPARQL query must not be empty")
 
         payload = json.dumps(
-            {
-                "input1": "SPARQL_Star",
-                "input2": "query",
-                "input3": sparql,
-            }
+            {"input1": "SPARQL_Star", "input2": "query", "input3": sparql}
         ).encode()
 
         request = Request(
             self.rewrite_endpoint,
             data=payload,
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "text/plain",
-            },
+            headers={"Content-Type": "application/json", "Accept": "text/plain"},
             method="POST",
         )
 
         try:
-            with urlopen(
-                request,
-                timeout=self.timeout_seconds,
-            ) as response:
+            with urlopen(request, timeout=self.timeout_seconds) as response:
                 response_body = cast(bytes, response.read())
                 rewritten = response_body.decode().strip()
         except HTTPError as error:

@@ -1,10 +1,7 @@
 import json
 
 from graphragprov.domain.source_unit import SourceUnit
-from graphragprov.extraction.prompt import (
-    PROMPT_VERSION,
-    build_extraction_prompt,
-)
+from graphragprov.extraction.prompt import PROMPT_VERSION, build_extraction_prompt
 
 SOURCE = SourceUnit(
     unit_id="u_test_should_not_reach_the_model",
@@ -25,12 +22,7 @@ def test_prompt_contains_exact_title_and_text() -> None:
     prompt = build_extraction_prompt(SOURCE)
 
     expected_source = json.dumps(
-        {
-            "title": SOURCE.title,
-            "text": SOURCE.text,
-        },
-        ensure_ascii=False,
-        indent=2,
+        {"title": SOURCE.title, "text": SOURCE.text}, ensure_ascii=False, indent=2
     )
 
     assert expected_source in prompt

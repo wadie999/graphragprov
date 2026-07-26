@@ -16,34 +16,16 @@ from graphragprov.rdf.terms import (
 
 
 def _evidence(quote: str) -> tuple[TextSpan, ...]:
-    return (
-        TextSpan(
-            segment=TextSegment.TEXT,
-            start=0,
-            end=len(quote),
-            quote=quote,
-        ),
-    )
+    return (TextSpan(segment=TextSegment.TEXT, start=0, end=len(quote), quote=quote),)
 
 
 def _statement(
-    *,
-    object_value: str = "London",
-    datatype: LiteralDatatype | None = None,
+    *, object_value: str = "London", datatype: LiteralDatatype | None = None
 ) -> GroundedStatement:
     return GroundedStatement(
-        subject=GroundedValue(
-            value="Ada Lovelace",
-            evidence=_evidence("Ada"),
-        ),
-        predicate=GroundedValue(
-            value="bornIn",
-            evidence=_evidence("born"),
-        ),
-        object=GroundedValue(
-            value=object_value,
-            evidence=_evidence(object_value),
-        ),
+        subject=GroundedValue(value="Ada Lovelace", evidence=_evidence("Ada")),
+        predicate=GroundedValue(value="bornIn", evidence=_evidence("born")),
+        object=GroundedValue(value=object_value, evidence=_evidence(object_value)),
         object_datatype=datatype,
     )
 
@@ -60,10 +42,7 @@ def test_entity_and_predicate_namespaces_are_distinct() -> None:
 
 
 def test_unit_graph_iri_contains_the_compact_source_unit_id() -> None:
-    unit_id = source_unit_id(
-        title="Ada Lovelace",
-        text="She was born in London.",
-    )
+    unit_id = source_unit_id(title="Ada Lovelace", text="She was born in London.")
 
     assert unit_graph_iri(unit_id) == URIRef("urn:graphragprov:unit:u_8e3c34a7682742fa")
 
@@ -90,22 +69,13 @@ def test_entity_object_becomes_an_entity_iri() -> None:
         (LiteralDatatype.YEAR, "2018", XSD.gYear),
         (LiteralDatatype.YEAR_MONTH, "2018-03", XSD.gYearMonth),
         (LiteralDatatype.DATE, "2018-03-06", XSD.date),
-        (
-            LiteralDatatype.DATE_TIME,
-            "2018-03-06T12:30:00",
-            XSD.dateTime,
-        ),
+        (LiteralDatatype.DATE_TIME, "2018-03-06T12:30:00", XSD.dateTime),
     ],
 )
 def test_literal_objects_preserve_their_datatype(
-    datatype: LiteralDatatype,
-    value: str,
-    expected_iri: URIRef,
+    datatype: LiteralDatatype, value: str, expected_iri: URIRef
 ) -> None:
-    statement = _statement(
-        object_value=value,
-        datatype=datatype,
-    )
+    statement = _statement(object_value=value, datatype=datatype)
 
     rdf_object = statement_object(statement)
 
@@ -116,10 +86,7 @@ def test_literal_objects_preserve_their_datatype(
 
 def test_literal_and_entity_with_same_value_are_different_rdf_terms() -> None:
     entity_statement = _statement(object_value="2018")
-    literal_statement = _statement(
-        object_value="2018",
-        datatype=LiteralDatatype.YEAR,
-    )
+    literal_statement = _statement(object_value="2018", datatype=LiteralDatatype.YEAR)
 
     assert statement_object(entity_statement) != statement_object(literal_statement)
 

@@ -8,25 +8,11 @@ from typing import Literal
 from graphragprov.provenance import DecodedProvenance
 from graphragprov.query import ProvenanceQueryExecution
 
-QAQueryPurpose = Literal[
-    "inspection",
-    "candidate",
-    "final",
-]
+QAQueryPurpose = Literal["inspection", "candidate", "final"]
 
-QAProvenanceStatus = Literal[
-    "not_requested",
-    "no_answers",
-    "decoded",
-    "unsupported",
-    "failed",
-]
+QAProvenanceStatus = Literal["not_requested", "no_answers", "decoded", "unsupported", "failed"]
 
-_QUERY_PURPOSES: tuple[QAQueryPurpose, ...] = (
-    "inspection",
-    "candidate",
-    "final",
-)
+_QUERY_PURPOSES: tuple[QAQueryPurpose, ...] = ("inspection", "candidate", "final")
 
 _PROVENANCE_STATUSES: tuple[QAProvenanceStatus, ...] = (
     "not_requested",

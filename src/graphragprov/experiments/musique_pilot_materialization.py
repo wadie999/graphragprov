@@ -3,41 +3,25 @@
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import re
-from datetime import UTC, datetime
 from pathlib import Path
-from typing import cast
 
-from graphragprov.benchmarks.musique import (
-    MusiqueCase,
-    collect_musique_source_units,
-    select_cases,
-)
+from graphragprov.benchmarks.musique import MusiqueCase, collect_musique_source_units, select_cases
 from graphragprov.config import musique_dataset_path
-from graphragprov.extraction import (
-    GroundedExtractionBatchResult,
-    load_or_run_grounded_extraction_batch,
+from graphragprov.experiments import (
+    MUSIQUE_SOURCE_CATALOG_FILENAME,
+    MusiqueMaterializationManifest,
+    MusiqueSourceCatalog,
+    write_musique_materialization_manifest,
+    write_musique_source_catalog,
 )
-from graphragprov.extraction.batch import (
-    GroundedExtractionBatchItem,
-)
+from graphragprov.extraction import load_or_run_grounded_extraction_batch
+from graphragprov.extraction.batch import GroundedExtractionBatchItem
 from graphragprov.extraction.prompt import PROMPT_VERSION
-from graphragprov.extraction.run import (
-    GroundedExtractionFailure,
-)
-from graphragprov.graphdb import (
-    GraphDBClient,
-    GraphMaterializationSummary,
-    materialize_grounded_extractions,
-)
-from graphragprov.providers.deepseek import (
-    DEFAULT_DEEPSEEK_MODEL,
-    deepseek_generator,
-)
-
-_MANIFEST_FORMAT = "musique-pilot-materialization-v2"
+from graphragprov.extraction.run import GroundedExtractionFailure
+from graphragprov.graphdb import GraphDBClient, materialize_grounded_extractions
+from graphragprov.providers.deepseek import DEFAULT_DEEPSEEK_MODEL, deepseek_generator
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -47,23 +31,11 @@ def parse_arguments() -> argparse.Namespace:
             "answerable 2-hop, 3-hop, and 4-hop MuSiQue case."
         )
     )
+    parser.add_argument("--model", default=DEFAULT_DEEPSEEK_MODEL)
+    parser.add_argument("--max-tokens", type=int, default=16_384)
+    parser.add_argument("--cache-root", type=Path)
     parser.add_argument(
-        "--model",
-        default=DEFAULT_DEEPSEEK_MODEL,
-    )
-    parser.add_argument(
-        "--max-tokens",
-        type=int,
-        default=16_384,
-    )
-    parser.add_argument(
-        "--cache-root",
-        type=Path,
-    )
-    parser.add_argument(
-        "--manifest",
-        type=Path,
-        default=Path("runs/musique_pilot/materialization.json"),
+        "--manifest", type=Path, default=Path("runs/musique_pilot/materialization.json")
     )
     parser.add_argument(
         "--allow-existing-statements",
@@ -101,6 +73,8 @@ def main() -> None:
     cases = _select_pilot_cases(dataset_path)
     source_units = collect_musique_source_units(cases)
 
+    source_catalog = MusiqueSourceCatalog(sources=source_units)
+
     cache_root = (
         arguments.cache_root
         if arguments.cache_root is not None
@@ -132,9 +106,7 @@ def main() -> None:
     print(f"GraphDB repository:    {graphdb.repository}")
 
     generate_response = deepseek_generator(
-        api_key=api_key,
-        model=arguments.model,
-        max_tokens=arguments.max_tokens,
+        api_key=api_key, model=arguments.model, max_tokens=arguments.max_tokens
     )
 
     batch = load_or_run_grounded_extraction_batch(
@@ -145,27 +117,26 @@ def main() -> None:
         progress=(_print_extraction_progress if arguments.verbose else None),
     )
 
-    materialization = materialize_grounded_extractions(
-        batch.runs,
-        graphdb=graphdb,
-    )
+    materialization = materialize_grounded_extractions(batch.runs, graphdb=graphdb)
 
-    manifest = _build_manifest(
+    manifest = MusiqueMaterializationManifest.from_execution(
         dataset_path=dataset_path,
         cases=cases,
         batch=batch,
         materialization=materialization,
+        prompt_version=PROMPT_VERSION,
         model=arguments.model,
         max_tokens=arguments.max_tokens,
         cache_root=cache_root,
         graphdb=graphdb,
-        existing_statement_count=(existing_statement_count),
+        existing_statement_count=existing_statement_count,
     )
 
-    _write_manifest(
-        arguments.manifest,
-        manifest,
-    )
+    source_catalog_path = arguments.manifest.with_name(MUSIQUE_SOURCE_CATALOG_FILENAME)
+
+    write_musique_source_catalog(source_catalog_path, source_catalog)
+
+    write_musique_materialization_manifest(arguments.manifest, manifest)
 
     status = "complete" if not batch.failures else "partial"
 
@@ -176,7 +147,7 @@ def main() -> None:
     print(f"Failed extractions:    {len(batch.failures):>6}")
     print(f"New outcomes:          {batch.executed_count:>6}")
     print(f"Reused outcomes:       {batch.reused_count:>6}")
-    print(f"Grounded statements:  {materialization.statement_count:>6}")
+    print(f"Grounded statements:   {materialization.statement_count:>6}")
     print(f"Named graphs:          {materialization.source_count:>6}")
 
     if batch.failures:
@@ -195,20 +166,15 @@ def main() -> None:
             print(f"    report:   {error_path}")
 
     print()
+    print(f"Source catalog:        {source_catalog_path}")
     print(f"Manifest:              {arguments.manifest}")
 
 
-def _select_pilot_cases(
-    dataset_path: Path,
-) -> tuple[MusiqueCase, ...]:
+def _select_pilot_cases(dataset_path: Path) -> tuple[MusiqueCase, ...]:
     cases: list[MusiqueCase] = []
 
     for hop_count in (2, 3, 4):
-        selected = select_cases(
-            dataset_path,
-            hop_count=hop_count,
-            limit=1,
-        )
+        selected = select_cases(dataset_path, hop_count=hop_count, limit=1)
 
         if len(selected) != 1:
             raise ValueError(f"could not select one answerable {hop_count}-hop MuSiQue case")
@@ -218,14 +184,8 @@ def _select_pilot_cases(
     return tuple(cases)
 
 
-def _default_cache_root(
-    model: str,
-) -> Path:
-    model_component = re.sub(
-        r"[^A-Za-z0-9._-]+",
-        "_",
-        model,
-    ).strip("_")
+def _default_cache_root(model: str) -> Path:
+    model_component = re.sub(r"[^A-Za-z0-9._-]+", "_", model).strip("_")
 
     if not model_component:
         raise ValueError("model name cannot produce an empty cache directory name")
@@ -233,9 +193,7 @@ def _default_cache_root(
     return Path("runs") / "musique_pilot" / "extractions" / PROMPT_VERSION / model_component
 
 
-def _repository_statement_count(
-    graphdb: GraphDBClient,
-) -> int:
+def _repository_statement_count(graphdb: GraphDBClient) -> int:
     result = graphdb.query(
         """
         SELECT (COUNT(*) AS ?count)
@@ -278,97 +236,7 @@ def _repository_statement_count(
     return int(value)
 
 
-def _build_manifest(
-    *,
-    dataset_path: Path,
-    cases: tuple[MusiqueCase, ...],
-    batch: GroundedExtractionBatchResult,
-    materialization: GraphMaterializationSummary,
-    model: str,
-    max_tokens: int,
-    cache_root: Path,
-    graphdb: GraphDBClient,
-    existing_statement_count: int,
-) -> dict[str, object]:
-    status = "complete" if not batch.failures else "partial"
-
-    return {
-        "format": _MANIFEST_FORMAT,
-        "status": status,
-        "created_at": datetime.now(UTC).isoformat(),
-        "dataset_path": str(dataset_path),
-        "prompt_version": PROMPT_VERSION,
-        "model": model,
-        "max_tokens": max_tokens,
-        "cache_root": str(cache_root),
-        "graphdb": {
-            "base_url": graphdb.base_url,
-            "repository": graphdb.repository,
-            "statements_before_run": (existing_statement_count),
-        },
-        "cases": [
-            {
-                "case_id": case.case_id,
-                "hop_count": case.hop_count,
-                "question": case.question,
-                "answer": case.answer,
-                "answer_aliases": list(case.answer_aliases),
-                "answerable": case.answerable,
-                "paragraph_indices": [paragraph.index for paragraph in case.paragraphs],
-                "gold_support_indices": list(case.gold_support_indices),
-            }
-            for case in cases
-        ],
-        "paragraph_occurrence_count": sum(len(case.paragraphs) for case in cases),
-        "requested_source_count": len(batch.items),
-        "successful_extraction_count": len(batch.runs),
-        "failed_extraction_count": len(batch.failures),
-        "new_outcome_count": (batch.executed_count),
-        "reused_outcome_count": (batch.reused_count),
-        "source_unit_ids": [item.outcome.source.unit_id for item in batch.items],
-        "failures": [
-            {
-                "unit_id": failure.source.unit_id,
-                "title": failure.source.title,
-                "stage": failure.stage,
-                "error_type": (failure.error_type),
-                "error_message": (failure.error_message),
-                "response_available": (failure.response is not None),
-                "response_path": str(cache_root / failure.source.unit_id / "response.txt"),
-                "error_path": str(cache_root / failure.source.unit_id / "error.json"),
-            }
-            for failure in batch.failures
-        ],
-        "materialization": (materialization.to_dict()),
-    }
-
-
-def _write_manifest(
-    path: Path,
-    manifest: dict[str, object],
-) -> None:
-    path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    path.write_text(
-        json.dumps(
-            cast(object, manifest),
-            ensure_ascii=False,
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
-
-
-def _print_extraction_progress(
-    index: int,
-    total: int,
-    item: GroundedExtractionBatchItem,
-) -> None:
+def _print_extraction_progress(index: int, total: int, item: GroundedExtractionBatchItem) -> None:
     outcome = item.outcome
     cache_status = "cached" if item.reused else "executed"
 
@@ -376,10 +244,7 @@ def _print_extraction_progress(
     print(f"[{index:02d}/{total:02d}] {outcome.source.title}")
     print(f"  unit:    {outcome.source.unit_id}")
 
-    if isinstance(
-        outcome,
-        GroundedExtractionFailure,
-    ):
+    if isinstance(outcome, GroundedExtractionFailure):
         print(f"  outcome: {cache_status} failure")
         print(f"  stage:   {outcome.stage}")
         print(f"  error:   {outcome.error_type}: {outcome.error_message}")

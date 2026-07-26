@@ -8,11 +8,7 @@ from graphragprov.extraction.run import (
     run_grounded_extraction_outcome,
 )
 
-SOURCE = SourceUnit(
-    unit_id="u_system_owned",
-    title="Albert Einstein",
-    text="He was born in Ulm.",
-)
+SOURCE = SourceUnit(unit_id="u_system_owned", title="Albert Einstein", text="He was born in Ulm.")
 
 MODEL_RESPONSE = json.dumps(
     {
@@ -21,47 +17,24 @@ MODEL_RESPONSE = json.dumps(
                 "subject": {
                     "value": "Albert Einstein",
                     "evidence": [
-                        {
-                            "segment": "title",
-                            "quote": "Albert Einstein",
-                            "occurrence": 1,
-                        },
-                        {
-                            "segment": "text",
-                            "quote": "He",
-                            "occurrence": 1,
-                        },
+                        {"segment": "title", "quote": "Albert Einstein", "occurrence": 1},
+                        {"segment": "text", "quote": "He", "occurrence": 1},
                     ],
                 },
                 "predicate": {
                     "value": "bornIn",
-                    "evidence": [
-                        {
-                            "segment": "text",
-                            "quote": "born in",
-                            "occurrence": 1,
-                        }
-                    ],
+                    "evidence": [{"segment": "text", "quote": "born in", "occurrence": 1}],
                 },
                 "object": {
                     "value": "Ulm",
-                    "evidence": [
-                        {
-                            "segment": "text",
-                            "quote": "Ulm",
-                            "occurrence": 1,
-                        }
-                    ],
+                    "evidence": [{"segment": "text", "quote": "Ulm", "occurrence": 1}],
                 },
             }
         ]
     }
 )
 
-INVALID_EVIDENCE_RESPONSE = MODEL_RESPONSE.replace(
-    '"quote": "Ulm"',
-    '"quote": "1955"',
-)
+INVALID_EVIDENCE_RESPONSE = MODEL_RESPONSE.replace('"quote": "Ulm"', '"quote": "1955"')
 
 
 def test_runs_one_grounded_extraction() -> None:
@@ -71,10 +44,7 @@ def test_runs_one_grounded_extraction() -> None:
         received_prompts.append(prompt)
         return MODEL_RESPONSE
 
-    run = run_grounded_extraction(
-        SOURCE,
-        generate_response=fake_model,
-    )
+    run = run_grounded_extraction(SOURCE, generate_response=fake_model)
 
     assert received_prompts == [run.prompt]
     assert SOURCE.title in run.prompt
@@ -95,15 +65,9 @@ def test_runs_one_grounded_extraction() -> None:
 
 
 def test_returns_successful_extraction_outcome() -> None:
-    outcome = run_grounded_extraction_outcome(
-        SOURCE,
-        generate_response=lambda _: MODEL_RESPONSE,
-    )
+    outcome = run_grounded_extraction_outcome(SOURCE, generate_response=lambda _: MODEL_RESPONSE)
 
-    assert isinstance(
-        outcome,
-        GroundedExtractionRun,
-    )
+    assert isinstance(outcome, GroundedExtractionRun)
     assert outcome.source == SOURCE
     assert outcome.response == MODEL_RESPONSE
     assert outcome.extraction.unit_id == SOURCE.unit_id
@@ -113,15 +77,9 @@ def test_preserves_provider_failure_as_outcome() -> None:
     def failing_model(_: str) -> str:
         raise RuntimeError("provider unavailable")
 
-    outcome = run_grounded_extraction_outcome(
-        SOURCE,
-        generate_response=failing_model,
-    )
+    outcome = run_grounded_extraction_outcome(SOURCE, generate_response=failing_model)
 
-    assert isinstance(
-        outcome,
-        GroundedExtractionFailure,
-    )
+    assert isinstance(outcome, GroundedExtractionFailure)
     assert outcome.source == SOURCE
     assert SOURCE.title in outcome.prompt
     assert SOURCE.text in outcome.prompt
@@ -133,14 +91,10 @@ def test_preserves_provider_failure_as_outcome() -> None:
 
 def test_preserves_invalid_raw_response_and_drops_invalid_statement() -> None:
     outcome = run_grounded_extraction_outcome(
-        SOURCE,
-        generate_response=lambda _: INVALID_EVIDENCE_RESPONSE,
+        SOURCE, generate_response=lambda _: INVALID_EVIDENCE_RESPONSE
     )
 
-    assert isinstance(
-        outcome,
-        GroundedExtractionRun,
-    )
+    assert isinstance(outcome, GroundedExtractionRun)
 
     assert outcome.response == INVALID_EVIDENCE_RESPONSE
     assert outcome.extraction.statements == ()

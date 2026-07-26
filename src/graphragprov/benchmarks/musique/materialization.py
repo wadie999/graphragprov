@@ -3,17 +3,11 @@
 from collections.abc import Iterable
 
 from graphragprov.benchmarks.musique.case import MusiqueCase
-from graphragprov.benchmarks.musique.occurrence import (
-    MusiqueUnitOccurrence,
-)
-from graphragprov.benchmarks.musique.source_unit import (
-    MusiqueSourceUnit,
-)
+from graphragprov.benchmarks.musique.occurrence import MusiqueUnitOccurrence
+from graphragprov.benchmarks.musique.source_unit import MusiqueSourceUnit
 
 
-def collect_musique_source_units(
-    cases: Iterable[MusiqueCase],
-) -> tuple[MusiqueSourceUnit, ...]:
+def collect_musique_source_units(cases: Iterable[MusiqueCase]) -> tuple[MusiqueSourceUnit, ...]:
     """Collect unique source units while preserving MuSiQue occurrences.
 
     All paragraphs are included. Gold supporting labels are retained only as
@@ -72,10 +66,7 @@ def collect_musique_source_units(
                 unit_id=existing.unit_id,
                 title=existing.title,
                 text=existing.text,
-                occurrences=(
-                    *existing.occurrences,
-                    occurrence,
-                ),
+                occurrences=(*existing.occurrences, occurrence),
             )
 
     return tuple(units_by_id[unit_id] for unit_id in unit_order)

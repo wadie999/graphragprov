@@ -14,17 +14,11 @@ UNIT_ID_HEX_LENGTH = 16
 TRIPLE_HASH_HEX_LENGTH = 8
 STATEMENT_FORMAT_VERSION = "statement-v1"
 
-_SEGMENT_CODE: dict[TextSegment, str] = {
-    TextSegment.TITLE: "tl",
-    TextSegment.TEXT: "tx",
-}
+_SEGMENT_CODE: dict[TextSegment, str] = {TextSegment.TITLE: "tl", TextSegment.TEXT: "tx"}
 
 _CODE_SEGMENT: dict[str, TextSegment] = {code: segment for segment, code in _SEGMENT_CODE.items()}
 
-_SEGMENT_ORDER: dict[TextSegment, int] = {
-    TextSegment.TITLE: 0,
-    TextSegment.TEXT: 1,
-}
+_SEGMENT_ORDER: dict[TextSegment, int] = {TextSegment.TITLE: 0, TextSegment.TEXT: 1}
 
 _SPAN_PATTERN = r"(?:tl|tx):[0-9]+-[0-9]+"
 _EVIDENCE_PATTERN = rf"{_SPAN_PATTERN}(?:\+{_SPAN_PATTERN})*"
@@ -82,11 +76,7 @@ def compact_unit_id(unit_id: str) -> str:
     return f"u_{digest[:UNIT_ID_HEX_LENGTH]}"
 
 
-def occurrence_token(
-    *,
-    unit_id: str,
-    statement: GroundedStatement,
-) -> str:
+def occurrence_token(*, unit_id: str, statement: GroundedStatement) -> str:
     """Return the compact NPCS token of one grounded statement occurrence."""
 
     return (
@@ -133,11 +123,7 @@ def canonical_statement_bytes(statement: GroundedStatement) -> bytes:
     return _canonical_json_bytes(_statement_payload(statement))
 
 
-def canonical_occurrence_bytes(
-    *,
-    unit_id: str,
-    statement: GroundedStatement,
-) -> bytes:
+def canonical_occurrence_bytes(*, unit_id: str, statement: GroundedStatement) -> bytes:
     """Serialize the complete occurrence for collision verification."""
 
     validate_source_unit_id(unit_id)
@@ -153,19 +139,13 @@ def canonical_occurrence_bytes(
     return _canonical_json_bytes(payload)
 
 
-def canonical_evidence(
-    evidence: Iterable[TextSpan],
-) -> tuple[TextSpan, ...]:
+def canonical_evidence(evidence: Iterable[TextSpan]) -> tuple[TextSpan, ...]:
     """Deduplicate and deterministically order evidence spans."""
 
     spans_by_location: dict[SpanLocation, TextSpan] = {}
 
     for span in evidence:
-        location = (
-            span.segment,
-            span.start,
-            span.end,
-        )
+        location = (span.segment, span.start, span.end)
         existing = spans_by_location.get(location)
 
         if existing is not None and existing.quote != span.quote:
@@ -183,11 +163,7 @@ def canonical_evidence(
     return tuple(
         sorted(
             spans_by_location.values(),
-            key=lambda span: (
-                _SEGMENT_ORDER[span.segment],
-                span.start,
-                span.end,
-            ),
+            key=lambda span: (_SEGMENT_ORDER[span.segment], span.start, span.end),
         )
     )
 
@@ -199,19 +175,13 @@ def span_location_token(span: TextSpan) -> str:
     return f"{segment}:{span.start}-{span.end}"
 
 
-def _decode_evidence(
-    value: str,
-) -> tuple[EvidenceLocation, ...]:
+def _decode_evidence(value: str) -> tuple[EvidenceLocation, ...]:
     locations = tuple(_decode_span_location(part) for part in value.split("+"))
 
     canonical_locations = tuple(
         sorted(
             set(locations),
-            key=lambda location: (
-                _SEGMENT_ORDER[location.segment],
-                location.start,
-                location.end,
-            ),
+            key=lambda location: (_SEGMENT_ORDER[location.segment], location.start, location.end),
         )
     )
 
@@ -221,9 +191,7 @@ def _decode_evidence(
     return locations
 
 
-def _decode_span_location(
-    value: str,
-) -> EvidenceLocation:
+def _decode_span_location(value: str) -> EvidenceLocation:
     match = _SPAN_LOCATION_PATTERN.fullmatch(value)
 
     if match is None:
@@ -236,26 +204,17 @@ def _decode_span_location(
     )
 
 
-def _evidence_token(
-    evidence: Iterable[TextSpan],
-) -> str:
+def _evidence_token(evidence: Iterable[TextSpan]) -> str:
     return "+".join(span_location_token(span) for span in canonical_evidence(evidence))
 
 
-def _evidence_locations(
-    evidence: Iterable[TextSpan],
-) -> list[str]:
+def _evidence_locations(evidence: Iterable[TextSpan]) -> list[str]:
     return [span_location_token(span) for span in canonical_evidence(evidence)]
 
 
-def _statement_payload(
-    statement: GroundedStatement,
-) -> dict[str, object]:
+def _statement_payload(statement: GroundedStatement) -> dict[str, object]:
     if statement.object_datatype is None:
-        object_payload: dict[str, str] = {
-            "kind": "entity",
-            "value": statement.object.value,
-        }
+        object_payload: dict[str, str] = {"kind": "entity", "value": statement.object.value}
     else:
         object_payload = {
             "kind": "literal",
@@ -272,9 +231,6 @@ def _statement_payload(
 
 
 def _canonical_json_bytes(payload: object) -> bytes:
-    return json.dumps(
-        payload,
-        ensure_ascii=False,
-        separators=(",", ":"),
-        sort_keys=True,
-    ).encode("utf-8")
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+        "utf-8"
+    )

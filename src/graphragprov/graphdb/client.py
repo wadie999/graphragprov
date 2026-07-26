@@ -91,9 +91,7 @@ class GraphDBClient:
         request = Request(
             self.statements_endpoint,
             data=payload,
-            headers=self._headers(
-                content_type=TRIG_STAR_MEDIA_TYPE,
-            ),
+            headers=self._headers(content_type=TRIG_STAR_MEDIA_TYPE),
             method="POST",
         )
 
@@ -111,8 +109,7 @@ class GraphDBClient:
             self.repository_endpoint,
             data=payload,
             headers=self._headers(
-                content_type="application/x-www-form-urlencoded",
-                accept=SPARQL_RESULTS_MEDIA_TYPE,
+                content_type="application/x-www-form-urlencoded", accept=SPARQL_RESULTS_MEDIA_TYPE
             ),
             method="POST",
         )
@@ -132,15 +129,8 @@ class GraphDBClient:
 
         return cast(dict[str, object], decoded)
 
-    def _headers(
-        self,
-        *,
-        content_type: str,
-        accept: str | None = None,
-    ) -> dict[str, str]:
-        headers = {
-            "Content-Type": content_type,
-        }
+    def _headers(self, *, content_type: str, accept: str | None = None) -> dict[str, str]:
+        headers = {"Content-Type": content_type}
 
         if accept is not None:
             headers["Accept"] = accept
@@ -154,17 +144,11 @@ class GraphDBClient:
 
     def _execute(self, request: Request) -> tuple[int, bytes]:
         try:
-            with urlopen(
-                request,
-                timeout=self.timeout_seconds,
-            ) as response:
+            with urlopen(request, timeout=self.timeout_seconds) as response:
                 status = response.getcode()
                 body = response.read()
         except HTTPError as error:
-            response_body = error.read().decode(
-                "utf-8",
-                errors="replace",
-            )
+            response_body = error.read().decode("utf-8", errors="replace")
 
             raise GraphDBError(
                 f"GraphDB returned HTTP {error.code}: {response_body or error.reason}"

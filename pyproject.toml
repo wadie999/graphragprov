@@ -35,7 +35,6 @@ classifiers = [
 dependencies = [
     "openai>=1.0",
     "rdflib>=7.3,<8",
-
 ]
 
 [project.urls]
@@ -48,8 +47,14 @@ graphragprov = "graphragprov.cli.main:main"
 
 
 [project.optional-dependencies]
+api = [
+    "fastapi>=0.139,<1",
+    "uvicorn[standard]>=0.51,<1",
+]
+
 dev = [
     "build>=1.2",
+    "httpx>=0.28,<1",
     "mypy>=1.16",
     "pytest>=8.4",
     "pytest-cov>=6.2",
@@ -99,7 +104,10 @@ select = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+skip-magic-trailing-comma = true
 
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
 
 [tool.mypy]
 python_version = "3.11"

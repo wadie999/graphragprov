@@ -14,11 +14,7 @@ from graphragprov.hashing import source_unit_id
 TITLE = "Albert Einstein"
 TEXT = "He was born in Ulm."
 
-SOURCE = SourceUnit(
-    unit_id=source_unit_id(title=TITLE, text=TEXT),
-    title=TITLE,
-    text=TEXT,
-)
+SOURCE = SourceUnit(unit_id=source_unit_id(title=TITLE, text=TEXT), title=TITLE, text=TEXT)
 
 
 def valid_result() -> ExtractionResult:
@@ -30,40 +26,20 @@ def valid_result() -> ExtractionResult:
                     value="Albert Einstein",
                     evidence=(
                         TextSpan(
-                            segment=TextSegment.TITLE,
-                            start=0,
-                            end=15,
-                            quote="Albert Einstein",
+                            segment=TextSegment.TITLE, start=0, end=15, quote="Albert Einstein"
                         ),
-                        TextSpan(
-                            segment=TextSegment.TEXT,
-                            start=0,
-                            end=2,
-                            quote="He",
-                        ),
+                        TextSpan(segment=TextSegment.TEXT, start=0, end=2, quote="He"),
                     ),
                 ),
                 predicate=GroundedValue(
                     value="born in",
                     evidence=(
-                        TextSpan(
-                            segment=TextSegment.TEXT,
-                            start=7,
-                            end=14,
-                            quote="born in",
-                        ),
+                        TextSpan(segment=TextSegment.TEXT, start=7, end=14, quote="born in"),
                     ),
                 ),
                 object=GroundedValue(
                     value="Ulm",
-                    evidence=(
-                        TextSpan(
-                            segment=TextSegment.TEXT,
-                            start=15,
-                            end=18,
-                            quote="Ulm",
-                        ),
-                    ),
+                    evidence=(TextSpan(segment=TextSegment.TEXT, start=15, end=18, quote="Ulm"),),
                 ),
             ),
         ),
@@ -89,12 +65,7 @@ def test_mismatching_quote_is_rejected() -> None:
                 subject=GroundedValue(
                     value="Albert Einstein",
                     evidence=(
-                        TextSpan(
-                            segment=TextSegment.TITLE,
-                            start=0,
-                            end=15,
-                            quote="Someone Else",
-                        ),
+                        TextSpan(segment=TextSegment.TITLE, start=0, end=15, quote="Someone Else"),
                     ),
                 ),
                 predicate=valid_result().statements[0].predicate,
@@ -108,22 +79,14 @@ def test_mismatching_quote_is_rejected() -> None:
 
 
 def test_out_of_bounds_span_is_rejected() -> None:
-    span = TextSpan(
-        segment=TextSegment.TEXT,
-        start=15,
-        end=200,
-        quote="Ulm",
-    )
+    span = TextSpan(segment=TextSegment.TEXT, start=15, end=200, quote="Ulm")
 
     with pytest.raises(ValueError, match="exceeds"):
         span.validate_against(SOURCE)
 
 
 def test_wrong_unit_id_is_rejected() -> None:
-    result = ExtractionResult(
-        unit_id="u_wrong",
-        statements=valid_result().statements,
-    )
+    result = ExtractionResult(unit_id="u_wrong", statements=valid_result().statements)
 
     with pytest.raises(ValueError, match="does not match"):
         result.validate_against(SOURCE)
@@ -131,10 +94,7 @@ def test_wrong_unit_id_is_rejected() -> None:
 
 def test_grounded_value_requires_evidence() -> None:
     with pytest.raises(ValueError, match="evidence"):
-        GroundedValue(
-            value="Albert Einstein",
-            evidence=(),
-        )
+        GroundedValue(value="Albert Einstein", evidence=())
 
 
 def test_json_round_trip() -> None:

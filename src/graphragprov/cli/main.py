@@ -10,19 +10,12 @@ CommandHandler = Callable[[argparse.Namespace], int]
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="graphragprov",
-        description="GraphRAGProv research tools.",
+        prog="graphragprov", description="GraphRAGProv research tools."
     )
 
-    commands = parser.add_subparsers(
-        dest="command",
-        required=True,
-    )
+    commands = parser.add_subparsers(dest="command", required=True)
 
-    benchmark_parser = commands.add_parser(
-        "benchmark",
-        help="Inspect supported benchmarks.",
-    )
+    benchmark_parser = commands.add_parser("benchmark", help="Inspect supported benchmarks.")
     add_benchmark_commands(benchmark_parser)
 
     return parser

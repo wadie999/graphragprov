@@ -6,31 +6,23 @@ import json
 from dataclasses import dataclass
 from typing import Literal, cast
 
-QAAgentDecisionStatus = Literal[
-    "query",
-    "ambiguous",
-    "unanswerable",
-]
+QAAgentDecisionStatus = Literal["query", "ambiguous", "unanswerable"]
 
-_DECISION_STATUSES: tuple[QAAgentDecisionStatus, ...] = (
-    "query",
-    "ambiguous",
-    "unanswerable",
-)
+QAAgentQueryPurpose = Literal["inspection", "candidate", "final"]
 
-_REQUIRED_FIELDS = {
-    "status",
-    "sparql",
-    "rationale",
-    "assumptions",
-}
+_DECISION_STATUSES: tuple[QAAgentDecisionStatus, ...] = ("query", "ambiguous", "unanswerable")
+
+_QUERY_PURPOSES: tuple[QAAgentQueryPurpose, ...] = ("inspection", "candidate", "final")
+
+_REQUIRED_FIELDS = {"status", "purpose", "sparql", "rationale", "assumptions"}
 
 
 @dataclass(frozen=True, slots=True)
 class QAAgentDecision:
-    """Validated final decision produced by a graph QA agent."""
+    """Validated decision produced by a graph QA agent."""
 
     status: QAAgentDecisionStatus
+    purpose: QAAgentQueryPurpose | None
     sparql: str | None
     rationale: str
     assumptions: tuple[str, ...]
@@ -48,9 +40,23 @@ class QAAgentDecision:
             raise ValueError("QA-agent assumptions must not contain empty values")
 
         if self.status == "query":
+            if self.purpose is None:
+                raise ValueError("query decision requires a query purpose")
+
+            if self.purpose not in _QUERY_PURPOSES:
+                raise ValueError(
+                    "QA-agent query purpose must be one of: " + ", ".join(_QUERY_PURPOSES)
+                )
+
             if self.sparql is None or not self.sparql.strip():
                 raise ValueError("query decision requires non-empty SPARQL")
-        elif self.sparql is not None:
+
+            return
+
+        if self.purpose is not None:
+            raise ValueError(f"{self.status} decision must not contain a query purpose")
+
+        if self.sparql is not None:
             raise ValueError(f"{self.status} decision must not contain SPARQL")
 
     def to_dict(self) -> dict[str, object]:
@@ -58,15 +64,14 @@ class QAAgentDecision:
 
         return {
             "status": self.status,
+            "purpose": self.purpose,
             "sparql": self.sparql,
             "rationale": self.rationale,
             "assumptions": list(self.assumptions),
         }
 
 
-def parse_qa_agent_response(
-    payload: str,
-) -> QAAgentDecision:
+def parse_qa_agent_response(payload: str) -> QAAgentDecision:
     """Parse and validate one structured QA-agent response."""
 
     if not payload.strip():
@@ -103,6 +108,21 @@ def parse_qa_agent_response(
             "QA-agent decision status must be one of: " + ", ".join(_DECISION_STATUSES)
         )
 
+    raw_purpose = data["purpose"]
+
+    if raw_purpose is not None and not isinstance(raw_purpose, str):
+        raise ValueError("QA-agent query purpose must be a string or null")
+
+    purpose: QAAgentQueryPurpose | None
+
+    if raw_purpose is None:
+        purpose = None
+    else:
+        if raw_purpose not in _QUERY_PURPOSES:
+            raise ValueError("QA-agent query purpose must be one of: " + ", ".join(_QUERY_PURPOSES))
+
+        purpose = raw_purpose
+
     sparql = data["sparql"]
 
     if sparql is not None and not isinstance(sparql, str):
@@ -128,6 +148,7 @@ def parse_qa_agent_response(
 
     return QAAgentDecision(
         status=status,
+        purpose=purpose,
         sparql=sparql,
         rationale=rationale,
         assumptions=tuple(assumptions),

@@ -6,14 +6,9 @@ from dataclasses import dataclass
 
 from graphragprov.domain import SourceUnit
 from graphragprov.extraction import TextSpan
-from graphragprov.provenance.polynomial import (
-    parse_provenance_polynomial,
-)
+from graphragprov.provenance.polynomial import parse_provenance_polynomial
 from graphragprov.provenance.registry import SourceRegistry
-from graphragprov.rdf.provenance import (
-    EvidenceLocation,
-    decode_occurrence_token,
-)
+from graphragprov.rdf.provenance import EvidenceLocation, decode_occurrence_token
 
 
 @dataclass(frozen=True, slots=True)
@@ -83,11 +78,7 @@ class DecodedProvenance:
         return {"derivations": [derivation.to_dict() for derivation in self.derivations]}
 
 
-def decode_provenance_polynomial(
-    value: str,
-    *,
-    registry: SourceRegistry,
-) -> DecodedProvenance:
+def decode_provenance_polynomial(value: str, *, registry: SourceRegistry) -> DecodedProvenance:
     """Decode an NPCS polynomial into exact validated source spans."""
 
     polynomial = parse_provenance_polynomial(value)
@@ -96,11 +87,7 @@ def decode_provenance_polynomial(
         derivations=tuple(
             DecodedProvenanceDerivation(
                 occurrences=tuple(
-                    _decode_occurrence(
-                        token,
-                        registry=registry,
-                    )
-                    for token in derivation
+                    _decode_occurrence(token, registry=registry) for token in derivation
                 )
             )
             for derivation in polynomial.derivations
@@ -108,11 +95,7 @@ def decode_provenance_polynomial(
     )
 
 
-def _decode_occurrence(
-    token: str,
-    *,
-    registry: SourceRegistry,
-) -> DecodedProvenanceOccurrence:
+def _decode_occurrence(token: str, *, registry: SourceRegistry) -> DecodedProvenanceOccurrence:
     decoded = decode_occurrence_token(token)
 
     try:
@@ -127,51 +110,29 @@ def _decode_occurrence(
         compact_unit_id=decoded.compact_unit_id,
         source=source,
         subject_evidence=_resolve_evidence(
-            source=source,
-            token=token,
-            role="subject",
-            locations=decoded.subject_evidence,
+            source=source, token=token, role="subject", locations=decoded.subject_evidence
         ),
         predicate_evidence=_resolve_evidence(
-            source=source,
-            token=token,
-            role="predicate",
-            locations=decoded.predicate_evidence,
+            source=source, token=token, role="predicate", locations=decoded.predicate_evidence
         ),
         object_evidence=_resolve_evidence(
-            source=source,
-            token=token,
-            role="object",
-            locations=decoded.object_evidence,
+            source=source, token=token, role="object", locations=decoded.object_evidence
         ),
         triple_hash=decoded.triple_hash,
     )
 
 
 def _resolve_evidence(
-    *,
-    source: SourceUnit,
-    token: str,
-    role: str,
-    locations: tuple[EvidenceLocation, ...],
+    *, source: SourceUnit, token: str, role: str, locations: tuple[EvidenceLocation, ...]
 ) -> tuple[TextSpan, ...]:
     return tuple(
-        _resolve_location(
-            source=source,
-            token=token,
-            role=role,
-            location=location,
-        )
+        _resolve_location(source=source, token=token, role=role, location=location)
         for location in locations
     )
 
 
 def _resolve_location(
-    *,
-    source: SourceUnit,
-    token: str,
-    role: str,
-    location: EvidenceLocation,
+    *, source: SourceUnit, token: str, role: str, location: EvidenceLocation
 ) -> TextSpan:
     segment_text = source.title if location.segment.value == "title" else source.text
 
@@ -192,9 +153,7 @@ def _resolve_location(
     return span
 
 
-def _span_to_dict(
-    span: TextSpan,
-) -> dict[str, object]:
+def _span_to_dict(span: TextSpan) -> dict[str, object]:
     return {
         "segment": span.segment.value,
         "start": span.start,

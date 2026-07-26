@@ -5,11 +5,7 @@ from graphragprov.extraction.span import TextSegment, TextSpan
 
 
 def localize_evidence(
-    source: SourceUnit,
-    *,
-    segment: TextSegment,
-    quote: str,
-    occurrence: int,
+    source: SourceUnit, *, segment: TextSegment, quote: str, occurrence: int
 ) -> TextSpan:
     """Resolve one exact evidence reference into character offsets."""
 
@@ -33,12 +29,7 @@ def localize_evidence(
         current_occurrence += 1
 
         if current_occurrence == occurrence:
-            span = TextSpan(
-                segment=segment,
-                start=start,
-                end=start + len(quote),
-                quote=quote,
-            )
+            span = TextSpan(segment=segment, start=start, end=start + len(quote), quote=quote)
             span.validate_against(source)
             return span
 
