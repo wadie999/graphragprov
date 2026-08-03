@@ -1,5 +1,15 @@
 # graphragprov
 
+## run the system 
+
+```bash
+export DEEPSEEK_API_KEY=xx
+export GRAPHRAGPROV_GRAPHDB_URL="http://localhost:7200"
+export GRAPHRAGPROV_GRAPHDB_REPOSITORY="graphragprov"
+export GRAPHRAGPROV_NPCS_URL="http://localhost:8002"
+docker start graphdb npcs
+```
+
 ## Inspect MuSiQue
 
 ```bash
@@ -25,7 +35,7 @@ graphragprov benchmark musique list \
 
 ```bash
 graphragprov benchmark musique case \
-  2hop__231890_595414
+  2hop__525242_52835
 ```
 
 ```bash
