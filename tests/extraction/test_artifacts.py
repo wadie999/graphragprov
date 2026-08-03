@@ -248,3 +248,114 @@ def test_rejects_coexisting_success_and_failure_artifacts(tmp_path: Path) -> Non
 
     with pytest.raises(ValueError, match="both a successful extraction and a failure"):
         load_grounded_extraction_outcome(SOURCE, directory)
+
+
+def test_successful_artifact_contains_coverage_measurements(tmp_path: Path) -> None:
+    cached = load_or_run_grounded_extraction(
+        SOURCE, cache_root=tmp_path, generate_response=lambda _: MODEL_RESPONSE
+    )
+
+    directory = extraction_artifact_directory(tmp_path, SOURCE)
+    coverage_path = directory / "coverage.json"
+
+    assert coverage_path.is_file()
+
+    payload = json.loads(coverage_path.read_text(encoding="utf-8"))
+
+    assert payload["format"] == "source-coverage-v1"
+    assert payload["unit_id"] == SOURCE.unit_id
+
+    assert payload["character_coverage"]["overall"]["title"]["covered_characters"] == len(TITLE)
+    assert payload["character_coverage"]["overall"]["text"]["covered_characters"] == 12
+
+    assert payload["statement_density"]["statement_count"] == 1
+    assert cached.run.extraction.statements
+
+
+def test_legacy_success_without_coverage_is_backfilled_without_model_call(tmp_path: Path) -> None:
+    first = load_or_run_grounded_extraction(
+        SOURCE, cache_root=tmp_path, generate_response=lambda _: MODEL_RESPONSE
+    )
+
+    directory = extraction_artifact_directory(tmp_path, SOURCE)
+    coverage_path = directory / "coverage.json"
+
+    coverage_path.unlink()
+
+    assert not coverage_path.exists()
+
+    def forbidden_model_call(_: str) -> str:
+        raise AssertionError("model must not be called when backfilling coverage")
+
+    second = load_or_run_grounded_extraction(
+        SOURCE, cache_root=tmp_path, generate_response=forbidden_model_call
+    )
+
+    assert second.reused
+    assert second.run == first.run
+    assert coverage_path.is_file()
+
+    payload = json.loads(coverage_path.read_text(encoding="utf-8"))
+
+    assert payload["format"] == "source-coverage-v1"
+    assert payload["unit_id"] == SOURCE.unit_id
+
+
+def test_rejects_coverage_with_invalid_json(tmp_path: Path) -> None:
+    load_or_run_grounded_extraction(
+        SOURCE, cache_root=tmp_path, generate_response=lambda _: MODEL_RESPONSE
+    )
+
+    directory = extraction_artifact_directory(tmp_path, SOURCE)
+
+    (directory / "coverage.json").write_text("{ invalid", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="cached coverage contains invalid JSON"):
+        load_grounded_extraction_run(SOURCE, directory)
+
+
+def test_rejects_coverage_that_does_not_match_extraction(tmp_path: Path) -> None:
+    load_or_run_grounded_extraction(
+        SOURCE, cache_root=tmp_path, generate_response=lambda _: MODEL_RESPONSE
+    )
+
+    directory = extraction_artifact_directory(tmp_path, SOURCE)
+    coverage_path = directory / "coverage.json"
+
+    payload = json.loads(coverage_path.read_text(encoding="utf-8"))
+    payload["statement_density"]["statement_count"] = 999
+
+    coverage_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+    with pytest.raises(
+        ValueError, match=("cached coverage does not match the validated extraction")
+    ):
+        load_grounded_extraction_run(SOURCE, directory)
+
+
+def test_saving_failure_removes_stale_coverage(tmp_path: Path) -> None:
+    success = run_grounded_extraction_outcome(SOURCE, generate_response=lambda _: MODEL_RESPONSE)
+
+    assert isinstance(success, GroundedExtractionRun)
+
+    directory = extraction_artifact_directory(tmp_path, SOURCE)
+
+    save_grounded_extraction_outcome(success, directory)
+
+    assert (directory / "extraction.json").is_file()
+    assert (directory / "coverage.json").is_file()
+
+    def failing_model(_: str) -> str:
+        raise RuntimeError("provider unavailable")
+
+    failure = run_grounded_extraction_outcome(SOURCE, generate_response=failing_model)
+
+    assert isinstance(failure, GroundedExtractionFailure)
+
+    save_grounded_extraction_outcome(failure, directory)
+
+    assert not (directory / "extraction.json").exists()
+    assert not (directory / "coverage.json").exists()
+    assert (directory / "error.json").is_file()
