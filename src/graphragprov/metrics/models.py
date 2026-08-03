@@ -243,3 +243,63 @@ class StatementDensity:
             "scale": self.scale,
             "statements_per_scale": self.statements_per_scale,
         }
+
+
+@dataclass(frozen=True, slots=True)
+class TitleReliance:
+    """Statements relying on title evidence."""
+
+    title_reliant_statements: int
+    total_statements: int
+
+    def __post_init__(self) -> None:
+        if self.title_reliant_statements < 0:
+            raise ValueError("title-reliant statement count must not be negative")
+
+        if self.total_statements < 0:
+            raise ValueError("total statement count must not be negative")
+
+        if self.title_reliant_statements > self.total_statements:
+            raise ValueError("title-reliant statement count must not exceed total statements")
+
+    @property
+    def reliance_rate(self) -> float | None:
+        """Return reliance rate or ``None`` for an empty extraction."""
+
+        if self.total_statements == 0:
+            return None
+
+        return self.title_reliant_statements / self.total_statements
+
+    def to_dict(self) -> dict[str, int | float | None]:
+        """Return a deterministic JSON-serializable representation."""
+
+        return {
+            "title_reliant_statements": self.title_reliant_statements,
+            "total_statements": self.total_statements,
+            "reliance_rate": self.reliance_rate,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class TitleRelianceMeasurements:
+    """Role-specific title reliance for one source unit."""
+
+    overall: TitleReliance
+    subject: TitleReliance
+    predicate: TitleReliance
+    object: TitleReliance
+    entity: TitleReliance
+    relation: TitleReliance
+
+    def to_dict(self) -> dict[str, dict[str, int | float | None]]:
+        """Return a deterministic JSON-serializable representation."""
+
+        return {
+            "overall": self.overall.to_dict(),
+            "subject": self.subject.to_dict(),
+            "predicate": self.predicate.to_dict(),
+            "object": self.object.to_dict(),
+            "entity": self.entity.to_dict(),
+            "relation": self.relation.to_dict(),
+        }
