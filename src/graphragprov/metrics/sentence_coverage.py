@@ -12,7 +12,6 @@ from graphragprov.metrics.config import SentenceSegmentation
 from graphragprov.metrics.intervals import CharacterInterval, merge_intervals
 from graphragprov.metrics.models import SentenceCoverage, SentenceCoverageMeasurements
 
-
 _SENTENCE_PATTERN = re.compile(
     r"\S(?:[^\n]*?\S)?"
     r"(?:[.!?]+(?:[\"'”’)\]]+)?(?=\s|$)|(?=\n)|(?=\s*$))"

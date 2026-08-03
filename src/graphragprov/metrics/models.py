@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import ClassVar
+
+from graphragprov.metrics.config import CoverageMetricConfiguration
 
 
 @dataclass(frozen=True, slots=True)
@@ -302,4 +305,39 @@ class TitleRelianceMeasurements:
             "object": self.object.to_dict(),
             "entity": self.entity.to_dict(),
             "relation": self.relation.to_dict(),
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class SourceCoverageMeasurements:
+    """Complete source-coverage measurements for one extracted source unit."""
+
+    FORMAT: ClassVar[str] = "source-coverage-v1"
+
+    unit_id: str
+    configuration: CoverageMetricConfiguration
+    character_coverage: CharacterCoverageMeasurements
+    sentence_coverage: SentenceCoverageMeasurements
+    longest_uncovered_text_region: LongestUncoveredTextRegion
+    statement_density: StatementDensity
+    title_reliance: TitleRelianceMeasurements
+
+    @property
+    def format(self) -> str:
+        """Return the serialized measurement format identifier."""
+
+        return self.FORMAT
+
+    def to_dict(self) -> dict[str, object]:
+        """Return a deterministic JSON-serializable representation."""
+
+        return {
+            "format": self.format,
+            "unit_id": self.unit_id,
+            "configuration": self.configuration.to_dict(),
+            "character_coverage": self.character_coverage.to_dict(),
+            "sentence_coverage": self.sentence_coverage.to_dict(),
+            "longest_uncovered_text_region": (self.longest_uncovered_text_region.to_dict()),
+            "statement_density": self.statement_density.to_dict(),
+            "title_reliance": self.title_reliance.to_dict(),
         }
