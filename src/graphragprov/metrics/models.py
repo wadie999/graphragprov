@@ -141,3 +141,105 @@ class SentenceCoverageMeasurements:
             "entity": self.entity.to_dict(),
             "relation": self.relation.to_dict(),
         }
+
+
+@dataclass(frozen=True, slots=True)
+class LongestUncoveredTextRegion:
+    """Longest contiguous region of source text without grounded evidence."""
+
+    start: int | None
+    end: int | None
+    length: int
+    quote: str
+
+    def __post_init__(self) -> None:
+        if self.length < 0:
+            raise ValueError("uncovered region length must not be negative")
+
+        if self.start is None or self.end is None:
+            if self.start is not None or self.end is not None:
+                raise ValueError("uncovered region start and end must both be absent")
+
+            if self.length != 0:
+                raise ValueError("absent uncovered region must have zero length")
+
+            if self.quote:
+                raise ValueError("absent uncovered region must have an empty quote")
+
+            return
+
+        if self.start < 0:
+            raise ValueError("uncovered region start must not be negative")
+
+        if self.end < self.start:
+            raise ValueError("uncovered region end must not precede start")
+
+        if self.end - self.start != self.length:
+            raise ValueError("uncovered region length must match its bounds")
+
+        if len(self.quote) != self.length:
+            raise ValueError("uncovered region quote length must match its bounds")
+
+    @property
+    def exists(self) -> bool:
+        """Return whether an uncovered region exists."""
+
+        return self.start is not None
+
+    @classmethod
+    def absent(cls) -> LongestUncoveredTextRegion:
+        """Represent empty or completely covered source text."""
+
+        return cls(start=None, end=None, length=0, quote="")
+
+    def to_dict(self) -> dict[str, int | str | bool | None]:
+        """Return a deterministic JSON-serializable representation."""
+
+        return {
+            "exists": self.exists,
+            "start": self.start,
+            "end": self.end,
+            "length": self.length,
+            "quote": self.quote,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class StatementDensity:
+    """Accepted grounded statements relative to source length."""
+
+    statement_count: int
+    total_characters: int
+    scale: int
+
+    def __post_init__(self) -> None:
+        if self.statement_count < 0:
+            raise ValueError("statement count must not be negative")
+
+        if self.total_characters < 0:
+            raise ValueError("total characters must not be negative")
+
+        if self.scale <= 0:
+            raise ValueError("statement density scale must be greater than zero")
+
+        if self.total_characters == 0 and self.statement_count > 0:
+            raise ValueError("an empty source cannot contain grounded statements")
+
+    @property
+    def statements_per_scale(self) -> float | None:
+        """Return density or ``None`` for an empty source."""
+
+        if self.total_characters == 0:
+            return None
+
+        return self.statement_count * self.scale / self.total_characters
+
+    def to_dict(self) -> dict[str, int | float | None]:
+        """Return a deterministic JSON-serializable representation."""
+
+        return {
+            "statement_count": self.statement_count,
+            "total_characters": self.total_characters,
+            "scale": self.scale,
+            "statements_per_scale": self.statements_per_scale,
+        }
