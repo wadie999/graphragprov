@@ -18,11 +18,13 @@ from graphragprov.extraction.run import (
     GroundedExtractionRun,
     run_grounded_extraction,
 )
+from graphragprov.metrics.source_coverage import measure_source_coverage
 
 _SOURCE_FILENAME = "source.json"
 _PROMPT_FILENAME = "prompt.txt"
 _RESPONSE_FILENAME = "response.txt"
 _EXTRACTION_FILENAME = "extraction.json"
+_COVERAGE_FILENAME = "coverage.json"
 _ERROR_FILENAME = "error.json"
 
 _FAILURE_FORMAT = "grounded-extraction-failure-v1"
@@ -106,11 +108,15 @@ def save_grounded_extraction_run(run: GroundedExtractionRun, directory: Path) ->
 
     run.extraction.validate_against(run.source)
 
+    coverage = measure_source_coverage(source=run.source, extraction=run.extraction)
+
     _save_common_artifacts(
         source=run.source, prompt=run.prompt, response=run.response, directory=directory
     )
 
     (directory / _EXTRACTION_FILENAME).write_text(run.extraction.to_json() + "\n", encoding="utf-8")
+
+    _write_coverage_artifact(directory=directory, payload=coverage.to_dict())
 
     (directory / _ERROR_FILENAME).unlink(missing_ok=True)
 
@@ -129,7 +135,7 @@ def save_grounded_extraction_failure(failure: GroundedExtractionFailure, directo
         "format": _FAILURE_FORMAT,
         "stage": failure.stage,
         "error_type": failure.error_type,
-        "error_message": (failure.error_message),
+        "error_message": failure.error_message,
         "response_available": (failure.response is not None),
     }
 
@@ -139,6 +145,7 @@ def save_grounded_extraction_failure(failure: GroundedExtractionFailure, directo
     )
 
     (directory / _EXTRACTION_FILENAME).unlink(missing_ok=True)
+    (directory / _COVERAGE_FILENAME).unlink(missing_ok=True)
 
 
 def load_grounded_extraction_run(source: SourceUnit, directory: Path) -> GroundedExtractionRun:
@@ -158,6 +165,10 @@ def load_grounded_extraction_run(source: SourceUnit, directory: Path) -> Grounde
         raise ValueError("cached extraction is invalid") from error
 
     extraction.validate_against(source)
+
+    expected_coverage = measure_source_coverage(source=source, extraction=extraction).to_dict()
+
+    _validate_or_backfill_coverage_artifact(directory=directory, expected_payload=expected_coverage)
 
     return GroundedExtractionRun(
         source=source, prompt=prompt, response=response, extraction=extraction
@@ -210,6 +221,39 @@ def load_grounded_extraction_failure(
     )
 
 
+def _validate_or_backfill_coverage_artifact(
+    *, directory: Path, expected_payload: dict[str, object]
+) -> None:
+    """Validate existing coverage or create a missing sidecar."""
+
+    path = directory / _COVERAGE_FILENAME
+
+    if not path.is_file():
+        _write_coverage_artifact(directory=directory, payload=expected_payload)
+        return
+
+    try:
+        stored_payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError("cached coverage contains invalid JSON") from error
+
+    if not isinstance(stored_payload, dict):
+        raise ValueError("cached coverage must contain an object")
+
+    if stored_payload != expected_payload:
+        raise ValueError("cached coverage does not match the validated extraction")
+
+
+def _write_coverage_artifact(*, directory: Path, payload: dict[str, object]) -> None:
+    """Persist deterministic source-coverage measurements."""
+
+    directory.mkdir(parents=True, exist_ok=True)
+
+    (directory / _COVERAGE_FILENAME).write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+
 def _save_common_artifacts(
     *, source: SourceUnit, prompt: str, response: str, directory: Path
 ) -> None:
@@ -253,6 +297,8 @@ def _load_common_artifacts(source: SourceUnit, directory: Path) -> tuple[str, st
 
 
 def _success_artifact_is_complete(directory: Path) -> bool:
+    # Coverage is intentionally excluded. A legacy successful cache
+    # without coverage is loaded and deterministically backfilled.
     return _files_exist(
         directory, _SOURCE_FILENAME, _PROMPT_FILENAME, _RESPONSE_FILENAME, _EXTRACTION_FILENAME
     )
