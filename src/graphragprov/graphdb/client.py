@@ -18,6 +18,7 @@ GRAPHDB_PASSWORD_ENV = "GRAPHRAGPROV_GRAPHDB_PASSWORD"
 
 TRIG_STAR_MEDIA_TYPE = "application/x-trigstar"
 SPARQL_RESULTS_MEDIA_TYPE = "application/sparql-results+json"
+FORM_MEDIA_TYPE = "application/x-www-form-urlencoded"
 
 
 class GraphDBError(RuntimeError):
@@ -108,9 +109,7 @@ class GraphDBClient:
         request = Request(
             self.repository_endpoint,
             data=payload,
-            headers=self._headers(
-                content_type="application/x-www-form-urlencoded", accept=SPARQL_RESULTS_MEDIA_TYPE
-            ),
+            headers=self._headers(content_type=FORM_MEDIA_TYPE, accept=SPARQL_RESULTS_MEDIA_TYPE),
             method="POST",
         )
 
@@ -129,6 +128,28 @@ class GraphDBClient:
 
         return cast(dict[str, object], decoded)
 
+    def update(self, sparql: str) -> None:
+        """Execute one SPARQL update against the repository."""
+
+        if not sparql.strip():
+            raise ValueError("SPARQL update must not be empty")
+
+        payload = urlencode({"update": sparql}).encode("utf-8")
+
+        request = Request(
+            self.statements_endpoint,
+            data=payload,
+            headers=self._headers(content_type=FORM_MEDIA_TYPE),
+            method="POST",
+        )
+
+        self._execute(request)
+
+    def clear_repository(self) -> None:
+        """Remove all statements from the repository."""
+
+        self.update("CLEAR ALL")
+
     def _headers(self, *, content_type: str, accept: str | None = None) -> dict[str, str]:
         headers = {"Content-Type": content_type}
 
@@ -136,8 +157,10 @@ class GraphDBClient:
             headers["Accept"] = accept
 
         if self.username is not None and self.password is not None:
-            credentials = f"{self.username}:{self.password}".encode()
+            credentials = (f"{self.username}:{self.password}").encode()
+
             encoded = base64.b64encode(credentials).decode("ascii")
+
             headers["Authorization"] = f"Basic {encoded}"
 
         return headers
