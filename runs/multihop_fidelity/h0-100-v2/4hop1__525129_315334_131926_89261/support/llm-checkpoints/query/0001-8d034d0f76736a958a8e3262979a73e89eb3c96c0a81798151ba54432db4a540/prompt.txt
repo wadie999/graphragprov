@@ -1,0 +1,176 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where into the Gulf of Mexico does the body of water by the city where the Lots More Blues, Rags and Hollers performer was formed empty?
+
+Expected answer: the Mississippi River Delta
+
+Gold decomposition:
+1. question='Lots More Blues, Rags and Hollers >> performer'; answer='Koerner, Ray & Glover'; support_paragraph=10
+2. question='#1 >> location of formation'; answer='Minneapolis'; support_paragraph=11
+3. question='Which is the body of water by #2 ?'; answer='Mississippi River'; support_paragraph=8
+4. question='where does #3 empty into the gulf of mexico'; answer='the Mississippi River Delta'; support_paragraph=9
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Arkansas> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Illinois> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Iowa> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Kentucky> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Louisiana> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Minnesota> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Mississippi> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Missouri> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Tennessee> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:bordersOrPassesThrough> <urn:graphragprov:entity:Wisconsin> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:flowsInto> <urn:graphragprov:entity:Mississippi%20River%20Delta> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:flowsThrough> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:hasWatershed> <urn:graphragprov:entity:2%20Canadian%20provinces> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:hasWatershed> <urn:graphragprov:entity:31%20U.S.%20states> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:river> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:isChiefRiverOf> <urn:graphragprov:entity:second-largest%20drainage%20system%20on%20the%20North%20American%20continent> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:Gulf%20of%20Mexico> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:rankedByDischarge> <urn:graphragprov:entity:fifteenth-largest%20river%20in%20the%20world%20by%20discharge> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:rankedByLength> <urn:graphragprov:entity:fourth-longest%20river%20in%20the%20world> .
+<urn:graphragprov:entity:Mississippi%20River> <urn:graphragprov:predicate:risesIn> <urn:graphragprov:entity:northern%20Minnesota> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:adjacentTo> <urn:graphragprov:entity:Saint%20Paul> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:categorizedAs> <urn:graphragprov:entity:global%20city> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterBody> <urn:graphragprov:entity:13%20lakes> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterBody> <urn:graphragprov:entity:Mississippi%20River> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterBody> <urn:graphragprov:entity:creeks> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterBody> <urn:graphragprov:entity:waterfalls> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterBody> <urn:graphragprov:entity:wetlands> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:homeTo> <urn:graphragprov:entity:6%20Fortune%20500%20companies> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:isPrimaryBusinessCenter> <urn:graphragprov:entity:region%20between%20Chicago%20and%20Seattle> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:confluence%20of%20Mississippi%20River%20and%20Minnesota%20River> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Mississippi%20River> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:wasOnce> <urn:graphragprov:entity:hub%20for%20timber> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:wasOnce> <urn:graphragprov:entity:world%27s%20flour%20milling%20capital> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:activeInDecade> "1960s" .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:formedIn> <urn:graphragprov:entity:Minneapolis> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:blues> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:group> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Minneapolis> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Dave%20Snaker%20Ray> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Spider%20John%20Koerner> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Tony%20Little%20Sun%20Glover> .
+<urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> <urn:graphragprov:predicate:notableFigureIn> <urn:graphragprov:entity:revival%20of%20folk%20music%20and%20blues> .
+<urn:graphragprov:entity:Lots%20More%20Blues%2C%20Rags%20and%20Hollers> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+<urn:graphragprov:entity:Lots%20More%20Blues%2C%20Rags%20and%20Hollers> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Koerner%2C%20Ray%20%26%20Glover> .
+<urn:graphragprov:entity:Lots%20More%20Blues%2C%20Rags%20and%20Hollers> <urn:graphragprov:predicate:releasedInYear> "1964"^^<http://www.w3.org/2001/XMLSchema#gYear> .

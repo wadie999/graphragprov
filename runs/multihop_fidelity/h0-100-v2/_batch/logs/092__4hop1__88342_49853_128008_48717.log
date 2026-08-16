@@ -1,0 +1,367 @@
+
+H0 one-case execution
+  case:          4hop1__88342_49853_128008_48717
+  hops:          4
+  question:      Who was the second pick in the 1999 draft of the organization, that includes the team with the most titles, in the event preceding the awarding of the MLB MVP?
+  expected:      Josh Beckett
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__88342_49853_128008_48717/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=16 title='Major League Baseball Most Valuable Player Award'
+  source unit: u_821252abb5cecd3d06c55dafd070996953144d494546205101076bf29167fcf4
+  text chars:  370
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.762s | model=deepseek-v4-flash
+      tokens:   in=5371 | out=1341 | total=6712 | cached=4992 | uncached=379
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 296 / 418 (70.8%)
+    characters text:     296 / 370 (80.0%)
+    characters title:    0 / 48 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  12 chars
+      '. The BBWAA'
+    statement density:  19.14 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 2/4] paragraph=13 title='World Series'
+  source unit: u_baefe766519754afa9117cd5d6fa29e20aa88cdaec26bcabd6d2c82aee96f390
+  text chars:  518
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.490s | model=deepseek-v4-flash
+      tokens:   in=5513 | out=2487 | total=8000 | cached=5248 | uncached=265
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 256 / 530 (48.3%)
+    characters text:     256 / 518 (49.4%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  30 chars
+      '. In the National League, the'
+    statement density:  28.30 / 1000 chars
+    title reliance:      0 / 15 (0.0%)
+
+[GRAPH 3/4] paragraph=3 title='New York Yankees'
+  source unit: u_1ef2f09e331f343e2a9ea2674cb1d13d73eb4f2afae850cc0c5f72e4ae3ac853
+  text chars:  676
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 14.593s | model=deepseek-v4-flash
+      tokens:   in=5724 | out=3085 | total=8809 | cached=5248 | uncached=476
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 452 / 692 (65.3%)
+    characters text:     436 / 676 (64.5%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  48 chars
+      '(no relation to the modern Baltimore Orioles).'
+    statement density:  26.01 / 1000 chars
+    title reliance:      8 / 18 (44.4%)
+
+[GRAPH 4/4] paragraph=10 title='1999 Major League Baseball draft'
+  source unit: u_cab0c235277af6aba0f41f0b74cdb5ec09759aa98bd6ef6c82f38b9c5ab43ea5
+  text chars:  2010
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 69.820s | model=deepseek-v4-flash
+      tokens:   in=6219 | out=16384 | total=22603 | cached=5248 | uncached=971
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #5] sending...
+      provider: 66.781s | model=deepseek-v4-flash
+      tokens:   in=6264 | out=15743 | total=22007 | cached=6144 | uncached=120
+  extraction: ACCEPTED
+  statements: 98
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    98
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     98
+  coverage:
+    characters combined: 1884 / 2042 (92.3%)
+    characters text:     1852 / 2010 (92.1%)
+    characters title:    32 / 32 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  33 chars
+      'Pick Player Team Position School'
+    statement density:  47.99 / 1000 chars
+    title reliance:      30 / 98 (30.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 139
+  whole-source attempts: 5
+  whole-source retries: 1
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      139
+resource nodes:        111
+entity nodes:          111
+literal values:        18
+predicates:            57
+
+N-Triples:
+  <urn:graphragprov:entity:Bill%20Devery> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Bill%20Devery> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:franchise> .
+  <urn:graphragprov:entity:Bill%20Devery> <urn:graphragprov:predicate:renamed> <urn:graphragprov:entity:New%20York%20Highlanders> .
+  <urn:graphragprov:entity:Frank%20Farrell> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Frank%20Farrell> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:franchise> .
+  <urn:graphragprov:entity:Frank%20Farrell> <urn:graphragprov:predicate:renamed> <urn:graphragprov:entity:New%20York%20Highlanders> .
+  <urn:graphragprov:entity:New%20York%20Highlanders> <urn:graphragprov:predicate:officiallyRenamedTo> <urn:graphragprov:entity:Yankees> .
+  <urn:graphragprov:entity:New%20York%20Mets> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:New%20York%20Mets> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20league%20club> .
+  <urn:graphragprov:entity:New%20York%20Mets> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:National%20League> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York%20City%20borough%20of%20the%20Bronx> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:beganPlayIn> <urn:graphragprov:entity:American%20League> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:formerlyKnownAs> <urn:graphragprov:entity:Baltimore%20Orioles> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:professional%20baseball%20team> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:American%20League%20East%20division> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:oneOf> <urn:graphragprov:entity:major%20league%20clubs%20based%20in%20New%20York%20City> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:beganPolling> "three writers in each league city" .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:beganPollingInYear> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:doesNotOfferDefinition> "clear-cut definition of most valuable" .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:leavesJudgmentTo> <urn:graphragprov:entity:individual%20voters> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:reducedPollingInYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:reducedPollingTo> "two per league city" .
+  <urn:graphragprov:entity:MVP%20voting> <urn:graphragprov:predicate:takesPlaceBefore> <urn:graphragprov:entity:postseason> .
+  <urn:graphragprov:entity:MVP%20voting%20results> <urn:graphragprov:predicate:announcedAfter> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:playedInWorldSeries> "12"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:wonFirstWorldSeries> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:wonWorldSeries> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:appearedInWorldSeries> "18"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:wonWorldSeries> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:appearedInWorldSeries> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:wonWorldSeries> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:playedInWorldSeries> "20"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:wonWorldSeries> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:playedInWorldSeries> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:wonWorldSeries> "27"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:playedInWorldSeries> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:wonWorldSeries> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:appearedInWorldSeries> "19"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:wonWorldSeries> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:eighteenthPick> <urn:graphragprov:entity:Richard%20Stahl> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:eighthPick> <urn:graphragprov:entity:Bobby%20Bradley> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:eleventhPick> <urn:graphragprov:entity:Ryan%20Christianson> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:fifteenthPick> <urn:graphragprov:entity:Jason%20Stumm> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:fifthPick> <urn:graphragprov:entity:B.J.%20Garbe> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:firstPick> <urn:graphragprov:entity:Josh%20Hamilton> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:fourteenthPick> <urn:graphragprov:entity:Ty%20Howington> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:fourthPick> <urn:graphragprov:entity:Corey%20Myers> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:nineteenthPick> <urn:graphragprov:entity:Alex%20R%C3%ADos> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:ninthPick> <urn:graphragprov:entity:Barry%20Zito> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:secondPick> <urn:graphragprov:entity:Josh%20Beckett> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:seventeenthPick> <urn:graphragprov:entity:Rick%20Asadoorian> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:seventhPick> <urn:graphragprov:entity:Kyle%20Snyder> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:sixteenthPick> <urn:graphragprov:entity:Jason%20Jennings> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:sixthPick> <urn:graphragprov:entity:Josh%20Girdley> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:tenthPick> <urn:graphragprov:entity:Ben%20Sheets> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:thirdPick> <urn:graphragprov:entity:Eric%20Munson> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:thirteenthPick> <urn:graphragprov:entity:Mike%20Paradis> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:thirtiethPick> <urn:graphragprov:entity:Chance%20Caple> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twelfthPick> <urn:graphragprov:entity:Brett%20Myers> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentiethPick> <urn:graphragprov:entity:Vince%20Faison> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentyEighthPick> <urn:graphragprov:entity:Gerik%20Baxter> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentyFifthPick> <urn:graphragprov:entity:Mike%20MacDougal> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentyFirstPick> <urn:graphragprov:entity:Larry%20Bigbie> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentyFourthPick> <urn:graphragprov:entity:Kurt%20Ainsworth> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentyNinthPick> <urn:graphragprov:entity:Omar%20Ort%C3%ADz> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentySecondPick> <urn:graphragprov:entity:Matt%20Ginter> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentySeventhPick> <urn:graphragprov:entity:David%20Walling> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentySixthPick> <urn:graphragprov:entity:Ben%20Christensen> .
+  <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:twentyThirdPick> <urn:graphragprov:entity:Keith%20Reed> .
+  <urn:graphragprov:entity:Alex%20R%C3%ADos> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Toronto%20Blue%20Jays> .
+  <urn:graphragprov:entity:Alex%20R%C3%ADos> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:outfielder> .
+  <urn:graphragprov:entity:Alex%20R%C3%ADos> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:San%20Pedro%20Martin%20HS> .
+  <urn:graphragprov:entity:B.J.%20Garbe> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Minnesota%20Twins> .
+  <urn:graphragprov:entity:B.J.%20Garbe> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:outfielder%20and%20pitcher> .
+  <urn:graphragprov:entity:B.J.%20Garbe> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Moses%20Lake%20HS> .
+  <urn:graphragprov:entity:Barry%20Zito> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Oakland%20Athletics> .
+  <urn:graphragprov:entity:Barry%20Zito> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:University%20of%20Southern%20California> .
+  <urn:graphragprov:entity:Ben%20Christensen> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Chicago%20Cubs> .
+  <urn:graphragprov:entity:Ben%20Christensen> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Wichita%20State%20University> .
+  <urn:graphragprov:entity:Ben%20Sheets> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Milwaukee%20Brewers> .
+  <urn:graphragprov:entity:Ben%20Sheets> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Northeast%20Louisiana%20University> .
+  <urn:graphragprov:entity:Bobby%20Bradley> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Pittsburgh%20Pirates> .
+  <urn:graphragprov:entity:Bobby%20Bradley> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Wellington%20Community%20HS> .
+  <urn:graphragprov:entity:Brett%20Myers> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Philadelphia%20Phillies> .
+  <urn:graphragprov:entity:Brett%20Myers> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Englewood%20Senior%20HS> .
+  <urn:graphragprov:entity:Chance%20Caple> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:St.%20Louis%20Cardinals> .
+  <urn:graphragprov:entity:Chance%20Caple> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Texas%20A%26M%20University> .
+  <urn:graphragprov:entity:Corey%20Myers> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Arizona%20Diamondbacks> .
+  <urn:graphragprov:entity:Corey%20Myers> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:shortstop> .
+  <urn:graphragprov:entity:Corey%20Myers> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Desert%20Vista%20HS> .
+  <urn:graphragprov:entity:David%20Walling> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:New%20York%20Yankees> .
+  <urn:graphragprov:entity:David%20Walling> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:University%20of%20Arkansas> .
+  <urn:graphragprov:entity:Eric%20Munson> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Detroit%20Tigers> .
+  <urn:graphragprov:entity:Eric%20Munson> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:University%20of%20Southern%20California> .
+  <urn:graphragprov:entity:Gerik%20Baxter> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:San%20Diego%20Padres> .
+  <urn:graphragprov:entity:Gerik%20Baxter> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Edmonds%20Woodway%20HS> .
+  <urn:graphragprov:entity:Jason%20Jennings> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Colorado%20Rockies> .
+  <urn:graphragprov:entity:Jason%20Jennings> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Baylor%20University> .
+  <urn:graphragprov:entity:Jason%20Stumm> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Chicago%20White%20Sox> .
+  <urn:graphragprov:entity:Jason%20Stumm> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Centralia%20HS> .
+  <urn:graphragprov:entity:Josh%20Beckett> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Florida%20Marlins> .
+  <urn:graphragprov:entity:Josh%20Beckett> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Spring%20HS> .
+  <urn:graphragprov:entity:Josh%20Girdley> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Montreal%20Expos> .
+  <urn:graphragprov:entity:Josh%20Girdley> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Jasper%20HS> .
+  <urn:graphragprov:entity:Josh%20Hamilton> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Tampa%20Bay%20Devil%20Rays> .
+  <urn:graphragprov:entity:Josh%20Hamilton> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:outfielder> .
+  <urn:graphragprov:entity:Josh%20Hamilton> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Athens%20Drive%20HS> .
+  <urn:graphragprov:entity:Keith%20Reed> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Baltimore%20Orioles> .
+  <urn:graphragprov:entity:Keith%20Reed> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:outfielder> .
+  <urn:graphragprov:entity:Keith%20Reed> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Providence%20College> .
+  <urn:graphragprov:entity:Kurt%20Ainsworth> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:San%20Francisco%20Giants> .
+  <urn:graphragprov:entity:Kurt%20Ainsworth> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Louisiana%20State%20University> .
+  <urn:graphragprov:entity:Kyle%20Snyder> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Kansas%20City%20Royals> .
+  <urn:graphragprov:entity:Kyle%20Snyder> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:University%20of%20North%20Carolina> .
+  <urn:graphragprov:entity:Larry%20Bigbie> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Baltimore%20Orioles> .
+  <urn:graphragprov:entity:Larry%20Bigbie> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:outfielder> .
+  <urn:graphragprov:entity:Larry%20Bigbie> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Ball%20State%20University> .
+  <urn:graphragprov:entity:Matt%20Ginter> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Chicago%20White%20Sox> .
+  <urn:graphragprov:entity:Matt%20Ginter> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Mississippi%20State%20University> .
+  <urn:graphragprov:entity:Mike%20MacDougal> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Kansas%20City%20Royals> .
+  <urn:graphragprov:entity:Mike%20MacDougal> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Wake%20Forest%20University> .
+  <urn:graphragprov:entity:Mike%20Paradis> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Baltimore%20Orioles> .
+  <urn:graphragprov:entity:Mike%20Paradis> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Clemson%20University> .
+  <urn:graphragprov:entity:Omar%20Ort%C3%ADz> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:San%20Diego%20Padres> .
+  <urn:graphragprov:entity:Omar%20Ort%C3%ADz> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:University%20of%20Texas%20-%20Pan%20American> .
+  <urn:graphragprov:entity:Richard%20Stahl> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Baltimore%20Orioles> .
+  <urn:graphragprov:entity:Richard%20Stahl> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Newton%20County%20HS> .
+  <urn:graphragprov:entity:Rick%20Asadoorian> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Boston%20Red%20Sox> .
+  <urn:graphragprov:entity:Rick%20Asadoorian> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:outfielder> .
+  <urn:graphragprov:entity:Rick%20Asadoorian> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Northbridge%20HS> .
+  <urn:graphragprov:entity:Ryan%20Christianson> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Seattle%20Mariners> .
+  <urn:graphragprov:entity:Ryan%20Christianson> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Arlington%20HS> .
+  <urn:graphragprov:entity:Ty%20Howington> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:Cincinnati%20Reds> .
+  <urn:graphragprov:entity:Ty%20Howington> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Hudson%27s%20Bay%20HS> .
+  <urn:graphragprov:entity:Vince%20Faison> <urn:graphragprov:predicate:draftedBy> <urn:graphragprov:entity:San%20Diego%20Padres> .
+  <urn:graphragprov:entity:Vince%20Faison> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:outfielder> .
+  <urn:graphragprov:entity:Vince%20Faison> <urn:graphragprov:predicate:school> <urn:graphragprov:entity:Toombs%20County%20HS> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.479s | model=deepseek-v4-flash
+      tokens:   in=7864 | out=267 | total=8131 | cached=640 | uncached=7224
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:wonWorldSeries> "27"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  - <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> .
+  - <urn:graphragprov:entity:1999%20Major%20League%20Baseball%20draft> <urn:graphragprov:predicate:secondPick> <urn:graphragprov:entity:Josh%20Beckett> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?team <urn:graphragprov:predicate:wonWorldSeries> ?titles . ?team <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> . ?draft <urn:graphragprov:predicate:secondPick> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1ef2f09e331f343e>
+  FROM <urn:graphragprov:unit:u_821252abb5cecd3d>
+  FROM <urn:graphragprov:unit:u_baefe766519754af>
+  FROM <urn:graphragprov:unit:u_cab0c235277af6ab>
+  WHERE { ?team <urn:graphragprov:predicate:wonWorldSeries> ?titles . ?team <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> . ?draft <urn:graphragprov:predicate:secondPick> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Josh Beckett',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['1999 Major League Baseball draft', 'New York Yankees', 'World Series']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__88342_49853_128008_48717
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__88342_49853_128008_48717/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          36955
+output tokens:         39307
+total tokens:          76262
+cached input tokens:   27520
+uncached input tokens: 9435
+cumulative LLM seconds: 172.925
+
+statement occurrences: 139
+semantic triples:      139
+entity nodes:          111
+literal values:        18
+predicates:            57
+query attempts:        1
+observed answers:      ('Josh Beckett',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 170.488s
+  graph.reference.measurements [attempt=1]: 0.013s
+  graph.clear_support [attempt=1]: 0.117s
+  graph.materialization [attempt=1]: 0.109s
+  graph.observation [attempt=1]: 0.012s
+  graph.frozen.measurements [attempt=1]: 0.008s
+  query.reference.generation [attempt=1]: 2.480s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.449s

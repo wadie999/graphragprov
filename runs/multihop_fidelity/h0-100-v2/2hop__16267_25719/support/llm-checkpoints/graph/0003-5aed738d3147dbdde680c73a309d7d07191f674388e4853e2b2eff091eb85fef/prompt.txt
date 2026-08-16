@@ -1,0 +1,219 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_31a09bc8647997caa4809b024e45b22525f9b8d855594698723b8a49105aa9c0
+Title: Galicia (Spain)
+Text:
+In the early 5th century, the deep crisis suffered by the Roman Empire allowed different tribes of Central Europe (Suebi, Vandals and Alani) to cross the Rhine and penetrate into the rule on 31 December 406. Its progress towards the Iberian Peninsula forced the Roman authorities to establish a treaty (foedus) by which the Suebi would settle peacefully and govern Galicia as imperial allies. So, from 409 Galicia was taken by the Suebi, forming the first medieval kingdom to be created in Europe, in 411, even before the fall of the Roman Empire, being also the first Germanic kingdom to mint coinage in Roman lands. During this period a Briton colony and bishopric (see Mailoc) was established in Northern Galicia (Britonia), probably as foederati and allies of the Suebi. In 585, the Visigothic King Leovigild invaded the Suebic kingdom of Galicia and defeated it, bringing it under Visigoth control.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "different tribes of Central Europe",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "different tribes of Central Europe",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "invadedOnDate",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "invaded",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "406-12-31",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "31 December 406",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].object.value must use YYYY-MM-DD notation"
+  },
+  {
+    "statement_index": 5,
+    "statement": {
+      "subject": {
+        "value": "Galicia",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Galicia",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "wasTakenInYear",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "was taken",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "409",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "409",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[5].object.value must use YYYY notation"
+  },
+  {
+    "statement_index": 7,
+    "statement": {
+      "subject": {
+        "value": "Suebic kingdom of Galicia",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Suebic kingdom of Galicia",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "wasCreatedInYear",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "created",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "411",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "411",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[7].object.value must use YYYY notation"
+  },
+  {
+    "statement_index": 11,
+    "statement": {
+      "subject": {
+        "value": "Visigothic King Leovigild",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Visigothic King Leovigild",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "invaded",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "invaded",
+            "occurrence": 2
+          }
+        ]
+      },
+      "object": {
+        "value": "Suebic kingdom of Galicia",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Suebic kingdom of Galicia",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[11].predicate.evidence[0]: quote 'invaded' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  },
+  {
+    "statement_index": 12,
+    "statement": {
+      "subject": {
+        "value": "Visigothic King Leovigild",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Visigothic King Leovigild",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "invadedInYear",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "invaded",
+            "occurrence": 2
+          }
+        ]
+      },
+      "object": {
+        "value": "585",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "585",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[12].predicate.evidence[0]: quote 'invaded' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

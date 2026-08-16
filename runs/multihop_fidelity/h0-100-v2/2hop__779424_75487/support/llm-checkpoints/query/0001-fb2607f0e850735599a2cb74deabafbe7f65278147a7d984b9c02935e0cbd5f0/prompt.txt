@@ -1,0 +1,160 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who is the federal leader of the party that Pierre-Hugues Boisvenu is a member of?
+
+Expected answer: Andrew Scheer
+
+Gold decomposition:
+1. question='Pierre-Hugues Boisvenu >> member of political party'; answer='Conservative Party of Canada'; support_paragraph=0
+2. question='federal leader of #1'; answer='Andrew Scheer'; support_paragraph=18
+
+Frozen RDF graph:
+<urn:graphragprov:entity:2015%20federal%20election> <urn:graphragprov:predicate:heldOn> "2015-10-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:2017%20Conservative%20Party%20of%20Canada%20leadership%20election> <urn:graphragprov:predicate:heldOn> "2017-05-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Andrew%20Scheer> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Stephen%20Harper> .
+<urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedByMergerOf> <urn:graphragprov:entity:Canadian%20Alliance> .
+<urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedByMergerOf> <urn:graphragprov:entity:Progressive%20Conservative%20parties> .
+<urn:graphragprov:entity:Harper> <urn:graphragprov:predicate:instructed> <urn:graphragprov:entity:Harry%20Walsh> .
+<urn:graphragprov:entity:Harper> <urn:graphragprov:predicate:ledPartyThrough> "five federal elections" .
+<urn:graphragprov:entity:Harper> <urn:graphragprov:predicate:tenderedResignationAs> <urn:graphragprov:entity:party%20leader> .
+<urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:heldPosition> <urn:graphragprov:entity:Conservative%20Party%20President> .
+<urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> "appoint an Interim Leader" .
+<urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> "implement the leadership selection process" .
+<urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> "reach out to the newly elected parliamentary caucus" .
+<urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:said> "he had spoken to Harper" .
+<urn:graphragprov:entity:Party%20members> <urn:graphragprov:predicate:choseAsLeader> <urn:graphragprov:entity:Andrew%20Scheer> .
+<urn:graphragprov:entity:Stephen%20Harper> <urn:graphragprov:predicate:led> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+<urn:graphragprov:entity:party> <urn:graphragprov:predicate:defeatedIn> <urn:graphragprov:entity:2015%20federal%20election> .
+<urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernment> "two minority governments" .
+<urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernmentInYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernmentInYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernmentInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:party> <urn:graphragprov:predicate:increasedSeatCountIn> <urn:graphragprov:entity:House%20of%20Commons> .
+<urn:graphragprov:entity:party> <urn:graphragprov:predicate:increasedSeatCountInYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:appointedBy> <urn:graphragprov:entity:Stephen%20Harper> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:appointedOn> "2010-01-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:Senate%20of%20Canada> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:bornIn> "1949-02-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:victim%27s%20rights%20activist> .
+<urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:represents> <urn:graphragprov:entity:province%20of%20Quebec> .

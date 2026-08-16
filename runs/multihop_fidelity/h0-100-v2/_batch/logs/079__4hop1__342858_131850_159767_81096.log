@@ -1,0 +1,354 @@
+
+H0 one-case execution
+  case:          4hop1__342858_131850_159767_81096
+  hops:          4
+  question:      Who won the 1993 Indy Car Race in the largest city of the state where the library district and the city of Yuma share the same county?
+  expected:      Mario Andretti
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__342858_131850_159767_81096/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=8 title='Yuma, Colorado'
+  source unit: u_9507f474d00735cb1319bc26f50d39031d6884ecb9dfd15cbecfa3f39d877d72
+  text chars:  161
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.032s | model=deepseek-v4-flash
+      tokens:   in=5327 | out=1307 | total=6634 | cached=4992 | uncached=335
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 144 / 175 (82.3%)
+    characters text:     130 / 161 (80.7%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  13 chars
+      'that is the'
+    statement density:  40.00 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/4] paragraph=14 title='Yuma County Library District'
+  source unit: u_144189aee4ead5473118cc1c892d7e4c492780501e718b2419fb03c9047b58cd
+  text chars:  657
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 17.790s | model=deepseek-v4-flash
+      tokens:   in=5515 | out=3855 | total=9370 | cached=5248 | uncached=267
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 526 / 685 (76.8%)
+    characters text:     498 / 657 (75.8%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  31 chars
+      'the nearly 80,000 square foot'
+    statement density:  30.66 / 1000 chars
+    title reliance:      14 / 21 (66.7%)
+
+[GRAPH 3/4] paragraph=0 title='Arizona'
+  source unit: u_114973c1651585177ba4a1146dfb73ef884d80f145d8aaaa1d0f5a4fbd9f89e1
+  text chars:  596
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 11.152s | model=deepseek-v4-flash
+      tokens:   in=5795 | out=2358 | total=8153 | cached=5248 | uncached=547
+    [LLM graph.reference #4] sending...
+      provider: 2.045s | model=deepseek-v4-flash
+      tokens:   in=857 | out=333 | total=1190 | cached=0 | uncached=857
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 2
+
+    initial rejection #4
+      validator:
+        response.statements[4].object.value must use canonical integer notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "sixth",
+                "segment": "text"
+              }
+            ],
+            "value": "sixth"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "sixth largest",
+                "segment": "text"
+              }
+            ],
+            "value": "rankByArea"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Arizona",
+                "segment": "title"
+              }
+            ],
+            "value": "Arizona"
+          }
+        }
+
+    initial rejection #5
+      validator:
+        response.statements[5].object.value must use canonical integer notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "14th",
+                "segment": "text"
+              }
+            ],
+            "value": "14th"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "14th most populous",
+                "segment": "text"
+              }
+            ],
+            "value": "rankByPopulation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Arizona",
+                "segment": "title"
+              }
+            ],
+            "value": "Arizona"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 261 / 603 (43.3%)
+    characters text:     254 / 596 (42.6%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  147 chars
+      "Arizona ( (listen); Navajo: Hoozdo Hahoodzo Navajo pronunciation: [xòːztò xɑ̀xòːtsò]; O'odham: Alĭ ṣonak Uto-Aztecan pronunciation: [ˡaɺi ˡʂonak])"
+    statement density:  24.88 / 1000 chars
+    title reliance:      15 / 15 (100.0%)
+
+[GRAPH 4/4] paragraph=3 title='Desert Diamond West Valley Phoenix Grand Prix'
+  source unit: u_171a6300ab9605bc46d1c0dc6c81cc23eb269d06eb52bf6be08615ff366ae00f
+  text chars:  363
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 7.165s | model=deepseek-v4-flash
+      tokens:   in=5850 | out=1326 | total=7176 | cached=5248 | uncached=602
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 264 / 408 (64.7%)
+    characters text:     219 / 363 (60.3%)
+    characters title:    45 / 45 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  45 chars
+      'After a hiatus of eleven years, the race was'
+    statement density:  19.61 / 1000 chars
+    title reliance:      3 / 8 (37.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 51
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      51
+resource nodes:        38
+entity nodes:          38
+literal values:        13
+predicates:            30
+
+N-Triples:
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:capital> <urn:graphragprov:entity:Phoenix> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:state> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:largestCity> <urn:graphragprov:entity:Phoenix> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:neighboringState> <urn:graphragprov:entity:Baja%20California> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:neighboringState> <urn:graphragprov:entity:California> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:neighboringState> <urn:graphragprov:entity:Nevada> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:neighboringState> <urn:graphragprov:entity:Sonora> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Mountain%20states> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Western%20states> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:rankByArea> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:rankByPopulation> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:sharesRegionWith> <urn:graphragprov:entity:Colorado> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:sharesRegionWith> <urn:graphragprov:entity:New%20Mexico> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:sharesRegionWith> <urn:graphragprov:entity:Utah> .
+  <urn:graphragprov:entity:Heritage%20Branch%20Library> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:downtown%20Yuma> .
+  <urn:graphragprov:entity:Main%20Library> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yuma> .
+  <urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:currentlyOperatesAs> <urn:graphragprov:entity:Heritage%20Branch%20Library> .
+  <urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sunset%20Park> .
+  <urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:renovationCompletedInYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:renovationCost> "4.2 million" .
+  <urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:underwentRenovation> "several expansions and renovations" .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:Main%20Library> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Dateland> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Foothills> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Roll> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:San%20Luis> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Somerton> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Wellton> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:downtown%20Yuma> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasSeatingCapacity> "20"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasVolumeCount> "1053"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Carnegie%20library> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Arizona> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:openedOn> "1921-02-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:servesPopulationOf> <urn:graphragprov:entity:Yuma%20County> .
+  <urn:graphragprov:entity:Desert%20Diamond%20West%20Valley%20Phoenix%20Grand%20Prix> <urn:graphragprov:predicate:heldOn> <urn:graphragprov:entity:Saturday%20night> .
+  <urn:graphragprov:entity:Desert%20Diamond%20West%20Valley%20Phoenix%20Grand%20Prix> <urn:graphragprov:predicate:revivedBy> <urn:graphragprov:entity:Verizon%20IndyCar%20Series> .
+  <urn:graphragprov:entity:Desert%20Diamond%20West%20Valley%20Phoenix%20Grand%20Prix> <urn:graphragprov:predicate:revivedInYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Johnny%20Rutherford> <urn:graphragprov:predicate:crashYear> "1980"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Johnny%20Rutherford> <urn:graphragprov:predicate:involvedInCrash> <urn:graphragprov:entity:spectacular%20crash> .
+  <urn:graphragprov:entity:Mario%20Andretti> <urn:graphragprov:predicate:achievedFinalCareerVictory> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Phoenix> <urn:graphragprov:predicate:considered> <urn:graphragprov:entity:popular%20Indy%20car%20track> .
+  <urn:graphragprov:entity:Phoenix> <urn:graphragprov:predicate:hasHistoryOf> <urn:graphragprov:entity:open%20wheel%20races> .
+  <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Home%20Rule%20Municipality> .
+  <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Colorado> .
+  <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yuma%20County> .
+  <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:mostPopulousCityIn> <urn:graphragprov:entity:Yuma%20County> .
+  <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:population> "3524"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:populationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.574s | model=deepseek-v4-flash
+      tokens:   in=3336 | out=354 | total=3690 | cached=640 | uncached=2696
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yuma%20County> .
+  - <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Arizona> .
+  - <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:largestCity> <urn:graphragprov:entity:Phoenix> .
+  - <urn:graphragprov:entity:Mario%20Andretti> <urn:graphragprov:predicate:achievedFinalCareerVictory> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> ?county . <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:locatedIn> ?state . ?state <urn:graphragprov:predicate:largestCity> ?city . ?answer <urn:graphragprov:predicate:achievedFinalCareerVictory> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_114973c165158517>
+  FROM <urn:graphragprov:unit:u_144189aee4ead547>
+  FROM <urn:graphragprov:unit:u_171a6300ab9605bc>
+  FROM <urn:graphragprov:unit:u_9507f474d00735cb>
+  WHERE { <urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> ?county . <urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:locatedIn> ?state . ?state <urn:graphragprov:predicate:largestCity> ?city . ?answer <urn:graphragprov:predicate:achievedFinalCareerVictory> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> . }
+
+GraphDB execution:
+  observed answers: ('Mario Andretti',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__342858_131850_159767_81096
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__342858_131850_159767_81096/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26680
+output tokens:         9533
+total tokens:          36213
+cached input tokens:   21376
+uncached input tokens: 5304
+cumulative LLM seconds: 47.759
+
+statement occurrences: 51
+semantic triples:      51
+entity nodes:          38
+literal values:        13
+predicates:            30
+query attempts:        1
+observed answers:      ('Mario Andretti',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 45.209s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.083s
+  graph.materialization [attempt=1]: 0.099s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.575s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.458s

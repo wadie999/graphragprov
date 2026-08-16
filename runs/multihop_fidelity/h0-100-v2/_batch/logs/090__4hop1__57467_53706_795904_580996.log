@@ -1,0 +1,302 @@
+
+H0 one-case execution
+  case:          4hop1__57467_53706_795904_580996
+  hops:          4
+  question:      What city shares a border with the city where a person worked during the gold rush in the state that has the most house of representatives seat?
+  expected:      Rio Linda
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__57467_53706_795904_580996/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=3 title='United States House of Representatives'
+  source unit: u_253f9b9f4dcba50ea1654f80351c265a992bc65db635cfecdba808691bd5e5b3
+  text chars:  724
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 15.974s | model=deepseek-v4-flash
+      tokens:   in=5405 | out=3318 | total=8723 | cached=4992 | uncached=413
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 577 / 762 (75.7%)
+    characters text:     539 / 724 (74.4%)
+    characters title:    38 / 38 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  32 chars
+      'The composition of the House is'
+    statement density:  26.25 / 1000 chars
+    title reliance:      3 / 20 (15.0%)
+
+[GRAPH 2/4] paragraph=5 title='California Gold Rush'
+  source unit: u_434f9adc04d4f3753071f8231be0c37ff03827690323cb0a9622dfecf2d7f44a
+  text chars:  329
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.636s | model=deepseek-v4-flash
+      tokens:   in=5559 | out=824 | total=6383 | cached=4992 | uncached=567
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 162 / 349 (46.4%)
+    characters text:     162 / 329 (49.2%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  115 chars
+      'to sell gold prospecting supplies, and walked through the streets of San Francisco, holding aloft a vial of gold,'
+    statement density:  14.33 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 3/4] paragraph=4 title='History of Sacramento, California'
+  source unit: u_f51c04694eadba8d12fdf0ecafd059934bb15933106fa28ffddf1a1092d41c4c
+  text chars:  261
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.885s | model=deepseek-v4-flash
+      tokens:   in=5604 | out=1118 | total=6722 | cached=5120 | uncached=484
+    [LLM graph.reference #4] sending...
+      provider: 1.377s | model=deepseek-v4-flash
+      tokens:   in=571 | out=171 | total=742 | cached=512 | uncached=59
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 1
+
+    initial rejection #4
+      validator:
+        response.statements[4].predicate.evidence[0]: quote 'constructed by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Sutter, Sr.",
+                "segment": "text"
+              }
+            ],
+            "value": "John Sutter, Sr."
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "constructed by",
+                "segment": "text"
+              }
+            ],
+            "value": "constructedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "embarcadero",
+                "segment": "text"
+              }
+            ],
+            "value": "embarcadero"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 6
+  coverage:
+    characters combined: 206 / 294 (70.1%)
+    characters text:     184 / 261 (70.5%)
+    characters title:    22 / 33 (66.7%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  18 chars
+      'that his father,'
+    statement density:  20.41 / 1000 chars
+    title reliance:      4 / 6 (66.7%)
+
+[GRAPH 4/4] paragraph=16 title='Rio Linda High School'
+  source unit: u_78ededf5377f2b1eb3939ef36935632d4cc7890b56db55a09b161970d6ec353d
+  text chars:  231
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 5.682s | model=deepseek-v4-flash
+      tokens:   in=5679 | out=1142 | total=6821 | cached=5248 | uncached=431
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 200 / 252 (79.4%)
+    characters text:     179 / 231 (77.5%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  14 chars
+      'students. It'
+    statement density:  23.81 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 37
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      37
+resource nodes:        36
+entity nodes:          36
+literal values:        8
+predicates:            28
+
+N-Triples:
+  <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:hasSingleRepresentative> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:California> <urn:graphragprov:predicate:hasLargestDelegation> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:California> <urn:graphragprov:predicate:hasRepresentatives> "53"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Delaware> <urn:graphragprov:predicate:hasSingleRepresentative> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Montana> <urn:graphragprov:predicate:hasSingleRepresentative> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:North%20Dakota> <urn:graphragprov:predicate:hasSingleRepresentative> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Representatives> <urn:graphragprov:predicate:sitIn> <urn:graphragprov:entity:congressional%20districts> .
+  <urn:graphragprov:entity:Seven%20states> <urn:graphragprov:predicate:haveSmallestDelegation> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:South%20Dakota> <urn:graphragprov:predicate:hasSingleRepresentative> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:United%20States%20House%20of%20Representatives> <urn:graphragprov:predicate:composedOf> <urn:graphragprov:entity:Representatives> .
+  <urn:graphragprov:entity:United%20States%20House%20of%20Representatives> <urn:graphragprov:predicate:compositionEstablishedBy> <urn:graphragprov:entity:Article%20One%20of%20the%20United%20States%20Constitution> .
+  <urn:graphragprov:entity:United%20States%20House%20of%20Representatives> <urn:graphragprov:predicate:inceptionYear> "1789"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vermont> <urn:graphragprov:predicate:hasSingleRepresentative> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Wyoming> <urn:graphragprov:predicate:hasSingleRepresentative> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:all%20Representatives> <urn:graphragprov:predicate:directlyElectedSince> "1789"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:congressional%20districts> <urn:graphragprov:predicate:allocatedOnBasisOf> <urn:graphragprov:entity:population> .
+  <urn:graphragprov:entity:congressional%20districts> <urn:graphragprov:predicate:allocatedTo> <urn:graphragprov:entity:each%20of%20the%2050%20states> .
+  <urn:graphragprov:entity:each%20district> <urn:graphragprov:predicate:entitledTo> <urn:graphragprov:entity:one%20representative> .
+  <urn:graphragprov:entity:population> <urn:graphragprov:predicate:measuredBy> <urn:graphragprov:entity:U.S.%20Census> .
+  <urn:graphragprov:entity:total%20number%20of%20voting%20representatives> <urn:graphragprov:predicate:fixedByLawAt> "435"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:confirmed> <urn:graphragprov:entity:Rumors%20of%20the%20discovery%20of%20gold> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:merchant> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:newspaper%20publisher> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:shouted> "Gold! Gold! Gold from the American River!" .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:San%20Francisco> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:formerlyPartOf> <urn:graphragprov:entity:Grant%20Unified%20School%20District> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:hasEnrollment> "2035"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:high%20school> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rio%20Linda> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sacramento%2C%20CA> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Twin%20Rivers%20Unified%20School%20District> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:John%20Augustus%20Sutter%2C%20Jr.> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Samuel%20Brannan> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedInYear> "1848"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:locatedAtConfluenceOf> <urn:graphragprov:entity:American%20and%20Sacramento%20Rivers> .
+  <urn:graphragprov:entity:embarcadero> <urn:graphragprov:predicate:constructedBy> <urn:graphragprov:entity:John%20Sutter%2C%20Sr.> .
+  <urn:graphragprov:entity:embarcadero> <urn:graphragprov:predicate:constructedInYear> "a few years prior" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.671s | model=deepseek-v4-flash
+      tokens:   in=2750 | out=368 | total=3118 | cached=640 | uncached=2110
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:California> <urn:graphragprov:predicate:hasRepresentatives> "53"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  - <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:San%20Francisco> .
+  - <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Samuel%20Brannan> .
+  - <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rio%20Linda> .
+  - <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sacramento%2C%20CA> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?state <urn:graphragprov:predicate:hasRepresentatives> ?repCount . ?person <urn:graphragprov:predicate:workedIn> ?workCity . ?workCity <urn:graphragprov:predicate:foundedBy> ?person . ?school <urn:graphragprov:predicate:locatedIn> ?answer . ?school <urn:graphragprov:predicate:locatedIn> ?workCity . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_253f9b9f4dcba50e>
+  FROM <urn:graphragprov:unit:u_434f9adc04d4f375>
+  FROM <urn:graphragprov:unit:u_78ededf5377f2b1e>
+  FROM <urn:graphragprov:unit:u_f51c04694eadba8d>
+  WHERE { ?state <urn:graphragprov:predicate:hasRepresentatives> ?repCount . ?person <urn:graphragprov:predicate:workedIn> ?workCity . ?workCity <urn:graphragprov:predicate:foundedBy> ?person . ?school <urn:graphragprov:predicate:locatedIn> ?answer . ?school <urn:graphragprov:predicate:locatedIn> ?workCity . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__57467_53706_795904_580996
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__57467_53706_795904_580996/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          25568
+output tokens:         6941
+total tokens:          32509
+cached input tokens:   21504
+uncached input tokens: 4064
+cumulative LLM seconds: 36.224
+
+statement occurrences: 37
+semantic triples:      37
+entity nodes:          36
+literal values:        8
+predicates:            28
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.571s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.077s
+  graph.materialization [attempt=1]: 0.097s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.008s
+  query.reference.generation [attempt=1]: 2.672s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.480s

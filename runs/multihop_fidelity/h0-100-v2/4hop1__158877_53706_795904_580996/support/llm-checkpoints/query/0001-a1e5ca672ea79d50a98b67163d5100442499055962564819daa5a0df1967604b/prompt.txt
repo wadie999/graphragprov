@@ -1,0 +1,164 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What shares a border with the city where the person who went to the state where Baskin-Robbins was founded during the gold rush works?
+
+Expected answer: Rio Linda
+
+Gold decomposition:
+1. question='In which state was Baskin-Robbins founded?'; answer='California'; support_paragraph=13
+2. question='someone who went to #1 during the gold rush'; answer='Samuel Brannan'; support_paragraph=17
+3. question='#2 >> work location'; answer='Sacramento'; support_paragraph=12
+4. question='#3 >> shares border with'; answer='Rio Linda'; support_paragraph=14
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:confirmed> <urn:graphragprov:entity:Rumors%20of%20the%20discovery%20of%20gold> .
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:heldAloft> <urn:graphragprov:entity:a%20vial%20of%20gold> .
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:merchant> .
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:publisher> .
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:setUp> <urn:graphragprov:entity:a%20store%20to%20sell%20gold%20prospecting%20supplies> .
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:shouted> <urn:graphragprov:entity:Gold%21%20Gold%21%20Gold%20from%20the%20American%20River%21> .
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:walkedThrough> <urn:graphragprov:entity:the%20streets%20of%20San%20Francisco> .
+<urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:San%20Francisco> .
+<urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:formerlyPartOf> <urn:graphragprov:entity:Grant%20Unified%20School%20District> .
+<urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:hasEnrollment> "2035"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:high%20school> .
+<urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:CA> .
+<urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rio%20Linda> .
+<urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sacramento> .
+<urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Twin%20Rivers%20Unified%20School%20District> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Canton%2C%20Massachusetts> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:claimsToBe> <urn:graphragprov:entity:world%27s%20largest%20chain%20of%20ice%20cream%20specialty%20stores> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Burt%20Baskin> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Irv%20Robbins> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:foundedIn> <urn:graphragprov:entity:Glendale%2C%20California> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:foundedInYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:hasLocationCount> "7500"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:hasLocationCountIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:hasLocationCountIn> <urn:graphragprov:entity:other%20countries> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:chain%20of%20ice%20cream%20and%20cake%20specialty%20shop%20restaurants> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Baskin-Robbins> <urn:graphragprov:predicate:sellsIn> <urn:graphragprov:entity:nearly%2050%20countries> .
+<urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:John%20Augustus%20Sutter%2C%20Jr.> .
+<urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Samuel%20Brannan> .
+<urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedInYear> "1848"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:confluence%20of%20the%20American%20and%20Sacramento%20Rivers> .
+<urn:graphragprov:entity:embarcadero> <urn:graphragprov:predicate:constructedBy> <urn:graphragprov:entity:John%20Sutter%2C%20Sr.> .
+<urn:graphragprov:entity:embarcadero> <urn:graphragprov:predicate:constructedInYear> "a few years prior" .

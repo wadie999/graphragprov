@@ -1,0 +1,311 @@
+
+H0 one-case execution
+  case:          3hop1__241001_568433_47686
+  hops:          3
+  question:      Where do Greyhound buses leave from in the city where Arna Selznick's employer is headquartered?
+  expected:      Toronto Coach Terminal
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__241001_568433_47686/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=11 title='Arna Selznick'
+  source unit: u_f78ffbbdd0376937c952c2668fed7241f54ac9f687920712723089b1d8b2a03b
+  text chars:  218
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.422s | model=deepseek-v4-flash
+      tokens:   in=5287 | out=1537 | total=6824 | cached=4992 | uncached=295
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 184 / 231 (79.7%)
+    characters text:     171 / 218 (78.4%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  17 chars
+      'a studio called'
+    statement density:  34.63 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/3] paragraph=12 title='Natalie Turner'
+  source unit: u_977863de3fafb904041bab58668d9d57df30dc2f496d23976c4dbcd31a10cfe6
+  text chars:  286
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.087s | model=deepseek-v4-flash
+      tokens:   in=5389 | out=1262 | total=6651 | cached=4992 | uncached=397
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 218 / 300 (72.7%)
+    characters text:     204 / 286 (71.3%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      'the Classical Anim'
+    statement density:  23.33 / 1000 chars
+    title reliance:      4 / 7 (57.1%)
+
+[GRAPH 3/3] paragraph=16 title='Toronto Coach Terminal'
+  source unit: u_0c3fa5834302f53de7767842a45f2d1979106081404abe6f027b08ccb4e92022
+  text chars:  666
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 15.489s | model=deepseek-v4-flash
+      tokens:   in=5581 | out=3194 | total=8775 | cached=5120 | uncached=461
+    [LLM graph.reference #4] sending...
+      provider: 1.629s | model=deepseek-v4-flash
+      tokens:   in=654 | out=182 | total=836 | cached=0 | uncached=654
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 1
+
+    initial rejection #11
+      validator:
+        response.statements[11].object.value must use canonical decimal notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "decimal",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "$1.2 million",
+                "segment": "text"
+              }
+            ],
+            "value": "1.2 million"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "for $1.2 million annually",
+                "segment": "text"
+              }
+            ],
+            "value": "leasedForAnnualAmount"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Toronto Coach Terminal",
+                "segment": "title"
+              }
+            ],
+            "value": "Toronto Coach Terminal"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.value must use canonical decimal notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "decimal",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "$1.2 million",
+                "segment": "text"
+              }
+            ],
+            "value": "1200000"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "for $1.2 million annually",
+                "segment": "text"
+              }
+            ],
+            "value": "leasedForAnnualAmount"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Toronto Coach Terminal",
+                "segment": "title"
+              }
+            ],
+            "value": "Toronto Coach Terminal"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 19
+  coverage:
+    characters combined: 487 / 688 (70.8%)
+    characters text:     465 / 666 (69.8%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  30 chars
+      'in its entirety to bus lines'
+    statement density:  27.62 / 1000 chars
+    title reliance:      13 / 19 (68.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 34
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      34
+resource nodes:        31
+entity nodes:          31
+literal values:        2
+predicates:            23
+
+N-Triples:
+  <urn:graphragprov:entity:Gray%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:interurban%20bus%20service> .
+  <urn:graphragprov:entity:Gray%20Coach> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Toronto%20Transit%20Commission> .
+  <urn:graphragprov:entity:Gray%20Line%20Terminal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:open%20air%20terminal> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:architecturalStyle> <urn:graphragprov:entity:Art%20Deco> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:formerlyKnownAs> <urn:graphragprov:entity:Gray%20Coach%20Terminal> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:central%20bus%20station> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:leasedTo> <urn:graphragprov:entity:Coach%20Canada> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:leasedTo> <urn:graphragprov:entity:Greyhound%20Canada> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:610%20Bay%20Street> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Downtown%20Toronto> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:openedInYear> "1931"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Gray%20Line%20Terminal> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:inter-city%20services> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:wasHomeBaseFor> <urn:graphragprov:entity:Gray%20Coach> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Toronto%20Transit%20Commission> .
+  <urn:graphragprov:entity:Toronto%20Transit%20Commission> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:Toronto%20Coach%20Terminal> .
+  <urn:graphragprov:entity:Toronto%20Transit%20Commission> <urn:graphragprov:predicate:managedUntil> "2012-07-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Max%20the%20Mutt%20Animation%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Natalie%20Turner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:professor> .
+  <urn:graphragprov:entity:Natalie%20Turner> <urn:graphragprov:predicate:taughtAt> <urn:graphragprov:entity:Max%20the%20Mutt%20Animation%20School> .
+  <urn:graphragprov:entity:Natalie%20Turner> <urn:graphragprov:predicate:willTeach> <urn:graphragprov:entity:fifth%20year%20of%20the%20Animex%20%28Animation%20Exploration%29%20workshop> .
+  <urn:graphragprov:entity:Natalie%20Turner> <urn:graphragprov:predicate:worksAt> <urn:graphragprov:entity:Sheridan%20College> .
+  <urn:graphragprov:entity:Sheridan%20College> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Oakville> .
+  <urn:graphragprov:entity:fifth%20year%20of%20the%20Animex%20%28Animation%20Exploration%29%20workshop> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Visual%20Arts%20Brampton%20Creative%20Studio> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Nelvana> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:hasPartner> <urn:graphragprov:entity:John%20van%20Bruggen> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:directing%20Nelvana%27s%201985%20animated%20film%20%22The%20Care%20Bears%20Movie%22> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:artist> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:operates> <urn:graphragprov:entity:Dancingmonkeys> .
+  <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:owns> <urn:graphragprov:entity:Dancingmonkeys> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.578s | model=deepseek-v4-flash
+      tokens:   in=2560 | out=308 | total=2868 | cached=640 | uncached=1920
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Nelvana> .
+  - <urn:graphragprov:entity:Nelvana> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Toronto> .
+  - <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  - <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:inter-city%20services> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:employer> ?employer . ?employer <urn:graphragprov:predicate:headquartersLocation> ?city . ?answer <urn:graphragprov:predicate:locatedIn> ?city . ?answer <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:inter-city%20services> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0c3fa5834302f53d>
+  FROM <urn:graphragprov:unit:u_977863de3fafb904>
+  FROM <urn:graphragprov:unit:u_f78ffbbdd0376937>
+  WHERE { <urn:graphragprov:entity:Arna%20Selznick> <urn:graphragprov:predicate:employer> ?employer . ?employer <urn:graphragprov:predicate:headquartersLocation> ?city . ?answer <urn:graphragprov:predicate:locatedIn> ?city . ?answer <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:inter-city%20services> . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__241001_568433_47686
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__241001_568433_47686/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          19471
+output tokens:         6483
+total tokens:          25954
+cached input tokens:   15744
+uncached input tokens: 3727
+cumulative LLM seconds: 35.204
+
+statement occurrences: 34
+semantic triples:      34
+entity nodes:          31
+literal values:        2
+predicates:            23
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 32.644s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.058s
+  graph.materialization [attempt=1]: 0.079s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.579s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.489s

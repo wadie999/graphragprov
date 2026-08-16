@@ -1,0 +1,117 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_c21eb3af3025d48e17e3a218339a907834d5bdcaa1e4c226952a65b434a762de
+Title: Petar Trifunović
+Text:
+Dr. Petar Trifunović (31 August 1910, Dubrovnik – 8 December 1980, Belgrade) was an International Grandmaster and five-times Yugoslav Champion of chess.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Petar Trifunović",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Petar Trifunović",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "Petar Trifunović",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "diedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "died",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Belgrade",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Belgrade",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Petar Trifunović",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Petar Trifunović",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "Petar Trifunović",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "bornIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "born",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Dubrovnik",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Dubrovnik",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].predicate.evidence[0]: quote 'born' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

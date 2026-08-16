@@ -1,0 +1,143 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_47aa841e4069f054907f9e19c23c259448e451f7fc02c304669d15d13dd2c378
+Title: Germans
+Text:
+The migration-period peoples who later coalesced into a "German" ethnicity were the Germanic tribes of the Saxons, Franci, Thuringii, Alamanni and Bavarii. These five tribes, sometimes with inclusion of the Frisians, are considered as the major groups to take part in the formation of the Germans. The varieties of the German language are still divided up into these groups. Linguists distinguish low Saxon, Franconian, Bavarian, Thuringian and Alemannic varieties in modern German. By the 9th century, the large tribes which lived on the territory of modern Germany had been united under the rule of the Frankish king Charlemagne, known in German as Karl der Große. Much of what is now Eastern Germany became Slavonic-speaking (Sorbs and Veleti), after these areas were vacated by Germanic tribes (Vandals, Lombards, Burgundians and Suebi amongst others) which had migrated into the former areas of the Roman Empire.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Germanic tribes",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Germanic tribes",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "laterCoalescedInto",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "later coalesced into",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "German ethnicity",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "German ethnicity",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].object.evidence[0]: quote 'German ethnicity' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 23,
+    "statement": {
+      "subject": {
+        "value": "Eastern Germany",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Eastern Germany",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "inhabitedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "inhabited by",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Sorbs",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Sorbs",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[23].predicate.evidence[0]: quote 'inhabited by' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 24,
+    "statement": {
+      "subject": {
+        "value": "Eastern Germany",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Eastern Germany",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "inhabitedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "inhabited by",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Veleti",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Veleti",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[24].predicate.evidence[0]: quote 'inhabited by' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

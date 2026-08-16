@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          3hop1__857_846_7794
+  hops:          3
+  question:      In 2010, what was the population of the city where the Yongle emperor greeted the person to whom the edict was addressed?
+  expected:      8.005 million
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__857_846_7794/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=10 title='Sino-Tibetan relations during the Ming dynasty'
+  source unit: u_8341647226651e0e6a67c14ce856c77e0afd072a70d3798672ea3ba4e759f5a8
+  text chars:  322
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.040s | model=deepseek-v4-flash
+      tokens:   in=5343 | out=1217 | total=6560 | cached=4992 | uncached=351
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 222 / 368 (60.3%)
+    characters text:     222 / 322 (68.9%)
+    characters title:    0 / 46 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  88 chars
+      ", written after the latter's agent had brought holy relics to the Ming court. Zhengtong"
+    statement density:  19.02 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/3] paragraph=4 title='Sino-Tibetan relations during the Ming dynasty'
+  source unit: u_94579ac7fa3c1c294d14aafc0d06c20b2dbe9e880c64224c5273642756dbb839
+  text chars:  805
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.396s | model=deepseek-v4-flash
+      tokens:   in=5565 | out=1347 | total=6912 | cached=4992 | uncached=573
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 229 / 851 (26.9%)
+    characters text:     229 / 805 (28.4%)
+    characters title:    0 / 46 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  190 chars
+      ', following the tradition of Mongol emperors and their reverence for the Sakya lamas, showed an enormous amount of deference towards Deshin Shekpa. The Yongle Emperor came out of…'
+    statement density:  9.40 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 3/3] paragraph=0 title='Nanjing'
+  source unit: u_1df7905e4e54dd8793aebb4f65fe3c66217e3ce0f5743a1234776915c2c3f24f
+  text chars:  380
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.381s | model=deepseek-v4-flash
+      tokens:   in=5585 | out=1022 | total=6607 | cached=5120 | uncached=465
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 183 / 387 (47.3%)
+    characters text:     176 / 380 (46.3%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  47 chars
+      'in 2010. The statistics in 2011 estimated the'
+    statement density:  15.50 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 21
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      21
+resource nodes:        10
+entity nodes:          10
+literal values:        10
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:birthRate> "8.86 percent" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:deathRate> "6.88 percent" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:sexRatio> "107.31 males to 100 females" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:totalPopulationInYear> "8.005 million" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:totalPopulationInYear> "8.11 million" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:urbanAreaPopulation> "6.47 million" .
+  <urn:graphragprov:entity:The%20Information%20Office%20of%20the%20State%20Council%20of%20the%20PRC> <urn:graphragprov:predicate:preserves> <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> .
+  <urn:graphragprov:entity:Zhengtong%20Emperor> <urn:graphragprov:predicate:deliveredMessageTo> <urn:graphragprov:entity:the%20Great%20Treasure%20Prince%20of%20Dharma> .
+  <urn:graphragprov:entity:Zhengtong%20Emperor> <urn:graphragprov:predicate:reignEndYear> "1449"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Zhengtong%20Emperor> <urn:graphragprov:predicate:reignStartYear> "1435"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> <urn:graphragprov:entity:the%20Karmapa> .
+  <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:dated> "1445"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:the%20Great%20Treasure%20Prince%20of%20Dharma> <urn:graphragprov:predicate:sameAs> <urn:graphragprov:entity:the%20Karmapa> .
+  <urn:graphragprov:entity:Deshin%20Shekpa> <urn:graphragprov:predicate:arrivedOn> "1407-04-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Deshin%20Shekpa> <urn:graphragprov:predicate:visited> <urn:graphragprov:entity:Nanjing> .
+  <urn:graphragprov:entity:Kublai%20Khan> <urn:graphragprov:predicate:satOnLowerPlatform> <urn:graphragprov:entity:the%20Sakya%20Phagpa%20lama> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:didNotRequireKowtow> <urn:graphragprov:entity:the%20Karmapa> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:gavePlaceOfHonor> <urn:graphragprov:entity:the%20Karmapa> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greeted> <urn:graphragprov:entity:the%20Karmapa> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> <urn:graphragprov:entity:Nanjing> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:seatedKarmapaOnHigherThrone> <urn:graphragprov:entity:the%20Karmapa> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.972s | model=deepseek-v4-flash
+      tokens:   in=1917 | out=268 | total=2185 | cached=640 | uncached=1277
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> <urn:graphragprov:entity:the%20Karmapa> .
+  - <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> <urn:graphragprov:entity:Nanjing> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:totalPopulationInYear> "8.005 million" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> ?person . <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> ?city . ?city <urn:graphragprov:predicate:totalPopulationInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1df7905e4e54dd87>
+  FROM <urn:graphragprov:unit:u_8341647226651e0e>
+  FROM <urn:graphragprov:unit:u_94579ac7fa3c1c29>
+  WHERE { <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> ?person . <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> ?city . ?city <urn:graphragprov:predicate:totalPopulationInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ('8.005 million', '8.11 million')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Nanjing', 'Sino-Tibetan relations during the Ming dynasty']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__857_846_7794
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__857_846_7794/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          18410
+output tokens:         3854
+total tokens:          22264
+cached input tokens:   15744
+uncached input tokens: 2666
+cumulative LLM seconds: 21.789
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          10
+literal values:        10
+predicates:            20
+query attempts:        1
+observed answers:      ('8.005 million', '8.11 million')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 19.829s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.106s
+  graph.materialization [attempt=1]: 0.091s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.973s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.438s

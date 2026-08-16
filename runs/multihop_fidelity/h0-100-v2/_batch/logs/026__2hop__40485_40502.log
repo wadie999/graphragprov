@@ -1,0 +1,417 @@
+
+H0 one-case execution
+  case:          2hop__40485_40502
+  hops:          2
+  question:      What was the population of the European country the Huguenots felt kinship for emigration to before this emigration?
+  expected:      2 million
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__40485_40502/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=15 title='Huguenots'
+  source unit: u_0796c5d7176000efc212fbafc2ecb8935cdc3d1435adfc29e08ee236b78de8d4
+  text chars:  535
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.784s | model=deepseek-v4-flash
+      tokens:   in=5330 | out=2267 | total=7597 | cached=4992 | uncached=338
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 291 / 544 (53.5%)
+    characters text:     282 / 535 (52.7%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  56 chars
+      'for exile after the revocation of the Edict of Nantes.'
+    statement density:  25.74 / 1000 chars
+    title reliance:      2 / 14 (14.3%)
+
+[GRAPH 2/2] paragraph=0 title='Huguenots'
+  source unit: u_efd1e7d1ea334a9057a8c26c9181e0570e7fc40e083c66665fee58c7f03ea52c
+  text chars:  713
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.350s | model=deepseek-v4-flash
+      tokens:   in=5553 | out=1890 | total=7443 | cached=4992 | uncached=561
+    [LLM graph.reference #3] sending...
+      provider: 2.967s | model=deepseek-v4-flash
+      tokens:   in=1134 | out=510 | total=1644 | cached=0 | uncached=1134
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 3
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'provided full citizens rights to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Huguenot immigrants",
+                "segment": "text"
+              }
+            ],
+            "value": "Huguenot immigrants"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "provided full citizens rights to",
+                "segment": "text"
+              }
+            ],
+            "value": "providedFullCitizensRightsTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Amsterdam",
+                "segment": "text"
+              }
+            ],
+            "value": "Amsterdam"
+          }
+        }
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'provided full citizens rights to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Huguenot immigrants",
+                "segment": "text"
+              }
+            ],
+            "value": "Huguenot immigrants"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "provided full citizens rights to",
+                "segment": "text"
+              }
+            ],
+            "value": "providedFullCitizensRightsTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "West Frisia",
+                "segment": "text"
+              }
+            ],
+            "value": "West Frisia"
+          }
+        }
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'provided full citizens rights to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Huguenot immigrants",
+                "segment": "text"
+              }
+            ],
+            "value": "Huguenot immigrants"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "provided full citizens rights to",
+                "segment": "text"
+              }
+            ],
+            "value": "providedFullCitizensRightsTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Dutch Republic",
+                "segment": "text"
+              }
+            ],
+            "value": "Dutch Republic"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     3
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'provided full citizens rights to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Huguenot immigrants",
+                "segment": "text"
+              }
+            ],
+            "value": "Huguenot immigrants"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "provided full citizens rights to",
+                "segment": "text"
+              }
+            ],
+            "value": "providedFullCitizensRightsTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Amsterdam",
+                "segment": "text"
+              }
+            ],
+            "value": "Amsterdam"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'provided full citizens rights to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Huguenot immigrants",
+                "segment": "text"
+              }
+            ],
+            "value": "Huguenot immigrants"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "provided full citizens rights to",
+                "segment": "text"
+              }
+            ],
+            "value": "providedFullCitizensRightsTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "West Frisia",
+                "segment": "text"
+              }
+            ],
+            "value": "West Frisia"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'provided full citizens rights to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Huguenot immigrants",
+                "segment": "text"
+              }
+            ],
+            "value": "Huguenot immigrants"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "provided full citizens rights to",
+                "segment": "text"
+              }
+            ],
+            "value": "providedFullCitizensRightsTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Dutch Republic",
+                "segment": "text"
+              }
+            ],
+            "value": "Dutch Republic"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 293 / 722 (40.6%)
+    characters text:     284 / 713 (39.8%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  183 chars
+      '.[citation needed] In 1705, Amsterdam and the area of West Frisia were the first areas to provide full citizens rights to Huguenot immigrants, followed by the Dutch Republic in 17…'
+    statement density:  11.08 / 1000 chars
+    title reliance:      1 / 8 (12.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 22
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 3
+  corrected valid: 0
+  remaining rejections: 3
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      22
+resource nodes:        20
+entity nodes:          20
+literal values:        3
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Dutch%20Republic> <urn:graphragprov:predicate:hasTrait> <urn:graphragprov:entity:Calvinist> .
+  <urn:graphragprov:entity:Dutch%20Republic> <urn:graphragprov:predicate:hasTrait> <urn:graphragprov:entity:wealthy> .
+  <urn:graphragprov:entity:Dutch%20Republic> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Dutch%20Republic> <urn:graphragprov:predicate:ledOppositionTo> <urn:graphragprov:entity:Louis%20XIV> .
+  <urn:graphragprov:entity:French> <urn:graphragprov:predicate:attacked> <urn:graphragprov:entity:Dutch%20Republic> .
+  <urn:graphragprov:entity:French-speaking%20Calvinist%20churches> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Dutch%20Republic> .
+  <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:consideredAsMostAttractiveCountryForExile> <urn:graphragprov:entity:Dutch%20Republic> .
+  <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:found> <urn:graphragprov:entity:French-speaking%20Calvinist%20churches> .
+  <urn:graphragprov:entity:League%20of%20Augsburg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:coalition> .
+  <urn:graphragprov:entity:League%20of%20Augsburg> <urn:graphragprov:predicate:opposed> <urn:graphragprov:entity:Louis%20XIV> .
+  <urn:graphragprov:entity:William%20III%20of%20Orange> <urn:graphragprov:predicate:emergedAsStrongestOpponentOf> <urn:graphragprov:entity:Louis%20XIV> .
+  <urn:graphragprov:entity:William%20III%20of%20Orange> <urn:graphragprov:predicate:formed> <urn:graphragprov:entity:League%20of%20Augsburg> .
+  <urn:graphragprov:entity:William%20III%20of%20Orange> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Stadtholder> .
+  <urn:graphragprov:entity:William%20III%20of%20Orange> <urn:graphragprov:predicate:laterBecame> <urn:graphragprov:entity:King%20of%20England> .
+  <urn:graphragprov:entity:Amsterdam> <urn:graphragprov:predicate:hadHuguenotPopulationPercentage> "nearly 25%" .
+  <urn:graphragprov:entity:Dutch%20Republic> <urn:graphragprov:predicate:hadPopulation> "ca. 2 million" .
+  <urn:graphragprov:entity:Dutch%20Republic> <urn:graphragprov:predicate:received> <urn:graphragprov:entity:largest%20group%20of%20Huguenot%20refugees> .
+  <urn:graphragprov:entity:Huguenot%20refugees> <urn:graphragprov:predicate:cameFrom> <urn:graphragprov:entity:region%20of%20the%20C%C3%A9vennes> .
+  <urn:graphragprov:entity:Huguenot%20refugees> <urn:graphragprov:predicate:cameFrom> <urn:graphragprov:entity:village%20of%20Fraissinet-de-Loz%C3%A8re> .
+  <urn:graphragprov:entity:Huguenot%20refugees> <urn:graphragprov:predicate:estimatedTotal> "75,000 to 100,000 people" .
+  <urn:graphragprov:entity:Huguenot%20refugees> <urn:graphragprov:predicate:included> <urn:graphragprov:entity:200%20clergy> .
+  <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:intermarriedWith> <urn:graphragprov:entity:Dutch> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.652s | model=deepseek-v4-flash
+      tokens:   in=1866 | out=167 | total=2033 | cached=640 | uncached=1226
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:consideredAsMostAttractiveCountryForExile> <urn:graphragprov:entity:Dutch%20Republic> .
+  - <urn:graphragprov:entity:Dutch%20Republic> <urn:graphragprov:predicate:hadPopulation> "ca. 2 million" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:consideredAsMostAttractiveCountryForExile> ?country . ?country <urn:graphragprov:predicate:hadPopulation> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0796c5d7176000ef>
+  FROM <urn:graphragprov:unit:u_efd1e7d1ea334a90>
+  WHERE { <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:consideredAsMostAttractiveCountryForExile> ?country . ?country <urn:graphragprov:predicate:hadPopulation> ?answer . }
+
+GraphDB execution:
+  observed answers: ('ca. 2 million',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Huguenots']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__40485_40502
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__40485_40502/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13883
+output tokens:         4834
+total tokens:          18717
+cached input tokens:   10624
+uncached input tokens: 3259
+cumulative LLM seconds: 25.752
+
+statement occurrences: 22
+semantic triples:      22
+entity nodes:          20
+literal values:        3
+predicates:            18
+query attempts:        1
+observed answers:      ('ca. 2 million',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.114s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.653s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.442s

@@ -1,0 +1,162 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the name of the famous bridge located in the birthplace of the composer of Nulla in mundo pax sincera?
+
+Expected answer: Rialto Bridge
+
+Gold decomposition:
+1. question='Nulla in mundo pax sincera >> composer'; answer='Antonio Vivaldi'; support_paragraph=11
+2. question='#1 >> place of birth'; answer='Venice'; support_paragraph=8
+3. question='what is the name of the famous bridge in #2'; answer='Rialto Bridge'; support_paragraph=2
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:composedBy> <urn:graphragprov:entity:Antonio%20Vivaldi> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:composedInYear> "1735"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:consideredAs> <urn:graphragprov:entity:one%20of%20Vivaldi%27s%20most%20beautiful%20solo%20motets> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sacred%20motet> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:praises> <urn:graphragprov:entity:Jesus> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:scoredFor> <urn:graphragprov:entity:basso%20continuo> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:scoredFor> <urn:graphragprov:entity:solo%20soprano> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:scoredFor> <urn:graphragprov:entity:two%20violins> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:scoredFor> <urn:graphragprov:entity:viola> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:style> <urn:graphragprov:entity:Italian%20Baroque> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:textDwellsOn> <urn:graphragprov:entity:imperfections%20of%20a%20world%20full%20of%20evil%20and%20sin> .
+<urn:graphragprov:entity:Nulla%20in%20mundo%20pax%20sincera> <urn:graphragprov:predicate:writtenInKey> <urn:graphragprov:entity:E%20major> .
+<urn:graphragprov:entity:Orlando%20furioso> <urn:graphragprov:predicate:stagedBy> <urn:graphragprov:entity:Vivaldi%20and%20his%20father%27s%20impresa> .
+<urn:graphragprov:entity:Orlando%20furioso> <urn:graphragprov:predicate:stagedInYear> "1713"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Orlando%20furioso> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Giovanni%20Alberto%20Ristori> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:cataloguedAs> <urn:graphragprov:entity:RV%20Anh.%2084> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:three-act%20opera> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:librettoBy> <urn:graphragprov:entity:Grazio%20Braccioli> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:partlyRelatedTo> <urn:graphragprov:entity:Orlando%20furioso%20%28RV%20728%29> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:recompositionOf> <urn:graphragprov:entity:Orlando%20furioso> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:survivingIn> <urn:graphragprov:entity:Antonio%20Vivaldi%27s%20personal%20library> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:connects> <urn:graphragprov:entity:San%20Marco> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:connects> <urn:graphragprov:entity:San%20Polo> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:currently> <urn:graphragprov:entity:significant%20tourist%20attraction> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:firstConstructedAs> <urn:graphragprov:entity:pontoon%20bridge> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:firstConstructedInCentury> "12th century" .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bridge> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Grand%20Canal> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Italy> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:city> .
+<urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:rebuiltSeveralTimesSince> <urn:graphragprov:entity:first%20construction> .

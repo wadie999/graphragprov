@@ -1,0 +1,195 @@
+
+H0 one-case execution
+  case:          2hop__88372_83837
+  hops:          2
+  question:      Who sings home alone tonight with the singer of you can crash my party anytime?
+  expected:      Karen Fairchild
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__88372_83837/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Crash My Party'
+  source unit: u_c307c831c840dc7c602e1425323bd8965a737b865d5c0e7b164e5baa16ad7c01
+  text chars:  365
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.069s | model=deepseek-v4-flash
+      tokens:   in=5284 | out=2555 | total=7839 | cached=4992 | uncached=292
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 285 / 379 (75.2%)
+    characters text:     271 / 365 (74.2%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  16 chars
+      '. The album was'
+    statement density:  42.22 / 1000 chars
+    title reliance:      9 / 16 (56.2%)
+
+[GRAPH 2/2] paragraph=2 title='Home Alone Tonight'
+  source unit: u_08dd7154def9672a7baa7c6e21b2d4d51f9f1a22bbbf2c22b6d25542de5d0068
+  text chars:  454
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.969s | model=deepseek-v4-flash
+      tokens:   in=5476 | out=2506 | total=7982 | cached=4992 | uncached=484
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 335 / 472 (71.0%)
+    characters text:     317 / 454 (69.8%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  39 chars
+      'on the strength of digital downloads.'
+    statement density:  29.66 / 1000 chars
+    title reliance:      9 / 14 (64.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 30
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      30
+resource nodes:        21
+entity nodes:          21
+literal values:        7
+predicates:            22
+
+N-Triples:
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Kill%20the%20Lights> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:enteredChart> <urn:graphragprov:entity:Billboard%20Hot%20Country%20Songs%20chart> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:hasDuetPartner> <urn:graphragprov:entity:Karen%20Fairchild> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:hasSingle> <urn:graphragprov:entity:third%20official%20single> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:reachedChartPosition> "33"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Luke%20Bryan> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:servicedOn> "2015-11-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:servicedTo> <urn:graphragprov:entity:American%20country%20radio> .
+  <urn:graphragprov:entity:Karen%20Fairchild> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Little%20Big%20Town> .
+  <urn:graphragprov:entity:Kill%20the%20Lights> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Kill%20the%20Lights> <urn:graphragprov:predicate:ordinal> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Kill%20the%20Lights> <urn:graphragprov:predicate:releasedInYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Little%20Big%20Town> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20country%20music%20group> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Luke%20Bryan> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:chartedOn> <urn:graphragprov:entity:Billboard%20Country%20Airplay%20chart> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:hasEdition> <urn:graphragprov:entity:deluxe%20edition> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:hasSingle> <urn:graphragprov:entity:Crash%20My%20Party> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:ordinal> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jeff%20Stevens> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:reachedChartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:releasedBy> <urn:graphragprov:entity:Capitol%20Nashville> .
+  <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:releasedOn> "2013-08-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Luke%20Bryan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Luke%20Bryan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20artist> .
+  <urn:graphragprov:entity:deluxe%20edition> <urn:graphragprov:predicate:availableAt> <urn:graphragprov:entity:Target> .
+  <urn:graphragprov:entity:deluxe%20edition> <urn:graphragprov:predicate:availableAt> <urn:graphragprov:entity:Walmart> .
+  <urn:graphragprov:entity:deluxe%20edition> <urn:graphragprov:predicate:hasBonusTracks> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.311s | model=deepseek-v4-flash
+      tokens:   in=2310 | out=281 | total=2591 | cached=640 | uncached=1670
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:hasDuetPartner> <urn:graphragprov:entity:Karen%20Fairchild> .
+  - <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Luke%20Bryan> .
+  - <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Luke%20Bryan> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:hasDuetPartner> ?answer . <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:recordedBy> ?singer . <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:artist> ?singer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_08dd7154def9672a>
+  FROM <urn:graphragprov:unit:u_c307c831c840dc7c>
+  WHERE { <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:hasDuetPartner> ?answer . <urn:graphragprov:entity:Home%20Alone%20Tonight> <urn:graphragprov:predicate:recordedBy> ?singer . <urn:graphragprov:entity:Crash%20My%20Party> <urn:graphragprov:predicate:artist> ?singer . }
+
+GraphDB execution:
+  observed answers: ('Karen Fairchild',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Crash My Party', 'Home Alone Tonight']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__88372_83837
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__88372_83837/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13070
+output tokens:         5342
+total tokens:          18412
+cached input tokens:   10624
+uncached input tokens: 2446
+cumulative LLM seconds: 27.349
+
+statement occurrences: 30
+semantic triples:      30
+entity nodes:          21
+literal values:        7
+predicates:            22
+query attempts:        1
+observed answers:      ('Karen Fairchild',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.051s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.312s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.517s

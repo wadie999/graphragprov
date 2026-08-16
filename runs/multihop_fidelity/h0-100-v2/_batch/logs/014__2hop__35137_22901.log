@@ -1,0 +1,187 @@
+
+H0 one-case execution
+  case:          2hop__35137_22901
+  hops:          2
+  question:      What Islamic denomination was the author of The Canon of Medicine thought to be a member of?
+  expected:      Sunni
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__35137_22901/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=15 title='Muslim world'
+  source unit: u_5c5284079e50ca68927b3754b7b3d02bc34281ff37c538f322fc030aef6bd9f6
+  text chars:  896
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 14.022s | model=deepseek-v4-flash
+      tokens:   in=5401 | out=2688 | total=8089 | cached=4992 | uncached=409
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 546 / 908 (60.1%)
+    characters text:     534 / 896 (59.6%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 4 (75.0%)
+    longest uncovered:  91 chars
+      'for centuries. Other medical advancements came in the fields of pharmacology and pharmacy.'
+    statement density:  17.62 / 1000 chars
+    title reliance:      1 / 16 (6.2%)
+
+[GRAPH 2/2] paragraph=17 title='Avicenna'
+  source unit: u_47d596213ad901a7b5638a68c64bd4e05cf864984f2089586f1c510476875755
+  text chars:  845
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.529s | model=deepseek-v4-flash
+      tokens:   in=5664 | out=1122 | total=6786 | cached=4992 | uncached=672
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 136 / 853 (15.9%)
+    characters text:     128 / 845 (15.1%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           6 / 8 (75.0%)
+    longest uncovered:  171 chars
+      '. Conversely, Sharaf Khorasani, citing a rejection of an invitation of the Sunni Governor Sultan Mahmoud Ghazanavi by Avicenna to his court, believes that Avicenna was an'
+    statement density:  8.21 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 23
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      23
+resource nodes:        25
+entity nodes:          25
+literal values:        3
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:consideredFollowerOf> <urn:graphragprov:entity:Brethren%20of%20Purity> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:familyBackground> <urn:graphragprov:entity:Shia> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:familyBackground> <urn:graphragprov:entity:Sunni> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hasMadhab> "school of thought within Islamic jurisprudence" .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:wasMemberOf> <urn:graphragprov:entity:Ismaili> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:wasMemberOf> <urn:graphragprov:entity:Sunni%20Hanafi> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:wasMemberOf> <urn:graphragprov:entity:Twelver%20Shia> .
+  <urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Abulcasis> .
+  <urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:Kitab%20al-Tasrif> .
+  <urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:medical%20surgery> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:The%20Canon%20of%20Medicine> .
+  <urn:graphragprov:entity:Ibn%20al-Nafis> <urn:graphragprov:predicate:proposedTheoryOf> <urn:graphragprov:entity:pulmonary%20circulation> .
+  <urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:medical%20encyclopedia> .
+  <urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:laterTranslatedTo> <urn:graphragprov:entity:Latin> .
+  <urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:usedIn> <urn:graphragprov:entity:European%20and%20Muslim%20medical%20schools> .
+  <urn:graphragprov:entity:Mansur%20ibn%20Muhammad%20ibn%20al-Faqih%20Ilyas> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:Tashrih%20al-badan> .
+  <urn:graphragprov:entity:Muslim%20physicians> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:anatomy> .
+  <urn:graphragprov:entity:Muslim%20physicians> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:medicine> .
+  <urn:graphragprov:entity:Muslim%20physicians> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:physiology> .
+  <urn:graphragprov:entity:Muslim%20world> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Muslim%20physicians> .
+  <urn:graphragprov:entity:Tashrih%20al-badan> <urn:graphragprov:predicate:contains> "comprehensive diagrams of the body's structural, nervous and circulatory systems" .
+  <urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:remainedAuthoritativeMedicalTextbookIn> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:remainedAuthoritativeMedicalTextbookUntilYear> "18th century" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.737s | model=deepseek-v4-flash
+      tokens:   in=1918 | out=192 | total=2110 | cached=640 | uncached=1278
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:The%20Canon%20of%20Medicine> .
+  - <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:familyBackground> <urn:graphragprov:entity:Sunni> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:The%20Canon%20of%20Medicine> . <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:familyBackground> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_47d596213ad901a7>
+  FROM <urn:graphragprov:unit:u_5c5284079e50ca68>
+  WHERE { <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:The%20Canon%20of%20Medicine> . <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:familyBackground> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Shia', 'Sunni')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Avicenna', 'Muslim world']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__35137_22901
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__35137_22901/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12983
+output tokens:         4002
+total tokens:          16985
+cached input tokens:   10624
+uncached input tokens: 2359
+cumulative LLM seconds: 22.289
+
+statement occurrences: 23
+semantic triples:      23
+entity nodes:          25
+literal values:        3
+predicates:            15
+query attempts:        1
+observed answers:      ('Shia', 'Sunni')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.560s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.738s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.629s

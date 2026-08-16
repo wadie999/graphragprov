@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_ed558b50801c0fd5968a0ac39efcf4643caa9cf815a05ce72a3e8d12f1232cc7
+Title: Return to Nim's Island
+Text:
+Bindi Irwin as Nim Rusoe Matthew Lillard as Jack Rusoe Toby Wallace as Edmund John Waters as Booker BJ and Friday as Selkie Pumpkin as Fred Nathan Derrick as Felix Jack Pearson as Ben Sebastian Gregory as Frankie
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 5,
+    "statement": {
+      "subject": {
+        "value": "Friday",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Friday",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "actedAs",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "as",
+            "occurrence": 6
+          }
+        ]
+      },
+      "object": {
+        "value": "Selkie",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Selkie",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[5].object.evidence[0]: quote 'Selkie' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

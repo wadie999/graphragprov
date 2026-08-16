@@ -1,0 +1,304 @@
+
+H0 one-case execution
+  case:          4hop2__103790_39078_8987_8529
+  hops:          4
+  question:      Ivo Werner is from Country A that invaded Country B because their military branch that helped the Old West police was unprepared. When was the word "Slavs" used in the national anthem of country B?
+  expected:      1943–1992
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop2__103790_39078_8987_8529/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=5 title='Ivo Werner'
+  source unit: u_de739abfb8ed0862caf5bdf8dfd4fe767730653e153699158792bf60c60efff2
+  text chars:  275
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.557s | model=deepseek-v4-flash
+      tokens:   in=5366 | out=1455 | total=6821 | cached=5248 | uncached=118
+    [LLM graph.reference #2] sending...
+      provider: 1.642s | model=deepseek-v4-flash
+      tokens:   in=561 | out=178 | total=739 | cached=0 | uncached=561
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "19 August 1960",
+                "segment": "text"
+              }
+            ],
+            "value": "19 August 1960"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Ivo Werner",
+                "segment": "title"
+              }
+            ],
+            "value": "Ivo Werner"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 208 / 285 (73.0%)
+    characters text:     198 / 275 (72.0%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  23 chars
+      '. Werner, who is now a'
+    statement density:  31.58 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 2/4] paragraph=9 title='Police'
+  source unit: u_39f11fdd3e5a6c5699a1e5ca6149b1f793667f387080e9957c1e25c43be166f0
+  text chars:  516
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.383s | model=deepseek-v4-flash
+      tokens:   in=5496 | out=1795 | total=7291 | cached=5248 | uncached=248
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 352 / 522 (67.4%)
+    characters text:     352 / 516 (68.2%)
+    characters title:    0 / 6 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  21 chars
+      '. At its height, the'
+    statement density:  21.07 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 3/4] paragraph=3 title='Josip Broz Tito'
+  source unit: u_0dcb856fcaffb09580b430c8b43e27b6ee82762765d98fd2ce6ede6cc059a4d5
+  text chars:  360
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 8.006s | model=deepseek-v4-flash
+      tokens:   in=5632 | out=1632 | total=7264 | cached=5248 | uncached=384
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 249 / 375 (66.4%)
+    characters text:     249 / 360 (69.2%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  21 chars
+      'Czechoslovak leader'
+    statement density:  26.67 / 1000 chars
+    title reliance:      0 / 10 (0.0%)
+
+[GRAPH 4/4] paragraph=17 title='Slavs'
+  source unit: u_5521092613d248f5bc5a912bccabcebe95a3b421b81d2fab8191c3f7e767adb6
+  text chars:  200
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 7.014s | model=deepseek-v4-flash
+      tokens:   in=5728 | out=1490 | total=7218 | cached=5504 | uncached=224
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 164 / 205 (80.0%)
+    characters text:     159 / 200 (79.5%)
+    characters title:    5 / 5 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  10 chars
+      'The word "'
+    statement density:  39.02 / 1000 chars
+    title reliance:      4 / 8 (50.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 38
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      38
+resource nodes:        33
+entity nodes:          33
+literal values:        11
+predicates:            25
+
+N-Triples:
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offered> <urn:graphragprov:entity:Alexander%20Dub%C4%8Dek> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredToFly> <urn:graphragprov:entity:Prague> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredToFlyIfNeeded> "Dubček needed help" .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredToFlyOnNotice> "three hours notice" .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredToFlyToHelpAgainst> <urn:graphragprov:entity:the%20Soviets> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Ivan%20Go%C5%A1njak> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Rade%20Hamovi%C4%87> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removedGeneralsAfter> <urn:graphragprov:entity:invasion%20of%20Czechoslovakia> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removedGeneralsInYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:wasUnpreparedFor> <urn:graphragprov:entity:similar%20invasion%20of%20Yugoslavia> .
+  <urn:graphragprov:entity:American%20Old%20West> <urn:graphragprov:predicate:hadPolicingQuality> "very poor quality" .
+  <urn:graphragprov:entity:Pinkerton%20Agency> <urn:graphragprov:predicate:hadNumbersExceeding> <urn:graphragprov:entity:United%20States%20Army> .
+  <urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:businessmen> .
+  <urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:federal%20government> .
+  <urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:individuals> .
+  <urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:local%20governments> .
+  <urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:private%20contractor> .
+  <urn:graphragprov:entity:Public%20organizations> <urn:graphragprov:predicate:supplementedBy> <urn:graphragprov:entity:private%20contractors> .
+  <urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:providedPolicing> <urn:graphragprov:entity:American%20Old%20West> .
+  <urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:providedPolicingAlongside> <urn:graphragprov:entity:poorly%20resourced%20sheriffs> .
+  <urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:providedPolicingAlongside> <urn:graphragprov:entity:temporarily%20organized%20posses> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedInPeriod> "1992–2003" .
+  <urn:graphragprov:entity:Serbia%20and%20Montenegro> <urn:graphragprov:predicate:existedInPeriod> "2003–2006" .
+  <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedInNationalAnthemOf> <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> .
+  <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedInNationalAnthemOf> <urn:graphragprov:entity:Serbia%20and%20Montenegro> .
+  <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedInNationalAnthemOf> <urn:graphragprov:entity:Slovak%20Republic> .
+  <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedInNationalAnthemOf> <urn:graphragprov:entity:Yugoslavia> .
+  <urn:graphragprov:entity:Slovak%20Republic> <urn:graphragprov:predicate:existedInPeriod> "1939–1945" .
+  <urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:existedInPeriod> "1943–1992" .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:bornIn> "1960-08-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:competedFor> <urn:graphragprov:entity:Czechoslovakia> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:competedFor> <urn:graphragprov:entity:West%20Germany> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:gotCitizenshipInYear> "1984"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:immigratedInYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:West%20Germany> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:former%20professional%20tennis%20player> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:tennis%20coach> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:originallyFrom> <urn:graphragprov:entity:Czechoslovakia> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.079s | model=deepseek-v4-flash
+      tokens:   in=2709 | out=425 | total=3134 | cached=640 | uncached=2069
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:originallyFrom> <urn:graphragprov:entity:Czechoslovakia> .
+  - <urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:providedPolicing> <urn:graphragprov:entity:American%20Old%20West> .
+  - <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:wasUnpreparedFor> <urn:graphragprov:entity:similar%20invasion%20of%20Yugoslavia> .
+  - <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedInNationalAnthemOf> <urn:graphragprov:entity:Yugoslavia> .
+  - <urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:existedInPeriod> "1943–1992" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:originallyFrom> ?countryA . <urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:providedPolicing> <urn:graphragprov:entity:American%20Old%20West> . ?militaryBranch <urn:graphragprov:predicate:wasUnpreparedFor> ?invasion . ?countryB <urn:graphragprov:predicate:existedInPeriod> ?answer . <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedInNationalAnthemOf> ?countryB . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0dcb856fcaffb095>
+  FROM <urn:graphragprov:unit:u_39f11fdd3e5a6c56>
+  FROM <urn:graphragprov:unit:u_5521092613d248f5>
+  FROM <urn:graphragprov:unit:u_de739abfb8ed0862>
+  WHERE { <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:originallyFrom> ?countryA . <urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:providedPolicing> <urn:graphragprov:entity:American%20Old%20West> . ?militaryBranch <urn:graphragprov:predicate:wasUnpreparedFor> ?invasion . ?countryB <urn:graphragprov:predicate:existedInPeriod> ?answer . <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedInNationalAnthemOf> ?countryB . }
+
+GraphDB execution:
+  observed answers: ('1992–2003', '2003–2006', '1939–1945', '1943–1992')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 4
+  provenance sources: ['Ivo Werner', 'Josip Broz Tito', 'Police', 'Slavs']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop2__103790_39078_8987_8529
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop2__103790_39078_8987_8529/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          25492
+output tokens:         6975
+total tokens:          32467
+cached input tokens:   21888
+uncached input tokens: 3604
+cumulative LLM seconds: 35.682
+
+statement occurrences: 38
+semantic triples:      38
+entity nodes:          33
+literal values:        11
+predicates:            25
+query attempts:        1
+observed answers:      ('1992–2003', '2003–2006', '1939–1945', '1943–1992')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 32.622s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.073s
+  graph.materialization [attempt=1]: 0.102s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 3.080s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.566s

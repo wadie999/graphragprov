@@ -1,0 +1,251 @@
+
+H0 one-case execution
+  case:          3hop2__31398_2130_2232
+  hops:          3
+  question:      What franchise of the pro soccer organization headquartered in New York, is based in the city that produced the album considered the true portrait of the No Wave movement?
+  expected:      New York City FC
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__31398_2130_2232/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=17 title='Post-punk'
+  source unit: u_66936b80fa9c931a2a2b60a16599e3492ac84fb41e50033a7b8f5427fcc87709
+  text chars:  756
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 17.170s | model=deepseek-v4-flash
+      tokens:   in=5412 | out=3519 | total=8931 | cached=4992 | uncached=420
+  extraction: ACCEPTED
+  statements: 22
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    22
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     22
+  coverage:
+    characters combined: 555 / 765 (72.5%)
+    characters text:     555 / 756 (73.4%)
+    characters title:    0 / 9 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  33 chars
+      'Also emerging during this period'
+    statement density:  28.76 / 1000 chars
+    title reliance:      0 / 22 (0.0%)
+
+[GRAPH 2/3] paragraph=8 title='New York City'
+  source unit: u_876867c20266be3351620ab7863a42bc335d7c48785ebd7d072330343ef5f51e
+  text chars:  1036
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 16.372s | model=deepseek-v4-flash
+      tokens:   in=5710 | out=3461 | total=9171 | cached=4992 | uncached=718
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 720 / 1049 (68.6%)
+    characters text:     707 / 1036 (68.2%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  91 chars
+      ', both current and historic. Four of the ten most expensive stadiums ever built worldwide ('
+    statement density:  20.02 / 1000 chars
+    title reliance:      5 / 21 (23.8%)
+
+[GRAPH 3/3] paragraph=12 title='New York City'
+  source unit: u_16eb74bcae366adf02d68be91d81ddddc0d858f3fc5a2f60bdfd9241a78a5b6e
+  text chars:  710
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 12.058s | model=deepseek-v4-flash
+      tokens:   in=5965 | out=2563 | total=8528 | cached=5120 | uncached=845
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 633 / 723 (87.6%)
+    characters text:     620 / 710 (87.3%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  24 chars
+      ', the highly successful'
+    statement density:  20.75 / 1000 chars
+    title reliance:      2 / 15 (13.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 58
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      58
+resource nodes:        62
+entity nodes:          62
+literal values:        5
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:James%20M.%20Shuart%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hempstead%2C%20New%20York> .
+  <urn:graphragprov:entity:James%20M.%20Shuart%20Stadium> <urn:graphragprov:predicate:locatedOnCampusOf> <urn:graphragprov:entity:Hofstra%20University> .
+  <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:New%20York%20Cosmos> .
+  <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:representedBy> <urn:graphragprov:entity:New%20York%20City%20FC> .
+  <urn:graphragprov:entity:New%20York%20City%20FC> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Major%20League%20Soccer> .
+  <urn:graphragprov:entity:New%20York%20City%20FC> <urn:graphragprov:predicate:playsHomeGamesAt> <urn:graphragprov:entity:Yankee%20Stadium> .
+  <urn:graphragprov:entity:New%20York%20Cosmos> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:former%20professional%20soccer%20team> .
+  <urn:graphragprov:entity:New%20York%20Cosmos> <urn:graphragprov:predicate:wasHomeTo> <urn:graphragprov:entity:Pel%C3%A9> .
+  <urn:graphragprov:entity:New%20York%20Red%20Bulls> <urn:graphragprov:predicate:playsHomeGamesAt> <urn:graphragprov:entity:Red%20Bull%20Arena> .
+  <urn:graphragprov:entity:Pel%C3%A9> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:soccer%20player> .
+  <urn:graphragprov:entity:Red%20Bull%20Arena> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Harrison%2C%20New%20Jersey> .
+  <urn:graphragprov:entity:The%20Cosmos> <urn:graphragprov:predicate:playsHomeGamesAt> <urn:graphragprov:entity:James%20M.%20Shuart%20Stadium> .
+  <urn:graphragprov:entity:new%20version%20of%20the%20New%20York%20Cosmos> <urn:graphragprov:predicate:beganPlayIn> <urn:graphragprov:entity:second%20division%20North%20American%20Soccer%20League> .
+  <urn:graphragprov:entity:new%20version%20of%20the%20New%20York%20Cosmos> <urn:graphragprov:predicate:beganPlayInYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:new%20version%20of%20the%20New%20York%20Cosmos> <urn:graphragprov:predicate:formedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Contortions> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+  <urn:graphragprov:entity:DNA> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+  <urn:graphragprov:entity:Mars> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+  <urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:compilation> .
+  <urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:oftenConsidered> <urn:graphragprov:entity:quintessential%20testament%20to%20the%20scene> .
+  <urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Eno> .
+  <urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:beganInPartAsReactionAgainst> <urn:graphragprov:entity:punk%27s%20recycling%20of%20traditionalist%20rock%20tropes> .
+  <urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:art%20and%20music%20scene> .
+  <urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:oftenReflected> <urn:graphragprov:entity:abrasive%2C%20confrontational%20and%20nihilistic%20worldview> .
+  <urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:atonality> .
+  <urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:dissonance> .
+  <urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:noise> .
+  <urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:non-rock%20styles> .
+  <urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Rhys%20Chatham> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+  <urn:graphragprov:entity:Teenage%20Jesus%20and%20the%20Jerks> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+  <urn:graphragprov:entity:Theoretical%20Girls> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+  <urn:graphragprov:entity:ZE%20Records> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:No%20wave%20movement> .
+  <urn:graphragprov:entity:ZE%20Records> <urn:graphragprov:predicate:foundedInYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:ZE%20Records> <urn:graphragprov:predicate:wouldProduce> <urn:graphragprov:entity:acclaimed%20and%20influential%20compilations> .
+  <urn:graphragprov:entity:former%20four%20groups> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:No%20New%20York> .
+  <urn:graphragprov:entity:Citi%20Field> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+  <urn:graphragprov:entity:Ebbets%20Field> <urn:graphragprov:predicate:commemoratedOn> <urn:graphragprov:entity:U.S.%20postage%20stamps> .
+  <urn:graphragprov:entity:Ebbets%20Field> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .
+  <urn:graphragprov:entity:Madison%20Square%20Garden> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .
+  <urn:graphragprov:entity:Madison%20Square%20Garden> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+  <urn:graphragprov:entity:MetLife%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+  <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:Major%20League%20Baseball> .
+  <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:Major%20League%20Soccer> .
+  <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:National%20Basketball%20Association> .
+  <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:National%20Football%20League> .
+  <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:National%20Hockey%20League> .
+  <urn:graphragprov:entity:New%20York%20metropolitan%20area> <urn:graphragprov:predicate:hostsMostSportsTeamsIn> <urn:graphragprov:entity:these%20five%20professional%20leagues> .
+  <urn:graphragprov:entity:its%20predecessor> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .
+  <urn:graphragprov:entity:professional%20sports%20in%20the%20city> <urn:graphragprov:predicate:predates> <urn:graphragprov:entity:all%20professional%20leagues> .
+  <urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasBeenContinuouslyHosting> <urn:graphragprov:entity:professional%20sports> .
+  <urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasBeenContinuouslyHostingSince> "1882"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasPlayedHostTo> "over forty major professional teams" .
+  <urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasPlayedHostTo> <urn:graphragprov:entity:the%20five%20sports%20and%20their%20respective%20competing%20leagues> .
+  <urn:graphragprov:entity:the%20new%20Yankee%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+  <urn:graphragprov:entity:the%20original%20Yankee%20Stadium> <urn:graphragprov:predicate:commemoratedOn> <urn:graphragprov:entity:U.S.%20postage%20stamps> .
+  <urn:graphragprov:entity:the%20original%20Yankee%20Stadium> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.145s | model=deepseek-v4-flash
+      tokens:   in=3922 | out=422 | total=4344 | cached=640 | uncached=3282
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:oftenConsidered> <urn:graphragprov:entity:quintessential%20testament%20to%20the%20scene> .
+  - <urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Eno> .
+  - <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:Major%20League%20Soccer> .
+  - <urn:graphragprov:entity:New%20York%20City%20FC> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Major%20League%20Soccer> .
+  - <urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:representedBy> <urn:graphragprov:entity:New%20York%20City%20FC> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?album <urn:graphragprov:predicate:oftenConsidered> <urn:graphragprov:entity:quintessential%20testament%20to%20the%20scene> . ?album <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Eno> . ?city <urn:graphragprov:predicate:isHomeToHeadquartersOf> ?league . ?answer <urn:graphragprov:predicate:memberOf> ?league . ?city <urn:graphragprov:predicate:representedBy> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_16eb74bcae366adf>
+  FROM <urn:graphragprov:unit:u_66936b80fa9c931a>
+  FROM <urn:graphragprov:unit:u_876867c20266be33>
+  WHERE { ?album <urn:graphragprov:predicate:oftenConsidered> <urn:graphragprov:entity:quintessential%20testament%20to%20the%20scene> . ?album <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Eno> . ?city <urn:graphragprov:predicate:isHomeToHeadquartersOf> ?league . ?answer <urn:graphragprov:predicate:memberOf> ?league . ?city <urn:graphragprov:predicate:representedBy> ?answer . }
+
+GraphDB execution:
+  observed answers: ('New York City FC',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['New York City', 'Post-punk']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__31398_2130_2232
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__31398_2130_2232/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          21009
+output tokens:         9965
+total tokens:          30974
+cached input tokens:   15744
+uncached input tokens: 5265
+cumulative LLM seconds: 48.746
+
+statement occurrences: 58
+semantic triples:      58
+entity nodes:          62
+literal values:        5
+predicates:            27
+query attempts:        1
+observed answers:      ('New York City FC',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 45.619s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.087s
+  graph.materialization [attempt=1]: 0.122s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 3.146s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.474s

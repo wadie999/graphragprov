@@ -1,0 +1,172 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the explorer reach the headquarters location of the only company larger than Langa natter's record label?
+
+Expected answer: August 3, 1769
+
+Gold decomposition:
+1. question='What was the record label of Långa nätter?'; answer='Sony Music Entertainment'; support_paragraph=18
+2. question='What company is the only group larger than #1 ?'; answer='Universal Music Group.'; support_paragraph=1
+3. question='#2 >> headquarters location'; answer='Santa Monica'; support_paragraph=9
+4. question='What date did the explorer reach #3 ?'; answer='August 3, 1769'; support_paragraph=8
+
+Frozen RDF graph:
+<urn:graphragprov:entity:EMI> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .
+<urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Santa%20Monica> .
+<urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reissue%20record%20label> .
+<urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:California> .
+<urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:EMI> .
+<urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedNear> <urn:graphragprov:entity:intersection%20of%20Barrington%20and%20Ohio%20Avenues> .
+<urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedOnDate> "1769-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:calledInTongvaLanguage> <urn:graphragprov:entity:Kecheek> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:inhabitedBy> <urn:graphragprov:entity:Tongva%20people> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedBy> <urn:graphragprov:entity:Juan%20Cresp%C3%AD> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedInHonorOf> <urn:graphragprov:entity:Saint%20Monica> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedOnAccountOf> <urn:graphragprov:entity:Kuruvungna%20Springs> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Melissa%20Horn> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:featuresSingle> <urn:graphragprov:entity:En%20famn%20f%C3%B6r%20mig> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:featuresSingle> <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:featuresSingle> <urn:graphragprov:entity:Som%20jag%20hade%20dig%20f%C3%B6rut> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:debut%20album> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jan%20Radesj%C3%B6> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Lasse%20Englund> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sony%20Music%20Entertainment> .
+<urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:releasedOn> "2008-04-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Som%20jag%20hade%20dig%20f%C3%B6rut> <urn:graphragprov:predicate:isDuetWith> <urn:graphragprov:entity:Lars%20Winnerb%C3%A4ck> .
+<urn:graphragprov:entity:Sony%20Corporation> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Japanese> .
+<urn:graphragprov:entity:Sony%20Corporation%20of%20America> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Sony%20Corporation> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:acquiredBy> <urn:graphragprov:entity:Sony%20Corporation%20of%20Japan> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:acquiredInYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:SME> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:Sony%20Music> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:foundedAs> <urn:graphragprov:entity:American%20Record%20Corporation> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:foundedInYear> "1929"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20music%20corporation> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:recorded%20music%20company> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:managedBy> <urn:graphragprov:entity:Sony%20Corporation%20of%20America> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:ranked> "second largest" .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedInYear> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedInYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Columbia%20Recording%20Corporation> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:SME> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:reorganizedInYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:reorganizedTo> <urn:graphragprov:entity:CBS%20Records> .
+<urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:smallerThan> <urn:graphragprov:entity:Universal%20Music%20Group> .

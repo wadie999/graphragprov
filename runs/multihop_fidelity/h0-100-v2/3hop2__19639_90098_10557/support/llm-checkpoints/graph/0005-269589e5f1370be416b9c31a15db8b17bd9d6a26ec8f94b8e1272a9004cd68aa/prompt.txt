@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_58e851cd409195118fd04bd79404ea0d4e91d692a39635dc6bd2b14969f71e47
+Title: Middle Ages
+Text:
+Charlemagne's court in Aachen was the centre of the cultural revival sometimes referred to as the "Carolingian Renaissance". Literacy increased, as did development in the arts, architecture and jurisprudence, as well as liturgical and scriptural studies. The English monk Alcuin (d. 804) was invited to Aachen and brought the education available in the monasteries of Northumbria. Charlemagne's chancery—or writing office—made use of a new script today known as Carolingian minuscule,[M] allowing a common writing style that advanced communication across much of Europe. Charlemagne sponsored changes in church liturgy, imposing the Roman form of church service on his domains, as well as the Gregorian chant in liturgical music for the churches. An important activity for scholars during this period was the copying, correcting, and dissemination of basic works on religious and secular topics, with the aim of encouraging learning. New works on religious topics and schoolbooks were also produced. Grammarians of the period modified the Latin language, changing it from the Classical Latin of the Roman Empire into a more flexible form to fit the needs of the church and government. By the reign of Charlemagne, the language had so diverged from the classical that it was later called Medieval Latin.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Alcuin",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Alcuin",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "diedInYear",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "d. 804",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "804",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "804",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].object.value must use YYYY notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,211 @@
+
+H0 one-case execution
+  case:          3hop1__93963_170667_18967
+  hops:          3
+  question:      what is the former name of the country where the airport that Lion Air is part is located?
+  expected:      Dutch East Indies
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__93963_170667_18967/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=19 title='Lion Air'
+  source unit: u_3f13abede4b552d58630c47a3f69e9d5f21dcb1f495a2cc815c4e61c3885c362
+  text chars:  452
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.070s | model=deepseek-v4-flash
+      tokens:   in=5336 | out=1225 | total=6561 | cached=4992 | uncached=344
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 155 / 460 (33.7%)
+    characters text:     147 / 452 (32.5%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           2 / 4 (50.0%)
+    longest uncovered:  249 chars
+      '. Reverse thrust was used during landing, although the left thrust reverser was stated to be out of service. This caused the aircraft to veer to the right and skid off the runway,…'
+    statement density:  15.22 / 1000 chars
+    title reliance:      1 / 7 (14.3%)
+
+[GRAPH 2/3] paragraph=18 title='Cathay Pacific Flight 780'
+  source unit: u_34adfd2553222443c5ec0e986a95a34371ded5549bdfccd03d12ebc0570f3e3d
+  text chars:  531
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.285s | model=deepseek-v4-flash
+      tokens:   in=5460 | out=1923 | total=7383 | cached=4992 | uncached=468
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 312 / 556 (56.1%)
+    characters text:     312 / 531 (58.8%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  124 chars
+      'on board. As Flight 780 neared Hong Kong the crew were unable to change the thrust output of the engines. The aircraft, an'
+    statement density:  19.78 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 3/3] paragraph=3 title='Hokkien'
+  source unit: u_70c7525fbdd97c1440b9a3ab354e4d43d6c938b9117d65c166aaf2b3952f9e93
+  text chars:  754
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.602s | model=deepseek-v4-flash
+      tokens:   in=5697 | out=161 | total=5858 | cached=5120 | uncached=577
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 32 / 761 (4.2%)
+    characters text:     32 / 754 (4.2%)
+    characters title:    0 / 7 (0.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  471 chars
+      ') and present day Malaysia and Singapore (formerly Malaya and the British Straits Settlements). Many of the Hokkien dialects of this region are highly similar to Taiwanese and Amo…'
+    statement density:  1.31 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 19
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      19
+resource nodes:        11
+entity nodes:          11
+literal values:        9
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:aircraftModel> <urn:graphragprov:entity:Airbus%20A330-342> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:arrivedAt> <urn:graphragprov:entity:Hong%20Kong%20International%20Airport> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:departedFrom> <urn:graphragprov:entity:Surabaya%20Juanda%20International%20Airport> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:departedOnDate> "2010-04-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:hadCrewCount> "13"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:hadInjuredPassengers> "57"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:hadPassengerCount> "309"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:hadSeriousInjuries> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:landedAtSpeed> "almost twice the speed of a normal landing" .
+  <urn:graphragprov:entity:Cathay%20Pacific%20Flight%20780> <urn:graphragprov:predicate:sufferedDamage> <urn:graphragprov:entity:minor%20damage> .
+  <urn:graphragprov:entity:Surabaya%20Juanda%20International%20Airport> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Indonesia> .
+  <urn:graphragprov:entity:Lion%20Air> <urn:graphragprov:predicate:operatedFlight> <urn:graphragprov:entity:Lion%20Air%20Flight%208987> .
+  <urn:graphragprov:entity:Lion%20Air%20Flight%208987> <urn:graphragprov:predicate:aircraftModel> <urn:graphragprov:entity:McDonnell%20Douglas%20MD-82> .
+  <urn:graphragprov:entity:Lion%20Air%20Flight%208987> <urn:graphragprov:predicate:crashedAt> <urn:graphragprov:entity:Juanda%20International%20Airport> .
+  <urn:graphragprov:entity:Lion%20Air%20Flight%208987> <urn:graphragprov:predicate:crashedOnDate> "2006-03-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Lion%20Air%20Flight%208987> <urn:graphragprov:predicate:hadFatalities> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Lion%20Air%20Flight%208987> <urn:graphragprov:predicate:wasDamaged> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Lion%20Air%20Flight%208987> <urn:graphragprov:predicate:wasWrittenOff> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Indonesia> <urn:graphragprov:predicate:formerName> <urn:graphragprov:entity:Dutch%20East%20Indies> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.163s | model=deepseek-v4-flash
+      tokens:   in=1896 | out=317 | total=2213 | cached=640 | uncached=1256
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Lion%20Air> <urn:graphragprov:predicate:operatedFlight> <urn:graphragprov:entity:Lion%20Air%20Flight%208987> .
+  - <urn:graphragprov:entity:Lion%20Air%20Flight%208987> <urn:graphragprov:predicate:crashedAt> <urn:graphragprov:entity:Juanda%20International%20Airport> .
+  - <urn:graphragprov:entity:Surabaya%20Juanda%20International%20Airport> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Indonesia> .
+  - <urn:graphragprov:entity:Indonesia> <urn:graphragprov:predicate:formerName> <urn:graphragprov:entity:Dutch%20East%20Indies> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Lion%20Air> <urn:graphragprov:predicate:operatedFlight> ?flight . ?flight <urn:graphragprov:predicate:crashedAt> ?airport . ?airport <urn:graphragprov:predicate:locatedIn> ?country . ?country <urn:graphragprov:predicate:formerName> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_34adfd2553222443>
+  FROM <urn:graphragprov:unit:u_3f13abede4b552d5>
+  FROM <urn:graphragprov:unit:u_70c7525fbdd97c14>
+  WHERE { <urn:graphragprov:entity:Lion%20Air> <urn:graphragprov:predicate:operatedFlight> ?flight . ?flight <urn:graphragprov:predicate:crashedAt> ?airport . ?airport <urn:graphragprov:predicate:locatedIn> ?country . ?country <urn:graphragprov:predicate:formerName> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__93963_170667_18967
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__93963_170667_18967/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          18389
+output tokens:         3626
+total tokens:          22015
+cached input tokens:   15744
+uncached input tokens: 2645
+cumulative LLM seconds: 20.120
+
+statement occurrences: 19
+semantic triples:      19
+entity nodes:          11
+literal values:        9
+predicates:            18
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 17.970s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.055s
+  graph.materialization [attempt=1]: 0.074s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.164s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.445s

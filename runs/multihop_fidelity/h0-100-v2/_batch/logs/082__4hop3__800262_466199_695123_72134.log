@@ -1,0 +1,426 @@
+
+H0 one-case execution
+  case:          4hop3__800262_466199_695123_72134
+  hops:          4
+  question:      When did the town WIZE is licensed in become capitol of the state where Green Township is located?
+  expected:      1839
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop3__800262_466199_695123_72134/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=15 title='Green Township, Randolph County, Indiana'
+  source unit: u_fb5dfe4e14684facf947238d7d4f377a3c464b3260d7b30e55a546643f1f3faa
+  text chars:  152
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.087s | model=deepseek-v4-flash
+      tokens:   in=5303 | out=744 | total=6047 | cached=4992 | uncached=311
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 93 / 192 (48.4%)
+    characters text:     79 / 152 (52.0%)
+    characters title:    14 / 40 (35.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  29 chars
+      '. As of the 2010 census, its'
+    statement density:  20.83 / 1000 chars
+    title reliance:      4 / 4 (100.0%)
+
+[GRAPH 2/4] paragraph=18 title='Randolph County, Illinois'
+  source unit: u_967e1c932ae64afbbb1c39d7b380bc5dd191489d4ca1ec7f39f4899efde8c1aa
+  text chars:  172
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.274s | model=deepseek-v4-flash
+      tokens:   in=5341 | out=677 | total=6018 | cached=4992 | uncached=349
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 84 / 197 (42.6%)
+    characters text:     59 / 172 (34.3%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  53 chars
+      "Owing to its role in the state's history, the county"
+    statement density:  20.30 / 1000 chars
+    title reliance:      2 / 4 (50.0%)
+
+[GRAPH 3/4] paragraph=0 title='WIZE'
+  source unit: u_69823846dd5188f26bfd868a3c4b6ba1fef65eab0d1ef25921a62faec240f18b
+  text chars:  303
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.804s | model=deepseek-v4-flash
+      tokens:   in=5411 | out=1841 | total=7252 | cached=5248 | uncached=163
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 211 / 307 (68.7%)
+    characters text:     207 / 303 (68.3%)
+    characters title:    4 / 4 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  23 chars
+      '- are also located in'
+    statement density:  32.57 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[GRAPH 4/4] paragraph=2 title='Springfield, Illinois'
+  source unit: u_37d79d4f87ca02752e16ae2e0229cf9170ee922aede20f7ce5e54174e4f8fe3f
+  text chars:  1549
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 23.341s | model=deepseek-v4-flash
+      tokens:   in=5771 | out=4990 | total=10761 | cached=5248 | uncached=523
+    [LLM graph.reference #5] sending...
+      provider: 4.093s | model=deepseek-v4-flash
+      tokens:   in=1508 | out=712 | total=2220 | cached=0 | uncached=1508
+  extraction: ACCEPTED
+  statements: 30
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    26
+    initially rejected: 4
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'settled ... in 1818' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1818",
+                "segment": "text"
+              }
+            ],
+            "value": "1818"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "settled ... in 1818",
+                "segment": "text"
+              }
+            ],
+            "value": "settledInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield, Illinois",
+                "segment": "title"
+              }
+            ],
+            "value": "Springfield, Illinois"
+          }
+        }
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'built ... by John Kelly' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Kelly",
+                "segment": "text"
+              }
+            ],
+            "value": "John Kelly"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "built ... by John Kelly",
+                "segment": "text"
+              }
+            ],
+            "value": "firstCabinBuiltBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield, Illinois",
+                "segment": "title"
+              }
+            ],
+            "value": "Springfield, Illinois"
+          }
+        }
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'By 1832 ... renamed itself' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1832",
+                "segment": "text"
+              }
+            ],
+            "value": "1832"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "By 1832 ... renamed itself",
+                "segment": "text"
+              }
+            ],
+            "value": "renamedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield, Illinois",
+                "segment": "title"
+              }
+            ],
+            "value": "Springfield, Illinois"
+          }
+        }
+
+    initial rejection #16
+      validator:
+        response.statements[16].predicate.evidence[0]: quote 'built itself up ... to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "national power",
+                "segment": "text"
+              }
+            ],
+            "value": "national power"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "built itself up ... to",
+                "segment": "text"
+              }
+            ],
+            "value": "builtItselfUpTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield, Massachusetts",
+                "segment": "text"
+              }
+            ],
+            "value": "Springfield, Massachusetts"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    4
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 30
+  coverage:
+    characters combined: 1069 / 1570 (68.1%)
+    characters text:     1048 / 1549 (67.7%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           13 / 14 (92.9%)
+    longest uncovered:  129 chars
+      'due to fertile soil and trading opportunities. Settlers from Kentucky, Virginia, and as far as North Carolina came to the city.'
+    statement density:  19.11 / 1000 chars
+    title reliance:      10 / 30 (33.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 48
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 4
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      48
+resource nodes:        32
+entity nodes:          32
+literal values:        12
+predicates:            42
+
+N-Triples:
+  <urn:graphragprov:entity:Abraham%20Lincoln> <urn:graphragprov:predicate:nicknamed> <urn:graphragprov:entity:Long%20Nine> .
+  <urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:becameCountySeatInYear> "1821"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:becameCountySeatOf> <urn:graphragprov:entity:Sangamon%20County> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:wasFirstCapitalFromYear> "1809"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:wasFirstCapitalOf> <urn:graphragprov:entity:Illinois%20Territory> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:wasFirstCapitalThroughYear> "1818"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:wasFirstCapitalThroughYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Long%20Nine> <urn:graphragprov:predicate:combinedHeight> "54 feet (16 m)" .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:capitalDesignationDueTo> <urn:graphragprov:entity:Abraham%20Lincoln> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinBuiltBy> <urn:graphragprov:entity:John%20Kelly> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinBuiltInYear> "1820"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinLocatedAt> <urn:graphragprov:entity:northwest%20corner%20of%20Second%20Street%20and%20Jefferson%20Street> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:John%20C.%20Calhoun> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:originalName> <urn:graphragprov:entity:Calhoun> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:originallySettledBy> <urn:graphragprov:entity:trappers%20and%20traders> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedAfter> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedInYear> "1832"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledInYear> "1818"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:soughtToEmulate> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:builtItselfUpFrom> <urn:graphragprov:entity:frontier%20outpost> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:builtItselfUpTo> <urn:graphragprov:entity:national%20power> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:comparableTo> <urn:graphragprov:entity:modern-day%20Silicon%20Valley> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:celebrated%20Springfield%20Armory> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:concentrated%20prosperity> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:industrial%20innovation> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:wasSecondStateCapitalFromYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:wasSecondStateCapitalOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:wasSecondStateCapitalToYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:brandedAs> <urn:graphragprov:entity:WIZE%20AM%201340> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:broadcastFrequency> "1340 AM" .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:formerStudiosLocatedIn> <urn:graphragprov:entity:Springfield> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:commercial%20radio%20station> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Springfield> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:mainFormat> <urn:graphragprov:entity:classic%20country> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:iHeartMedia%2C%20Inc.> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Dayton%20cluster> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:targetedTowards> <urn:graphragprov:entity:Springfield> .
+  <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:transmitterLocatedIn> <urn:graphragprov:entity:Springfield> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:village> .
+  <urn:graphragprov:entity:Randolph%20County%2C%20Illinois> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:Kaskaskia> .
+  <urn:graphragprov:entity:Randolph%20County%2C%20Illinois> <urn:graphragprov:predicate:motto> "Where Illinois Began." .
+  <urn:graphragprov:entity:Green%20Township> <urn:graphragprov:predicate:hasHousingUnits> "404"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Green%20Township> <urn:graphragprov:predicate:hasPopulation> "957"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Green%20Township> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:township> .
+  <urn:graphragprov:entity:Green%20Township> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Randolph%20County%2C%20Indiana> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.760s | model=deepseek-v4-flash
+      tokens:   in=3172 | out=384 | total=3556 | cached=640 | uncached=2532
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Green%20Township> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Randolph%20County%2C%20Indiana> .
+  - <urn:graphragprov:entity:Randolph%20County%2C%20Indiana> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Indiana> .
+  - <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Springfield> .
+  - <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalOf> <urn:graphragprov:entity:Illinois> .
+  - <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Green%20Township> <urn:graphragprov:predicate:locatedIn> ?county . ?county <urn:graphragprov:predicate:locatedIn> ?state . <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:locatedIn> ?city . ?city <urn:graphragprov:predicate:becameCapitalOf> ?state . ?city <urn:graphragprov:predicate:becameCapitalInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_37d79d4f87ca0275>
+  FROM <urn:graphragprov:unit:u_69823846dd5188f2>
+  FROM <urn:graphragprov:unit:u_967e1c932ae64afb>
+  FROM <urn:graphragprov:unit:u_fb5dfe4e14684fac>
+  WHERE { <urn:graphragprov:entity:Green%20Township> <urn:graphragprov:predicate:locatedIn> ?county . ?county <urn:graphragprov:predicate:locatedIn> ?state . <urn:graphragprov:entity:WIZE> <urn:graphragprov:predicate:locatedIn> ?city . ?city <urn:graphragprov:predicate:becameCapitalOf> ?state . ?city <urn:graphragprov:predicate:becameCapitalInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop3__800262_466199_695123_72134
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop3__800262_466199_695123_72134/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26506
+output tokens:         9348
+total tokens:          35854
+cached input tokens:   21120
+uncached input tokens: 5386
+cumulative LLM seconds: 48.358
+
+statement occurrences: 48
+semantic triples:      48
+entity nodes:          32
+literal values:        12
+predicates:            42
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 45.620s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.079s
+  graph.materialization [attempt=1]: 0.106s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.761s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.478s

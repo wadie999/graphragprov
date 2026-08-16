@@ -1,0 +1,166 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What does the US believe caused the country where Ercole Manfredi died to help Japan?
+
+Expected answer: blackmail
+
+Gold decomposition:
+1. question='Ercole Manfredi >> place of death'; answer='Bangkok'; support_paragraph=12
+2. question='Where is #1 located?'; answer='Thailand'; support_paragraph=2
+3. question='What does the U.S. believe caused #2 to help Japan?'; answer='blackmail'; support_paragraph=9
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:adoptedThaiIdentity> <urn:graphragprov:entity:Thai%20identity> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:adoptedThaiWayOfLife> <urn:graphragprov:entity:Thai%20way%20of%20life> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:becameLecturerAt> <urn:graphragprov:entity:Chulalongkorn%20University> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:Bangkok%27s%20architectural%20heritage> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:createdWorks> <urn:graphragprov:entity:public%20institutions> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:createdWorks> <urn:graphragprov:entity:royal%20residences> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:leftGovernmentOffice> <urn:graphragprov:entity:government%20office> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:madeCareerProgressThrough> <urn:graphragprov:entity:court%20of%20King%20Vajiravudh> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:married> <urn:graphragprov:entity:Thai%20woman> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Bangkok> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:remainedRelevantFigure> <urn:graphragprov:entity:relevant%20figure> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:remainedRespectedFigure> <urn:graphragprov:entity:respected%20figure> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:settledDownPermanently> <urn:graphragprov:entity:permanently> .
+<urn:graphragprov:entity:Ercole%20Manfredi> <urn:graphragprov:predicate:workedPrivately> <urn:graphragprov:entity:privately> .
+<urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:forcedIntoActionsBy> <urn:graphragprov:entity:Japanese%20blackmail> .
+<urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:occupiedBy> <urn:graphragprov:entity:Japanese%20troops> .
+<urn:graphragprov:entity:U.S.%20Government> <urn:graphragprov:predicate:officialPolicy> "Thailand was not an ally of the Axis" .
+<urn:graphragprov:entity:U.S.%20Government> <urn:graphragprov:predicate:officialPolicy> "United States was not at war with Thailand" .
+<urn:graphragprov:entity:U.S.%20Government> <urn:graphragprov:predicate:policySince> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:U.S.%20Government> <urn:graphragprov:predicate:treats> <urn:graphragprov:entity:Thailand> .
+<urn:graphragprov:entity:U.S.%20Government> <urn:graphragprov:predicate:treatsAs> "country which had been forced into certain actions by Japanese blackmail" .
+<urn:graphragprov:entity:U.S.%20Government> <urn:graphragprov:predicate:treatsAs> "not as a former enemy" .
+<urn:graphragprov:entity:United%20States> <urn:graphragprov:predicate:treated> <urn:graphragprov:entity:Thailand> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:district> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bangkok> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Thailand> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Bang%20Khae> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Bang%20Khun%20Thian> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Chom%20Thong> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Krathum%20Baen%20District> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Mueang%20Samut%20Sakhon%20District> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Nong%20Khaem%20District> .
+<urn:graphragprov:entity:Bang%20Bon> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Phasi%20Charoen> .
+<urn:graphragprov:entity:Bangkok> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Thailand> .
+<urn:graphragprov:entity:Krathum%20Baen%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Samut%20Sakhon%20Province> .
+<urn:graphragprov:entity:Mueang%20Samut%20Sakhon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Samut%20Sakhon%20Province> .

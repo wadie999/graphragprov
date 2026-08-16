@@ -1,0 +1,77 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_2d4e97ebdea6b9366fe1bc84cb4f4f788eba89dee5b9ce0efc6740a935b0ff01
+Title: Myanmar
+Text:
+For most of its independent years, the country has been engrossed in rampant ethnic strife and Burma's myriad ethnic groups have been involved in one of the world's longest-running ongoing civil wars. During this time, the United Nations and several other organisations have reported consistent and systematic human rights violations in the country. In 2011, the military junta was officially dissolved following a 2010 general election, and a nominally civilian government was installed. While former military leaders still wield enormous power in the country, Burmese Military have taken steps toward relinquishing control of the government. This, along with the release of Aung San Suu Kyi and political prisoners, has improved the country's human rights record and foreign relations, and has led to the easing of trade and other economic sanctions. There is, however, continuing criticism of the government's treatment of the Muslim Rohingya minority and its poor response to the religious clashes. In the landmark 2015 election, Aung San Suu Kyi's party won a majority in both houses, ending military rule.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 2,
+    "statement": {
+      "subject": {
+        "value": "Myanmar",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Myanmar",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "the country",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "knownFor",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "known for",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "one of the world's longest-running ongoing civil wars",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "one of the world's longest-running ongoing civil wars",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[2].predicate.evidence[0]: quote 'known for' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,176 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What major conflict is the country between the country that hosted the tournament and the country where That Dam is from known for?
+
+Expected answer: one of the world's longest-running ongoing civil wars.
+
+Gold decomposition:
+1. question='Who hosted the tournament?'; answer='Thailand'; support_paragraph=5
+2. question='That Dam >> country'; answer='Laos'; support_paragraph=10
+3. question='what natural boundary lies between #1 and #2'; answer='Myanmar'; support_paragraph=2
+4. question='What major conflict is #3 known for?'; answer="one of the world's longest-running ongoing civil wars."; support_paragraph=1
+
+Frozen RDF graph:
+<urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:competition> .
+<urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> <urn:graphragprov:predicate:participantCount> "44"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:automaticallyQualifiedFor> <urn:graphragprov:entity:final%20tournament> .
+<urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+<urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+<urn:graphragprov:entity:Aung%20San%20Suu%20Kyi%27s%20party> <urn:graphragprov:predicate:ended> <urn:graphragprov:entity:military%20rule> .
+<urn:graphragprov:entity:Aung%20San%20Suu%20Kyi%27s%20party> <urn:graphragprov:predicate:wonInElection> <urn:graphragprov:entity:2015%20election> .
+<urn:graphragprov:entity:Aung%20San%20Suu%20Kyi%27s%20party> <urn:graphragprov:predicate:wonMajorityIn> <urn:graphragprov:entity:both%20houses> .
+<urn:graphragprov:entity:Burma%27s%20myriad%20ethnic%20groups> <urn:graphragprov:predicate:haveBeenInvolvedIn> "one of the world's longest-running ongoing civil wars" .
+<urn:graphragprov:entity:Burmese%20Military> <urn:graphragprov:predicate:hasTakenStepsToward> <urn:graphragprov:entity:relinquishing%20control%20of%20the%20government> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasBeenEngrossedIn> <urn:graphragprov:entity:rampant%20ethnic%20strife> .
+<urn:graphragprov:entity:United%20Nations> <urn:graphragprov:predicate:hasReported> <urn:graphragprov:entity:consistent%20and%20systematic%20human%20rights%20violations> .
+<urn:graphragprov:entity:former%20military%20leaders> <urn:graphragprov:predicate:stillWieldPowerIn> <urn:graphragprov:entity:the%20country> .
+<urn:graphragprov:entity:government> <urn:graphragprov:predicate:criticizedFor> <urn:graphragprov:entity:poor%20response%20to%20the%20religious%20clashes> .
+<urn:graphragprov:entity:government> <urn:graphragprov:predicate:criticizedFor> <urn:graphragprov:entity:treatment%20of%20the%20Muslim%20Rohingya%20minority> .
+<urn:graphragprov:entity:military%20junta> <urn:graphragprov:predicate:dissolvedFollowing> <urn:graphragprov:entity:2010%20general%20election> .
+<urn:graphragprov:entity:military%20junta> <urn:graphragprov:predicate:dissolvedInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:nominally%20civilian%20government> <urn:graphragprov:predicate:wasInstalled> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:release%20of%20Aung%20San%20Suu%20Kyi%20and%20political%20prisoners> <urn:graphragprov:predicate:hasImproved> <urn:graphragprov:entity:the%20country%27s%20human%20rights%20record%20and%20foreign%20relations> .
+<urn:graphragprov:entity:release%20of%20Aung%20San%20Suu%20Kyi%20and%20political%20prisoners> <urn:graphragprov:predicate:hasLedTo> <urn:graphragprov:entity:the%20easing%20of%20trade%20and%20other%20economic%20sanctions> .
+<urn:graphragprov:entity:several%20other%20organisations> <urn:graphragprov:predicate:hasReported> <urn:graphragprov:entity:consistent%20and%20systematic%20human%20rights%20violations> .
+<urn:graphragprov:entity:Andaman%20Sea> <urn:graphragprov:predicate:locatedToSouthOf> <urn:graphragprov:entity:Myanmar> .
+<urn:graphragprov:entity:Bay%20of%20Bengal> <urn:graphragprov:predicate:locatedToWestOf> <urn:graphragprov:entity:Myanmar> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Bangladesh> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:China> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:India> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Laos> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Thailand> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:Burma> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:liesAlong> <urn:graphragprov:entity:Eurasian%20Plate> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:liesAlong> <urn:graphragprov:entity:Indian%20Plate> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:mainland%20Southeast%20Asia> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedToSoutheastOf> <urn:graphragprov:entity:Himalayas> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:strategicallyLocatedNear> <urn:graphragprov:entity:major%20Indian%20Ocean%20shipping%20lanes> .
+<urn:graphragprov:entity:Many%20Laotians> <urn:graphragprov:predicate:believe> <urn:graphragprov:entity:That%20Dam%20is%20inhabited%20by%20a%20seven-headed%20n%C4%81ga> .
+<urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:Black%20Stupa> .
+<urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:hasLaoName> "ທາດດຳ" .
+<urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:hasSize> "large" .
+<urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:stupa> .
+<urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Laos> .
+<urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vientiane> .
+<urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:inhabits> <urn:graphragprov:entity:That%20Dam> .
+<urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:triedToProtect> <urn:graphragprov:entity:them> .
+<urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:triedToProtectFrom> <urn:graphragprov:entity:invasion%20by%20the%20Siamese%20army%20in%201827> .

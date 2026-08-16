@@ -1,0 +1,151 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What other notable work did the person who illustrated Shrek work on?
+
+Expected answer: Doctor De Soto
+
+Gold decomposition:
+1. question='Who was Shrek! illustrated by?'; answer='William Steig'; support_paragraph=16
+2. question='#1 >> notable work'; answer='Doctor De Soto'; support_paragraph=2
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Shrek> <urn:graphragprov:predicate:etymology> <urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> .
+<urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:a%20repugnant%20and%20monstrous%20green%20creature> .
+<urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:picture%20book> .
+<urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:publishedInYear> "1990"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:William%20Steig> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:William%20Steig> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:book%20writer> .
+<urn:graphragprov:entity:William%20Steig> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cartoonist> .
+<urn:graphragprov:entity:a%20repugnant%20and%20monstrous%20green%20creature> <urn:graphragprov:predicate:endsUpSaving> <urn:graphragprov:entity:a%20princess> .
+<urn:graphragprov:entity:a%20repugnant%20and%20monstrous%20green%20creature> <urn:graphragprov:predicate:leavesHomeTo> <urn:graphragprov:entity:see%20the%20world> .
+<urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:correspondsTo> <urn:graphragprov:entity:German%20%22%22> .
+<urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:fear> .
+<urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:fright> .
+<urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:oftenUsedInForm> <urn:graphragprov:entity:Oy%20Shrek%21> .
+<urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:usedAs> <urn:graphragprov:entity:a%20common%20exclamation> .
+<urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:a%20mouse-dentist> .
+<urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> .
+<urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:picture%20book> .
+<urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:publishedInYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:William%20Steig> .
+<urn:graphragprov:entity:a%20fox> <urn:graphragprov:predicate:hasCondition> <urn:graphragprov:entity:a%20toothache> .
+<urn:graphragprov:entity:a%20mouse-dentist> <urn:graphragprov:predicate:avoidsBeingEatenBy> <urn:graphragprov:entity:a%20fox> .
+<urn:graphragprov:entity:a%20mouse-dentist> <urn:graphragprov:predicate:mustHelp> <urn:graphragprov:entity:a%20fox> .

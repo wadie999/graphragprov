@@ -1,0 +1,242 @@
+
+H0 one-case execution
+  case:          2hop__779424_75487
+  hops:          2
+  question:      Who is the federal leader of the party that Pierre-Hugues Boisvenu is a member of?
+  expected:      Andrew Scheer
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__779424_75487/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Pierre-Hugues Boisvenu'
+  source unit: u_aae2392f406ab9375acd2f6862d8cd238a57f1b45d3b9a56ca30e7b0ec00eed3
+  text chars:  302
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.566s | model=deepseek-v4-flash
+      tokens:   in=5288 | out=1818 | total=7106 | cached=4992 | uncached=296
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 258 / 324 (79.6%)
+    characters text:     236 / 302 (78.1%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  16 chars
+      'Prime Minister'
+    statement density:  27.78 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 2/2] paragraph=18 title='2017 Conservative Party of Canada leadership election'
+  source unit: u_5572a2bf29c4e9c42d37cbb7b7a3baa15d70d4c40f4a4d5d5700959b77e5a9f6
+  text chars:  894
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 18.170s | model=deepseek-v4-flash
+      tokens:   in=5540 | out=3758 | total=9298 | cached=4992 | uncached=548
+    [LLM graph.reference #3] sending...
+      provider: 0.851s | model=deepseek-v4-flash
+      tokens:   in=720 | out=8 | total=728 | cached=0 | uncached=720
+  extraction: ACCEPTED
+  statements: 22
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    22
+    initially rejected: 1
+
+    initial rejection #4
+      validator:
+        response.statements[4].predicate.evidence[0]: quote 'led ... from 2004' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "2004",
+                "segment": "text"
+              }
+            ],
+            "value": "2004"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "led ... from 2004",
+                "segment": "text"
+              }
+            ],
+            "value": "ledFromYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Stephen Harper",
+                "segment": "text"
+              }
+            ],
+            "value": "Stephen Harper"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 22
+  coverage:
+    characters combined: 672 / 947 (71.0%)
+    characters text:     619 / 894 (69.2%)
+    characters title:    53 / 53 (100.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  58 chars
+      'the Conservative Party of Canada as its leader from 2004'
+    statement density:  23.23 / 1000 chars
+    title reliance:      1 / 22 (4.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 31
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      31
+resource nodes:        20
+entity nodes:          20
+literal values:        14
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:2015%20federal%20election> <urn:graphragprov:predicate:heldOn> "2015-10-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2017%20Conservative%20Party%20of%20Canada%20leadership%20election> <urn:graphragprov:predicate:heldOn> "2017-05-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Andrew%20Scheer> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Stephen%20Harper> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedByMergerOf> <urn:graphragprov:entity:Canadian%20Alliance> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedByMergerOf> <urn:graphragprov:entity:Progressive%20Conservative%20parties> .
+  <urn:graphragprov:entity:Harper> <urn:graphragprov:predicate:instructed> <urn:graphragprov:entity:Harry%20Walsh> .
+  <urn:graphragprov:entity:Harper> <urn:graphragprov:predicate:ledPartyThrough> "five federal elections" .
+  <urn:graphragprov:entity:Harper> <urn:graphragprov:predicate:tenderedResignationAs> <urn:graphragprov:entity:party%20leader> .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:heldPosition> <urn:graphragprov:entity:Conservative%20Party%20President> .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> "appoint an Interim Leader" .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> "implement the leadership selection process" .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> "reach out to the newly elected parliamentary caucus" .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:said> "he had spoken to Harper" .
+  <urn:graphragprov:entity:Party%20members> <urn:graphragprov:predicate:choseAsLeader> <urn:graphragprov:entity:Andrew%20Scheer> .
+  <urn:graphragprov:entity:Stephen%20Harper> <urn:graphragprov:predicate:led> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+  <urn:graphragprov:entity:party> <urn:graphragprov:predicate:defeatedIn> <urn:graphragprov:entity:2015%20federal%20election> .
+  <urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernment> "two minority governments" .
+  <urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernmentInYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernmentInYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:party> <urn:graphragprov:predicate:formedGovernmentInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:party> <urn:graphragprov:predicate:increasedSeatCountIn> <urn:graphragprov:entity:House%20of%20Commons> .
+  <urn:graphragprov:entity:party> <urn:graphragprov:predicate:increasedSeatCountInYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:appointedBy> <urn:graphragprov:entity:Stephen%20Harper> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:appointedOn> "2010-01-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:Senate%20of%20Canada> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:bornIn> "1949-02-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:victim%27s%20rights%20activist> .
+  <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:represents> <urn:graphragprov:entity:province%20of%20Quebec> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.714s | model=deepseek-v4-flash
+      tokens:   in=2338 | out=189 | total=2527 | cached=640 | uncached=1698
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+  - <urn:graphragprov:entity:Party%20members> <urn:graphragprov:predicate:choseAsLeader> <urn:graphragprov:entity:Andrew%20Scheer> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:memberOfPoliticalParty> ?party . ?party <urn:graphragprov:predicate:choseAsLeader> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5572a2bf29c4e9c4>
+  FROM <urn:graphragprov:unit:u_aae2392f406ab937>
+  WHERE { <urn:graphragprov:entity:Pierre-Hugues%20Boisvenu> <urn:graphragprov:predicate:memberOfPoliticalParty> ?party . ?party <urn:graphragprov:predicate:choseAsLeader> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__779424_75487
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__779424_75487/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13886
+output tokens:         5773
+total tokens:          19659
+cached input tokens:   10624
+uncached input tokens: 3262
+cumulative LLM seconds: 30.301
+
+statement occurrences: 31
+semantic triples:      31
+entity nodes:          20
+literal values:        14
+predicates:            24
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 28.598s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.062s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.715s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.552s

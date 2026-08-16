@@ -1,0 +1,195 @@
+
+H0 one-case execution
+  case:          2hop__44590_510545
+  hops:          2
+  question:      Who is the spouse of the person who voices Jarvis in Iron Man?
+  expected:      Jennifer Connelly
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__44590_510545/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=12 title='Paul Bettany'
+  source unit: u_fef65493fc7b05543d344c5e0b709cdf25144d6aec7077165d66af284bdb8bf1
+  text chars:  730
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 16.039s | model=deepseek-v4-flash
+      tokens:   in=5401 | out=3346 | total=8747 | cached=4992 | uncached=409
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 300 / 742 (40.4%)
+    characters text:     288 / 730 (39.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  72 chars
+      '(2016). He first came to the attention of mainstream audiences when he'
+    statement density:  24.26 / 1000 chars
+    title reliance:      18 / 18 (100.0%)
+
+[GRAPH 2/2] paragraph=11 title='A Beautiful Mind (soundtrack)'
+  source unit: u_9660de518c033c7327babfa929fd01c955f0b909945cff6585e92f236f7ed41f
+  text chars:  355
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.279s | model=deepseek-v4-flash
+      tokens:   in=5491 | out=1937 | total=7428 | cached=4992 | uncached=499
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 274 / 384 (71.4%)
+    characters text:     245 / 355 (69.0%)
+    characters title:    29 / 29 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  36 chars
+      '. The original score and songs were'
+    statement density:  31.25 / 1000 chars
+    title reliance:      5 / 12 (41.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 30
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      30
+resource nodes:        27
+entity nodes:          27
+literal values:        2
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:releaseYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Christopher%20Plummer> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jennifer%20Connelly> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Paul%20Bettany> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Russell%20Crowe> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:composedBy> <urn:graphragprov:entity:James%20Horner> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:conductedBy> <urn:graphragprov:entity:James%20Horner> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:original%20soundtrack%20album> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Decca%20Records> .
+  <urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:soundtrackOf> <urn:graphragprov:entity:A%20Beautiful%20Mind> .
+  <urn:graphragprov:entity:Jennifer%20Connelly> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:Alicia%20Nash> .
+  <urn:graphragprov:entity:Jennifer%20Connelly> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Supporting%20Actress> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:A%20Beautiful%20Mind> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:A%20Knight%27s%20Tale> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Avengers%3A%20Age%20of%20Ultron> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Captain%20America%3A%20Civil%20War> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Dogville> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Gangster%20No.%201> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man%202> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man%203> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Master%20and%20Commander%3A%20The%20Far%20Side%20of%20the%20World> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:The%20Avengers> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:The%20Da%20Vinci%20Code> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Wimbledon> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:bornInYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:voiceRole> <urn:graphragprov:entity:J.A.R.V.I.S.> .
+  <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:voiceRole> <urn:graphragprov:entity:Vision> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.024s | model=deepseek-v4-flash
+      tokens:   in=2310 | out=252 | total=2562 | cached=640 | uncached=1670
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:voiceRole> <urn:graphragprov:entity:J.A.R.V.I.S.> .
+  - <urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man> .
+  - <urn:graphragprov:entity:Jennifer%20Connelly> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Paul%20Bettany> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?person <urn:graphragprov:predicate:voiceRole> <urn:graphragprov:entity:J.A.R.V.I.S.> . ?person <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man> . ?answer <urn:graphragprov:predicate:spouse> ?person . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9660de518c033c73>
+  FROM <urn:graphragprov:unit:u_fef65493fc7b0554>
+  WHERE { ?person <urn:graphragprov:predicate:voiceRole> <urn:graphragprov:entity:J.A.R.V.I.S.> . ?person <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man> . ?answer <urn:graphragprov:predicate:spouse> ?person . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__44590_510545
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__44590_510545/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13202
+output tokens:         5535
+total tokens:          18737
+cached input tokens:   10624
+uncached input tokens: 2578
+cumulative LLM seconds: 27.342
+
+statement occurrences: 30
+semantic triples:      30
+entity nodes:          27
+literal values:        2
+predicates:            14
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.332s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.061s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.025s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.512s

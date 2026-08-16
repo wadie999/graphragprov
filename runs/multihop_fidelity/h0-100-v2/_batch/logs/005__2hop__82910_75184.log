@@ -1,0 +1,354 @@
+
+H0 one-case execution
+  case:          2hop__82910_75184
+  hops:          2
+  question:      Who played the girlfriend of Alex P. Keaton's actor on Family Ties in Back to the Future?
+  expected:      Claudia Wells
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__82910_75184/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Alex P. Keaton'
+  source unit: u_60df4ad4aee17948b75e08fc7fa03dda0a1e660502277145d9116be19e0e9753
+  text chars:  586
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.739s | model=deepseek-v4-flash
+      tokens:   in=5353 | out=2116 | total=7469 | cached=4992 | uncached=361
+    [LLM graph.reference #2] sending...
+      provider: 3.047s | model=deepseek-v4-flash
+      tokens:   in=1090 | out=519 | total=1609 | cached=0 | uncached=1090
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 3
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'played by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Michael J. Fox",
+                "segment": "text"
+              }
+            ],
+            "value": "Michael J. Fox"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "played by",
+                "segment": "text"
+              }
+            ],
+            "value": "portrayedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Alex P. Keaton",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Alex",
+                "segment": "text"
+              }
+            ],
+            "value": "Alex P. Keaton"
+          }
+        }
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'played by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Michael Gross",
+                "segment": "text"
+              }
+            ],
+            "value": "Michael Gross"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "played by",
+                "segment": "text"
+              }
+            ],
+            "value": "portrayedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Steven",
+                "segment": "text"
+              }
+            ],
+            "value": "Steven Keaton"
+          }
+        }
+
+    initial rejection #10
+      validator:
+        response.statements[10].predicate.evidence[0]: quote 'played by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Meredith Baxter",
+                "segment": "text"
+              }
+            ],
+            "value": "Meredith Baxter"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "played by",
+                "segment": "text"
+              }
+            ],
+            "value": "portrayedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Elyse Keaton",
+                "segment": "text"
+              }
+            ],
+            "value": "Elyse Keaton"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 361 / 600 (60.2%)
+    characters text:     347 / 586 (59.2%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  67 chars
+      '. This was particularly expressed through the relationship between'
+    statement density:  20.00 / 1000 chars
+    title reliance:      4 / 12 (33.3%)
+
+[GRAPH 2/2] paragraph=18 title='List of Back to the Future characters'
+  source unit: u_400b7c878182ce9029cb4c7bf9eed23445f9e551eebc94d574eacf627f176c99
+  text chars:  554
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 6.989s | model=deepseek-v4-flash
+      tokens:   in=5513 | out=1299 | total=6812 | cached=4992 | uncached=521
+    [LLM graph.reference #4] sending...
+      provider: 1.604s | model=deepseek-v4-flash
+      tokens:   in=664 | out=182 | total=846 | cached=0 | uncached=664
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'in the spin - off Back to the Future: the Animated Series' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Back to the Future: the Animated Series",
+                "segment": "text"
+              }
+            ],
+            "value": "Back to the Future: the Animated Series"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in the spin - off Back to the Future: the Animated Series",
+                "segment": "text"
+              }
+            ],
+            "value": "appearedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jennifer",
+                "segment": "text"
+              }
+            ],
+            "value": "Jennifer"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 216 / 591 (36.5%)
+    characters text:     216 / 554 (39.0%)
+    characters title:    0 / 37 (0.0%)
+    sentences:           3 / 4 (75.0%)
+    longest uncovered:  217 chars
+      "as a punk rock version of her character. Consequently, the opening scene of Back to the Future Part II was re-shot with Shue taking Wells' place, rather than using the ending of B…"
+    statement density:  13.54 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 4
+  corrected valid: 4
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      19
+resource nodes:        20
+entity nodes:          20
+literal values:        4
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Back%20to%20the%20Future%3A%20The%20Game> .
+  <urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:played> <urn:graphragprov:entity:Jennifer> .
+  <urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:reprisedRoleAs> <urn:graphragprov:entity:Jennifer> .
+  <urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:wasNotAvailableToFilm> <urn:graphragprov:entity:the%20sequels> .
+  <urn:graphragprov:entity:Jennifer> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Back%20to%20the%20Future%3A%20the%20Animated%20Series> .
+  <urn:graphragprov:entity:Jennifer> <urn:graphragprov:predicate:wasVoicedBy> <urn:graphragprov:entity:Cathy%20Cavadini> .
+  <urn:graphragprov:entity:the%20role> <urn:graphragprov:predicate:wasRecastTo> <urn:graphragprov:entity:Elisabeth%20Shue> .
+  <urn:graphragprov:entity:Alex%20P.%20Keaton> <urn:graphragprov:predicate:appearsIn> <urn:graphragprov:entity:Family%20Ties> .
+  <urn:graphragprov:entity:Alex%20P.%20Keaton> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:fictional%20character> .
+  <urn:graphragprov:entity:Alex%20P.%20Keaton> <urn:graphragprov:predicate:politicalAffiliation> <urn:graphragprov:entity:Young%20Republican> .
+  <urn:graphragprov:entity:Alex%20P.%20Keaton> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Michael%20J.%20Fox> .
+  <urn:graphragprov:entity:Elyse%20Keaton> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Meredith%20Baxter> .
+  <urn:graphragprov:entity:Family%20Ties> <urn:graphragprov:predicate:airedFromYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Family%20Ties> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:Family%20Ties> <urn:graphragprov:predicate:airedToYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Family%20Ties> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sitcom> .
+  <urn:graphragprov:entity:Family%20Ties> <urn:graphragprov:predicate:reflected> "the move in the United States away from the cultural liberalism of the 1960s and 1970s to the conservatism of the 1980s" .
+  <urn:graphragprov:entity:Ronald%20Reagan> <urn:graphragprov:predicate:stated> "Family Ties was his favorite television show" .
+  <urn:graphragprov:entity:Steven%20Keaton> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Michael%20Gross> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.145s | model=deepseek-v4-flash
+      tokens:   in=1757 | out=237 | total=1994 | cached=640 | uncached=1117
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Alex%20P.%20Keaton> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Michael%20J.%20Fox> .
+  - <urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:played> <urn:graphragprov:entity:Jennifer> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Alex%20P.%20Keaton> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Michael%20J.%20Fox> . <urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:played> <urn:graphragprov:entity:Jennifer> . BIND(<urn:graphragprov:entity:Claudia%20Wells> AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_400b7c878182ce90>
+  FROM <urn:graphragprov:unit:u_60df4ad4aee17948>
+  WHERE { <urn:graphragprov:entity:Alex%20P.%20Keaton> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Michael%20J.%20Fox> . <urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:played> <urn:graphragprov:entity:Jennifer> . BIND(<urn:graphragprov:entity:Claudia%20Wells> AS ?answer) }
+
+GraphDB execution:
+  observed answers: ('Claudia Wells',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__82910_75184
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__82910_75184/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          14377
+output tokens:         4353
+total tokens:          18730
+cached input tokens:   10624
+uncached input tokens: 3753
+cumulative LLM seconds: 24.524
+
+statement occurrences: 20
+semantic triples:      19
+entity nodes:          20
+literal values:        4
+predicates:            15
+query attempts:        1
+observed answers:      ('Claudia Wells',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 22.395s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.146s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.461s

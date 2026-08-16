@@ -1,0 +1,390 @@
+
+H0 one-case execution
+  case:          2hop__16267_25719
+  hops:          2
+  question:      At the end of which year did the tribes in the area where the Ashkenazi Jews can trace their ancestry to Jews who settled there invade the roman empire?
+  expected:      406
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__16267_25719/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=17 title='Ashkenazi Jews'
+  source unit: u_488319006699575b53bec16b0f5ede0d391c503894ee0906d934c9b64448d953
+  text chars:  1071
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.415s | model=deepseek-v4-flash
+      tokens:   in=5465 | out=2055 | total=7520 | cached=4992 | uncached=473
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 654 / 1085 (60.3%)
+    characters text:     654 / 1071 (61.1%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  154 chars
+      ', but not in the general European population, be they for patrilineal markers (Y-chromosome haplotypes) and for matrilineal markers (mitotypes). However,'
+    statement density:  11.06 / 1000 chars
+    title reliance:      0 / 12 (0.0%)
+
+[GRAPH 2/2] paragraph=11 title='Galicia (Spain)'
+  source unit: u_31a09bc8647997caa4809b024e45b22525f9b8d855594698723b8a49105aa9c0
+  text chars:  903
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 12.383s | model=deepseek-v4-flash
+      tokens:   in=5648 | out=2526 | total=8174 | cached=4992 | uncached=656
+    [LLM graph.reference #3] sending...
+      provider: 4.489s | model=deepseek-v4-flash
+      tokens:   in=1589 | out=866 | total=2455 | cached=0 | uncached=1589
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 5
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "31 December 406",
+                "segment": "text"
+              }
+            ],
+            "value": "406-12-31"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "invaded",
+                "segment": "text"
+              }
+            ],
+            "value": "invadedOnDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "different tribes of Central Europe",
+                "segment": "text"
+              }
+            ],
+            "value": "different tribes of Central Europe"
+          }
+        }
+
+    initial rejection #5
+      validator:
+        response.statements[5].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "409",
+                "segment": "text"
+              }
+            ],
+            "value": "409"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "was taken",
+                "segment": "text"
+              }
+            ],
+            "value": "wasTakenInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Galicia",
+                "segment": "text"
+              }
+            ],
+            "value": "Galicia"
+          }
+        }
+
+    initial rejection #7
+      validator:
+        response.statements[7].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "411",
+                "segment": "text"
+              }
+            ],
+            "value": "411"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "created",
+                "segment": "text"
+              }
+            ],
+            "value": "wasCreatedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Suebic kingdom of Galicia",
+                "segment": "text"
+              }
+            ],
+            "value": "Suebic kingdom of Galicia"
+          }
+        }
+
+    initial rejection #11
+      validator:
+        response.statements[11].predicate.evidence[0]: quote 'invaded' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Suebic kingdom of Galicia",
+                "segment": "text"
+              }
+            ],
+            "value": "Suebic kingdom of Galicia"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "invaded",
+                "segment": "text"
+              }
+            ],
+            "value": "invaded"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Visigothic King Leovigild",
+                "segment": "text"
+              }
+            ],
+            "value": "Visigothic King Leovigild"
+          }
+        }
+
+    initial rejection #12
+      validator:
+        response.statements[12].predicate.evidence[0]: quote 'invaded' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "585",
+                "segment": "text"
+              }
+            ],
+            "value": "585"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "invaded",
+                "segment": "text"
+              }
+            ],
+            "value": "invadedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Visigothic King Leovigild",
+                "segment": "text"
+              }
+            ],
+            "value": "Visigothic King Leovigild"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    5
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 402 / 918 (43.8%)
+    characters text:     402 / 903 (44.5%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  118 chars
+      '. Its progress towards the Iberian Peninsula forced the Roman authorities to establish a treaty (foedus) by which the'
+    statement density:  16.34 / 1000 chars
+    title reliance:      0 / 15 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 27
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 5
+  corrected valid: 5
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      27
+resource nodes:        29
+entity nodes:          29
+literal values:        4
+predicates:            23
+
+N-Triples:
+  <urn:graphragprov:entity:Briton%20colony%20and%20bishopric> <urn:graphragprov:predicate:wasEstablishedAs> <urn:graphragprov:entity:foederati%20and%20allies%20of%20the%20Suebi> .
+  <urn:graphragprov:entity:Briton%20colony%20and%20bishopric> <urn:graphragprov:predicate:wasEstablishedIn> <urn:graphragprov:entity:Northern%20Galicia> .
+  <urn:graphragprov:entity:Galicia> <urn:graphragprov:predicate:wasTakenBy> <urn:graphragprov:entity:Suebi> .
+  <urn:graphragprov:entity:Galicia> <urn:graphragprov:predicate:wasTakenInYear> "0409"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Suebi> <urn:graphragprov:predicate:governedAs> <urn:graphragprov:entity:imperial%20allies> .
+  <urn:graphragprov:entity:Suebi> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Galicia> .
+  <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasBroughtUnder> <urn:graphragprov:entity:Visigoth%20control> .
+  <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasCreatedInYear> "0411"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasFirstGermanicKingdomToMintCoinageIn> <urn:graphragprov:entity:Roman%20lands> .
+  <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasFirstMedievalKingdomCreatedIn> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:Visigothic%20King%20Leovigild> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> .
+  <urn:graphragprov:entity:Visigothic%20King%20Leovigild> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> .
+  <urn:graphragprov:entity:Visigothic%20King%20Leovigild> <urn:graphragprov:predicate:invadedInYear> "0585"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Roman%20Empire> .
+  <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invadedOnDate> "0406-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2013%20study%20of%20Ashkenazi%20mitochondrial%20DNA> <urn:graphragprov:predicate:conductedBy> <urn:graphragprov:entity:University%20of%20Huddersfield> .
+  <urn:graphragprov:entity:2013%20study%20of%20Ashkenazi%20mitochondrial%20DNA> <urn:graphragprov:predicate:suggests> <urn:graphragprov:entity:at%20least%2080%20percent%20of%20Ashkenazi%20maternal%20lineages%20derive%20from%20indigenous%20European%20mtDNAs> .
+  <urn:graphragprov:entity:Ashkenazi%20Jew> <urn:graphragprov:predicate:hasAncestryTracedTo> <urn:graphragprov:entity:Jews%20who%20settled%20in%20Central%20Europe> .
+  <urn:graphragprov:entity:Ashkenazi%20Jew> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:ethnic%20sense> .
+  <urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:hadLittleInflowOrOutflow> <urn:graphragprov:entity:conversion> .
+  <urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:hadLittleInflowOrOutflow> <urn:graphragprov:entity:intermarriage> .
+  <urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:hadLittleInflowOrOutflow> <urn:graphragprov:entity:migration> .
+  <urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:livedIn> <urn:graphragprov:entity:many%20countries> .
+  <urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:wereReproductivelyIsolatedPopulation> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:Human%20geneticists> <urn:graphragprov:predicate:argued> <urn:graphragprov:entity:genetic%20variations%20identified%20among%20Ashkenazi%20Jews> .
+  <urn:graphragprov:entity:Many%20Ashkenazi%20Jews> <urn:graphragprov:predicate:haveIntermarried> <urn:graphragprov:entity:members%20of%20other%20Jewish%20communities> .
+  <urn:graphragprov:entity:Many%20Ashkenazi%20Jews> <urn:graphragprov:predicate:haveIntermarried> <urn:graphragprov:entity:people%20of%20other%20nations%20and%20faiths> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.647s | model=deepseek-v4-flash
+      tokens:   in=2371 | out=388 | total=2759 | cached=640 | uncached=1731
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ashkenazi%20Jew> <urn:graphragprov:predicate:hasAncestryTracedTo> <urn:graphragprov:entity:Jews%20who%20settled%20in%20Central%20Europe> .
+  - <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Roman%20Empire> .
+  - <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invadedOnDate> "0406-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ashkenazi%20Jew> <urn:graphragprov:predicate:hasAncestryTracedTo> <urn:graphragprov:entity:Jews%20who%20settled%20in%20Central%20Europe> . <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Roman%20Empire> . <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invadedOnDate> ?date . BIND(YEAR(?date) AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_31a09bc8647997ca>
+  FROM <urn:graphragprov:unit:u_488319006699575b>
+  WHERE { <urn:graphragprov:entity:Ashkenazi%20Jew> <urn:graphragprov:predicate:hasAncestryTracedTo> <urn:graphragprov:entity:Jews%20who%20settled%20in%20Central%20Europe> . <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Roman%20Empire> . <urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invadedOnDate> ?date . BIND(YEAR(?date) AS ?answer) }
+
+GraphDB execution:
+  observed answers: ('406',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__16267_25719
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__16267_25719/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          15073
+output tokens:         5835
+total tokens:          20908
+cached input tokens:   10624
+uncached input tokens: 4449
+cumulative LLM seconds: 30.934
+
+statement occurrences: 27
+semantic triples:      27
+entity nodes:          29
+literal values:        4
+predicates:            23
+query attempts:        1
+observed answers:      ('406',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 28.304s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.648s
+  graphdb.semantic [attempt=1]: 0.008s
+  provenance.execution [attempt=1]: 0.535s

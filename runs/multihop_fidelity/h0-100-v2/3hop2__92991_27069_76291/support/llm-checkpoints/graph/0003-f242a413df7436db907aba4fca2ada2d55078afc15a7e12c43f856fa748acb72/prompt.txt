@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_02a8b5e3d5b5d29fbad1c4a278379cf8b56cfbbb575bf268705ee754d063b9f3
+Title: Oklahoma
+Text:
+Following the 2000 census, the Oklahoma delegation to the U.S. House of Representatives was reduced from six to five representatives, each serving one congressional district. For the 112th Congress (2011–2013), there were no changes in party strength, and the delegation included four Republicans and one Democrat. In the 112th Congress, Oklahoma's U.S. senators were Republicans Jim Inhofe and Tom Coburn, and its U.S. Representatives were John Sullivan (R-OK-1), Dan Boren (D-OK-2), Frank D. Lucas (R-OK-3), Tom Cole (R-OK-4), and James Lankford (R-OK-5).
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 16,
+    "statement": {
+      "subject": {
+        "value": "Oklahoma",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Oklahoma",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "hasRepresentatives",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "delegation was reduced from six to five representatives",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "five representatives",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "five representatives",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[16].predicate.evidence[0]: quote 'delegation was reduced from six to five representatives' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

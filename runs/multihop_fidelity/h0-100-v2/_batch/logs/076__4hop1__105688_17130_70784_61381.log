@@ -1,0 +1,320 @@
+
+H0 one-case execution
+  case:          4hop1__105688_17130_70784_61381
+  hops:          4
+  question:      The country that Eyal Golan is from lies within a certain region. When was the area that lies immediately to the north of that region established?
+  expected:      1932
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__105688_17130_70784_61381/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=18 title='Eyal Golan'
+  source unit: u_6027608e534f09273d03b7fe1d056a1afc485aba63113828d9586d816c82fb79
+  text chars:  248
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.750s | model=deepseek-v4-flash
+      tokens:   in=5340 | out=972 | total=6312 | cached=4992 | uncached=348
+    [LLM graph.reference #2] sending...
+      provider: 2.023s | model=deepseek-v4-flash
+      tokens:   in=604 | out=211 | total=815 | cached=0 | uncached=604
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "April 12, 1971",
+                "segment": "text"
+              }
+            ],
+            "value": "April 12, 1971"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Eyal Golan",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Eyal Golan",
+                "segment": "text"
+              }
+            ],
+            "value": "Eyal Golan"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 95 / 258 (36.8%)
+    characters text:     85 / 248 (34.3%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  87 chars
+      'and considered one of the most successful singers of this genre in Israel. Eyal Golan'
+    statement density:  19.38 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[GRAPH 2/4] paragraph=13 title='Israel'
+  source unit: u_9869e5d2319c8ff7ec9c17d36b26592c8bf3e17acb031b26aaee601c8ccedbc3
+  text chars:  1113
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.646s | model=deepseek-v4-flash
+      tokens:   in=5632 | out=2180 | total=7812 | cached=4992 | uncached=640
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 316 / 1119 (28.2%)
+    characters text:     310 / 1113 (27.9%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           4 / 6 (66.7%)
+    longest uncovered:  217 chars
+      "rā'el; Arabic: إِسْرَائِيل\u200e Isrāʼīl), officially the State of Israel (Hebrew: מְדִינַת יִשְׂרָאֵל\u200e Medīnat Yisrā'el [mediˈnat jisʁaˈʔel] ( listen); Arabic: دولة إِسْرَائِيل\u200e Dawla…"
+    statement density:  12.51 / 1000 chars
+    title reliance:      14 / 14 (100.0%)
+
+[GRAPH 3/4] paragraph=12 title='Geography of Saudi Arabia'
+  source unit: u_c90c433f1defefb862705f647dac6406183d78690d4e5ae25cd2d1305711d2d5
+  text chars:  1074
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 11.258s | model=deepseek-v4-flash
+      tokens:   in=5678 | out=2261 | total=7939 | cached=5120 | uncached=558
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 324 / 1099 (29.5%)
+    characters text:     324 / 1074 (30.2%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           5 / 7 (71.4%)
+    longest uncovered:  212 chars
+      "(formerly two separate countries: the Yemen Arab Republic or North Yemen; and the People's Democratic Republic of Yemen or South Yemen) are undefined, so the exact size of the cou…"
+    statement density:  12.74 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 4/4] paragraph=7 title='Saudi Arabia'
+  source unit: u_d0835ed732619207b35a7e77494dc006b30c50b250a32b092d776b7e81aeef94
+  text chars:  1126
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 13.768s | model=deepseek-v4-flash
+      tokens:   in=5873 | out=2796 | total=8669 | cached=5248 | uncached=625
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 530 / 1138 (46.6%)
+    characters text:     530 / 1126 (47.1%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           9 / 9 (100.0%)
+    longest uncovered:  163 chars
+      'into a single state through a series of conquests beginning in 1902 with the capture of Riyadh, the ancestral home of his family, the House of Saud. Saudi Arabia'
+    statement density:  14.94 / 1000 chars
+    title reliance:      0 / 17 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 50
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      50
+resource nodes:        45
+entity nodes:          45
+literal values:        8
+predicates:            33
+
+N-Triples:
+  <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:bornIn> "1971-04-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Mizrahi%20style> .
+  <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> .
+  <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:reportedHighestIncomeInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasCapital> <urn:graphragprov:entity:Jerusalem> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasFinancialCenter> <urn:graphragprov:entity:Tel%20Aviv> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasMostPopulousCity> <urn:graphragprov:entity:Jerusalem> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasTechnologyCenter> <urn:graphragprov:entity:Tel%20Aviv> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sovereign%20state> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Western%20Asia> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Gulf%20of%20Aqaba> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Mediterranean%20Sea> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Egypt> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Jordan> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Lebanon> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Palestinian%20territories> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Syria> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Red%20Sea> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasArea> <urn:graphragprov:entity:square%20kilometres> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Oman> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Republic%20of%20Yemen> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:United%20Arab%20Emirates> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCultivableAreaPercentage> "less than 1%" .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasGovernmentEstimate> "2217949"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:largestCountryOf> <urn:graphragprov:entity:Arabia> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southwest%20Asia> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupies> <urn:graphragprov:entity:Arabian%20Peninsula> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupiesPercentageOf> "80%" .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mecca> .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Medina> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:united> <urn:graphragprov:entity:four%20regions> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Ibn%20Saud> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:governedAlong> <urn:graphragprov:entity:Islamic%20lines> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasOfficialLanguage> <urn:graphragprov:entity:Arabic> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulation> "33 million" .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasTotalPopulation> "28.7 million" .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:absolute%20monarchy> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:hereditary%20dictatorship> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:sometimesCalled> <urn:graphragprov:entity:the%20Land%20of%20the%20Two%20Holy%20Mosques> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:globalSpreadFinancedBy> <urn:graphragprov:entity:oil%20and%20gas%20trade> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:hasBeenCalled> <urn:graphragprov:entity:the%20predominant%20feature%20of%20Saudi%20culture> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Sunni%20Islam> .
+  <urn:graphragprov:entity:the%20Land%20of%20the%20Two%20Holy%20Mosques> <urn:graphragprov:predicate:refersTo> <urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram> .
+  <urn:graphragprov:entity:the%20Land%20of%20the%20Two%20Holy%20Mosques> <urn:graphragprov:predicate:refersTo> <urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.488s | model=deepseek-v4-flash
+      tokens:   in=3276 | out=392 | total=3668 | cached=640 | uncached=2636
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> .
+  - <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+  - <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+  - <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> . <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6027608e534f0927>
+  FROM <urn:graphragprov:unit:u_9869e5d2319c8ff7>
+  FROM <urn:graphragprov:unit:u_c90c433f1defefb8>
+  FROM <urn:graphragprov:unit:u_d0835ed732619207>
+  WHERE { <urn:graphragprov:entity:Eyal%20Golan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> . <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1932',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Eyal Golan', 'Geography of Saudi Arabia', 'Israel', 'Saudi Arabia']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__105688_17130_70784_61381
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__105688_17130_70784_61381/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26403
+output tokens:         8812
+total tokens:          35215
+cached input tokens:   20992
+uncached input tokens: 5411
+cumulative LLM seconds: 45.932
+
+statement occurrences: 50
+semantic triples:      50
+entity nodes:          45
+literal values:        8
+predicates:            33
+query attempts:        1
+observed answers:      ('1932',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 43.470s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.080s
+  graph.materialization [attempt=1]: 0.212s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.488s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.481s

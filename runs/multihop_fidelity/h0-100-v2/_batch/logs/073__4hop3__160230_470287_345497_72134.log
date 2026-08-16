@@ -1,0 +1,677 @@
+
+H0 one-case execution
+  case:          4hop3__160230_470287_345497_72134
+  hops:          4
+  question:      When did the death city of Taito Kantonen become the capital of the US state having the statue being the title of the various Latin Mother goddess?
+  expected:      1839
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop3__160230_470287_345497_72134/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=11 title='Alma mater'
+  source unit: u_84b9f0bec0f3cce04ceb13dbe1293ce3bd38e8c124e36110dc9de6dfe830ef71
+  text chars:  509
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.351s | model=deepseek-v4-flash
+      tokens:   in=5384 | out=2227 | total=7611 | cached=4992 | uncached=392
+    [LLM graph.reference #2] sending...
+      provider: 1.350s | model=deepseek-v4-flash
+      tokens:   in=624 | out=168 | total=792 | cached=0 | uncached=624
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 1
+
+    initial rejection #10
+      validator:
+        response.statements[10].subject.evidence[0]: quote 'alma mater' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "alumnus",
+                "segment": "text"
+              }
+            ],
+            "value": "alumnus"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "is related to",
+                "segment": "text"
+              }
+            ],
+            "value": "isRelatedTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "alma mater",
+                "segment": "text"
+              }
+            ],
+            "value": "alma mater"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 14
+  coverage:
+    characters combined: 357 / 519 (68.8%)
+    characters text:     357 / 509 (70.1%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  37 chars
+      '. It entered academic usage when the'
+    statement density:  26.97 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 2/4] paragraph=13 title='Alma Mater (Illinois sculpture)'
+  source unit: u_b231efe3553443f9df8469c83707c00f3eb03fe49f5fa843f9c9229bc40524d2
+  text chars:  724
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 16.526s | model=deepseek-v4-flash
+      tokens:   in=5588 | out=3514 | total=9102 | cached=4992 | uncached=596
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 470 / 755 (62.3%)
+    characters text:     460 / 724 (63.5%)
+    characters title:    10 / 31 (32.3%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  38 chars
+      'for student graduation photos. It is'
+    statement density:  25.17 / 1000 chars
+    title reliance:      16 / 19 (84.2%)
+
+[GRAPH 3/4] paragraph=7 title='Taito Kantonen'
+  source unit: u_c6a596d02fbf1cbf70a7972eb6ffa6b4d77dafca2b39dde3b9ca5169de54a293
+  text chars:  305
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 9.245s | model=deepseek-v4-flash
+      tokens:   in=5730 | out=1902 | total=7632 | cached=5120 | uncached=610
+    [LLM graph.reference #5] sending...
+      provider: 4.316s | model=deepseek-v4-flash
+      tokens:   in=1348 | out=761 | total=2109 | cached=0 | uncached=1348
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 4
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'born in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Karstula",
+                "segment": "text"
+              }
+            ],
+            "value": "Karstula"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born in",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taito Kantonen",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Taito A. Kantonen",
+                "segment": "text"
+              }
+            ],
+            "value": "Taito Kantonen"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'died in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield",
+                "segment": "text"
+              }
+            ],
+            "value": "Springfield"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died in",
+                "segment": "text"
+              }
+            ],
+            "value": "diedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taito Kantonen",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Taito A. Kantonen",
+                "segment": "text"
+              }
+            ],
+            "value": "Taito Kantonen"
+          }
+        }
+
+    initial rejection #8
+      validator:
+        response.statements[8].object.evidence[0]: quote 'theology' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "theology",
+                "segment": "text"
+              }
+            ],
+            "value": "theology"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "received a degree in",
+                "segment": "text"
+              }
+            ],
+            "value": "receivedDegreeIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taito Kantonen",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "he",
+                "segment": "text"
+              }
+            ],
+            "value": "Taito Kantonen"
+          }
+        }
+
+    initial rejection #9
+      validator:
+        response.statements[9].subject.evidence[1]: quote 'He' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Man in the Eyes of God",
+                "segment": "text"
+              }
+            ],
+            "value": "Man in the Eyes of God"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "wrote",
+                "segment": "text"
+              }
+            ],
+            "value": "wrote"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taito Kantonen",
+                "segment": "title"
+              },
+              {
+                "occurrence": 2,
+                "quote": "He",
+                "segment": "text"
+              }
+            ],
+            "value": "Taito Kantonen"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'born in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Karstula",
+                "segment": "text"
+              }
+            ],
+            "value": "Karstula"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born in",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taito Kantonen",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Taito A. Kantonen",
+                "segment": "text"
+              }
+            ],
+            "value": "Taito Kantonen"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'died in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield",
+                "segment": "text"
+              }
+            ],
+            "value": "Springfield"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died in",
+                "segment": "text"
+              }
+            ],
+            "value": "diedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taito Kantonen",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Taito A. Kantonen",
+                "segment": "text"
+              }
+            ],
+            "value": "Taito Kantonen"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 184 / 319 (57.7%)
+    characters text:     170 / 305 (55.7%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  35 chars
+      'the United States, where he later'
+    statement density:  25.08 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 4/4] paragraph=1 title='Springfield, Illinois'
+  source unit: u_37d79d4f87ca02752e16ae2e0229cf9170ee922aede20f7ce5e54174e4f8fe3f
+  text chars:  1549
+  whole-source attempt: 1/3
+    [LLM graph.reference #6] sending...
+      provider: 22.011s | model=deepseek-v4-flash
+      tokens:   in=6067 | out=4759 | total=10826 | cached=5248 | uncached=819
+    [LLM graph.reference #7] sending...
+      provider: 2.464s | model=deepseek-v4-flash
+      tokens:   in=1048 | out=343 | total=1391 | cached=0 | uncached=1048
+  extraction: ACCEPTED
+  statements: 29
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    27
+    initially rejected: 2
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'built by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Kelly",
+                "segment": "text"
+              }
+            ],
+            "value": "John Kelly"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "built by",
+                "segment": "text"
+              }
+            ],
+            "value": "firstCabinBuiltBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield, Illinois",
+                "segment": "title"
+              }
+            ],
+            "value": "Springfield, Illinois"
+          }
+        }
+
+    initial rejection #16
+      validator:
+        response.statements[16].predicate.evidence[0]: quote 'built itself up to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "national power",
+                "segment": "text"
+              }
+            ],
+            "value": "national power"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "built itself up to",
+                "segment": "text"
+              }
+            ],
+            "value": "builtItselfUpTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield, Massachusetts",
+                "segment": "text"
+              }
+            ],
+            "value": "Springfield, Massachusetts"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 29
+  coverage:
+    characters combined: 862 / 1570 (54.9%)
+    characters text:     841 / 1549 (54.3%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           14 / 14 (100.0%)
+    longest uncovered:  75 chars
+      ', Senator Calhoun had fallen out of the favor with the public and the town'
+    statement density:  18.47 / 1000 chars
+    title reliance:      10 / 29 (34.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 70
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 3
+  initial rejections: 7
+  corrected valid: 5
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      70
+resource nodes:        61
+entity nodes:          61
+literal values:        13
+predicates:            59
+
+N-Triples:
+  <urn:graphragprov:entity:Abraham%20Lincoln> <urn:graphragprov:predicate:hadAssociates> <urn:graphragprov:entity:Long%20Nine> .
+  <urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:becameCountySeatInYear> "1821"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:countySeatOf> <urn:graphragprov:entity:Sangamon%20County> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalFromYear> "1809"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalThroughYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:wasFirstCapitalOf> <urn:graphragprov:entity:Illinois%20Territory> .
+  <urn:graphragprov:entity:Long%20Nine> <urn:graphragprov:predicate:nicknamedFor> "combined height of 54 feet (16 m)" .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:capitalDesignationDueTo> <urn:graphragprov:entity:Abraham%20Lincoln> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinBuiltBy> <urn:graphragprov:entity:John%20Kelly> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinBuiltInYear> "1820"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinLocatedAt> <urn:graphragprov:entity:northwest%20corner%20of%20Second%20Street%20and%20Jefferson%20Street> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:John%20C.%20Calhoun> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:originalName> <urn:graphragprov:entity:Calhoun> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:originallySettledBy> <urn:graphragprov:entity:trappers%20and%20traders> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedAfter> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedInYear> "1832"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledInYear> "1818"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:soughtToEmulate> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:builtItselfUpFrom> <urn:graphragprov:entity:frontier%20outpost> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:builtItselfUpTo> <urn:graphragprov:entity:national%20power> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:comparableTo> <urn:graphragprov:entity:modern-day%20Silicon%20Valley> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:celebrated%20Springfield%20Armory> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:concentrated%20prosperity> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:industrial%20innovation> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalFromYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalToYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:wasSecondStateCapitalOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Alma%20Mater%20Studiorum> <urn:graphragprov:predicate:translatesTo> <urn:graphragprov:entity:nurturing%20mother%20of%20studies> .
+  <urn:graphragprov:entity:University%20of%20Bologna> <urn:graphragprov:predicate:adopted> <urn:graphragprov:entity:Alma%20Mater%20Studiorum> .
+  <urn:graphragprov:entity:University%20of%20Bologna> <urn:graphragprov:predicate:describes> <urn:graphragprov:entity:its%20heritage> .
+  <urn:graphragprov:entity:University%20of%20Bologna> <urn:graphragprov:predicate:is> <urn:graphragprov:entity:oldest%20operating%20university%20in%20the%20Western%20world> .
+  <urn:graphragprov:entity:alma%20mater> <urn:graphragprov:predicate:especially> <urn:graphragprov:entity:Ceres> .
+  <urn:graphragprov:entity:alma%20mater> <urn:graphragprov:predicate:especially> <urn:graphragprov:entity:Cybele> .
+  <urn:graphragprov:entity:alma%20mater> <urn:graphragprov:predicate:for> <urn:graphragprov:entity:Virgin%20Mary> .
+  <urn:graphragprov:entity:alma%20mater> <urn:graphragprov:predicate:for> <urn:graphragprov:entity:various%20Latin%20mother%20goddesses> .
+  <urn:graphragprov:entity:alma%20mater> <urn:graphragprov:predicate:isRelatedTo> <urn:graphragprov:entity:alumnus> .
+  <urn:graphragprov:entity:alma%20mater> <urn:graphragprov:predicate:laterIn> <urn:graphragprov:entity:Catholicism> .
+  <urn:graphragprov:entity:alma%20mater> <urn:graphragprov:predicate:was> <urn:graphragprov:entity:honorific%20title> .
+  <urn:graphragprov:entity:alumnus> <urn:graphragprov:predicate:is> <urn:graphragprov:entity:term%20used%20for%20a%20university%20graduate> .
+  <urn:graphragprov:entity:alumnus> <urn:graphragprov:predicate:literallyMeans> <urn:graphragprov:entity:nursling> .
+  <urn:graphragprov:entity:alumnus> <urn:graphragprov:predicate:literallyMeans> <urn:graphragprov:entity:one%20who%20is%20nourished> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:appreciatedFor> <urn:graphragprov:entity:romantic%2C%20heraldic%20overtones> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:appreciatedFor> <urn:graphragprov:entity:warmth%20of%20pose> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:createdBy> <urn:graphragprov:entity:Lorado%20Taft> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:mother-figure> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:flankedBy> <urn:graphragprov:entity:two%20attendant%20figures> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:hasWeight> "10000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bronze%20statue> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:is> <urn:graphragprov:entity:iconic%20figure> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:is> <urn:graphragprov:entity:popular%20backdrop> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:corner%20of%20Green%20and%20Wright%20Streets> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:campus> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:removedFrom> <urn:graphragprov:entity:its%20site%20at%20the%20entrance%20to%20the%20university> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:removedInYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:returnedIn> "spring of 2014" .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:returnedTo> <urn:graphragprov:entity:its%20site> .
+  <urn:graphragprov:entity:Alma%20Mater> <urn:graphragprov:predicate:symbolOf> <urn:graphragprov:entity:University%20of%20Illinois%20at%20Urbana-Champaign> .
+  <urn:graphragprov:entity:University%20of%20Illinois%20at%20Urbana-Champaign> <urn:graphragprov:predicate:hasMotto> <urn:graphragprov:entity:Learning%20and%20Labor> .
+  <urn:graphragprov:entity:two%20attendant%20figures> <urn:graphragprov:predicate:representing> <urn:graphragprov:entity:Labor> .
+  <urn:graphragprov:entity:two%20attendant%20figures> <urn:graphragprov:predicate:representing> <urn:graphragprov:entity:Learning> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:attended> <urn:graphragprov:entity:Harvard%20University> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:bornInYear> "1900"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:diedInYear> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Finland> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:theologian> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:receivedDegreeIn> <urn:graphragprov:entity:theology> .
+  <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Man%20in%20the%20Eyes%20of%20God> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.231s | model=deepseek-v4-flash
+      tokens:   in=4354 | out=243 | total=4597 | cached=640 | uncached=3714
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Springfield> .
+  - <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalOf> <urn:graphragprov:entity:Illinois> .
+  - <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:placeOfDeath> ?deathCity . ?deathCity <urn:graphragprov:predicate:becameCapitalOf> ?state . ?deathCity <urn:graphragprov:predicate:becameCapitalInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_37d79d4f87ca0275>
+  FROM <urn:graphragprov:unit:u_84b9f0bec0f3cce0>
+  FROM <urn:graphragprov:unit:u_b231efe3553443f9>
+  FROM <urn:graphragprov:unit:u_c6a596d02fbf1cbf>
+  WHERE { <urn:graphragprov:entity:Taito%20Kantonen> <urn:graphragprov:predicate:placeOfDeath> ?deathCity . ?deathCity <urn:graphragprov:predicate:becameCapitalOf> ?state . ?deathCity <urn:graphragprov:predicate:becameCapitalInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop3__160230_470287_345497_72134
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop3__160230_470287_345497_72134/support/result.json
+graph LLM executed:    7
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          30143
+output tokens:         13917
+total tokens:          44060
+cached input tokens:   20992
+uncached input tokens: 9151
+cumulative LLM seconds: 69.495
+
+statement occurrences: 70
+semantic triples:      70
+entity nodes:          61
+literal values:        13
+predicates:            59
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 67.301s
+  graph.reference.measurements [attempt=1]: 0.013s
+  graph.clear_support [attempt=1]: 0.070s
+  graph.materialization [attempt=1]: 0.110s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.232s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.514s

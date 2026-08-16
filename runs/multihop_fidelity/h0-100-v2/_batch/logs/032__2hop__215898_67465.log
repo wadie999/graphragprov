@@ -1,0 +1,190 @@
+
+H0 one-case execution
+  case:          2hop__215898_67465
+  hops:          2
+  question:      When did the performer of I Love Life, Thank You release Best Day Ever?
+  expected:      March 11, 2011
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__215898_67465/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='I Love Life, Thank You'
+  source unit: u_ecdec742c836a8b90970be38e0520cff0259ab8617493e3a72c61a0253cad033
+  text chars:  437
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.254s | model=deepseek-v4-flash
+      tokens:   in=5320 | out=1948 | total=7268 | cached=4992 | uncached=328
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 245 / 459 (53.4%)
+    characters text:     223 / 437 (51.0%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  64 chars
+      'a new song for every 100,000 Twitter followers he accumulated.'
+    statement density:  26.14 / 1000 chars
+    title reliance:      2 / 12 (16.7%)
+
+[GRAPH 2/2] paragraph=7 title='Best Day Ever (mixtape)'
+  source unit: u_f6210986e575f83e299fbbf3d5d0fb26ce3606e19c5013cedf088bb77cfae8e9
+  text chars:  291
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.563s | model=deepseek-v4-flash
+      tokens:   in=5437 | out=2281 | total=7718 | cached=4992 | uncached=445
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 235 / 314 (74.8%)
+    characters text:     212 / 291 (72.9%)
+    characters title:    23 / 23 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  14 chars
+      'Best Day Ever'
+    statement density:  41.40 / 1000 chars
+    title reliance:      8 / 13 (61.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 25
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        16
+entity nodes:          16
+literal values:        8
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> <urn:graphragprov:predicate:hasPreviouslyReleasedTracks> "Seven of the thirteen tracks" .
+  <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> <urn:graphragprov:predicate:hasTrackCount> "13"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:mixtape> .
+  <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Mac%20Miller> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:recording%20artist> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:releasedOnDate> "2011-10-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:releasedUponReaching> <urn:graphragprov:entity:one%20million%20followers> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:Road%202%20a%20Million%20Fans> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:startedInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Road%202%20a%20Million%20Fans> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:series> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:hasTrackCount> "16"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:mixtape> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:ordinalPosition> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Mac%20Miller> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:predominantlyProducedBy> <urn:graphragprov:entity:ID%20Labs> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:nine%20producers> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:releasedOnDate> "2011-03-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:releasedOnline> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Mac%20Miller> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:rapper> .
+  <urn:graphragprov:entity:Over%2020%2C000%20viewers> <urn:graphragprov:predicate:joined> <urn:graphragprov:entity:Miller> .
+  <urn:graphragprov:entity:Over%2020%2C000%20viewers> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:live%20video%20stream> .
+  <urn:graphragprov:entity:live%20video%20stream> <urn:graphragprov:predicate:occurredJustPriorTo> <urn:graphragprov:entity:releasing%20the%20tape> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.549s | model=deepseek-v4-flash
+      tokens:   in=2147 | out=287 | total=2434 | cached=640 | uncached=1507
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Mac%20Miller> .
+  - <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Mac%20Miller> .
+  - <urn:graphragprov:entity:Best%20Day%20Ever%20%28mixtape%29> <urn:graphragprov:predicate:releasedOnDate> "2011-03-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:performer> ?album . ?album <urn:graphragprov:predicate:releasedOnDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_ecdec742c836a8b9>
+  FROM <urn:graphragprov:unit:u_f6210986e575f83e>
+  WHERE { <urn:graphragprov:entity:I%20Love%20Life%2C%20Thank%20You> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:performer> ?album . ?album <urn:graphragprov:predicate:releasedOnDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__215898_67465
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__215898_67465/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12904
+output tokens:         4516
+total tokens:          17420
+cached input tokens:   10624
+uncached input tokens: 2280
+cumulative LLM seconds: 24.366
+
+statement occurrences: 25
+semantic triples:      24
+entity nodes:          16
+literal values:        8
+predicates:            18
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.826s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.038s
+  graph.materialization [attempt=1]: 0.062s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.549s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.466s

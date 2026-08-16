@@ -1,0 +1,299 @@
+
+H0 one-case execution
+  case:          3hop1__23444_160713_77246
+  hops:          3
+  question:      In the Arabic dictionary what is the meaning of the word that also refers to the majority religion in India when the country containing the Neolithic graveyards was created?
+  expected:      the country of India
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__23444_160713_77246/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=10 title='History of science'
+  source unit: u_47bb8176c062ce03c9da042cb0bf2b49b1a2094f04712890e7595999f3c5265a
+  text chars:  588
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.710s | model=deepseek-v4-flash
+      tokens:   in=5387 | out=2661 | total=8048 | cached=4992 | uncached=395
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 432 / 606 (71.3%)
+    characters text:     432 / 588 (73.5%)
+    characters title:    0 / 18 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  33 chars
+      'among an early farming culture.'
+    statement density:  26.40 / 1000 chars
+    title reliance:      0 / 16 (0.0%)
+
+[GRAPH 2/3] paragraph=11 title='Partition of India'
+  source unit: u_1e93daacd7116a52dfa6d7ba47229ce2a6d62f71de4f90a1b1389eba3fd3b011
+  text chars:  1489
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 21.043s | model=deepseek-v4-flash
+      tokens:   in=5805 | out=4335 | total=10140 | cached=4992 | uncached=813
+  extraction: ACCEPTED
+  statements: 26
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    26
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     26
+  coverage:
+    characters combined: 1039 / 1507 (68.9%)
+    characters text:     1021 / 1489 (68.6%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           9 / 10 (90.0%)
+    longest uncovered:  66 chars
+      'expressed concern over the likelihood of violent riots, to which'
+    statement density:  17.25 / 1000 chars
+    title reliance:      2 / 26 (7.7%)
+
+[GRAPH 3/3] paragraph=19 title='Hindus'
+  source unit: u_4f93a80e10fb431302a35dc8313bc94deb3d47224d24189ccd7ff3db73890f13
+  text chars:  985
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 12.896s | model=deepseek-v4-flash
+      tokens:   in=6076 | out=2676 | total=8752 | cached=5120 | uncached=956
+    [LLM graph.reference #4] sending...
+      provider: 0.715s | model=deepseek-v4-flash
+      tokens:   in=749 | out=8 | total=757 | cached=0 | uncached=749
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.evidence[0]: quote "``river, ocean''" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "``river, ocean''",
+                "segment": "text"
+              }
+            ],
+            "value": "river, ocean"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "covering",
+                "segment": "text"
+              }
+            ],
+            "value": "covering"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sindhu",
+                "segment": "text"
+              }
+            ],
+            "value": "Sindhu"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 667 / 991 (67.3%)
+    characters text:     667 / 985 (67.7%)
+    characters title:    0 / 6 (0.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  36 chars
+      'the Indo - Aryan and Sanskrit word'
+    statement density:  15.14 / 1000 chars
+    title reliance:      0 / 15 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 57
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      57
+resource nodes:        58
+entity nodes:          58
+literal values:        13
+predicates:            46
+
+N-Triples:
+  <urn:graphragprov:entity:Boloji> <urn:graphragprov:predicate:states> "in Punjab there were no riots but there was communal tension" .
+  <urn:graphragprov:entity:British%20Government-commissioned%20report> <urn:graphragprov:predicate:preparedUnderChairmanshipOf> <urn:graphragprov:entity:Sir%20Cyril%20Radcliffe> .
+  <urn:graphragprov:entity:East%20Pakistan> <urn:graphragprov:predicate:todayKnownAs> <urn:graphragprov:entity:Bangladesh> .
+  <urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:observed> <urn:graphragprov:entity:maun%20vrat> .
+  <urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:wasIsolatedBy> <urn:graphragprov:entity:Nehru> .
+  <urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:wasIsolatedBy> <urn:graphragprov:entity:Patel> .
+  <urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:wroteReply> "Have I ever opposed you?" .
+  <urn:graphragprov:entity:India> <urn:graphragprov:predicate:formedOutOf> <urn:graphragprov:entity:majority%20Hindu%20regions%20of%20British%20India> .
+  <urn:graphragprov:entity:Jagmohan> <urn:graphragprov:predicate:hasStated> "this and what followed shows the glaring failure of the government machinery" .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:gaveAssurance> <urn:graphragprov:entity:Abul%20Kalam%20Azad> .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:hoped> "Gandhi would not oppose the partition" .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:isCivilian> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:isSoldier> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:repliedTo> <urn:graphragprov:entity:Abul%20Kalam%20Azad> .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:visited> <urn:graphragprov:entity:Gandhi> .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:willAdoptSternestMeasures> "to nip trouble in the bud" .
+  <urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:willIssueOrders> "to prevent communal disturbances" .
+  <urn:graphragprov:entity:Pakistan> <urn:graphragprov:predicate:cameIntoBeing> "with two non-contiguous enclaves" .
+  <urn:graphragprov:entity:Pakistan> <urn:graphragprov:predicate:formedOutOf> <urn:graphragprov:entity:majority%20Muslim%20areas> .
+  <urn:graphragprov:entity:Partition%20of%20India> <urn:graphragprov:predicate:acceptedBy> <urn:graphragprov:entity:Congress%20Working%20Committee> .
+  <urn:graphragprov:entity:Partition%20of%20India> <urn:graphragprov:predicate:acceptedInPrinciple> <urn:graphragprov:entity:Mountbatten> .
+  <urn:graphragprov:entity:Partition%20plan> <urn:graphragprov:predicate:acceptedBy> <urn:graphragprov:entity:Congress%20Working%20Committee> .
+  <urn:graphragprov:entity:Partition%20plan> <urn:graphragprov:predicate:acceptedOnDate> "1947-06-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:West%20Pakistan> <urn:graphragprov:predicate:separatedGeographicallyBy> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:border%20between%20India%20and%20Pakistan> <urn:graphragprov:predicate:determinedBy> <urn:graphragprov:entity:British%20Government-commissioned%20report> .
+  <urn:graphragprov:entity:border%20between%20India%20and%20Pakistan> <urn:graphragprov:predicate:knownAs> <urn:graphragprov:entity:Radcliffe%20Line> .
+  <urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:currentlyPracticedAs> <urn:graphragprov:entity:form%20of%20alternative%20medicine> .
+  <urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:system%20of%20traditional%20medicine> .
+  <urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:originatedBeforeYear> "2500 BC" .
+  <urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:originatedIn> <urn:graphragprov:entity:ancient%20India> .
+  <urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:practicedIn> <urn:graphragprov:entity:other%20parts%20of%20the%20world> .
+  <urn:graphragprov:entity:Neolithic%20graveyards> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pakistan> .
+  <urn:graphragprov:entity:Neolithic%20graveyards> <urn:graphragprov:predicate:showEvidenceOf> <urn:graphragprov:entity:proto-dentistry> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:authoredBy> <urn:graphragprov:entity:Su%C5%9Bruta> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:cataract%20surgery> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:other%20surgical%20procedures> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:perineal%20lithotomy> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:repair%20of%20torn%20ear%20lobes> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:rhinoplasty> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:several%20other%20excisions> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:isMostFamousTextOf> <urn:graphragprov:entity:Ayurveda> .
+  <urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:notableFor> <urn:graphragprov:entity:procedures%20on%20various%20forms%20of%20surgery> .
+  <urn:graphragprov:entity:6th-century%20BCE%20inscription%20of%20Darius%20I> <urn:graphragprov:predicate:mentions> <urn:graphragprov:entity:province%20of%20Hi%28n%29dush> .
+  <urn:graphragprov:entity:Al-Hind> <urn:graphragprov:predicate:referredTo> <urn:graphragprov:entity:the%20country%20of%20India> .
+  <urn:graphragprov:entity:Hindu> <urn:graphragprov:predicate:derivedFrom> <urn:graphragprov:entity:Sindhu> .
+  <urn:graphragprov:entity:Punjab%20region> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Hapta%20Hindu> .
+  <urn:graphragprov:entity:Punjab%20region> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Sapta%20Sindhava> .
+  <urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:means> "a large body of water" .
+  <urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:referredTo> <urn:graphragprov:entity:its%20tributaries> .
+  <urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:usedAsNameOf> <urn:graphragprov:entity:Indus%20river> .
+  <urn:graphragprov:entity:hindav%C4%AB> <urn:graphragprov:predicate:usedAsAdjectiveFor> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:people%20of%20India> <urn:graphragprov:predicate:referredToAs> <urn:graphragprov:entity:Hinduv%C4%81n%20%28Hindus%29> .
+  <urn:graphragprov:entity:province%20of%20Hi%28n%29dush> <urn:graphragprov:predicate:referringTo> <urn:graphragprov:entity:northwestern%20India> .
+  <urn:graphragprov:entity:term%20%27Hindu%27> <urn:graphragprov:predicate:didNotReferTo> <urn:graphragprov:entity:a%20religion> .
+  <urn:graphragprov:entity:term%20%27Hindu%27> <urn:graphragprov:predicate:is> <urn:graphragprov:entity:an%20ethno-geographical%20term> .
+  <urn:graphragprov:entity:term%20%27hindu%27> <urn:graphragprov:predicate:firstOccurs> <urn:graphragprov:entity:6th-century%20BCE%20inscription%20of%20Darius%20I> .
+  <urn:graphragprov:entity:term%20%27hindu%27> <urn:graphragprov:predicate:is> "a Persian geographical term for the people who lived beyond the river Indus" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.510s | model=deepseek-v4-flash
+      tokens:   in=3621 | out=510 | total=4131 | cached=640 | uncached=2981
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Neolithic%20graveyards> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pakistan> .
+  - <urn:graphragprov:entity:Pakistan> <urn:graphragprov:predicate:formedOutOf> <urn:graphragprov:entity:majority%20Muslim%20areas> .
+  - <urn:graphragprov:entity:India> <urn:graphragprov:predicate:formedOutOf> <urn:graphragprov:entity:majority%20Hindu%20regions%20of%20British%20India> .
+  - <urn:graphragprov:entity:Hindu> <urn:graphragprov:predicate:derivedFrom> <urn:graphragprov:entity:Sindhu> .
+  - <urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:referredTo> <urn:graphragprov:entity:its%20tributaries> .
+  - <urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:usedAsNameOf> <urn:graphragprov:entity:Indus%20river> .
+  - <urn:graphragprov:entity:Al-Hind> <urn:graphragprov:predicate:referredTo> <urn:graphragprov:entity:the%20country%20of%20India> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Neolithic%20graveyards> <urn:graphragprov:predicate:locatedIn> ?country . ?country <urn:graphragprov:predicate:formedOutOf> ?region . ?region <urn:graphragprov:predicate:majorityReligion> ?religion . ?religion <urn:graphragprov:predicate:derivedFrom> ?source . ?source <urn:graphragprov:predicate:referredTo> ?tributaries . ?source <urn:graphragprov:predicate:usedAsNameOf> ?river . ?answer <urn:graphragprov:predicate:referredTo> ?country . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1e93daacd7116a52>
+  FROM <urn:graphragprov:unit:u_47bb8176c062ce03>
+  FROM <urn:graphragprov:unit:u_4f93a80e10fb4313>
+  WHERE { <urn:graphragprov:entity:Neolithic%20graveyards> <urn:graphragprov:predicate:locatedIn> ?country . ?country <urn:graphragprov:predicate:formedOutOf> ?region . ?region <urn:graphragprov:predicate:majorityReligion> ?religion . ?religion <urn:graphragprov:predicate:derivedFrom> ?source . ?source <urn:graphragprov:predicate:referredTo> ?tributaries . ?source <urn:graphragprov:predicate:usedAsNameOf> ?river . ?answer <urn:graphragprov:predicate:referredTo> ?country . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__23444_160713_77246
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__23444_160713_77246/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          21638
+output tokens:         10190
+total tokens:          31828
+cached input tokens:   15744
+uncached input tokens: 5894
+cumulative LLM seconds: 51.874
+
+statement occurrences: 57
+semantic triples:      57
+entity nodes:          58
+literal values:        13
+predicates:            46
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 48.385s
+  graph.reference.measurements [attempt=1]: 0.011s
+  graph.clear_support [attempt=1]: 0.064s
+  graph.materialization [attempt=1]: 0.089s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 3.511s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.438s

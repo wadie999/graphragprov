@@ -1,0 +1,188 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What franchise of the pro soccer organization headquartered in New York, is based in the city that produced the album considered the true portrait of the No Wave movement?
+
+Expected answer: New York City FC
+
+Gold decomposition:
+1. question='What was considered the true portrait of the no wave movement?'; answer='No New York'; support_paragraph=17
+2. question='What professional soccer organization is headquartered in New York?'; answer='Major League Soccer'; support_paragraph=8
+3. question='What #2 franchise is based in #1 ?'; answer='New York City FC'; support_paragraph=12
+
+Frozen RDF graph:
+<urn:graphragprov:entity:James%20M.%20Shuart%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hempstead%2C%20New%20York> .
+<urn:graphragprov:entity:James%20M.%20Shuart%20Stadium> <urn:graphragprov:predicate:locatedOnCampusOf> <urn:graphragprov:entity:Hofstra%20University> .
+<urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:New%20York%20Cosmos> .
+<urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:representedBy> <urn:graphragprov:entity:New%20York%20City%20FC> .
+<urn:graphragprov:entity:New%20York%20City%20FC> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Major%20League%20Soccer> .
+<urn:graphragprov:entity:New%20York%20City%20FC> <urn:graphragprov:predicate:playsHomeGamesAt> <urn:graphragprov:entity:Yankee%20Stadium> .
+<urn:graphragprov:entity:New%20York%20Cosmos> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:former%20professional%20soccer%20team> .
+<urn:graphragprov:entity:New%20York%20Cosmos> <urn:graphragprov:predicate:wasHomeTo> <urn:graphragprov:entity:Pel%C3%A9> .
+<urn:graphragprov:entity:New%20York%20Red%20Bulls> <urn:graphragprov:predicate:playsHomeGamesAt> <urn:graphragprov:entity:Red%20Bull%20Arena> .
+<urn:graphragprov:entity:Pel%C3%A9> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:soccer%20player> .
+<urn:graphragprov:entity:Red%20Bull%20Arena> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Harrison%2C%20New%20Jersey> .
+<urn:graphragprov:entity:The%20Cosmos> <urn:graphragprov:predicate:playsHomeGamesAt> <urn:graphragprov:entity:James%20M.%20Shuart%20Stadium> .
+<urn:graphragprov:entity:new%20version%20of%20the%20New%20York%20Cosmos> <urn:graphragprov:predicate:beganPlayIn> <urn:graphragprov:entity:second%20division%20North%20American%20Soccer%20League> .
+<urn:graphragprov:entity:new%20version%20of%20the%20New%20York%20Cosmos> <urn:graphragprov:predicate:beganPlayInYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:new%20version%20of%20the%20New%20York%20Cosmos> <urn:graphragprov:predicate:formedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Contortions> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+<urn:graphragprov:entity:DNA> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+<urn:graphragprov:entity:Mars> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+<urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:compilation> .
+<urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:oftenConsidered> <urn:graphragprov:entity:quintessential%20testament%20to%20the%20scene> .
+<urn:graphragprov:entity:No%20New%20York> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Eno> .
+<urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:beganInPartAsReactionAgainst> <urn:graphragprov:entity:punk%27s%20recycling%20of%20traditionalist%20rock%20tropes> .
+<urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:art%20and%20music%20scene> .
+<urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:No%20wave%20movement> <urn:graphragprov:predicate:oftenReflected> <urn:graphragprov:entity:abrasive%2C%20confrontational%20and%20nihilistic%20worldview> .
+<urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:atonality> .
+<urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:dissonance> .
+<urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:noise> .
+<urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:experimentedWith> <urn:graphragprov:entity:non-rock%20styles> .
+<urn:graphragprov:entity:No%20wave%20musicians> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musician> .
+<urn:graphragprov:entity:Rhys%20Chatham> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+<urn:graphragprov:entity:Teenage%20Jesus%20and%20the%20Jerks> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+<urn:graphragprov:entity:Theoretical%20Girls> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:No%20wave%20musician> .
+<urn:graphragprov:entity:ZE%20Records> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:No%20wave%20movement> .
+<urn:graphragprov:entity:ZE%20Records> <urn:graphragprov:predicate:foundedInYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:ZE%20Records> <urn:graphragprov:predicate:wouldProduce> <urn:graphragprov:entity:acclaimed%20and%20influential%20compilations> .
+<urn:graphragprov:entity:former%20four%20groups> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:No%20New%20York> .
+<urn:graphragprov:entity:Citi%20Field> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+<urn:graphragprov:entity:Ebbets%20Field> <urn:graphragprov:predicate:commemoratedOn> <urn:graphragprov:entity:U.S.%20postage%20stamps> .
+<urn:graphragprov:entity:Ebbets%20Field> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .
+<urn:graphragprov:entity:Madison%20Square%20Garden> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .
+<urn:graphragprov:entity:Madison%20Square%20Garden> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+<urn:graphragprov:entity:MetLife%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+<urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:Major%20League%20Baseball> .
+<urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:Major%20League%20Soccer> .
+<urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:National%20Basketball%20Association> .
+<urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:National%20Football%20League> .
+<urn:graphragprov:entity:New%20York%20City> <urn:graphragprov:predicate:isHomeToHeadquartersOf> <urn:graphragprov:entity:National%20Hockey%20League> .
+<urn:graphragprov:entity:New%20York%20metropolitan%20area> <urn:graphragprov:predicate:hostsMostSportsTeamsIn> <urn:graphragprov:entity:these%20five%20professional%20leagues> .
+<urn:graphragprov:entity:its%20predecessor> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .
+<urn:graphragprov:entity:professional%20sports%20in%20the%20city> <urn:graphragprov:predicate:predates> <urn:graphragprov:entity:all%20professional%20leagues> .
+<urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasBeenContinuouslyHosting> <urn:graphragprov:entity:professional%20sports> .
+<urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasBeenContinuouslyHostingSince> "1882"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasPlayedHostTo> "over forty major professional teams" .
+<urn:graphragprov:entity:the%20city> <urn:graphragprov:predicate:hasPlayedHostTo> <urn:graphragprov:entity:the%20five%20sports%20and%20their%20respective%20competing%20leagues> .
+<urn:graphragprov:entity:the%20new%20Yankee%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20metropolitan%20area> .
+<urn:graphragprov:entity:the%20original%20Yankee%20Stadium> <urn:graphragprov:predicate:commemoratedOn> <urn:graphragprov:entity:U.S.%20postage%20stamps> .
+<urn:graphragprov:entity:the%20original%20Yankee%20Stadium> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:famous%20sporting%20venue> .

@@ -1,0 +1,193 @@
+
+H0 one-case execution
+  case:          2hop__21104_16335
+  hops:          2
+  question:      The group representing at least 70% of Jews worldwide and Italians may be genetically similar due to what two factors?
+  expected:      inter-marriage and conversions in the time of the Roman Empire
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__21104_16335/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=17 title='Jews'
+  source unit: u_ae9f21111568fe1db02af95c88609bcbe6b8d2057ce07580dbff7f0baf7d8481
+  text chars:  628
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.291s | model=deepseek-v4-flash
+      tokens:   in=5379 | out=2126 | total=7505 | cached=4992 | uncached=387
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 290 / 632 (45.9%)
+    characters text:     290 / 628 (46.2%)
+    characters title:    0 / 4 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  88 chars
+      'prior to World War II and the Holocaust). As a result of their emigration from Europe,'
+    statement density:  20.57 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[GRAPH 2/2] paragraph=19 title='Ashkenazi Jews'
+  source unit: u_23912b08a45f5ca42ae18a8349968e8fada5e708a9a1be32467e2ae57d1496cc
+  text chars:  1762
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 13.593s | model=deepseek-v4-flash
+      tokens:   in=5771 | out=2714 | total=8485 | cached=4992 | uncached=779
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 1232 / 1776 (69.4%)
+    characters text:     1218 / 1762 (69.1%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           9 / 9 (100.0%)
+    longest uncovered:  88 chars
+      '. The study examines genetic markers spread across the entire genome and shows that the'
+    statement density:  7.88 / 1000 chars
+    title reliance:      1 / 14 (7.1%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 27
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      27
+resource nodes:        29
+entity nodes:          29
+literal values:        8
+predicates:            21
+
+N-Triples:
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:mostCloselyRelatedTo> <urn:graphragprov:entity:modern-day%20Italians> .
+  <urn:graphragprov:entity:Atzmon-Ostrer%20et%20al.> <urn:graphragprov:predicate:stated> "Two major groups were identified by principal component, phylogenetic, and identity by descent (IBD) analysis: Middle Eastern Jews and European/Syrian Jews. The IBD segment sharing and the proximity of European Jews to each other and to southern European populations suggested similar origins for European Jewry and refuted large-scale genetic contributions of Central and Eastern European and Slavic populations to the formation of Ashkenazi Jewry" .
+  <urn:graphragprov:entity:Jewish%20groups> <urn:graphragprov:predicate:shareLargeSwathsOfDNA> "large swaths of DNA" .
+  <urn:graphragprov:entity:Middle%20Eastern%20Jews> <urn:graphragprov:predicate:shareCommonAncestorsWith> <urn:graphragprov:entity:European%2FSyrian%20Jews> .
+  <urn:graphragprov:entity:Middle%20Eastern%20Jews> <urn:graphragprov:predicate:sharedCommonAncestorsAboutYearsAgo> "2500 years ago" .
+  <urn:graphragprov:entity:Middle%20Eastern%20Jews> <urn:graphragprov:predicate:sharedCommonAncestorsIn> <urn:graphragprov:entity:Middle%20East> .
+  <urn:graphragprov:entity:Results%20of%20the%20analysis> <urn:graphragprov:predicate:tallyWith> <urn:graphragprov:entity:biblical%20accounts%20of%20the%20fate%20of%20the%20Jews> .
+  <urn:graphragprov:entity:SNP%20markers%20in%20genetic%20segments%20of%203%20million%20DNA%20letters%20or%20longer> <urn:graphragprov:predicate:were10TimesMoreLikelyToBeIdenticalAmongJewsThanNonJews> "10 times more likely to be identical among Jews than non-Jews" .
+  <urn:graphragprov:entity:any%20two%20Ashkenazi%20Jewish%20participants%20in%20the%20study> <urn:graphragprov:predicate:sharedAboutAsMuchDNAAs> <urn:graphragprov:entity:fourth%20or%20fifth%20cousins> .
+  <urn:graphragprov:entity:each%20of%20the%20Jewish%20groups%20in%20the%20study> <urn:graphragprov:predicate:hasOwnGeneticSignature> "own genetic signature" .
+  <urn:graphragprov:entity:each%20of%20the%20Jewish%20groups%20in%20the%20study> <urn:graphragprov:predicate:isMoreCloselyRelatedTo> <urn:graphragprov:entity:other%20Jewish%20groups> .
+  <urn:graphragprov:entity:each%20of%20the%20Jewish%20groups%20in%20the%20study> <urn:graphragprov:predicate:isMoreCloselyRelatedToThan> <urn:graphragprov:entity:fellow%20non-Jewish%20countrymen> .
+  <urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> <urn:graphragprov:entity:conversions%20in%20the%20time%20of%20the%20Roman%20Empire> .
+  <urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> <urn:graphragprov:entity:inter-marriage> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:represent> <urn:graphragprov:entity:bulk%20of%20modern%20Jewry> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representAtLeast> "70% of Jews worldwide" .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Argentina> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Australia> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Brazil> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Canada> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:New%20World%20continents> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representUpTo> "90% of Jews worldwide" .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasJewishPopulationRepresentativeOfAllGroups> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:isMeltingPot> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Jews%20from%20Algeria> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Sephardim> .
+  <urn:graphragprov:entity:Jews%20from%20Algeria> <urn:graphragprov:predicate:outnumber> <urn:graphragprov:entity:Ashkenazim> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.698s | model=deepseek-v4-flash
+      tokens:   in=2403 | out=416 | total=2819 | cached=640 | uncached=1763
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representAtLeast> "70% of Jews worldwide" .
+  - <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:mostCloselyRelatedTo> <urn:graphragprov:entity:modern-day%20Italians> .
+  - <urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> <urn:graphragprov:entity:conversions%20in%20the%20time%20of%20the%20Roman%20Empire> .
+  - <urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> <urn:graphragprov:entity:inter-marriage> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representAtLeast> "70% of Jews worldwide" . <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:mostCloselyRelatedTo> <urn:graphragprov:entity:modern-day%20Italians> . <urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_23912b08a45f5ca4>
+  FROM <urn:graphragprov:unit:u_ae9f21111568fe1d>
+  WHERE { <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representAtLeast> "70% of Jews worldwide" . <urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:mostCloselyRelatedTo> <urn:graphragprov:entity:modern-day%20Italians> . <urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> ?answer . }
+
+GraphDB execution:
+  observed answers: ('conversions in the time of the Roman Empire', 'inter-marriage')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Ashkenazi Jews', 'Jews']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__21104_16335
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__21104_16335/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13553
+output tokens:         5256
+total tokens:          18809
+cached input tokens:   10624
+uncached input tokens: 2929
+cumulative LLM seconds: 27.582
+
+statement occurrences: 27
+semantic triples:      27
+entity nodes:          29
+literal values:        8
+predicates:            21
+query attempts:        1
+observed answers:      ('conversions in the time of the Roman Empire', 'inter-marriage')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.896s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.064s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.699s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.458s

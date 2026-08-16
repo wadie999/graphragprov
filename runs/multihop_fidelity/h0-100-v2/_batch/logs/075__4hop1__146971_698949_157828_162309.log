@@ -1,0 +1,437 @@
+
+H0 one-case execution
+  case:          4hop1__146971_698949_157828_162309
+  hops:          4
+  question:      When did the country that has the same co-official language as that of the movie about the city where Petar Trifunović died send an independent team to the Olympics?
+  expected:      2016
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__146971_698949_157828_162309/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=2 title='Petar Trifunović'
+  source unit: u_c21eb3af3025d48e17e3a218339a907834d5bdcaa1e4c226952a65b434a762de
+  text chars:  152
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.598s | model=deepseek-v4-flash
+      tokens:   in=5338 | out=1399 | total=6737 | cached=4992 | uncached=346
+    [LLM graph.reference #2] sending...
+      provider: 2.559s | model=deepseek-v4-flash
+      tokens:   in=824 | out=392 | total=1216 | cached=0 | uncached=824
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 2
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Belgrade",
+                "segment": "text"
+              }
+            ],
+            "value": "Belgrade"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "diedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "text"
+              }
+            ],
+            "value": "Petar Trifunović"
+          }
+        }
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'born' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dubrovnik",
+                "segment": "text"
+              }
+            ],
+            "value": "Dubrovnik"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "text"
+              }
+            ],
+            "value": "Petar Trifunović"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Belgrade",
+                "segment": "text"
+              }
+            ],
+            "value": "Belgrade"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "diedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "text"
+              }
+            ],
+            "value": "Petar Trifunović"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'born' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dubrovnik",
+                "segment": "text"
+              }
+            ],
+            "value": "Dubrovnik"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Petar Trifunović",
+                "segment": "text"
+              }
+            ],
+            "value": "Petar Trifunović"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 125 / 168 (74.4%)
+    characters text:     109 / 152 (71.7%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  14 chars
+      ', Dubrovnik –'
+    statement density:  29.76 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[GRAPH 2/4] paragraph=17 title='Belgrade (film)'
+  source unit: u_69dcf0ea1d1fa9ba276e243a6669450822484ce7400664f745873995ce4174e0
+  text chars:  309
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.087s | model=deepseek-v4-flash
+      tokens:   in=5441 | out=1653 | total=7094 | cached=5248 | uncached=193
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 207 / 324 (63.9%)
+    characters text:     192 / 309 (62.1%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  63 chars
+      'Belgrade, the capital of Serbia. The documentary film had its'
+    statement density:  30.86 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[GRAPH 3/4] paragraph=12 title='Serbian language'
+  source unit: u_5c0ffa968a5e984208c78ac5e323cac9cc97b19262915f2849dc114f6acdbf3b
+  text chars:  496
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 11.463s | model=deepseek-v4-flash
+      tokens:   in=5622 | out=2440 | total=8062 | cached=5248 | uncached=374
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 286 / 512 (55.9%)
+    characters text:     270 / 496 (54.4%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  88 chars
+      ', where it is spoken by the relative majority of the population, as well as in Croatia,'
+    statement density:  25.39 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[GRAPH 4/4] paragraph=8 title='Yugoslavia at the Olympics'
+  source unit: u_4876eb9e2df5d63b2614ad3406d67c7faa08e395daefcfd2df8c541f91778cce
+  text chars:  724
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 10.051s | model=deepseek-v4-flash
+      tokens:   in=5817 | out=2185 | total=8002 | cached=5248 | uncached=569
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 496 / 750 (66.1%)
+    characters text:     496 / 724 (68.5%)
+    characters title:    0 / 26 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  34 chars
+      'after the breakup of Yugoslavia,'
+    statement density:  17.33 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 41
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      41
+resource nodes:        36
+entity nodes:          36
+literal values:        8
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:Bosnia%20and%20Herzegovina> <urn:graphragprov:predicate:beganCompetingIndependentlyAt> <urn:graphragprov:entity:1992%20Summer%20Games> .
+  <urn:graphragprov:entity:Croatia> <urn:graphragprov:predicate:beganCompetingIndependentlyAt> <urn:graphragprov:entity:1992%20Winter%20Games> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:allowedToCompeteAs> <urn:graphragprov:entity:Independent%20Olympic%20Participants> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:competedAt> <urn:graphragprov:entity:1992%20Summer%20Olympics> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedFromYear> "1992"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedToYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:formedAsJointStateBy> <urn:graphragprov:entity:Montenegro> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:formedAsJointStateBy> <urn:graphragprov:entity:Serbia> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:notAllowedToCompeteAt> <urn:graphragprov:entity:1994%20Winter%20Olympics> .
+  <urn:graphragprov:entity:Kosovo> <urn:graphragprov:predicate:madeOlympicDebutAs> <urn:graphragprov:entity:independent%20national%20team> .
+  <urn:graphragprov:entity:Kosovo> <urn:graphragprov:predicate:madeOlympicDebutAt> <urn:graphragprov:entity:2016%20Summer%20Olympics> .
+  <urn:graphragprov:entity:Slovenia> <urn:graphragprov:predicate:beganCompetingIndependentlyAt> <urn:graphragprov:entity:1992%20Winter%20Games> .
+  <urn:graphragprov:entity:all%20six%20successor%20nations> <urn:graphragprov:predicate:haveParticipatedIndependentlySince> <urn:graphragprov:entity:2008%20Summer%20Olympics> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:coOfficialIn> <urn:graphragprov:entity:Kosovo> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:standardized%20variety> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:mainlyUsedBy> <urn:graphragprov:entity:Serbs> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:officialLanguageOf> <urn:graphragprov:entity:Serbia> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:oneOfOfficialLanguagesOf> <urn:graphragprov:entity:Bosnia%20and%20Herzegovina> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Croatia> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Czech%20Republic> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Hungary> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Montenegro> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:North%20Macedonia> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Romania> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Slovakia> .
+  <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:varietyOf> <urn:graphragprov:entity:Serbo-Croatian%20language> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Belgrade> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:airDate> "2014-10-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:Radio%20Television%20Serbia> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Belgrade%20with%20Boris%20Malagurski> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:directedBy> <urn:graphragprov:entity:Boris%20Malagurski> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20film> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Serbian> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:worldPremiereDate> "2013-10-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:worldPremiereLocation> <urn:graphragprov:entity:Sava%20Centar> .
+  <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:birthDate> "1910-08-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:championCount> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:deathDate> "1980-12-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:International%20Grandmaster> .
+  <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Yugoslav%20Champion%20of%20chess> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.060s | model=deepseek-v4-flash
+      tokens:   in=3039 | out=438 | total=3477 | cached=640 | uncached=2399
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:deathDate> "1980-12-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  - <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Belgrade> .
+  - <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Serbian> .
+  - <urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:coOfficialIn> <urn:graphragprov:entity:Kosovo> .
+  - <urn:graphragprov:entity:Kosovo> <urn:graphragprov:predicate:madeOlympicDebutAt> <urn:graphragprov:entity:2016%20Summer%20Olympics> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:deathDate> ?deathDate . <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Belgrade> . <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:nationality> ?nationality . ?nationality <urn:graphragprov:predicate:coOfficialIn> ?country . ?country <urn:graphragprov:predicate:madeOlympicDebutAt> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4876eb9e2df5d63b>
+  FROM <urn:graphragprov:unit:u_5c0ffa968a5e9842>
+  FROM <urn:graphragprov:unit:u_69dcf0ea1d1fa9ba>
+  FROM <urn:graphragprov:unit:u_c21eb3af3025d48e>
+  WHERE { <urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:deathDate> ?deathDate . <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Belgrade> . <urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:nationality> ?nationality . ?nationality <urn:graphragprov:predicate:coOfficialIn> ?country . ?country <urn:graphragprov:predicate:madeOlympicDebutAt> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__146971_698949_157828_162309
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__146971_698949_157828_162309/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26081
+output tokens:         8507
+total tokens:          34588
+cached input tokens:   21376
+uncached input tokens: 4705
+cumulative LLM seconds: 42.818
+
+statement occurrences: 41
+semantic triples:      41
+entity nodes:          36
+literal values:        8
+predicates:            29
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 39.780s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.068s
+  graph.materialization [attempt=1]: 0.107s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 3.061s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.500s

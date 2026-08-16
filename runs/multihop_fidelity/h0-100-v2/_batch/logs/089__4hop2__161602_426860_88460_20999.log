@@ -1,0 +1,281 @@
+
+H0 one-case execution
+  case:          4hop2__161602_426860_88460_20999
+  hops:          4
+  question:      How were the Portuguese expelled from the country that is a natural boundary between the country that hosted the tournament and the country That Dam is located?
+  expected:      The dynasty regrouped and defeated the Portuguese
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop2__161602_426860_88460_20999/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=6 title='2020 AFC U-23 Championship qualification'
+  source unit: u_25c170dffe47215d4f49834ba4afb997f84a7df364778483d193c0c10dc7f38b
+  text chars:  220
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.205s | model=deepseek-v4-flash
+      tokens:   in=5316 | out=850 | total=6166 | cached=4992 | uncached=324
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 132 / 260 (50.8%)
+    characters text:     92 / 220 (41.8%)
+    characters title:    40 / 40 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  46 chars
+      'Of the 47 AFC member associations, a total of'
+    statement density:  19.23 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[GRAPH 2/4] paragraph=13 title='That Dam'
+  source unit: u_7639059e9707920fcf30b7b74a124aeb28b4fde1fb5e039d241a6aed3eb83727
+  text chars:  219
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.889s | model=deepseek-v4-flash
+      tokens:   in=5417 | out=1816 | total=7233 | cached=4992 | uncached=425
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 189 / 227 (83.3%)
+    characters text:     181 / 219 (82.6%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  10 chars
+      'That Dam ('
+    statement density:  48.46 / 1000 chars
+    title reliance:      7 / 11 (63.6%)
+
+[GRAPH 3/4] paragraph=5 title='Geography of Myanmar'
+  source unit: u_31f7149343d3329da3b2a5b8349f4b8c19b0bdf6708c6c1101842937f52bb331
+  text chars:  364
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.330s | model=deepseek-v4-flash
+      tokens:   in=5567 | out=2171 | total=7738 | cached=5120 | uncached=447
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 265 / 384 (69.0%)
+    characters text:     265 / 364 (72.8%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  23 chars
+      'the northwestern-most'
+    statement density:  36.46 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 4/4] paragraph=10 title='Myanmar'
+  source unit: u_54a5719fdf13387943dd87d93671fe63d74736103ed2020878ce53087e29f780
+  text chars:  897
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 72.498s | model=deepseek-v4-flash
+      tokens:   in=5815 | out=16384 | total=22199 | cached=5248 | uncached=567
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #5] sending...
+      provider: 15.869s | model=deepseek-v4-flash
+      tokens:   in=5860 | out=3383 | total=9243 | cached=5760 | uncached=100
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 618 / 904 (68.4%)
+    characters text:     618 / 897 (68.9%)
+    characters title:    0 / 7 (0.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  65 chars
+      'whose basic features would continue well into the 19th century.'
+    statement density:  23.23 / 1000 chars
+    title reliance:      0 / 21 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 51
+  whole-source attempts: 5
+  whole-source retries: 1
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      51
+resource nodes:        50
+entity nodes:          50
+literal values:        9
+predicates:            35
+
+N-Triples:
+  <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:competition> .
+  <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> <urn:graphragprov:predicate:participantCount> "44"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:automaticallyQualifiedFor> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+  <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:decidedToParticipateIn> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+  <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+  <urn:graphragprov:entity:Andaman%20Sea> <urn:graphragprov:predicate:locatedToSouthOf> <urn:graphragprov:entity:Myanmar> .
+  <urn:graphragprov:entity:Bay%20of%20Bengal> <urn:graphragprov:predicate:locatedToWestOf> <urn:graphragprov:entity:Myanmar> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Bangladesh> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:China> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Laos> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Thailand> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:Burma> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedAlong> <urn:graphragprov:entity:Eurasian%20Plate> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedAlong> <urn:graphragprov:entity:Indian%20Plate> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:mainland%20Southeast%20Asia> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedToSoutheastOf> <urn:graphragprov:entity:Himalayas> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:strategicallyLocatedNear> <urn:graphragprov:entity:major%20Indian%20Ocean%20shipping%20lanes> .
+  <urn:graphragprov:entity:Hanthawaddy%20forces> <urn:graphragprov:predicate:ended> <urn:graphragprov:entity:the%20266-year-old%20Toungoo%20Dynasty> .
+  <urn:graphragprov:entity:Hanthawaddy%20forces> <urn:graphragprov:predicate:sacked> <urn:graphragprov:entity:Ava> .
+  <urn:graphragprov:entity:Hanthawaddy%20forces> <urn:graphragprov:predicate:sackedInYear> "1752"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Its%20trade%20and%20secular%20administrative%20reforms> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:a%20prosperous%20economy> .
+  <urn:graphragprov:entity:The%20Mon%20of%20Lower%20Myanmar> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:the%20Restored%20Hanthawaddy%20Kingdom> .
+  <urn:graphragprov:entity:The%20Restored%20Toungoo%20kings> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:a%20legal%20and%20political%20framework> .
+  <urn:graphragprov:entity:The%20crown> <urn:graphragprov:predicate:reduced> <urn:graphragprov:entity:the%20hereditary%20rights%20of%20Shan%20chiefs> .
+  <urn:graphragprov:entity:The%20crown> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:the%20hereditary%20chieftainships> .
+  <urn:graphragprov:entity:The%20crown> <urn:graphragprov:predicate:replacedWith> <urn:graphragprov:entity:appointed%20governorships> .
+  <urn:graphragprov:entity:The%20dynasty> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Siam> .
+  <urn:graphragprov:entity:The%20dynasty> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:the%20Portuguese> .
+  <urn:graphragprov:entity:The%20dynasty> <urn:graphragprov:predicate:defeatedInYear> "1613"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20dynasty> <urn:graphragprov:predicate:defeatedInYear> "1614"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20dynasty> <urn:graphragprov:predicate:restored> <urn:graphragprov:entity:a%20smaller%2C%20more%20manageable%20kingdom> .
+  <urn:graphragprov:entity:The%20kingdom> <urn:graphragprov:predicate:besetWith> <urn:graphragprov:entity:a%20nagging%20rebellion%20in%20Lan%20Na> .
+  <urn:graphragprov:entity:The%20kingdom> <urn:graphragprov:predicate:besetWith> <urn:graphragprov:entity:repeated%20Meithei%20raids> .
+  <urn:graphragprov:entity:The%20restored%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Lan%20Na> .
+  <urn:graphragprov:entity:The%20restored%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Lower%20Myanmar> .
+  <urn:graphragprov:entity:The%20restored%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Shan%20states> .
+  <urn:graphragprov:entity:The%20restored%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Upper%20Myanmar> .
+  <urn:graphragprov:entity:The%20restored%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:upper%20Tenasserim> .
+  <urn:graphragprov:entity:Many%20Laotians> <urn:graphragprov:predicate:believe> "That Dam is inhabited by a seven-headed nāga" .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:hasMeaning> "Black Stupa" .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:hasNameInLao> "ທາດດຳ" .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:hasSize> "large" .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:stupa> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Laos> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vientiane> .
+  <urn:graphragprov:entity:invasion%20by%20the%20Siamese%20army> <urn:graphragprov:predicate:occurredInYear> "1827"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:inhabits> <urn:graphragprov:entity:That%20Dam> .
+  <urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:protectedAgainst> <urn:graphragprov:entity:invasion%20by%20the%20Siamese%20army> .
+  <urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:triedToProtect> <urn:graphragprov:entity:them> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.793s | model=deepseek-v4-flash
+      tokens:   in=3331 | out=383 | total=3714 | cached=640 | uncached=2691
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+  - <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Laos> .
+  - <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Laos> .
+  - <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Thailand> .
+  - <urn:graphragprov:entity:The%20dynasty> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:the%20Portuguese> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?host <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> . ?dam <urn:graphragprov:predicate:locatedIn> ?damCountry . ?boundary <urn:graphragprov:predicate:borders> ?damCountry . ?boundary <urn:graphragprov:predicate:borders> ?host . ?answer <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:the%20Portuguese> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_25c170dffe47215d>
+  FROM <urn:graphragprov:unit:u_31f7149343d3329d>
+  FROM <urn:graphragprov:unit:u_54a5719fdf133879>
+  FROM <urn:graphragprov:unit:u_7639059e9707920f>
+  WHERE { ?host <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> . ?dam <urn:graphragprov:predicate:locatedIn> ?damCountry . ?boundary <urn:graphragprov:predicate:borders> ?damCountry . ?boundary <urn:graphragprov:predicate:borders> ?host . ?answer <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:the%20Portuguese> . }
+
+GraphDB execution:
+  observed answers: ('The dynasty',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['2020 AFC U-23 Championship qualification', 'Geography of Myanmar', 'Myanmar', 'That Dam']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop2__161602_426860_88460_20999
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop2__161602_426860_88460_20999/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          31306
+output tokens:         24987
+total tokens:          56293
+cached input tokens:   26752
+uncached input tokens: 4554
+cumulative LLM seconds: 115.584
+
+statement occurrences: 51
+semantic triples:      51
+entity nodes:          50
+literal values:        9
+predicates:            35
+query attempts:        1
+observed answers:      ('The dynasty',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 112.809s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.083s
+  graph.materialization [attempt=1]: 0.191s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.009s
+  query.reference.generation [attempt=1]: 2.794s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.434s

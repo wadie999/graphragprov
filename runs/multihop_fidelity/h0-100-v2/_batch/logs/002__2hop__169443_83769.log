@@ -1,0 +1,218 @@
+
+H0 one-case execution
+  case:          2hop__169443_83769
+  hops:          2
+  question:      Who did the screenwriter for Good Will Hunting play in Dazed and Confused?
+  expected:      Fred O'Bannion
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__169443_83769/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='List of awards and nominations received by Matt Damon'
+  source unit: u_103374ea29fda54e96d051cf8890d80c38baa9a6efbc877607e179df1d57798d
+  text chars:  522
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 72.328s | model=deepseek-v4-flash
+      tokens:   in=5329 | out=16384 | total=21713 | cached=4992 | uncached=337
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #2] sending...
+      provider: 13.082s | model=deepseek-v4-flash
+      tokens:   in=5374 | out=2695 | total=8069 | cached=5248 | uncached=126
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 311 / 575 (54.1%)
+    characters text:     311 / 522 (59.6%)
+    characters title:    0 / 53 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  81 chars
+      '. Since then he has received dozens of nominations and awards for his work as an'
+    statement density:  29.57 / 1000 chars
+    title reliance:      0 / 17 (0.0%)
+
+[GRAPH 2/2] paragraph=14 title='Dazed and Confused (film)'
+  source unit: u_a6a6a527d4683a0763019d74d6da4e82025070c2c176abd6dff195f5c81d6e94
+  text chars:  942
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 19.861s | model=deepseek-v4-flash
+      tokens:   in=5608 | out=4162 | total=9770 | cached=4992 | uncached=616
+  extraction: ACCEPTED
+  statements: 26
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    26
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     26
+  coverage:
+    characters combined: 586 / 967 (60.6%)
+    characters text:     586 / 942 (62.2%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  73 chars
+      'cruising with friends that night. Plans for the evening are ruined when'
+    statement density:  26.89 / 1000 chars
+    title reliance:      0 / 26 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 43
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      43
+resource nodes:        42
+entity nodes:          42
+literal values:        4
+predicates:            26
+
+N-Triples:
+  <urn:graphragprov:entity:Ben%20Affleck> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Golden%20Globes> .
+  <urn:graphragprov:entity:Ben%20Affleck> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Oscars> .
+  <urn:graphragprov:entity:Ben%20Affleck> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Good%20Will%20Hunting> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Actor> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:nominatedForFilm> <urn:graphragprov:entity:Good%20Will%20Hunting> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Golden%20Globe%20Award%20for%20Best%20Actor%20%E2%80%93%20Motion%20Picture%20Musical%20or%20Comedy> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Golden%20Globes> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Oscars> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:wonAwardForRoleIn> <urn:graphragprov:entity:The%20Martian> .
+  <urn:graphragprov:entity:Damon> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Good%20Will%20Hunting> .
+  <urn:graphragprov:entity:Good%20Will%20Hunting> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenplay> .
+  <urn:graphragprov:entity:Good%20Will%20Hunting> <urn:graphragprov:predicate:receivedNominationsCount> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Good%20Will%20Hunting> <urn:graphragprov:predicate:receivedNominationsFor> <urn:graphragprov:entity:Academy%20Awards> .
+  <urn:graphragprov:entity:Good%20Will%20Hunting> <urn:graphragprov:predicate:releasedInYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Carl%20Burnett> <urn:graphragprov:predicate:escapes> <urn:graphragprov:entity:initial%20hazing> .
+  <urn:graphragprov:entity:Carl%20Burnett> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Esteban%20Powell> .
+  <urn:graphragprov:entity:Cynthia%20Dunn> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Marissa%20Ribisi> .
+  <urn:graphragprov:entity:David%20Wooderson> <urn:graphragprov:predicate:ageInEarly20s> "early 20s" .
+  <urn:graphragprov:entity:David%20Wooderson> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Matthew%20McConaughey> .
+  <urn:graphragprov:entity:David%20Wooderson> <urn:graphragprov:predicate:socializesWith> <urn:graphragprov:entity:high%20school%20students> .
+  <urn:graphragprov:entity:Emporium> <urn:graphragprov:predicate:frequentedBy> <urn:graphragprov:entity:teenagers> .
+  <urn:graphragprov:entity:Emporium> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:pool%20hall> .
+  <urn:graphragprov:entity:Fred%20O%27Bannion> <urn:graphragprov:predicate:delightsIn> <urn:graphragprov:entity:punishing%20Mitch> .
+  <urn:graphragprov:entity:Fred%20O%27Bannion> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:senior> .
+  <urn:graphragprov:entity:Fred%20O%27Bannion> <urn:graphragprov:predicate:participatesIn> <urn:graphragprov:entity:hazing%20tradition> .
+  <urn:graphragprov:entity:Fred%20O%27Bannion> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Ben%20Affleck> .
+  <urn:graphragprov:entity:Kevin%20Pickford> <urn:graphragprov:predicate:intentionToHost> <urn:graphragprov:entity:keg%20party> .
+  <urn:graphragprov:entity:Kevin%20Pickford> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Shawn%20Andrews> .
+  <urn:graphragprov:entity:Mike%20Newhouse> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Adam%20Goldberg> .
+  <urn:graphragprov:entity:Mitch%20Kramer> <urn:graphragprov:predicate:escapes> <urn:graphragprov:entity:initial%20hazing> .
+  <urn:graphragprov:entity:Mitch%20Kramer> <urn:graphragprov:predicate:laterCorneredAfter> <urn:graphragprov:entity:baseball%20game> .
+  <urn:graphragprov:entity:Mitch%20Kramer> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Wiley%20Wiggins> .
+  <urn:graphragprov:entity:Mitch%20Kramer> <urn:graphragprov:predicate:violentlyPaddled> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Pink> <urn:graphragprov:predicate:friendOf> <urn:graphragprov:entity:David%20Wooderson> .
+  <urn:graphragprov:entity:Pink> <urn:graphragprov:predicate:givesRideHomeTo> <urn:graphragprov:entity:Mitch> .
+  <urn:graphragprov:entity:Pink> <urn:graphragprov:predicate:headsFor> <urn:graphragprov:entity:Emporium> .
+  <urn:graphragprov:entity:Pink> <urn:graphragprov:predicate:offersToTakeCruising> <urn:graphragprov:entity:Mitch> .
+  <urn:graphragprov:entity:Pink> <urn:graphragprov:predicate:picksUp> <urn:graphragprov:entity:Mitch> .
+  <urn:graphragprov:entity:Tony%20Olson> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Anthony%20Rapp> .
+  <urn:graphragprov:entity:intellectual%20trio> <urn:graphragprov:predicate:decideToParticipateIn> <urn:graphragprov:entity:evening%27s%20activities> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.237s | model=deepseek-v4-flash
+      tokens:   in=2791 | out=247 | total=3038 | cached=640 | uncached=2151
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ben%20Affleck> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Good%20Will%20Hunting> .
+  - <urn:graphragprov:entity:Fred%20O%27Bannion> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Ben%20Affleck> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ben%20Affleck> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Good%20Will%20Hunting> . <urn:graphragprov:entity:Fred%20O%27Bannion> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Ben%20Affleck> . BIND(<urn:graphragprov:entity:Fred%20O%27Bannion> AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_103374ea29fda54e>
+  FROM <urn:graphragprov:unit:u_a6a6a527d4683a07>
+  WHERE { <urn:graphragprov:entity:Ben%20Affleck> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Good%20Will%20Hunting> . <urn:graphragprov:entity:Fred%20O%27Bannion> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Ben%20Affleck> . BIND(<urn:graphragprov:entity:Fred%20O%27Bannion> AS ?answer) }
+
+GraphDB execution:
+  observed answers: ("Fred O'Bannion",)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__169443_83769
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__169443_83769/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          19102
+output tokens:         23488
+total tokens:          42590
+cached input tokens:   15872
+uncached input tokens: 3230
+cumulative LLM seconds: 107.508
+
+statement occurrences: 43
+semantic triples:      43
+entity nodes:          42
+literal values:        4
+predicates:            26
+query attempts:        1
+observed answers:      ("Fred O'Bannion",)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 105.288s
+  graph.reference.measurements [attempt=1]: 0.012s
+  graph.clear_support [attempt=1]: 0.054s
+  graph.materialization [attempt=1]: 0.124s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.238s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.449s

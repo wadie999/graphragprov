@@ -1,0 +1,327 @@
+
+H0 one-case execution
+  case:          3hop1__389069_132457_51423
+  hops:          3
+  question:      What is the name of the castle in the city where the performer of Sleep is the Enemy was formed?
+  expected:      Casa Loma
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__389069_132457_51423/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=5 title='Sleep Is the Enemy'
+  source unit: u_52fa84afb5e02759177b493d7adb8bf765895ff465077ccfe74f6cef3bcf3856
+  text chars:  332
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.209s | model=deepseek-v4-flash
+      tokens:   in=5325 | out=2624 | total=7949 | cached=4992 | uncached=333
+    [LLM graph.reference #2] sending...
+      provider: 2.517s | model=deepseek-v4-flash
+      tokens:   in=885 | out=392 | total=1277 | cached=0 | uncached=885
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 2
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'released on' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "February 21",
+                "segment": "text"
+              }
+            ],
+            "value": "2006-02-21"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "released on",
+                "segment": "text"
+              }
+            ],
+            "value": "releasedOnDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sleep Is the Enemy",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "The album",
+                "segment": "text"
+              }
+            ],
+            "value": "Sleep Is the Enemy"
+          }
+        }
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'released on' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Canada",
+                "segment": "text"
+              }
+            ],
+            "value": "Canada"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "released on",
+                "segment": "text"
+              }
+            ],
+            "value": "releasedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sleep Is the Enemy",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "The album",
+                "segment": "text"
+              }
+            ],
+            "value": "Sleep Is the Enemy"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 244 / 350 (69.7%)
+    characters text:     226 / 332 (68.1%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  16 chars
+      '. The album was'
+    statement density:  42.86 / 1000 chars
+    title reliance:      8 / 15 (53.3%)
+
+[GRAPH 2/3] paragraph=18 title='Danko Jones'
+  source unit: u_14cbea72f29eb857063db9f1d738da95bb1e3fc14083ae7eeeb3f30b54578da4
+  text chars:  284
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.727s | model=deepseek-v4-flash
+      tokens:   in=5480 | out=2234 | total=7714 | cached=4992 | uncached=488
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 157 / 295 (53.2%)
+    characters text:     146 / 284 (51.4%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  53 chars
+      "(drums). The band's rock music includes elements of"
+    statement density:  40.68 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[GRAPH 3/3] paragraph=0 title='Casa Loma'
+  source unit: u_1ec257311c1864ef0bba79e8538deea02e357c55bc41a8ab266cb7feaf2872a7
+  text chars:  402
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 11.295s | model=deepseek-v4-flash
+      tokens:   in=5629 | out=2408 | total=8037 | cached=5120 | uncached=509
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 218 / 411 (53.0%)
+    characters text:     209 / 402 (52.0%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  66 chars
+      ', who designed several other city landmarks. Casa Loma sits at an'
+    statement density:  36.50 / 1000 chars
+    title reliance:      15 / 15 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 42
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      41
+resource nodes:        33
+entity nodes:          33
+literal values:        8
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:formedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:punk> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rock> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Danko%20Jones> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:John%20%27JC%27%20Calabrese> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Rich%20Knox> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rock%20trio> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:energetic%20live%20shows> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:humorous%20lyrics> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Ontario> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:aboveSeaLevel> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:architect> <urn:graphragprov:entity:E.%20J.%20Lennox> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:constructedAs> <urn:graphragprov:entity:residence> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:constructedFor> <urn:graphragprov:entity:Sir%20Henry%20Pellatt> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:constructedFromYear> "1911"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:constructedToYear> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:elevation> "140 metres" .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:elevation> "460 ft" .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Gothic%20Revival%20style%20mansion> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:garden> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:historic%20house%20museum> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:landmark> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Canada> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Ontario> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:midtown%20Toronto> .
+  <urn:graphragprov:entity:Baby%20Hates%20Me> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:theme%20song> .
+  <urn:graphragprov:entity:Baby%20Hates%20Me> <urn:graphragprov:predicate:usedFor> <urn:graphragprov:entity:WWE%20Backlash> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:band> .
+  <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Frostbiten> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Frostbiten> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Swedish> .
+  <urn:graphragprov:entity:She%27s%20Drugs> <urn:graphragprov:predicate:featuredIn> <urn:graphragprov:entity:Frostbiten> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Danko%20Jones> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:Canada> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:US> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:releasedOnDate> "2006-02-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:releasedOnDate> "2006-02-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:releasedOnDate> "2006-05-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.063s | model=deepseek-v4-flash
+      tokens:   in=2762 | out=241 | total=3003 | cached=640 | uncached=2122
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Danko%20Jones> .
+  - <urn:graphragprov:entity:Danko%20Jones> <urn:graphragprov:predicate:formedIn> <urn:graphragprov:entity:Toronto> .
+  - <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:midtown%20Toronto> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:formedIn> ?city . ?answer <urn:graphragprov:predicate:locatedIn> ?city . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_14cbea72f29eb857>
+  FROM <urn:graphragprov:unit:u_1ec257311c1864ef>
+  FROM <urn:graphragprov:unit:u_52fa84afb5e02759>
+  WHERE { <urn:graphragprov:entity:Sleep%20Is%20the%20Enemy> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:formedIn> ?city . ?answer <urn:graphragprov:predicate:locatedIn> ?city . }
+
+GraphDB execution:
+  observed answers: ('Danko Jones',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Danko Jones', 'Sleep Is the Enemy']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__389069_132457_51423
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__389069_132457_51423/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          20081
+output tokens:         7899
+total tokens:          27980
+cached input tokens:   15744
+uncached input tokens: 4337
+cumulative LLM seconds: 39.810
+
+statement occurrences: 42
+semantic triples:      41
+entity nodes:          33
+literal values:        8
+predicates:            20
+query attempts:        1
+observed answers:      ('Danko Jones',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 37.767s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.057s
+  graph.materialization [attempt=1]: 0.084s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.064s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.530s

@@ -1,0 +1,163 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the party Oklahoma's US Senators come from take control of the body determining the rules of the US House and US Senate?
+
+Expected answer: January 2015
+
+Gold decomposition:
+1. question='who determines the rules of the us house and us senate'; answer='The Senate'; support_paragraph=12
+2. question="What political party are Oklahoma's US Senators?"; answer='Republicans'; support_paragraph=8
+3. question='when did #2 take control of the #1'; answer='January 2015'; support_paragraph=1
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Dan%20Boren> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Democratic%20Party> .
+<urn:graphragprov:entity:Frank%20D.%20Lucas> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+<urn:graphragprov:entity:James%20Lankford> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+<urn:graphragprov:entity:Jim%20Inhofe> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+<urn:graphragprov:entity:John%20Sullivan> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:Dan%20Boren> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:Frank%20D.%20Lucas> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:James%20Lankford> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:John%20Sullivan> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:Tom%20Cole> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:five%20representatives> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:four%20Republicans> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:one%20Democrat> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> <urn:graphragprov:entity:Jim%20Inhofe> .
+<urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> <urn:graphragprov:entity:Tom%20Coburn> .
+<urn:graphragprov:entity:Tom%20Coburn> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+<urn:graphragprov:entity:Tom%20Cole> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+<urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:five%20Democratic%20incumbents> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gained> <urn:graphragprov:entity:nine%20Democratic-held%20seats> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:heldAllOf> <urn:graphragprov:entity:their%20seats> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:lastControlled> <urn:graphragprov:entity:Senate> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:lastControlledSenateUntil> "2007-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainOf> "at least six seats" .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainToObtain> <urn:graphragprov:entity:majority> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityOf> <urn:graphragprov:entity:Senate> .
+<urn:graphragprov:entity:Each%20House> <urn:graphragprov:predicate:mayDetermine> <urn:graphragprov:entity:the%20rules%20of%20its%20proceedings> .
+<urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:derivesPowerFrom> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> .
+<urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:hasPowerTo> <urn:graphragprov:entity:establish%20rules> .
+<urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:adoptedBy> <urn:graphragprov:entity:United%20States%20Senate> .
+<urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:governs> <urn:graphragprov:entity:its%20procedure> .
+<urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:parliamentary%20procedures> .

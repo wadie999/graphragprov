@@ -1,0 +1,298 @@
+
+H0 one-case execution
+  case:          4hop1__436202_765799_282674_759393
+  hops:          4
+  question:      What is the seat of the county sharing a border with the county in which J. P. Hayes was born?
+  expected:      Green Bay
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__436202_765799_282674_759393/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=15 title='J. P. Hayes'
+  source unit: u_8f901b27fc78f4c31552e50960bd4495a5dcbfc295c394252337e41431678440
+  text chars:  217
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.159s | model=deepseek-v4-flash
+      tokens:   in=5310 | out=1334 | total=6644 | cached=4992 | uncached=318
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 149 / 228 (65.4%)
+    characters text:     138 / 217 (63.6%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  13 chars
+      ', Wisconsin.'
+    statement density:  30.70 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/4] paragraph=18 title='John C. Petersen'
+  source unit: u_50e736a634e644f4e2938a0be0ca4fc74ab48689f516ccb5a575c9690bff79b3
+  text chars:  333
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.319s | model=deepseek-v4-flash
+      tokens:   in=5431 | out=1903 | total=7334 | cached=4992 | uncached=439
+    [LLM graph.reference #3] sending...
+      provider: 0.701s | model=deepseek-v4-flash
+      tokens:   in=621 | out=8 | total=629 | cached=0 | uncached=621
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'born' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Appleton",
+                "segment": "text"
+              }
+            ],
+            "value": "Appleton"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John C. Petersen",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John C. Petersen",
+                "segment": "text"
+              }
+            ],
+            "value": "John C. Petersen"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 188 / 349 (53.9%)
+    characters text:     172 / 333 (51.7%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  45 chars
+      '" (even though he was opposed by a Democrat).'
+    statement density:  25.79 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 3/4] paragraph=13 title='Pulaski High School'
+  source unit: u_35a6ffce7ff17df3d63a2c8e15995c4d75da2c7795a31c6b6936c527ddbe05d1
+  text chars:  247
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 4.715s | model=deepseek-v4-flash
+      tokens:   in=5516 | out=827 | total=6343 | cached=5120 | uncached=396
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 130 / 266 (48.9%)
+    characters text:     111 / 247 (44.9%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  85 chars
+      '(school district also serves parts of Shawano, Outagamie and Oconto counties), that'
+    statement density:  18.80 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[GRAPH 4/4] paragraph=16 title='Jerome Quinn'
+  source unit: u_a51641720028ad52c97dd14ff0877f4215b78714f0c309b917164fd5ed75d651
+  text chars:  249
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 7.725s | model=deepseek-v4-flash
+      tokens:   in=5577 | out=1515 | total=7092 | cached=5248 | uncached=329
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 203 / 261 (77.8%)
+    characters text:     191 / 249 (76.7%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  13 chars
+      ', Wisconsin,'
+    statement density:  30.65 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 29
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      29
+resource nodes:        25
+entity nodes:          25
+literal values:        6
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:hasMascot> <urn:graphragprov:entity:Red%20Raider> .
+  <urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20high%20school> .
+  <urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brown%20County> .
+  <urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pulaski> .
+  <urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:servesGrades> "9 through 12" .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:electedInYear> "1878"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:butcher> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:farmer> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:politicalAffiliation> <urn:graphragprov:entity:Greenback%20Democrat> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:politicalAffiliation> <urn:graphragprov:entity:Greenbacker> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:reElectedInYear> "1879"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:representedCounty> <urn:graphragprov:entity:Outagamie%20County> .
+  <urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:servedAsMemberOf> <urn:graphragprov:entity:Wisconsin%20State%20Assembly> .
+  <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:attended> <urn:graphragprov:entity:University%20of%20Texas%20at%20El%20Paso> .
+  <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Appleton> .
+  <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:graduatedInYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:majoredIn> <urn:graphragprov:entity:marketing> .
+  <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:golf%20team> .
+  <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:Appleton> .
+  <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:turnedProfessionalInYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Green%20Bay> .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:realtor> .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:politicalAffiliation> <urn:graphragprov:entity:Republican> .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedAsMemberOf> <urn:graphragprov:entity:Wisconsin%20State%20Assembly> .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedInPeriod> "1955-1973" .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:Brown%20County%2C%20Wisconsin%20Board%20of%20Supervisors> .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:Green%20Bay%20Common%20Council> .
+  <urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:local%20Board%20of%20Education> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.391s | model=deepseek-v4-flash
+      tokens:   in=2286 | out=306 | total=2592 | cached=640 | uncached=1646
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Appleton> .
+  - <urn:graphragprov:entity:Appleton> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Outagamie%20County> .
+  - <urn:graphragprov:entity:Outagamie%20County> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Brown%20County> .
+  - <urn:graphragprov:entity:Brown%20County> <urn:graphragprov:predicate:capital> <urn:graphragprov:entity:Green%20Bay> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:bornIn> ?birthPlace . ?birthPlace <urn:graphragprov:predicate:capitalOf> ?county1 . ?county1 <urn:graphragprov:predicate:sharesBorderWith> ?county2 . ?county2 <urn:graphragprov:predicate:capital> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_35a6ffce7ff17df3>
+  FROM <urn:graphragprov:unit:u_50e736a634e644f4>
+  FROM <urn:graphragprov:unit:u_8f901b27fc78f4c3>
+  FROM <urn:graphragprov:unit:u_a51641720028ad52>
+  WHERE { <urn:graphragprov:entity:J.%20P.%20Hayes> <urn:graphragprov:predicate:bornIn> ?birthPlace . ?birthPlace <urn:graphragprov:predicate:capitalOf> ?county1 . ?county1 <urn:graphragprov:predicate:sharesBorderWith> ?county2 . ?county2 <urn:graphragprov:predicate:capital> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__436202_765799_282674_759393
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__436202_765799_282674_759393/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          24741
+output tokens:         5893
+total tokens:          30634
+cached input tokens:   20992
+uncached input tokens: 3749
+cumulative LLM seconds: 32.010
+
+statement occurrences: 29
+semantic triples:      29
+entity nodes:          25
+literal values:        6
+predicates:            19
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 29.631s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.060s
+  graph.materialization [attempt=1]: 0.073s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 2.391s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.258s
