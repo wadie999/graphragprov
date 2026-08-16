@@ -65,14 +65,23 @@ GroundedExtractionOutcome = GroundedExtractionRun | GroundedExtractionFailure
 def run_grounded_extraction(
     source: SourceUnit, generate_response: GenerateResponse
 ) -> GroundedExtractionRun:
-    """Run extraction, correct rejected statements, and retain valid ones.
+    """Run the standard grounded extraction protocol."""
 
-    Initial provider and response-structure errors are propagated. Individual
-    invalid statements and correction failures do not discard valid original
-    statements.
+    return run_grounded_extraction_with_prompt(
+        source, prompt=build_extraction_prompt(source), generate_response=generate_response
+    )
+
+
+def run_grounded_extraction_with_prompt(
+    source: SourceUnit, *, prompt: str, generate_response: GenerateResponse
+) -> GroundedExtractionRun:
+    """Run the grounded extraction lifecycle using an externally built prompt.
+
+    The supplied prompt controls extraction policy. Parsing, exact grounding,
+    rejected-statement correction, merging, and final validation remain owned
+    by the extraction layer.
     """
 
-    prompt = build_extraction_prompt(source)
     response = generate_response(prompt)
 
     return _build_successful_run(
@@ -83,9 +92,17 @@ def run_grounded_extraction(
 def run_grounded_extraction_outcome(
     source: SourceUnit, generate_response: GenerateResponse
 ) -> GroundedExtractionOutcome:
-    """Run extraction and represent unrecoverable failures as outcomes."""
+    """Run the standard extraction protocol and preserve failures."""
 
-    prompt = build_extraction_prompt(source)
+    return run_grounded_extraction_outcome_with_prompt(
+        source, prompt=build_extraction_prompt(source), generate_response=generate_response
+    )
+
+
+def run_grounded_extraction_outcome_with_prompt(
+    source: SourceUnit, *, prompt: str, generate_response: GenerateResponse
+) -> GroundedExtractionOutcome:
+    """Run an externally prompted extraction and preserve failures."""
 
     try:
         response = generate_response(prompt)
