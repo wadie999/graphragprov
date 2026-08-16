@@ -20,7 +20,6 @@ from graphragprov.experiments.multihop_fidelity.query import (
     answer_matches_case,
     answer_terms,
     compile_reference_query,
-    execution_feedback,
     generate_reference_query,
     parse_reference_query_plan,
     validation_feedback,
@@ -117,29 +116,17 @@ def test_generate_reference_query_uses_real_prompt_builder_and_validates_plan() 
     assert generation.plan.semantic_sparql == SEMANTIC_SPARQL
 
 
-def test_generate_reference_query_preserves_rejected_paid_response() -> None:
+def test_generate_reference_query_preserves_mechanically_invalid_paid_response() -> None:
     case = _case()
 
-    invalid_response = json.dumps(
-        {
-            "matched_triples": [
-                (
-                    "<urn:graphragprov:entity:Artist%20Beta> "
-                    "<urn:graphragprov:predicate:livesIn> "
-                    "<urn:graphragprov:entity:City%20Gamma> ."
-                )
-            ],
-            "sparql": SEMANTIC_SPARQL,
-        }
-    )
-
+    invalid_response = "not valid JSON"
     prompts: list[str] = []
 
     def generate(prompt: str) -> str:
         prompts.append(prompt)
         return invalid_response
 
-    with pytest.raises(ReferenceQueryValidationError, match="not found") as caught:
+    with pytest.raises(ReferenceQueryValidationError, match="valid JSON") as caught:
         generate_reference_query(
             case=case, graph_ntriples=GRAPH_NTRIPLES, feedback=None, generate_response=generate
         )
@@ -150,10 +137,10 @@ def test_generate_reference_query_preserves_rejected_paid_response() -> None:
     assert error.prompt == prompts[0]
     assert error.response == invalid_response
     assert isinstance(error.validation_error, ValueError)
-    assert "not found" in str(error.validation_error)
+    assert "valid JSON" in str(error.validation_error)
 
 
-def test_reference_query_rejects_triple_not_present_in_frozen_graph() -> None:
+def test_reference_query_preserves_claimed_triple_not_present_in_frozen_graph() -> None:
     hallucinated = (
         "<urn:graphragprov:entity:Artist%20Beta> "
         "<urn:graphragprov:predicate:livesIn> "
@@ -164,11 +151,13 @@ def test_reference_query_rejects_triple_not_present_in_frozen_graph() -> None:
         {"matched_triples": [PERFORMER_TRIPLE, hallucinated], "sparql": SEMANTIC_SPARQL}
     )
 
-    with pytest.raises(ValueError, match="not found"):
-        parse_reference_query_plan(response, graph_ntriples=GRAPH_NTRIPLES)
+    plan = parse_reference_query_plan(response)
+
+    assert plan.matched_triples == (PERFORMER_TRIPLE, hallucinated)
+    assert plan.semantic_sparql == SEMANTIC_SPARQL
 
 
-def test_reference_query_requires_literal_frozen_graph_evidence() -> None:
+def test_reference_query_preserves_reversed_claimed_triple() -> None:
     reversed_triple = (
         "<urn:graphragprov:entity:Artist%20Beta> "
         "<urn:graphragprov:predicate:performer> "
@@ -177,17 +166,29 @@ def test_reference_query_requires_literal_frozen_graph_evidence() -> None:
 
     response = json.dumps({"matched_triples": [reversed_triple], "sparql": SEMANTIC_SPARQL})
 
-    with pytest.raises(ValueError, match="not found"):
-        parse_reference_query_plan(response, graph_ntriples=GRAPH_NTRIPLES)
+    plan = parse_reference_query_plan(response)
+
+    assert plan.matched_triples == (reversed_triple,)
+    assert plan.semantic_sparql == SEMANTIC_SPARQL
 
 
-def test_reference_query_rejects_duplicate_matched_triples() -> None:
+def test_reference_query_preserves_duplicate_claimed_triples() -> None:
     response = json.dumps(
         {"matched_triples": [PERFORMER_TRIPLE, PERFORMER_TRIPLE], "sparql": SEMANTIC_SPARQL}
     )
 
-    with pytest.raises(ValueError, match="must not contain duplicates"):
-        parse_reference_query_plan(response, graph_ntriples=GRAPH_NTRIPLES)
+    plan = parse_reference_query_plan(response)
+
+    assert plan.matched_triples == (PERFORMER_TRIPLE, PERFORMER_TRIPLE)
+
+
+def test_reference_query_preserves_empty_matched_triples_claim() -> None:
+    response = json.dumps({"matched_triples": [], "sparql": SEMANTIC_SPARQL})
+
+    plan = parse_reference_query_plan(response)
+
+    assert plan.matched_triples == ()
+    assert plan.semantic_sparql == SEMANTIC_SPARQL
 
 
 def test_reference_query_rejects_select_distinct_for_current_npcs_path() -> None:
@@ -198,8 +199,8 @@ def test_reference_query_rejects_select_distinct_for_current_npcs_path() -> None
         }
     )
 
-    with pytest.raises(ValueError, match="DISTINCT is not allowed"):
-        parse_reference_query_plan(response, graph_ntriples=GRAPH_NTRIPLES)
+    with pytest.raises(ValueError, match="DISTINCT is not supported"):
+        parse_reference_query_plan(response)
 
 
 def test_reference_query_requires_answer_projection() -> None:
@@ -213,7 +214,7 @@ def test_reference_query_requires_answer_projection() -> None:
     )
 
     with pytest.raises(ValueError, match=r"\?answer"):
-        parse_reference_query_plan(response, graph_ntriples=GRAPH_NTRIPLES)
+        parse_reference_query_plan(response)
 
 
 def test_support_scope_is_applied_by_python_after_semantic_generation() -> None:
@@ -304,56 +305,15 @@ def test_answer_matching_rejects_multiple_unique_answers() -> None:
 
 
 def test_validation_feedback_preserves_exact_failed_response() -> None:
-    response = '{"matched_triples": []}'
+    response = "not valid JSON"
 
-    error = ValueError("matched_triples must be non-empty")
+    error = ValueError("query response must be valid JSON")
 
     feedback = validation_feedback(response=response, error=error)
 
     payload = json.loads(feedback)
 
     assert payload["previous_response"] == response
-
     assert payload["error_message"] == str(error)
-
-    assert "deterministic validator" in payload["message"]
-
-
-def test_execution_feedback_records_real_query_and_observed_answer() -> None:
-    case = _case()
-
-    plan = ReferenceQueryPlan(
-        matched_triples=(PERFORMER_TRIPLE, BIRTH_TRIPLE), semantic_sparql=SEMANTIC_SPARQL
-    )
-
-    result: dict[str, object] = {
-        "head": {"vars": ["answer"]},
-        "results": {"bindings": [{"answer": {"type": "literal", "value": "Wrong City"}}]},
-    }
-
-    terms = answer_terms(result)
-
-    feedback = execution_feedback(
-        case=case,
-        scope=QueryScope.SUPPORT,
-        plan=plan,
-        execution_sparql="SCOPED QUERY",
-        result=result,
-        terms=terms,
-    )
-
-    payload = json.loads(feedback)
-
-    assert payload["expected_answer"] == "City Gamma"
-
-    assert payload["observed_answers"] == ["Wrong City"]
-
-    assert payload["query_scope"] == "support"
-
-    assert payload["previous_matched_triples"] == [PERFORMER_TRIPLE, BIRTH_TRIPLE]
-
-    assert payload["previous_semantic_sparql"] == SEMANTIC_SPARQL
-
-    assert payload["previous_execution_sparql"] == "SCOPED QUERY"
-
-    assert payload["graphdb_result"] == result
+    assert "query execution interface" in payload["message"]
+    assert "benchmark answer quality" in payload["message"]
