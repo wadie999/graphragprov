@@ -3,8 +3,13 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
+from time import perf_counter
+
+from graphragprov.providers.deepseek import DeepSeekCallObservation, DeepSeekCallObserver
 
 
 @dataclass(frozen=True, slots=True)
@@ -119,7 +124,7 @@ class LLMCallTelemetry:
             "model": self.model,
             "started_at": self.started_at.isoformat(),
             "elapsed_seconds": self.elapsed_seconds,
-            "usage": self.usage.to_dict() if self.usage is not None else None,
+            "usage": (self.usage.to_dict() if self.usage is not None else None),
             "attempt_index": self.attempt_index,
             "source_unit_id": self.source_unit_id,
             "succeeded": self.succeeded,
@@ -246,3 +251,91 @@ class ExperimentTelemetry:
                 "cumulative_llm_seconds": self.cumulative_llm_seconds,
             },
         }
+
+
+class ExperimentTelemetryRecorder:
+    """Mutable recorder used while one experimental case is executing."""
+
+    def __init__(self) -> None:
+        self._llm_calls: list[LLMCallTelemetry] = []
+        self._stages: list[StageTelemetry] = []
+
+    def deepseek_observer(
+        self, *, operation: str, source_unit_id: str | None = None
+    ) -> DeepSeekCallObserver:
+        """Create an observer that classifies DeepSeek calls for one operation."""
+
+        if not operation.strip():
+            raise ValueError("LLM operation must not be empty")
+
+        if source_unit_id is not None and not source_unit_id.strip():
+            raise ValueError("source unit ID must not be empty when provided")
+
+        call_index = 0
+
+        def observe(observation: DeepSeekCallObservation) -> None:
+            nonlocal call_index
+
+            call_index += 1
+
+            usage = (
+                None
+                if observation.usage is None
+                else TokenUsage(
+                    input_tokens=(observation.usage.prompt_tokens),
+                    output_tokens=(observation.usage.completion_tokens),
+                    total_tokens=(observation.usage.total_tokens),
+                    cached_input_tokens=(observation.usage.prompt_cache_hit_tokens),
+                    uncached_input_tokens=(observation.usage.prompt_cache_miss_tokens),
+                )
+            )
+
+            model = observation.response_model or observation.requested_model
+
+            self._llm_calls.append(
+                LLMCallTelemetry(
+                    operation=operation,
+                    provider="deepseek",
+                    model=model,
+                    started_at=observation.started_at,
+                    elapsed_seconds=observation.elapsed_seconds,
+                    usage=usage,
+                    attempt_index=call_index,
+                    source_unit_id=source_unit_id,
+                    succeeded=observation.succeeded,
+                    error_type=observation.error_type,
+                    error_message=observation.error_message,
+                )
+            )
+
+        return observe
+
+    @contextmanager
+    def measure_stage(self, stage: str, *, attempt_index: int = 1) -> Iterator[None]:
+        """Measure one local or remote non-LLM stage with wall-clock time."""
+
+        if not stage.strip():
+            raise ValueError("stage must not be empty")
+
+        if attempt_index < 1:
+            raise ValueError("stage attempt index must be positive")
+
+        started_at = datetime.now(UTC)
+        started_clock = perf_counter()
+
+        try:
+            yield
+        finally:
+            self._stages.append(
+                StageTelemetry(
+                    stage=stage,
+                    started_at=started_at,
+                    elapsed_seconds=(perf_counter() - started_clock),
+                    attempt_index=attempt_index,
+                )
+            )
+
+    def snapshot(self) -> ExperimentTelemetry:
+        """Return an immutable snapshot of all observations recorded so far."""
+
+        return ExperimentTelemetry(llm_calls=tuple(self._llm_calls), stages=tuple(self._stages))
