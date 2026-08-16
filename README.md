@@ -115,46 +115,6 @@ Source units have stable IDs so the same textual source can be tracked across ca
 experiments.
 
 ---
-
-# Generate grounded RDF graphs
-
-A graph-only MuSiQue experiment can be run independently of question answering.
-
-The command selects MuSiQue cases, extracts grounded RDF statements from their source
-paragraphs, measures source coverage, and materializes the resulting graph into GraphDB.
-
-```bash
-python -m graphragprov.experiments.musique_materialization \
-  --experiment-id musique-3hop-reference \
-  --hop-count 3 \
-  --limit 10 \
-  --model deepseek-v4-flash \
-  --max-tokens 16384 \
-  --verbose
-```
-
-By default, only answerable cases are selected.
-
-| Argument | Meaning |
-|---|---|
-| `--experiment-id` | Name of the persisted experiment under `runs/`. |
-| `--hop-count` | Select MuSiQue cases with exactly this number of hops. |
-| `--limit` | Number of matching cases to use. Default: `5`. |
-| `--include-unanswerable` | Include unanswerable cases. They are excluded by default. |
-| `--dataset-path` | Override the configured MuSiQue JSONL path. |
-| `--runs-root` | Root directory for experiment artifacts. Default: `runs`. |
-| `--model` | DeepSeek model used for RDF extraction. |
-| `--max-tokens` | Maximum output-token budget per model request. |
-| `--cache-root` | Override the extraction checkpoint/cache directory. |
-| `--retry-failures` | Re-run failed cached extractions while keeping successful ones. |
-| `--replace-repository` | Explicitly clear the current GraphDB repository before materialization. |
-| `--verbose` | Print grounding, correction, and source-coverage diagnostics. |
-
-`--replace-repository` is intentionally explicit because it clears the currently materialized
-GraphDB experiment.
-
----
-
 # H0 multi-hop fidelity experiment
 
 The current H0 protocol constructs an executable reference artifact for one MuSiQue case:
