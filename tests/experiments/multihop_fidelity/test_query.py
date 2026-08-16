@@ -15,6 +15,7 @@ from graphragprov.benchmarks.musique import (
 from graphragprov.experiments.multihop_fidelity.config import QueryScope
 from graphragprov.experiments.multihop_fidelity.query import (
     ReferenceQueryPlan,
+    ReferenceQueryValidationError,
     SPARQLTerm,
     answer_matches_case,
     answer_terms,
@@ -114,6 +115,42 @@ def test_generate_reference_query_uses_real_prompt_builder_and_validates_plan() 
     assert generation.plan.matched_triples == (PERFORMER_TRIPLE, BIRTH_TRIPLE)
 
     assert generation.plan.semantic_sparql == SEMANTIC_SPARQL
+
+
+def test_generate_reference_query_preserves_rejected_paid_response() -> None:
+    case = _case()
+
+    invalid_response = json.dumps(
+        {
+            "matched_triples": [
+                (
+                    "<urn:graphragprov:entity:Artist%20Beta> "
+                    "<urn:graphragprov:predicate:livesIn> "
+                    "<urn:graphragprov:entity:City%20Gamma> ."
+                )
+            ],
+            "sparql": SEMANTIC_SPARQL,
+        }
+    )
+
+    prompts: list[str] = []
+
+    def generate(prompt: str) -> str:
+        prompts.append(prompt)
+        return invalid_response
+
+    with pytest.raises(ReferenceQueryValidationError, match="not found") as caught:
+        generate_reference_query(
+            case=case, graph_ntriples=GRAPH_NTRIPLES, feedback=None, generate_response=generate
+        )
+
+    error = caught.value
+
+    assert len(prompts) == 1
+    assert error.prompt == prompts[0]
+    assert error.response == invalid_response
+    assert isinstance(error.validation_error, ValueError)
+    assert "not found" in str(error.validation_error)
 
 
 def test_reference_query_rejects_triple_not_present_in_frozen_graph() -> None:

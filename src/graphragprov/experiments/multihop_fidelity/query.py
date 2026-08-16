@@ -55,6 +55,17 @@ class ReferenceQueryGeneration:
         return {"prompt": self.prompt, "response": self.response, "plan": self.plan.to_dict()}
 
 
+class ReferenceQueryValidationError(ValueError):
+    """A generated query response rejected by deterministic validation."""
+
+    def __init__(self, *, prompt: str, response: str, validation_error: ValueError) -> None:
+        super().__init__(str(validation_error))
+
+        self.prompt = prompt
+        self.response = response
+        self.validation_error = validation_error
+
+
 def generate_reference_query(
     *,
     case: MusiqueCase,
@@ -70,7 +81,12 @@ def generate_reference_query(
 
     response = generate_response(prompt)
 
-    plan = parse_reference_query_plan(response, graph_ntriples=graph_ntriples)
+    try:
+        plan = parse_reference_query_plan(response, graph_ntriples=graph_ntriples)
+    except ValueError as error:
+        raise ReferenceQueryValidationError(
+            prompt=prompt, response=response, validation_error=error
+        ) from error
 
     return ReferenceQueryGeneration(prompt=prompt, response=response, plan=plan)
 
@@ -169,6 +185,7 @@ def answer_terms(result: SPARQLResult) -> tuple[SPARQLTerm, ...]:
     """
 
     terms: list[SPARQLTerm] = []
+
     seen: set[tuple[object, object, object, object]] = set()
 
     for row in _result_bindings(result):
