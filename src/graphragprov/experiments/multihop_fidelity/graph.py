@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import TypeAlias
 
@@ -14,11 +15,11 @@ from graphragprov.extraction.run import (
     run_grounded_extraction_outcome_with_prompt,
 )
 
+ReferenceGraphProgressSink: TypeAlias = Callable[[str, dict[str, object]], None]
+
 
 @dataclass(frozen=True, slots=True)
 class ReferenceSourceExtraction:
-    """Successful reference extraction for one supporting paragraph."""
-
     paragraph_index: int
     attempt_count: int
     run: GroundedExtractionRun
@@ -30,33 +31,23 @@ class ReferenceSourceExtraction:
 
 @dataclass(frozen=True, slots=True)
 class ReferenceGraphExtractionResult:
-    """Successful grounded extractions for one reference graph."""
-
     items: tuple[ReferenceSourceExtraction, ...]
 
     @property
     def runs(self) -> tuple[GroundedExtractionRun, ...]:
-        """Return successful extraction runs in construction order."""
-
         return tuple(item.run for item in self.items)
 
     @property
     def attempt_count(self) -> int:
-        """Return all whole-source extraction attempts."""
-
         return sum(item.attempt_count for item in self.items)
 
     @property
     def retry_count(self) -> int:
-        """Return whole-source retries beyond each source's first attempt."""
-
         return sum(item.attempt_count - 1 for item in self.items)
 
 
 @dataclass(frozen=True, slots=True)
 class ReferenceGraphExtractionFailure:
-    """Expected experimental failure while constructing a reference graph."""
-
     paragraph_index: int
     source_unit_id: str
     attempt_count: int
@@ -69,8 +60,6 @@ class ReferenceGraphExtractionFailure:
 
     @property
     def completed_runs(self) -> tuple[GroundedExtractionRun, ...]:
-        """Return extractions successfully completed before the failure."""
-
         return tuple(item.run for item in self.completed_items)
 
 
@@ -80,7 +69,7 @@ ReferenceGraphExtractionOutcome: TypeAlias = (
 
 
 def reference_supporting_paragraphs(case: MusiqueCase) -> tuple[MusiqueParagraph, ...]:
-    """Return gold support paragraphs in decomposition order without duplicates."""
+    """Return supporting paragraphs in decomposition dependency order."""
 
     paragraphs_by_index = {paragraph.index: paragraph for paragraph in case.paragraphs}
 
@@ -107,15 +96,9 @@ def construct_reference_extractions(
     sources: tuple[MusiqueSourceUnit, ...],
     generate_response: GenerateResponse,
     max_attempts: int,
+    progress_sink: (ReferenceGraphProgressSink | None) = None,
 ) -> ReferenceGraphExtractionOutcome:
-    """Construct grounded H0 extractions from gold supporting sources.
-
-    The experiment owns source selection, decomposition order, privileged prompt
-    construction, and whole-source retry policy.
-
-    The extraction layer owns response parsing, exact evidence localization,
-    partial acceptance, targeted correction, merging, and final validation.
-    """
+    """Construct reference extractions over gold supporting paragraphs."""
 
     if max_attempts < 1:
         raise ValueError("max attempts must be at least 1")
@@ -130,15 +113,30 @@ def construct_reference_extractions(
 
         sources_by_id[candidate_source.unit_id] = candidate_source
 
+    support_paragraphs = reference_supporting_paragraphs(case)
+
     completed: list[ReferenceSourceExtraction] = []
 
-    for paragraph in reference_supporting_paragraphs(case):
+    source_count = len(support_paragraphs)
+
+    for source_position, paragraph in enumerate(support_paragraphs, start=1):
         support_source = sources_by_id.get(paragraph.unit_id)
 
         if support_source is None:
             raise ValueError(
                 f"supporting source {paragraph.unit_id!r} is missing from supplied sources"
             )
+
+        _emit_progress(
+            progress_sink,
+            "graph.source.started",
+            {
+                "source_position": (source_position),
+                "source_count": (source_count),
+                "paragraph_index": (paragraph.index),
+                "source": support_source,
+            },
+        )
 
         previous_failure: GroundedExtractionFailure | None = None
 
@@ -149,37 +147,99 @@ def construct_reference_extractions(
                 else (f"{previous_failure.error_type}: {previous_failure.error_message}")
             )
 
+            _emit_progress(
+                progress_sink,
+                "graph.source.attempt.started",
+                {
+                    "source_position": (source_position),
+                    "source_count": (source_count),
+                    "paragraph_index": (paragraph.index),
+                    "source": (support_source),
+                    "attempt_index": (attempt_index),
+                    "max_attempts": (max_attempts),
+                    "validation_error": (validation_error),
+                },
+            )
+
             prompt = build_musique_graph_source_prompt(
                 case=case,
                 source=support_source,
-                paragraph_index=paragraph.index,
+                paragraph_index=(paragraph.index),
                 accepted_runs=[item.run for item in completed],
-                validation_error=validation_error,
+                validation_error=(validation_error),
             )
 
             outcome = run_grounded_extraction_outcome_with_prompt(
-                support_source, prompt=prompt, generate_response=generate_response
+                support_source, prompt=prompt, generate_response=(generate_response)
             )
 
             if isinstance(outcome, GroundedExtractionRun):
-                completed.append(
-                    ReferenceSourceExtraction(
-                        paragraph_index=paragraph.index, attempt_count=attempt_index, run=outcome
-                    )
+                item = ReferenceSourceExtraction(
+                    paragraph_index=(paragraph.index), attempt_count=(attempt_index), run=outcome
                 )
+
+                completed.append(item)
+
+                _emit_progress(
+                    progress_sink,
+                    "graph.source.completed",
+                    {
+                        "source_position": (source_position),
+                        "source_count": (source_count),
+                        "paragraph_index": (paragraph.index),
+                        "source": (support_source),
+                        "attempt_index": (attempt_index),
+                        "run": outcome,
+                    },
+                )
+
                 break
 
             previous_failure = outcome
 
+            _emit_progress(
+                progress_sink,
+                "graph.source.attempt.failed",
+                {
+                    "source_position": (source_position),
+                    "source_count": (source_count),
+                    "paragraph_index": (paragraph.index),
+                    "source": (support_source),
+                    "attempt_index": (attempt_index),
+                    "failure": outcome,
+                },
+            )
+
         else:
             assert previous_failure is not None
 
-            return ReferenceGraphExtractionFailure(
-                paragraph_index=paragraph.index,
-                source_unit_id=support_source.unit_id,
-                attempt_count=max_attempts,
-                failure=previous_failure,
+            failure = ReferenceGraphExtractionFailure(
+                paragraph_index=(paragraph.index),
+                source_unit_id=(support_source.unit_id),
+                attempt_count=(max_attempts),
+                failure=(previous_failure),
                 completed_items=tuple(completed),
             )
 
+            _emit_progress(
+                progress_sink,
+                "graph.source.exhausted",
+                {
+                    "source_position": (source_position),
+                    "source_count": (source_count),
+                    "paragraph_index": (paragraph.index),
+                    "source": (support_source),
+                    "failure": failure,
+                },
+            )
+
+            return failure
+
     return ReferenceGraphExtractionResult(items=tuple(completed))
+
+
+def _emit_progress(
+    sink: (ReferenceGraphProgressSink | None), event: str, payload: dict[str, object]
+) -> None:
+    if sink is not None:
+        sink(event, payload)

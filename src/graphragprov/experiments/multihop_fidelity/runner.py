@@ -11,6 +11,7 @@ from graphragprov.experiments.multihop_fidelity.config import ArtifactOrigin, Ex
 from graphragprov.experiments.multihop_fidelity.graph import (
     ReferenceGraphExtractionFailure,
     ReferenceGraphExtractionResult,
+    ReferenceGraphProgressSink,
     construct_reference_extractions,
     reference_supporting_paragraphs,
 )
@@ -55,6 +56,8 @@ from graphragprov.qaagent import (
     observe_semantic_triples,
 )
 from graphragprov.rdf.terms import unit_graph_iri
+
+H0ProgressSink: TypeAlias = ReferenceGraphProgressSink
 
 H0FailureStage = Literal[
     "graph_extraction",
@@ -106,18 +109,16 @@ class H0QueryAttemptRecord:
             raise ValueError("gold support coverage requires a provenance attempt")
 
     def to_dict(self) -> dict[str, object]:
-        """Return a deterministic JSON-serializable representation."""
-
         return {
-            "attempt_index": self.attempt_index,
+            "attempt_index": (self.attempt_index),
             "prompt": self.prompt,
             "response": self.response,
             "plan": (self.plan.to_dict() if self.plan is not None else None),
-            "execution_sparql": self.execution_sparql,
-            "original_result": self.original_result,
+            "execution_sparql": (self.execution_sparql),
+            "original_result": (self.original_result),
             "observed_answers": list(self.observed_answers),
-            "answer_correct": self.answer_correct,
-            "validation_error": self.validation_error,
+            "answer_correct": (self.answer_correct),
+            "validation_error": (self.validation_error),
             "provenance": (self.provenance.to_dict() if self.provenance is not None else None),
             "gold_support_covered": (self.gold_support_covered),
             "feedback": self.feedback,
@@ -157,15 +158,13 @@ class H0CaseResult:
             raise ValueError("successful H0 result requires decoded provenance")
 
     def to_dict(self) -> dict[str, object]:
-        """Return the complete inspectable H0 case artifact."""
-
         return {
             "status": "success",
             "case_id": self.case_id,
             "question": self.question,
-            "expected_answer": self.expected_answer,
+            "expected_answer": (self.expected_answer),
             "hop_count": self.hop_count,
-            "configuration": _configuration_to_dict(self.configuration),
+            "configuration": (_configuration_to_dict(self.configuration)),
             "support_source_ids": list(self.support_source_ids),
             "graph_extractions": (_reference_extractions_to_dict(self.graph_extractions)),
             "extraction_measurements": (self.extraction_measurements.to_dict()),
@@ -204,19 +203,17 @@ class H0CaseFailure:
             raise ValueError("H0 failure error message must not be empty")
 
     def to_dict(self) -> dict[str, object]:
-        """Return the complete inspectable failure artifact."""
-
         return {
             "status": "failure",
             "case_id": self.case_id,
             "question": self.question,
-            "expected_answer": self.expected_answer,
+            "expected_answer": (self.expected_answer),
             "hop_count": self.hop_count,
-            "configuration": _configuration_to_dict(self.configuration),
+            "configuration": (_configuration_to_dict(self.configuration)),
             "stage": self.stage,
-            "error_type": self.error_type,
-            "error_message": self.error_message,
-            "telemetry": self.telemetry.to_dict(),
+            "error_type": (self.error_type),
+            "error_message": (self.error_message),
+            "telemetry": (self.telemetry.to_dict()),
             "partial": self.partial,
         }
 
@@ -234,13 +231,9 @@ def run_h0_case(
     graphdb: GraphDBClient,
     npcs: NPCSClient,
     telemetry: ExperimentTelemetryRecorder,
+    progress_sink: (H0ProgressSink | None) = None,
 ) -> H0CaseOutcome:
-    """Run one complete H0 reference case.
-
-    H0 requires a reference graph and a reference query. The semantic query is
-    generated independently of execution scope; Python applies support or
-    repository scope afterwards.
-    """
+    """Run one complete H0 reference case."""
 
     if configuration.graph_origin is not ArtifactOrigin.REFERENCE:
         raise ValueError("H0 requires graph_origin=reference")
@@ -272,12 +265,19 @@ def run_h0_case(
 
     support_source_ids = tuple(source.unit_id for source in support_sources)
 
+    _emit_progress(
+        progress_sink,
+        "graph.extraction.started",
+        {"source_count": len(support_sources), "support_source_ids": (support_source_ids)},
+    )
+
     with telemetry.measure_stage("graph.reference.extraction"):
         graph_outcome = construct_reference_extractions(
             case=case,
             sources=sources,
             generate_response=(graph_generate_response),
             max_attempts=(configuration.max_source_attempts),
+            progress_sink=(progress_sink),
         )
 
     if isinstance(graph_outcome, ReferenceGraphExtractionFailure):
@@ -302,7 +302,7 @@ def run_h0_case(
             case=case,
             configuration=configuration,
             stage="graph_measurement",
-            error_type=type(error).__name__,
+            error_type=(type(error).__name__),
             error_message=str(error),
             telemetry=telemetry,
             partial={
@@ -310,6 +310,10 @@ def run_h0_case(
                 "graph_extractions": (_reference_extractions_to_dict(graph_outcome)),
             },
         )
+
+    _emit_progress(
+        progress_sink, "graph.extraction.measured", {"measurements": (extraction_measurements)}
+    )
 
     try:
         with telemetry.measure_stage("graph.clear_support"):
@@ -320,7 +324,7 @@ def run_h0_case(
             case=case,
             configuration=configuration,
             stage="graph_clear",
-            error_type=type(error).__name__,
+            error_type=(type(error).__name__),
             error_message=str(error),
             telemetry=telemetry,
             partial={
@@ -330,6 +334,10 @@ def run_h0_case(
             },
         )
 
+    _emit_progress(
+        progress_sink, "graph.materialization.started", {"source_count": len(support_source_ids)}
+    )
+
     try:
         with telemetry.measure_stage("graph.materialization"):
             materialization = materialize_grounded_extractions(graph_outcome.runs, graphdb=graphdb)
@@ -338,7 +346,7 @@ def run_h0_case(
             case=case,
             configuration=configuration,
             stage="graph_materialization",
-            error_type=type(error).__name__,
+            error_type=(type(error).__name__),
             error_message=str(error),
             telemetry=telemetry,
             partial={
@@ -347,6 +355,10 @@ def run_h0_case(
                 "extraction_measurements": (extraction_measurements.to_dict()),
             },
         )
+
+    _emit_progress(
+        progress_sink, "graph.materialization.completed", {"materialization": (materialization)}
+    )
 
     try:
         with telemetry.measure_stage("graph.observation"):
@@ -358,7 +370,7 @@ def run_h0_case(
             case=case,
             configuration=configuration,
             stage="graph_observation",
-            error_type=type(error).__name__,
+            error_type=(type(error).__name__),
             error_message=str(error),
             telemetry=telemetry,
             partial={
@@ -380,8 +392,9 @@ def run_h0_case(
             stage="graph_observation",
             error_type="ValueError",
             error_message=(
-                "observed supporting named graphs do not "
-                "match the expected supporting source graphs"
+                "observed supporting named graphs "
+                "do not match the expected "
+                "supporting source graphs"
             ),
             telemetry=telemetry,
             partial={
@@ -414,11 +427,17 @@ def run_h0_case(
             case=case,
             configuration=configuration,
             stage="graph_measurement",
-            error_type=type(error).__name__,
+            error_type=(type(error).__name__),
             error_message=str(error),
             telemetry=telemetry,
             partial={"observation": (observation.to_dict()), "graph_ntriples": (graph_ntriples)},
         )
+
+    _emit_progress(
+        progress_sink,
+        "graph.frozen",
+        {"graph_ntriples": (graph_ntriples), "measurements": (graph_measurements)},
+    )
 
     registry = SourceRegistry(sources)
 
@@ -427,8 +446,20 @@ def run_h0_case(
     feedback: str | None = None
 
     for attempt_index in range(1, configuration.max_query_attempts + 1):
+        _emit_progress(
+            progress_sink,
+            "query.attempt.started",
+            {
+                "attempt_index": (attempt_index),
+                "max_attempts": (configuration.max_query_attempts),
+                "has_feedback": (feedback is not None),
+            },
+        )
+
         try:
-            with telemetry.measure_stage("query.reference.generation", attempt_index=attempt_index):
+            with telemetry.measure_stage(
+                "query.reference.generation", attempt_index=(attempt_index)
+            ):
                 generation = generate_reference_query(
                     case=case,
                     graph_ntriples=(graph_ntriples),
@@ -436,7 +467,19 @@ def run_h0_case(
                     generate_response=(query_generate_response),
                 )
         except ReferenceQueryValidationError as error:
-            feedback = validation_feedback(response=error.response, error=error.validation_error)
+            feedback = validation_feedback(
+                response=(error.response), error=(error.validation_error)
+            )
+
+            _emit_progress(
+                progress_sink,
+                "query.validation.failed",
+                {
+                    "attempt_index": (attempt_index),
+                    "error": (str(error.validation_error)),
+                    "response": (error.response),
+                },
+            )
 
             attempts.append(
                 H0QueryAttemptRecord(
@@ -449,22 +492,25 @@ def run_h0_case(
             )
 
             continue
+
         except Exception as error:
             return _failure(
                 case=case,
                 configuration=configuration,
                 stage="query_generation",
-                error_type=type(error).__name__,
+                error_type=(type(error).__name__),
                 error_message=str(error),
                 telemetry=telemetry,
-                partial=_partial_success_state(
-                    support_source_ids=(support_source_ids),
-                    graph_outcome=(graph_outcome),
-                    extraction_measurements=(extraction_measurements),
-                    materialization=(materialization),
-                    observation=observation,
-                    graph_measurements=(graph_measurements),
-                    query_attempts=tuple(attempts),
+                partial=(
+                    _partial_success_state(
+                        support_source_ids=(support_source_ids),
+                        graph_outcome=(graph_outcome),
+                        extraction_measurements=(extraction_measurements),
+                        materialization=(materialization),
+                        observation=(observation),
+                        graph_measurements=(graph_measurements),
+                        query_attempts=tuple(attempts),
+                    )
                 ),
             )
 
@@ -474,25 +520,37 @@ def run_h0_case(
             support_source_ids=(support_source_ids),
         )
 
+        _emit_progress(
+            progress_sink,
+            "query.generated",
+            {
+                "attempt_index": (attempt_index),
+                "generation": generation,
+                "execution_sparql": (execution_sparql),
+            },
+        )
+
         try:
-            with telemetry.measure_stage("graphdb.semantic", attempt_index=attempt_index):
+            with telemetry.measure_stage("graphdb.semantic", attempt_index=(attempt_index)):
                 original_result = graphdb.query(execution_sparql)
         except Exception as error:
             return _failure(
                 case=case,
                 configuration=configuration,
                 stage="query_execution",
-                error_type=type(error).__name__,
+                error_type=(type(error).__name__),
                 error_message=str(error),
                 telemetry=telemetry,
-                partial=_partial_success_state(
-                    support_source_ids=(support_source_ids),
-                    graph_outcome=(graph_outcome),
-                    extraction_measurements=(extraction_measurements),
-                    materialization=(materialization),
-                    observation=observation,
-                    graph_measurements=(graph_measurements),
-                    query_attempts=tuple(attempts),
+                partial=(
+                    _partial_success_state(
+                        support_source_ids=(support_source_ids),
+                        graph_outcome=(graph_outcome),
+                        extraction_measurements=(extraction_measurements),
+                        materialization=(materialization),
+                        observation=(observation),
+                        graph_measurements=(graph_measurements),
+                        query_attempts=tuple(attempts),
+                    )
                 ),
             )
 
@@ -502,13 +560,25 @@ def run_h0_case(
 
         answer_correct = answer_matches_case(case, terms)
 
+        _emit_progress(
+            progress_sink,
+            "query.executed",
+            {
+                "attempt_index": (attempt_index),
+                "observed_answers": (observed_answers),
+                "expected_answer": (case.answer),
+                "answer_correct": (answer_correct),
+                "result": (original_result),
+            },
+        )
+
         if not answer_correct:
             feedback = execution_feedback(
                 case=case,
                 scope=(configuration.query_scope),
-                plan=generation.plan,
+                plan=(generation.plan),
                 execution_sparql=(execution_sparql),
-                result=original_result,
+                result=(original_result),
                 terms=terms,
             )
 
@@ -517,7 +587,7 @@ def run_h0_case(
                     attempt_index=(attempt_index),
                     prompt=(generation.prompt),
                     response=(generation.response),
-                    plan=generation.plan,
+                    plan=(generation.plan),
                     execution_sparql=(execution_sparql),
                     original_result=(original_result),
                     observed_answers=(observed_answers),
@@ -528,8 +598,10 @@ def run_h0_case(
 
             continue
 
+        _emit_progress(progress_sink, "provenance.started", {"attempt_index": (attempt_index)})
+
         try:
-            with telemetry.measure_stage("provenance.execution", attempt_index=attempt_index):
+            with telemetry.measure_stage("provenance.execution", attempt_index=(attempt_index)):
                 provenance_attempt = execute_qa_query_attempt(
                     turn_index=(attempt_index),
                     purpose="final",
@@ -544,27 +616,39 @@ def run_h0_case(
                 case=case,
                 configuration=configuration,
                 stage="provenance",
-                error_type=type(error).__name__,
+                error_type=(type(error).__name__),
                 error_message=str(error),
                 telemetry=telemetry,
-                partial=_partial_success_state(
-                    support_source_ids=(support_source_ids),
-                    graph_outcome=(graph_outcome),
-                    extraction_measurements=(extraction_measurements),
-                    materialization=(materialization),
-                    observation=observation,
-                    graph_measurements=(graph_measurements),
-                    query_attempts=tuple(attempts),
+                partial=(
+                    _partial_success_state(
+                        support_source_ids=(support_source_ids),
+                        graph_outcome=(graph_outcome),
+                        extraction_measurements=(extraction_measurements),
+                        materialization=(materialization),
+                        observation=(observation),
+                        graph_measurements=(graph_measurements),
+                        query_attempts=tuple(attempts),
+                    )
                 ),
             )
 
         if provenance_attempt.provenance_status != "decoded":
+            _emit_progress(
+                progress_sink,
+                "provenance.completed",
+                {
+                    "attempt_index": (attempt_index),
+                    "provenance": (provenance_attempt),
+                    "gold_support_covered": (None),
+                },
+            )
+
             attempts.append(
                 H0QueryAttemptRecord(
                     attempt_index=(attempt_index),
                     prompt=(generation.prompt),
                     response=(generation.response),
-                    plan=generation.plan,
+                    plan=(generation.plan),
                     execution_sparql=(execution_sparql),
                     original_result=(original_result),
                     observed_answers=(observed_answers),
@@ -583,18 +667,30 @@ def run_h0_case(
                     or ("provenance execution did not produce decoded provenance")
                 ),
                 telemetry=telemetry,
-                partial=_partial_success_state(
-                    support_source_ids=(support_source_ids),
-                    graph_outcome=(graph_outcome),
-                    extraction_measurements=(extraction_measurements),
-                    materialization=(materialization),
-                    observation=observation,
-                    graph_measurements=(graph_measurements),
-                    query_attempts=tuple(attempts),
+                partial=(
+                    _partial_success_state(
+                        support_source_ids=(support_source_ids),
+                        graph_outcome=(graph_outcome),
+                        extraction_measurements=(extraction_measurements),
+                        materialization=(materialization),
+                        observation=(observation),
+                        graph_measurements=(graph_measurements),
+                        query_attempts=tuple(attempts),
+                    )
                 ),
             )
 
         support_covered = _covers_gold_support(case, provenance_attempt)
+
+        _emit_progress(
+            progress_sink,
+            "provenance.completed",
+            {
+                "attempt_index": (attempt_index),
+                "provenance": (provenance_attempt),
+                "gold_support_covered": (support_covered),
+            },
+        )
 
         if support_covered:
             attempts.append(
@@ -602,13 +698,13 @@ def run_h0_case(
                     attempt_index=(attempt_index),
                     prompt=(generation.prompt),
                     response=(generation.response),
-                    plan=generation.plan,
+                    plan=(generation.plan),
                     execution_sparql=(execution_sparql),
                     original_result=(original_result),
                     observed_answers=(observed_answers),
                     answer_correct=True,
                     provenance=(provenance_attempt),
-                    gold_support_covered=True,
+                    gold_support_covered=(True),
                 )
             )
 
@@ -617,7 +713,7 @@ def run_h0_case(
                 question=case.question,
                 expected_answer=case.answer,
                 hop_count=case.hop_count,
-                configuration=configuration,
+                configuration=(configuration),
                 support_source_ids=(support_source_ids),
                 graph_extractions=(graph_outcome),
                 extraction_measurements=(extraction_measurements),
@@ -630,15 +726,21 @@ def run_h0_case(
             )
 
         feedback = _gold_support_feedback(
-            configuration=configuration,
+            configuration=(configuration),
             generation=generation,
             provenance_attempt=(provenance_attempt),
+        )
+
+        _emit_progress(
+            progress_sink,
+            "query.gold_support.missing",
+            {"attempt_index": (attempt_index), "feedback": feedback},
         )
 
         attempts.append(
             H0QueryAttemptRecord(
                 attempt_index=(attempt_index),
-                prompt=generation.prompt,
+                prompt=(generation.prompt),
                 response=(generation.response),
                 plan=generation.plan,
                 execution_sparql=(execution_sparql),
@@ -646,7 +748,7 @@ def run_h0_case(
                 observed_answers=(observed_answers),
                 answer_correct=True,
                 provenance=(provenance_attempt),
-                gold_support_covered=False,
+                gold_support_covered=(False),
                 feedback=feedback,
             )
         )
@@ -654,22 +756,26 @@ def run_h0_case(
     return _failure(
         case=case,
         configuration=configuration,
-        stage="query_attempts_exhausted",
+        stage=("query_attempts_exhausted"),
         error_type="RuntimeError",
         error_message=(
-            "no reference query satisfied the complete "
-            "H0 answer and provenance criteria within "
-            f"{configuration.max_query_attempts} attempts"
+            "no reference query satisfied "
+            "the complete H0 answer and "
+            "provenance criteria within "
+            f"{configuration.max_query_attempts} "
+            "attempts"
         ),
         telemetry=telemetry,
-        partial=_partial_success_state(
-            support_source_ids=(support_source_ids),
-            graph_outcome=graph_outcome,
-            extraction_measurements=(extraction_measurements),
-            materialization=(materialization),
-            observation=observation,
-            graph_measurements=(graph_measurements),
-            query_attempts=tuple(attempts),
+        partial=(
+            _partial_success_state(
+                support_source_ids=(support_source_ids),
+                graph_outcome=(graph_outcome),
+                extraction_measurements=(extraction_measurements),
+                materialization=(materialization),
+                observation=observation,
+                graph_measurements=(graph_measurements),
+                query_attempts=tuple(attempts),
+            )
         ),
     )
 
@@ -693,10 +799,12 @@ def _gold_support_feedback(
     return json.dumps(
         {
             "message": (
-                "The answer is correct, but no decoded derivation uses all "
-                "gold supporting paragraphs. Re-select the exact triples "
-                "required by the full decomposition and rebuild the query "
-                "from those triples."
+                "The answer is correct, but no "
+                "decoded derivation uses all gold "
+                "supporting paragraphs. Re-select "
+                "the exact triples required by the "
+                "full decomposition and rebuild "
+                "the query from those triples."
             ),
             "query_scope": (configuration.query_scope.value),
             "previous_matched_triples": list(generation.plan.matched_triples),
@@ -736,11 +844,11 @@ def _failure(
 def _partial_success_state(
     *,
     support_source_ids: tuple[str, ...],
-    graph_outcome: ReferenceGraphExtractionResult,
-    extraction_measurements: ReferenceExtractionMeasurements,
-    materialization: GraphMaterializationSummary,
+    graph_outcome: (ReferenceGraphExtractionResult),
+    extraction_measurements: (ReferenceExtractionMeasurements),
+    materialization: (GraphMaterializationSummary),
     observation: QAAgentObservation,
-    graph_measurements: FrozenGraphMeasurements,
+    graph_measurements: (FrozenGraphMeasurements),
     query_attempts: tuple[H0QueryAttemptRecord, ...],
 ) -> dict[str, object]:
     return {
@@ -756,8 +864,8 @@ def _partial_success_state(
 
 def _reference_extractions_to_dict(result: ReferenceGraphExtractionResult) -> dict[str, object]:
     return {
-        "attempt_count": result.attempt_count,
-        "retry_count": result.retry_count,
+        "attempt_count": (result.attempt_count),
+        "retry_count": (result.retry_count),
         "items": [
             {
                 "paragraph_index": (item.paragraph_index),
@@ -769,7 +877,7 @@ def _reference_extractions_to_dict(result: ReferenceGraphExtractionResult) -> di
     }
 
 
-def _reference_failure_to_dict(failure: ReferenceGraphExtractionFailure) -> dict[str, object]:
+def _reference_failure_to_dict(failure: (ReferenceGraphExtractionFailure)) -> dict[str, object]:
     return {
         "paragraph_index": (failure.paragraph_index),
         "source_unit_id": (failure.source_unit_id),
@@ -800,7 +908,7 @@ def _reference_failure_to_dict(failure: ReferenceGraphExtractionFailure) -> dict
 def _extraction_run_to_dict(run: GroundedExtractionRun) -> dict[str, object]:
     return {
         "source": {
-            "unit_id": run.source.unit_id,
+            "unit_id": (run.source.unit_id),
             "title": run.source.title,
             "text": run.source.text,
         },
@@ -811,7 +919,7 @@ def _extraction_run_to_dict(run: GroundedExtractionRun) -> dict[str, object]:
     }
 
 
-def _correction_to_dict(correction: GroundedExtractionCorrection) -> dict[str, object]:
+def _correction_to_dict(correction: (GroundedExtractionCorrection)) -> dict[str, object]:
     return {
         "prompt": correction.prompt,
         "response": correction.response,
@@ -823,7 +931,7 @@ def _correction_to_dict(correction: GroundedExtractionCorrection) -> dict[str, o
         "remaining_rejections": [
             rejection.to_dict() for rejection in correction.remaining_rejections
         ],
-        "error_type": correction.error_type,
+        "error_type": (correction.error_type),
         "error_message": (correction.error_message),
     }
 
@@ -836,3 +944,8 @@ def _configuration_to_dict(configuration: ExperimentConfig) -> dict[str, object]
         "max_source_attempts": (configuration.max_source_attempts),
         "max_query_attempts": (configuration.max_query_attempts),
     }
+
+
+def _emit_progress(sink: H0ProgressSink | None, event: str, payload: dict[str, object]) -> None:
+    if sink is not None:
+        sink(event, payload)
