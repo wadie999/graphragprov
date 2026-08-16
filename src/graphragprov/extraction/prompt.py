@@ -276,7 +276,7 @@ LAW 5 — CONCISE RELATIONS AND MINIMAL TRIGGERS
 Predicate values must be concise lowerCamelCase relations, normally containing
 one to four lexical words.
 
-Good predicates include:
+Good predicates include (these are just examples)
 
 instanceOf
 bornIn
