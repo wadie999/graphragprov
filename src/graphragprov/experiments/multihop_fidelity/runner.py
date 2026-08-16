@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from typing import Literal, TypeAlias
 
@@ -22,14 +21,11 @@ from graphragprov.experiments.multihop_fidelity.measurements import (
     measure_reference_extractions,
 )
 from graphragprov.experiments.multihop_fidelity.query import (
-    ReferenceQueryGeneration,
     ReferenceQueryPlan,
     ReferenceQueryValidationError,
-    answer_matches_case,
     answer_terms,
     compile_reference_query,
     display_answer_term,
-    execution_feedback,
     generate_reference_query,
     validation_feedback,
 )
@@ -68,7 +64,6 @@ H0FailureStage = Literal[
     "query_generation",
     "query_execution",
     "provenance",
-    "query_attempts_exhausted",
 ]
 
 
@@ -127,7 +122,7 @@ class H0QueryAttemptRecord:
 
 @dataclass(frozen=True, slots=True)
 class H0CaseResult:
-    """Successful executable H0 result for one MuSiQue case."""
+    """Completed observable H0 collection for one MuSiQue case."""
 
     case_id: str
     question: str
@@ -154,12 +149,17 @@ class H0CaseResult:
         if not self.query_attempts:
             raise ValueError("H0 result must contain at least one query attempt")
 
-        if self.final_provenance.provenance_status != "decoded":
-            raise ValueError("successful H0 result requires decoded provenance")
+        final_attempt = self.query_attempts[-1]
+
+        if final_attempt.original_result is None:
+            raise ValueError("completed H0 collection requires an executed query")
+
+        if final_attempt.provenance is None:
+            raise ValueError("completed H0 collection requires a provenance attempt")
 
     def to_dict(self) -> dict[str, object]:
         return {
-            "status": "success",
+            "status": "complete",
             "case_id": self.case_id,
             "question": self.question,
             "expected_answer": (self.expected_answer),
@@ -179,7 +179,7 @@ class H0CaseResult:
 
 @dataclass(frozen=True, slots=True)
 class H0CaseFailure:
-    """Inspectable expected failure of one H0 case."""
+    """Inspectable operational failure while collecting one H0 case."""
 
     case_id: str
     question: str
@@ -204,7 +204,7 @@ class H0CaseFailure:
 
     def to_dict(self) -> dict[str, object]:
         return {
-            "status": "failure",
+            "status": "operational_failure",
             "case_id": self.case_id,
             "question": self.question,
             "expected_answer": (self.expected_answer),
@@ -442,7 +442,6 @@ def run_h0_case(
     registry = SourceRegistry(sources)
 
     attempts: list[H0QueryAttemptRecord] = []
-
     feedback: str | None = None
 
     for attempt_index in range(1, configuration.max_query_attempts + 1):
@@ -450,40 +449,40 @@ def run_h0_case(
             progress_sink,
             "query.attempt.started",
             {
-                "attempt_index": (attempt_index),
-                "max_attempts": (configuration.max_query_attempts),
-                "has_feedback": (feedback is not None),
+                "attempt_index": attempt_index,
+                "max_attempts": configuration.max_query_attempts,
+                "has_feedback": feedback is not None,
             },
         )
 
         try:
-            with telemetry.measure_stage(
-                "query.reference.generation", attempt_index=(attempt_index)
-            ):
+            with telemetry.measure_stage("query.reference.generation", attempt_index=attempt_index):
                 generation = generate_reference_query(
                     case=case,
-                    graph_ntriples=(graph_ntriples),
+                    graph_ntriples=graph_ntriples,
                     feedback=feedback,
-                    generate_response=(query_generate_response),
+                    generate_response=query_generate_response,
                 )
         except ReferenceQueryValidationError as error:
-            feedback = validation_feedback(
-                response=(error.response), error=(error.validation_error)
-            )
+            # Mechanical interface recovery only.
+            #
+            # No gold answer, provenance coverage, or reasoning judgment
+            # participates in this retry.
+            feedback = validation_feedback(response=error.response, error=error.validation_error)
 
             _emit_progress(
                 progress_sink,
                 "query.validation.failed",
                 {
-                    "attempt_index": (attempt_index),
-                    "error": (str(error.validation_error)),
-                    "response": (error.response),
+                    "attempt_index": attempt_index,
+                    "error": str(error.validation_error),
+                    "response": error.response,
                 },
             )
 
             attempts.append(
                 H0QueryAttemptRecord(
-                    attempt_index=(attempt_index),
+                    attempt_index=attempt_index,
                     prompt=error.prompt,
                     response=error.response,
                     validation_error=str(error.validation_error),
@@ -498,59 +497,93 @@ def run_h0_case(
                 case=case,
                 configuration=configuration,
                 stage="query_generation",
-                error_type=(type(error).__name__),
+                error_type=type(error).__name__,
                 error_message=str(error),
                 telemetry=telemetry,
-                partial=(
-                    _partial_success_state(
-                        support_source_ids=(support_source_ids),
-                        graph_outcome=(graph_outcome),
-                        extraction_measurements=(extraction_measurements),
-                        materialization=(materialization),
-                        observation=(observation),
-                        graph_measurements=(graph_measurements),
-                        query_attempts=tuple(attempts),
-                    )
+                partial=_partial_success_state(
+                    support_source_ids=support_source_ids,
+                    graph_outcome=graph_outcome,
+                    extraction_measurements=extraction_measurements,
+                    materialization=materialization,
+                    observation=observation,
+                    graph_measurements=graph_measurements,
+                    query_attempts=tuple(attempts),
                 ),
             )
 
-        execution_sparql = compile_reference_query(
-            generation.plan,
-            scope=(configuration.query_scope),
-            support_source_ids=(support_source_ids),
-        )
+        try:
+            execution_sparql = compile_reference_query(
+                generation.plan,
+                scope=configuration.query_scope,
+                support_source_ids=support_source_ids,
+            )
+        except Exception as error:
+            attempts.append(
+                H0QueryAttemptRecord(
+                    attempt_index=attempt_index,
+                    prompt=generation.prompt,
+                    response=generation.response,
+                    plan=generation.plan,
+                )
+            )
+
+            return _failure(
+                case=case,
+                configuration=configuration,
+                stage="query_execution",
+                error_type=type(error).__name__,
+                error_message=str(error),
+                telemetry=telemetry,
+                partial=_partial_success_state(
+                    support_source_ids=support_source_ids,
+                    graph_outcome=graph_outcome,
+                    extraction_measurements=extraction_measurements,
+                    materialization=materialization,
+                    observation=observation,
+                    graph_measurements=graph_measurements,
+                    query_attempts=tuple(attempts),
+                ),
+            )
 
         _emit_progress(
             progress_sink,
             "query.generated",
             {
-                "attempt_index": (attempt_index),
+                "attempt_index": attempt_index,
                 "generation": generation,
-                "execution_sparql": (execution_sparql),
+                "execution_sparql": execution_sparql,
             },
         )
 
         try:
-            with telemetry.measure_stage("graphdb.semantic", attempt_index=(attempt_index)):
+            with telemetry.measure_stage("graphdb.semantic", attempt_index=attempt_index):
                 original_result = graphdb.query(execution_sparql)
         except Exception as error:
+            attempts.append(
+                H0QueryAttemptRecord(
+                    attempt_index=attempt_index,
+                    prompt=generation.prompt,
+                    response=generation.response,
+                    plan=generation.plan,
+                    execution_sparql=execution_sparql,
+                )
+            )
+
             return _failure(
                 case=case,
                 configuration=configuration,
                 stage="query_execution",
-                error_type=(type(error).__name__),
+                error_type=type(error).__name__,
                 error_message=str(error),
                 telemetry=telemetry,
-                partial=(
-                    _partial_success_state(
-                        support_source_ids=(support_source_ids),
-                        graph_outcome=(graph_outcome),
-                        extraction_measurements=(extraction_measurements),
-                        materialization=(materialization),
-                        observation=(observation),
-                        graph_measurements=(graph_measurements),
-                        query_attempts=tuple(attempts),
-                    )
+                partial=_partial_success_state(
+                    support_source_ids=support_source_ids,
+                    graph_outcome=graph_outcome,
+                    extraction_measurements=extraction_measurements,
+                    materialization=materialization,
+                    observation=observation,
+                    graph_measurements=graph_measurements,
+                    query_attempts=tuple(attempts),
                 ),
             )
 
@@ -558,102 +591,46 @@ def run_h0_case(
 
         observed_answers = tuple(display_answer_term(term) for term in terms)
 
-        answer_correct = answer_matches_case(case, terms)
-
+        # Collection records what happened.
+        #
+        # It deliberately does NOT decide here whether these answers
+        # are equivalent to the benchmark answer.
         _emit_progress(
             progress_sink,
             "query.executed",
             {
-                "attempt_index": (attempt_index),
-                "observed_answers": (observed_answers),
-                "expected_answer": (case.answer),
-                "answer_correct": (answer_correct),
-                "result": (original_result),
+                "attempt_index": attempt_index,
+                "observed_answers": observed_answers,
+                "result": original_result,
             },
         )
 
-        if not answer_correct:
-            feedback = execution_feedback(
-                case=case,
-                scope=(configuration.query_scope),
-                plan=(generation.plan),
-                execution_sparql=(execution_sparql),
-                result=(original_result),
-                terms=terms,
-            )
-
-            attempts.append(
-                H0QueryAttemptRecord(
-                    attempt_index=(attempt_index),
-                    prompt=(generation.prompt),
-                    response=(generation.response),
-                    plan=(generation.plan),
-                    execution_sparql=(execution_sparql),
-                    original_result=(original_result),
-                    observed_answers=(observed_answers),
-                    answer_correct=False,
-                    feedback=feedback,
-                )
-            )
-
-            continue
-
-        _emit_progress(progress_sink, "provenance.started", {"attempt_index": (attempt_index)})
+        # Provenance is attempted for every successfully executed query.
+        #
+        # It is NOT conditional on benchmark answer correctness.
+        _emit_progress(progress_sink, "provenance.started", {"attempt_index": attempt_index})
 
         try:
-            with telemetry.measure_stage("provenance.execution", attempt_index=(attempt_index)):
+            with telemetry.measure_stage("provenance.execution", attempt_index=attempt_index):
                 provenance_attempt = execute_qa_query_attempt(
-                    turn_index=(attempt_index),
+                    turn_index=attempt_index,
                     purpose="final",
-                    semantic_sparql=(generation.plan.semantic_sparql),
-                    scoped_sparql=(execution_sparql),
+                    semantic_sparql=generation.plan.semantic_sparql,
+                    scoped_sparql=execution_sparql,
                     graphdb=graphdb,
                     npcs=npcs,
                     registry=registry,
                 )
         except Exception as error:
-            return _failure(
-                case=case,
-                configuration=configuration,
-                stage="provenance",
-                error_type=(type(error).__name__),
-                error_message=str(error),
-                telemetry=telemetry,
-                partial=(
-                    _partial_success_state(
-                        support_source_ids=(support_source_ids),
-                        graph_outcome=(graph_outcome),
-                        extraction_measurements=(extraction_measurements),
-                        materialization=(materialization),
-                        observation=(observation),
-                        graph_measurements=(graph_measurements),
-                        query_attempts=tuple(attempts),
-                    )
-                ),
-            )
-
-        if provenance_attempt.provenance_status != "decoded":
-            _emit_progress(
-                progress_sink,
-                "provenance.completed",
-                {
-                    "attempt_index": (attempt_index),
-                    "provenance": (provenance_attempt),
-                    "gold_support_covered": (None),
-                },
-            )
-
             attempts.append(
                 H0QueryAttemptRecord(
-                    attempt_index=(attempt_index),
-                    prompt=(generation.prompt),
-                    response=(generation.response),
-                    plan=(generation.plan),
-                    execution_sparql=(execution_sparql),
-                    original_result=(original_result),
-                    observed_answers=(observed_answers),
-                    answer_correct=True,
-                    provenance=(provenance_attempt),
+                    attempt_index=attempt_index,
+                    prompt=generation.prompt,
+                    response=generation.response,
+                    plan=generation.plan,
+                    execution_sparql=execution_sparql,
+                    original_result=original_result,
+                    observed_answers=observed_answers,
                 )
             )
 
@@ -661,159 +638,83 @@ def run_h0_case(
                 case=case,
                 configuration=configuration,
                 stage="provenance",
-                error_type=(provenance_attempt.error_type or "ProvenanceError"),
-                error_message=(
-                    provenance_attempt.error_message
-                    or ("provenance execution did not produce decoded provenance")
-                ),
+                error_type=type(error).__name__,
+                error_message=str(error),
                 telemetry=telemetry,
-                partial=(
-                    _partial_success_state(
-                        support_source_ids=(support_source_ids),
-                        graph_outcome=(graph_outcome),
-                        extraction_measurements=(extraction_measurements),
-                        materialization=(materialization),
-                        observation=(observation),
-                        graph_measurements=(graph_measurements),
-                        query_attempts=tuple(attempts),
-                    )
+                partial=_partial_success_state(
+                    support_source_ids=support_source_ids,
+                    graph_outcome=graph_outcome,
+                    extraction_measurements=extraction_measurements,
+                    materialization=materialization,
+                    observation=observation,
+                    graph_measurements=graph_measurements,
+                    query_attempts=tuple(attempts),
                 ),
             )
 
-        support_covered = _covers_gold_support(case, provenance_attempt)
-
+        # A returned provenance status is itself an observation.
+        #
+        # The collector does not require provenance_status == "decoded"
+        # in order to call the collection complete.
         _emit_progress(
             progress_sink,
             "provenance.completed",
-            {
-                "attempt_index": (attempt_index),
-                "provenance": (provenance_attempt),
-                "gold_support_covered": (support_covered),
-            },
-        )
-
-        if support_covered:
-            attempts.append(
-                H0QueryAttemptRecord(
-                    attempt_index=(attempt_index),
-                    prompt=(generation.prompt),
-                    response=(generation.response),
-                    plan=(generation.plan),
-                    execution_sparql=(execution_sparql),
-                    original_result=(original_result),
-                    observed_answers=(observed_answers),
-                    answer_correct=True,
-                    provenance=(provenance_attempt),
-                    gold_support_covered=(True),
-                )
-            )
-
-            return H0CaseResult(
-                case_id=case.case_id,
-                question=case.question,
-                expected_answer=case.answer,
-                hop_count=case.hop_count,
-                configuration=(configuration),
-                support_source_ids=(support_source_ids),
-                graph_extractions=(graph_outcome),
-                extraction_measurements=(extraction_measurements),
-                materialization=(materialization),
-                observation=observation,
-                graph_measurements=(graph_measurements),
-                query_attempts=tuple(attempts),
-                final_provenance=(provenance_attempt),
-                telemetry=(telemetry.snapshot()),
-            )
-
-        feedback = _gold_support_feedback(
-            configuration=(configuration),
-            generation=generation,
-            provenance_attempt=(provenance_attempt),
-        )
-
-        _emit_progress(
-            progress_sink,
-            "query.gold_support.missing",
-            {"attempt_index": (attempt_index), "feedback": feedback},
+            {"attempt_index": attempt_index, "provenance": provenance_attempt},
         )
 
         attempts.append(
             H0QueryAttemptRecord(
-                attempt_index=(attempt_index),
-                prompt=(generation.prompt),
-                response=(generation.response),
+                attempt_index=attempt_index,
+                prompt=generation.prompt,
+                response=generation.response,
                 plan=generation.plan,
-                execution_sparql=(execution_sparql),
-                original_result=(original_result),
-                observed_answers=(observed_answers),
-                answer_correct=True,
-                provenance=(provenance_attempt),
-                gold_support_covered=(False),
-                feedback=feedback,
+                execution_sparql=execution_sparql,
+                original_result=original_result,
+                observed_answers=observed_answers,
+                provenance=provenance_attempt,
             )
+        )
+
+        # First mechanically valid and executable query is the observation.
+        #
+        # No gold-answer-conditioned retry.
+        # No gold-support-conditioned retry.
+        return H0CaseResult(
+            case_id=case.case_id,
+            question=case.question,
+            expected_answer=case.answer,
+            hop_count=case.hop_count,
+            configuration=configuration,
+            support_source_ids=support_source_ids,
+            graph_extractions=graph_outcome,
+            extraction_measurements=extraction_measurements,
+            materialization=materialization,
+            observation=observation,
+            graph_measurements=graph_measurements,
+            query_attempts=tuple(attempts),
+            final_provenance=provenance_attempt,
+            telemetry=telemetry.snapshot(),
         )
 
     return _failure(
         case=case,
         configuration=configuration,
-        stage=("query_attempts_exhausted"),
-        error_type="RuntimeError",
+        stage="query_generation",
+        error_type="QueryResponseContractExhausted",
         error_message=(
-            "no reference query satisfied "
-            "the complete H0 answer and "
-            "provenance criteria within "
-            f"{configuration.max_query_attempts} "
-            "attempts"
+            "query agent did not produce a mechanically valid response "
+            f"within {configuration.max_query_attempts} attempts"
         ),
         telemetry=telemetry,
-        partial=(
-            _partial_success_state(
-                support_source_ids=(support_source_ids),
-                graph_outcome=(graph_outcome),
-                extraction_measurements=(extraction_measurements),
-                materialization=(materialization),
-                observation=observation,
-                graph_measurements=(graph_measurements),
-                query_attempts=tuple(attempts),
-            )
+        partial=_partial_success_state(
+            support_source_ids=support_source_ids,
+            graph_outcome=graph_outcome,
+            extraction_measurements=extraction_measurements,
+            materialization=materialization,
+            observation=observation,
+            graph_measurements=graph_measurements,
+            query_attempts=tuple(attempts),
         ),
-    )
-
-
-def _covers_gold_support(case: MusiqueCase, attempt: QAQueryAttempt) -> bool:
-    expected = {paragraph.unit_id for paragraph in reference_supporting_paragraphs(case)}
-
-    return any(
-        expected <= {occurrence.source.unit_id for occurrence in derivation.occurrences}
-        for answer in attempt.answer_provenances
-        for derivation in answer.decoded.derivations
-    )
-
-
-def _gold_support_feedback(
-    *,
-    configuration: ExperimentConfig,
-    generation: ReferenceQueryGeneration,
-    provenance_attempt: QAQueryAttempt,
-) -> str:
-    return json.dumps(
-        {
-            "message": (
-                "The answer is correct, but no "
-                "decoded derivation uses all gold "
-                "supporting paragraphs. Re-select "
-                "the exact triples required by the "
-                "full decomposition and rebuild "
-                "the query from those triples."
-            ),
-            "query_scope": (configuration.query_scope.value),
-            "previous_matched_triples": list(generation.plan.matched_triples),
-            "semantic_sparql": (generation.plan.semantic_sparql),
-            "provenance_attempt": (provenance_attempt.to_dict()),
-        },
-        ensure_ascii=False,
-        indent=2,
-        sort_keys=True,
     )
 
 

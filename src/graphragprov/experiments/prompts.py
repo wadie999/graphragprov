@@ -23,6 +23,16 @@ They are not evidence.
 For the CURRENT SOURCE only, return grounded RDF statements using the extraction
 schema below. Reuse semantic names already present in the accepted graph when
 they denote the same thing.
+Extract all useful explicit atomic facts from CURRENT SOURCE.
+
+Do not restrict extraction to facts needed for the question.
+
+However, facts explicitly present in CURRENT SOURCE that are required
+to realize its MuSiQue decomposition hop(s) are mandatory and must not
+be omitted.
+
+Question/answer/decomposition/accepted graph are coordination context,
+not evidence.
 
 Every returned statement must be supported by the CURRENT SOURCE. Python owns
 source identity; never return source IDs.
@@ -30,82 +40,114 @@ source identity; never return source IDs.
 
 
 WRITE_SPARQL_FOR_MUSIQUE_QUESTION = """
-Construct the SPARQL SELECT query that represents the MuSiQue question over the
-frozen RDF graph below.
+ROLE
 
-Use an evidence-first procedure. Do not jump directly from the natural-language
-question to a path-shaped SPARQL query.
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
 
-Step 1 — select graph evidence
+Your job is not merely to state or force the expected answer.
 
-For every step of the gold decomposition:
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
 
-1. Locate the exact RDF triple or triples in the frozen graph that establish
-   that step.
+WHY THE QUERY STRUCTURE MATTERS
 
-2. Copy those triples verbatim into `matched_triples`.
+The query is executed over the frozen graph.
 
-3. Do not change subject, predicate, object, or predicate direction.
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
 
-4. Do not assume that consecutive decomposition steps form a directed RDF path.
+Therefore the answer must genuinely arise from graph matching.
 
-Two decomposition steps may instead be connected by a join.
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
 
-For example, the graph topology may be:
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
 
-    <A> <p> <X> .
-    <B> <p> <X> .
-    <B> <q> <Y> .
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
 
-The correct composition is then structurally:
+Do not invent a relation because it would make the reasoning chain work.
 
-    <A> <p> ?shared .
-    <B> <p> ?shared .
-    <B> <q> ?answer .
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
 
-It is NOT:
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
 
-    <A> <p> ?shared .
-    ?shared <p> ?something .
+DECOMPOSITION
 
-unless that second orientation literally exists in the frozen graph.
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
 
-When a decomposition step refers to the answer of an earlier step, identify
-exactly where that earlier answer appears in the selected frozen-graph triples:
-as subject, object, or both.
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
 
-Step 2 — compile selected evidence into SPARQL
+The decomposition does not create facts in the graph.
 
-Build the WHERE clause only from the evidence selected in `matched_triples`.
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
 
-Preserve the subject/predicate/object orientation of every selected triple.
+CONSTRUCT THE QUERY
 
-Keep entities explicitly named by the benchmark question as constants when they
-identify the intended resource.
+Find the RDF triples in the frozen graph that can realize the question.
 
-Replace intermediate decomposition answers with shared variables where they
-connect selected triples.
+Use variables to connect dependent graph patterns.
 
-Replace the final answer position with `?answer`.
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
 
-The same intermediate entity must use the same variable everywhere it joins
-selected triples.
+Example:
 
-Do not create a new triple orientation while converting evidence into SPARQL.
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
 
-SPARQL requirements:
+To retrieve the organization represented by FIFA:
 
-- project the final answer as ?answer;
-- derive ?answer from graph patterns;
-- use only RDF terms present in the frozen graph;
-- include an explicit WHERE clause;
-- do not use FROM, GRAPH, SERVICE, or update operations;
-- do not manufacture the expected answer with VALUES, BIND, FILTER, or a
-  constant equal to the expected answer.
-- Any non-final answer appearing in the gold decomposition must not occur as an RDF constant 
-in the generated SPARQL; it must be abstracted into a variable 
-wherever it connects decomposition hops.
-Return only one valid JSON object with exactly these two fields:
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
 
 {
   "matched_triples": [
@@ -113,12 +155,6 @@ Return only one valid JSON object with exactly these two fields:
   ],
   "sparql": "SELECT ?answer WHERE { ... }"
 }
-
-`matched_triples` is an auditable graph-evidence selection, not free-form
-reasoning.
-
-Every string in `matched_triples` must be copied exactly from one complete line
-of the frozen RDF graph.
 """.strip()
 
 

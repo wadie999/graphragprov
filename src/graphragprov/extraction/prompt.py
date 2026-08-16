@@ -441,25 +441,6 @@ LAW 9 — SOURCE BOUNDARIES
 ======================================================================
 
 Use only the supplied title and text.
-
-Do not use:
-
-- external knowledge;
-- benchmark questions;
-- benchmark answers;
-- other paragraphs;
-- previous extractions;
-- assumptions about the wider document.
-
-You may perform locally supported:
-
-- pronoun resolution;
-- abbreviation resolution;
-- alias resolution;
-- omitted-subject recovery;
-- list distribution;
-- dimensional splitting.
-
 Do not automatically add:
 
 - inverse statements;

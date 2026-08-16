@@ -215,13 +215,13 @@ def _provenance_polynomial(case: MusiqueCase) -> str:
     return "⊕((⊗" + ",".join(tokens) + ",))"
 
 
-def _rewritten_result(case: MusiqueCase) -> dict[str, object]:
+def _rewritten_result(case: MusiqueCase, answer_value: str) -> dict[str, object]:
     return {
         "head": {"vars": ["answer", PROVENANCE_VARIABLE]},
         "results": {
             "bindings": [
                 {
-                    "answer": {"type": "uri", "value": str(entity_iri("City Gamma"))},
+                    "answer": {"type": "uri", "value": str(entity_iri(answer_value))},
                     PROVENANCE_VARIABLE: {
                         "type": "literal",
                         "value": (_provenance_polynomial(case)),
@@ -233,30 +233,35 @@ def _rewritten_result(case: MusiqueCase) -> dict[str, object]:
 
 
 def _clients_for_success(case: MusiqueCase, *, semantic_answers: list[str]) -> tuple[Mock, Mock]:
-    graphdb = Mock(spec=GraphDBClient)
+    if not semantic_answers:
+        raise ValueError("semantic_answers must not be empty")
 
+    graphdb = Mock(spec=GraphDBClient)
     npcs = Mock(spec=NPCSClient)
 
     npcs.rewrite.return_value = "REWRITTEN PROVENANCE QUERY"
 
     semantic_calls = 0
+    last_semantic_answer: str | None = None
 
     def query(sparql: str) -> dict[str, object]:
         nonlocal semantic_calls
+        nonlocal last_semantic_answer
 
         if "SELECT DISTINCT ?graph ?subject ?predicate ?object" in sparql:
             return _observation_result(case)
 
         if sparql == "REWRITTEN PROVENANCE QUERY":
-            return _rewritten_result(case)
+            answer = (
+                last_semantic_answer if last_semantic_answer is not None else semantic_answers[0]
+            )
+            return _rewritten_result(case, answer)
 
         if "?answer" in sparql:
             answer_index = min(semantic_calls, len(semantic_answers) - 1)
-
             answer = semantic_answers[answer_index]
-
             semantic_calls += 1
-
+            last_semantic_answer = answer
             return _answer_result(answer)
 
         raise AssertionError(f"unexpected GraphDB query:\n{sparql}")
@@ -313,9 +318,11 @@ def test_h0_runner_executes_complete_answer_to_source_provenance_path() -> None:
 
     final_query = outcome.query_attempts[0]
 
-    assert final_query.answer_correct is True
+    assert final_query.observed_answers == ("City Gamma",)
 
-    assert final_query.gold_support_covered is True
+    # Scientific evaluation is deliberately absent from collection.
+    assert final_query.answer_correct is None
+    assert final_query.gold_support_covered is None
 
     assert outcome.final_provenance.provenance_status == "decoded"
 
@@ -347,75 +354,60 @@ def test_h0_runner_executes_complete_answer_to_source_provenance_path() -> None:
     } <= stage_names
 
 
-def test_h0_runner_retries_query_after_wrong_answer() -> None:
+def test_h0_runner_collects_non_gold_answer_without_retry() -> None:
     case = _case()
-
     sources = collect_musique_source_units((case,))
 
     graphdb, npcs = _clients_for_success(case, semantic_answers=["Wrong City", "City Gamma"])
 
-    prompts: list[str] = []
+    query_calls = 0
 
     def query_generate(prompt: str) -> str:
-        prompts.append(prompt)
+        nonlocal query_calls
+        query_calls += 1
 
-        if len(prompts) == 2:
-            assert "Wrong City" in prompt
-
+        assert case.question in prompt
         return _valid_query_response()
 
     outcome = run_h0_case(
         case=case,
         sources=sources,
         configuration=_configuration(),
-        graph_generate_response=(_graph_generator),
-        query_generate_response=(query_generate),
+        graph_generate_response=_graph_generator,
+        query_generate_response=query_generate,
         graphdb=cast(GraphDBClient, graphdb),
         npcs=cast(NPCSClient, npcs),
-        telemetry=(ExperimentTelemetryRecorder()),
+        telemetry=ExperimentTelemetryRecorder(),
     )
 
     assert isinstance(outcome, H0CaseResult)
 
-    assert len(outcome.query_attempts) == 2
+    # One mechanically valid query is collected exactly once.
+    assert query_calls == 1
+    assert len(outcome.query_attempts) == 1
 
-    first = outcome.query_attempts[0]
+    attempt = outcome.query_attempts[0]
 
-    second = outcome.query_attempts[1]
+    # The raw observation survives exactly as produced.
+    assert attempt.observed_answers == ("Wrong City",)
+    assert attempt.original_result is not None
 
-    assert first.answer_correct is False
-    assert first.feedback is not None
-    assert "Wrong City" in first.feedback
+    # No benchmark-equivalence judgment is made during collection.
+    assert attempt.answer_correct is None
+    assert attempt.gold_support_covered is None
+    assert attempt.feedback is None
 
-    assert second.answer_correct is True
-    assert second.gold_support_covered is True
+    # Provenance is still attempted even though the observed answer
+    # differs from the benchmark gold string.
+    assert attempt.provenance is not None
+    assert outcome.final_provenance.provenance_status == "decoded"
 
 
-def test_h0_runner_retries_invalid_query_without_executing_it() -> None:
+def test_h0_runner_retries_only_mechanically_invalid_query_response() -> None:
     case = _case()
-
     sources = collect_musique_source_units((case,))
 
     graphdb, npcs = _clients_for_success(case, semantic_answers=["City Gamma"])
-
-    performer, _ = _semantic_triples()
-
-    invalid_response = json.dumps(
-        {
-            "matched_triples": [
-                performer,
-                (
-                    "<urn:graphragprov:"
-                    "entity:Artist%20Beta> "
-                    "<urn:graphragprov:"
-                    "predicate:livesIn> "
-                    "<urn:graphragprov:"
-                    "entity:City%20Gamma> ."
-                ),
-            ],
-            "sparql": ("SELECT ?answer WHERE { ?x ?p ?answer . }"),
-        }
-    )
 
     prompts: list[str] = []
 
@@ -423,39 +415,50 @@ def test_h0_runner_retries_invalid_query_without_executing_it() -> None:
         prompts.append(prompt)
 
         if len(prompts) == 1:
-            return invalid_response
+            return "not valid JSON"
 
-        assert "not found" in prompt
-
+        assert "query response must be valid JSON" in prompt
         return _valid_query_response()
 
     outcome = run_h0_case(
         case=case,
         sources=sources,
         configuration=_configuration(),
-        graph_generate_response=(_graph_generator),
-        query_generate_response=(query_generate),
+        graph_generate_response=_graph_generator,
+        query_generate_response=query_generate,
         graphdb=cast(GraphDBClient, graphdb),
         npcs=cast(NPCSClient, npcs),
-        telemetry=(ExperimentTelemetryRecorder()),
+        telemetry=ExperimentTelemetryRecorder(),
     )
 
     assert isinstance(outcome, H0CaseResult)
 
+    assert len(prompts) == 2
     assert len(outcome.query_attempts) == 2
 
     first = outcome.query_attempts[0]
 
     assert first.validation_error is not None
-    assert "not found" in (first.validation_error)
-
+    assert "valid JSON" in first.validation_error
     assert first.plan is None
     assert first.original_result is None
+    assert first.provenance is None
 
     second = outcome.query_attempts[1]
 
-    assert second.answer_correct is True
-    assert second.gold_support_covered is True
+    assert second.observed_answers == ("City Gamma",)
+    assert second.answer_correct is None
+    assert second.gold_support_covered is None
+    assert second.provenance is not None
+
+    semantic_queries = [
+        call.args[0]
+        for call in graphdb.query.call_args_list
+        if call.args and isinstance(call.args[0], str) and "?answer" in call.args[0]
+    ]
+
+    # The malformed first response never reached GraphDB.
+    assert len(semantic_queries) == 1
 
 
 def test_h0_runner_returns_structured_graph_extraction_failure() -> None:

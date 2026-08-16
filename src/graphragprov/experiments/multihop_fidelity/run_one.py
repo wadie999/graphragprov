@@ -50,7 +50,7 @@ from graphragprov.providers.deepseek import (
 )
 from graphragprov.qaagent import QAQueryAttempt
 
-RUN_ARTIFACT_FORMAT = "multihop-fidelity-h0-run-v2"
+RUN_ARTIFACT_FORMAT = "multihop-fidelity-h0-collection-v1"
 
 
 @dataclass(frozen=True, slots=True)
@@ -427,11 +427,6 @@ class VerboseH0Reporter:
             _print("")
             _print("GraphDB execution:")
             _print(f"  observed answers: {payload.get('observed_answers')}")
-            _print(f"  expected answer:  {payload.get('expected_answer')!r}")
-            _print(f"  answer correct:   {payload.get('answer_correct')}")
-
-            if payload.get("answer_correct") is False:
-                _print("  action: retrying with execution feedback")
             return
 
         if event == "provenance.started":
@@ -442,7 +437,6 @@ class VerboseH0Reporter:
 
         if event == "provenance.completed":
             provenance = payload.get("provenance")
-            support_covered = payload.get("gold_support_covered")
 
             if not isinstance(provenance, QAQueryAttempt):
                 return
@@ -462,12 +456,7 @@ class VerboseH0Reporter:
                 }
             )
             _print(f"  provenance sources: {source_titles}")
-            _print(f"  gold support covered: {support_covered}")
             return
-
-        if event == "query.gold_support.missing":
-            _print("  answer is correct but gold support is incomplete")
-            _print("  action: retrying query")
 
 
 def parse_arguments(argv: Sequence[str] | None = None) -> RunOneArguments:
@@ -776,7 +765,9 @@ def _print_outcome_summary(
 
     _print("")
     _print("=" * 72)
-    _print("H0 CASE PASSED" if isinstance(outcome, H0CaseResult) else "H0 CASE FAILED")
+    _print(
+        "H0 COLLECTION COMPLETE" if isinstance(outcome, H0CaseResult) else "H0 COLLECTION FAILED"
+    )
     _print("=" * 72)
     _print(f"case:                  {outcome.case_id}")
     _print(f"result:                {result_path}")
@@ -808,9 +799,10 @@ def _print_outcome_summary(
         _print(f"entity nodes:          {outcome.graph_measurements.entity_node_count}")
         _print(f"literal values:        {outcome.graph_measurements.literal_value_count}")
         _print(f"predicates:            {outcome.graph_measurements.predicate_count}")
+        final_attempt = outcome.query_attempts[-1]
         _print(f"query attempts:        {len(outcome.query_attempts)}")
+        _print(f"observed answers:      {final_attempt.observed_answers}")
         _print(f"provenance status:     {outcome.final_provenance.provenance_status}")
-        _print(f"gold support covered:  {outcome.query_attempts[-1].gold_support_covered}")
     else:
         _print("")
         _print(f"failure stage:         {outcome.stage}")
