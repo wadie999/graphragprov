@@ -1,0 +1,395 @@
+
+H0 one-case execution
+  case:          3hop2__92991_27069_76291
+  hops:          3
+  question:      When did the party Oklahoma's US Senators come from take control of the body determining the rules of the US House and US Senate?
+  expected:      January 2015
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__92991_27069_76291/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=12 title='Standing Rules of the United States Senate'
+  source unit: u_d150dcb87414f2bcb442285d66467e3b26e066c910101f8ee927afa1dc5b1942
+  text chars:  299
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.267s | model=deepseek-v4-flash
+      tokens:   in=5310 | out=1083 | total=6393 | cached=4992 | uncached=318
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 304 / 341 (89.1%)
+    characters text:     262 / 299 (87.6%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  6 chars
+      'that'
+    statement density:  17.60 / 1000 chars
+    title reliance:      3 / 6 (50.0%)
+
+[GRAPH 2/3] paragraph=8 title='Oklahoma'
+  source unit: u_02a8b5e3d5b5d29fbad1c4a278379cf8b56cfbbb575bf268705ee754d063b9f3
+  text chars:  557
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 12.605s | model=deepseek-v4-flash
+      tokens:   in=5472 | out=2670 | total=8142 | cached=4992 | uncached=480
+    [LLM graph.reference #3] sending...
+      provider: 1.606s | model=deepseek-v4-flash
+      tokens:   in=665 | out=163 | total=828 | cached=0 | uncached=665
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 1
+
+    initial rejection #16
+      validator:
+        response.statements[16].predicate.evidence[0]: quote 'delegation was reduced from six to five representatives' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "five representatives",
+                "segment": "text"
+              }
+            ],
+            "value": "five representatives"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "delegation was reduced from six to five representatives",
+                "segment": "text"
+              }
+            ],
+            "value": "hasRepresentatives"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Oklahoma",
+                "segment": "title"
+              }
+            ],
+            "value": "Oklahoma"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 213 / 565 (37.7%)
+    characters text:     205 / 557 (36.8%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           6 / 7 (85.7%)
+    longest uncovered:  128 chars
+      ', each serving one congressional district. For the 112th Congress (2011–2013), there were no changes in party strength, and the'
+    statement density:  30.09 / 1000 chars
+    title reliance:      10 / 17 (58.8%)
+
+[GRAPH 3/3] paragraph=1 title='2014 United States Senate elections'
+  source unit: u_03702665607c765fb0fe81a0bfe63c8dc14fe655761cf5dbdb5c172af2af8098
+  text chars:  362
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 8.192s | model=deepseek-v4-flash
+      tokens:   in=5585 | out=1634 | total=7219 | cached=5120 | uncached=465
+    [LLM graph.reference #5] sending...
+      provider: 2.968s | model=deepseek-v4-flash
+      tokens:   in=1026 | out=506 | total=1532 | cached=0 | uncached=1026
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 3
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2015",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2015"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "started in",
+                "segment": "text"
+              }
+            ],
+            "value": "startedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "114th Congress",
+                "segment": "text"
+              }
+            ],
+            "value": "114th Congress"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Senate",
+                "segment": "text"
+              }
+            ],
+            "value": "Senate"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "had not controlled",
+                "segment": "text"
+              }
+            ],
+            "value": "lastControlled"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+    initial rejection #4
+      validator:
+        response.statements[4].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2007",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2007"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "had not controlled the Senate since",
+                "segment": "text"
+              }
+            ],
+            "value": "lastControlledSenateUntil"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 10
+  coverage:
+    characters combined: 302 / 397 (76.1%)
+    characters text:     302 / 362 (83.4%)
+    characters title:    0 / 35 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  14 chars
+      '. Republicans'
+    statement density:  25.19 / 1000 chars
+    title reliance:      0 / 10 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 33
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 4
+  corrected valid: 4
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      33
+resource nodes:        28
+entity nodes:          28
+literal values:        3
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:Dan%20Boren> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Democratic%20Party> .
+  <urn:graphragprov:entity:Frank%20D.%20Lucas> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  <urn:graphragprov:entity:James%20Lankford> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  <urn:graphragprov:entity:Jim%20Inhofe> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  <urn:graphragprov:entity:John%20Sullivan> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:Dan%20Boren> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:Frank%20D.%20Lucas> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:James%20Lankford> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:John%20Sullivan> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:Tom%20Cole> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:five%20representatives> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:four%20Republicans> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasRepresentatives> <urn:graphragprov:entity:one%20Democrat> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> <urn:graphragprov:entity:Jim%20Inhofe> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> <urn:graphragprov:entity:Tom%20Coburn> .
+  <urn:graphragprov:entity:Tom%20Coburn> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  <urn:graphragprov:entity:Tom%20Cole> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:five%20Democratic%20incumbents> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gained> <urn:graphragprov:entity:nine%20Democratic-held%20seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:heldAllOf> <urn:graphragprov:entity:their%20seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:lastControlled> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:lastControlledSenateUntil> "2007-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainOf> "at least six seats" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainToObtain> <urn:graphragprov:entity:majority> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:Each%20House> <urn:graphragprov:predicate:mayDetermine> <urn:graphragprov:entity:the%20rules%20of%20its%20proceedings> .
+  <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:derivesPowerFrom> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> .
+  <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:hasPowerTo> <urn:graphragprov:entity:establish%20rules> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:adoptedBy> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:governs> <urn:graphragprov:entity:its%20procedure> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:parliamentary%20procedures> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.084s | model=deepseek-v4-flash
+      tokens:   in=2378 | out=424 | total=2802 | cached=640 | uncached=1738
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> <urn:graphragprov:entity:Jim%20Inhofe> .
+  - <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> <urn:graphragprov:entity:Tom%20Coburn> .
+  - <urn:graphragprov:entity:Jim%20Inhofe> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  - <urn:graphragprov:entity:Tom%20Coburn> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> .
+  - <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  - <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> ?senator . ?senator <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> ?congress . ?congress <urn:graphragprov:predicate:startedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_02a8b5e3d5b5d29f>
+  FROM <urn:graphragprov:unit:u_03702665607c765f>
+  FROM <urn:graphragprov:unit:u_d150dcb87414f2bc>
+  WHERE { <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:hasSenators> ?senator . ?senator <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Republican%20Party> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> ?congress . ?congress <urn:graphragprov:predicate:startedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2015-01',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['2014 United States Senate elections', 'Oklahoma']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__92991_27069_76291
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__92991_27069_76291/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          20436
+output tokens:         6480
+total tokens:          26916
+cached input tokens:   15744
+uncached input tokens: 4692
+cumulative LLM seconds: 34.722
+
+statement occurrences: 33
+semantic triples:      33
+entity nodes:          28
+literal values:        3
+predicates:            19
+query attempts:        1
+observed answers:      ('2015-01',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 31.655s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.080s
+  graph.materialization [attempt=1]: 0.189s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 3.085s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.461s

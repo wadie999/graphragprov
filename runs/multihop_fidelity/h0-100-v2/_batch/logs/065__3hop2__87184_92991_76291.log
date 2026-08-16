@@ -1,0 +1,432 @@
+
+H0 one-case execution
+  case:          3hop2__87184_92991_76291
+  hops:          3
+  question:      When did the party that controls the House of Representatives take control of the branch who determines the rules of the US house and Senate?
+  expected:      January 2015
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__87184_92991_76291/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=9 title='114th United States Congress'
+  source unit: u_0d76c6ab5795c1df747bf2795f2411cdbf06f692eb28638711c0e92147c16727
+  text chars:  667
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 14.586s | model=deepseek-v4-flash
+      tokens:   in=5397 | out=2822 | total=8219 | cached=4992 | uncached=405
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 429 / 695 (61.7%)
+    characters text:     401 / 667 (60.1%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  50 chars
+      'The One Hundred Fourteenth United States Congress'
+    statement density:  24.46 / 1000 chars
+    title reliance:      12 / 17 (70.6%)
+
+[GRAPH 2/3] paragraph=7 title='Standing Rules of the United States Senate'
+  source unit: u_d150dcb87414f2bcb442285d66467e3b26e066c910101f8ee927afa1dc5b1942
+  text chars:  299
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.236s | model=deepseek-v4-flash
+      tokens:   in=5549 | out=935 | total=6484 | cached=4992 | uncached=557
+    [LLM graph.reference #3] sending...
+      provider: 2.298s | model=deepseek-v4-flash
+      tokens:   in=850 | out=385 | total=1235 | cached=0 | uncached=850
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 2
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.evidence[0]: quote 'United States Senate' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "United States Senate",
+                "segment": "text"
+              }
+            ],
+            "value": "United States Senate"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "govern",
+                "segment": "text"
+              }
+            ],
+            "value": "governsProcedureOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Standing Rules of the United States Senate",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "The Standing Rules of the Senate",
+                "segment": "text"
+              }
+            ],
+            "value": "Standing Rules of the Senate"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].subject.evidence[0]: quote 'United States Senate' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Article One, Section 5 of the United States Constitution",
+                "segment": "text"
+              }
+            ],
+            "value": "Article One, Section 5 of the United States Constitution"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "power to establish rules",
+                "segment": "text"
+              }
+            ],
+            "value": "hasPowerToEstablishRules"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "United States Senate",
+                "segment": "text"
+              }
+            ],
+            "value": "United States Senate"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 268 / 341 (78.6%)
+    characters text:     226 / 299 (75.6%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  29 chars
+      "its procedure. The Senate's"
+    statement density:  14.66 / 1000 chars
+    title reliance:      3 / 5 (60.0%)
+
+[GRAPH 3/3] paragraph=15 title='2014 United States Senate elections'
+  source unit: u_03702665607c765fb0fe81a0bfe63c8dc14fe655761cf5dbdb5c172af2af8098
+  text chars:  362
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 8.258s | model=deepseek-v4-flash
+      tokens:   in=5643 | out=1636 | total=7279 | cached=5120 | uncached=523
+    [LLM graph.reference #5] sending...
+      provider: 3.199s | model=deepseek-v4-flash
+      tokens:   in=1024 | out=504 | total=1528 | cached=0 | uncached=1024
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 3
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2015",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2015"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "started in",
+                "segment": "text"
+              }
+            ],
+            "value": "startedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "114th Congress",
+                "segment": "text"
+              }
+            ],
+            "value": "114th Congress"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Senate",
+                "segment": "text"
+              }
+            ],
+            "value": "Senate"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "had not controlled",
+                "segment": "text"
+              }
+            ],
+            "value": "hadNotControlledSince"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+    initial rejection #4
+      validator:
+        response.statements[4].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2007",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2007"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "had not controlled",
+                "segment": "text"
+              }
+            ],
+            "value": "hadNotControlledSince"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 266 / 397 (67.0%)
+    characters text:     266 / 362 (73.5%)
+    characters title:    0 / 35 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  28 chars
+      'to obtain a majority. They'
+    statement density:  22.67 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 31
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 5
+  corrected valid: 5
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      31
+resource nodes:        23
+entity nodes:          23
+literal values:        6
+predicates:            23
+
+N-Triples:
+  <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:five%20Democratic%20incumbents> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gained> <urn:graphragprov:entity:nine%20Democratic-held%20seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:hadNotControlledSince> "2007-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:hadNotControlledSince> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:heldAllOf> <urn:graphragprov:entity:their%20seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainOf> "at least six seats" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:beganWithLargestRepublicanMajoritySince> "1929 -- 1931" .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:beganWithLargestRepublicanMajoritySince> <urn:graphragprov:entity:71st%20Congress> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:composedOf> <urn:graphragprov:entity:United%20States%20House%20of%20Representatives> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:composedOf> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:endDate> "2017-01-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:hadSeatsIn> <urn:graphragprov:entity:House%20of%20Representatives> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:hadSeatsIn> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:legislative%20branch> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:meeting> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:metIn> <urn:graphragprov:entity:Washington%2C%20D.C.> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:occurredDuring> <urn:graphragprov:entity:Barack%20Obama%27s%20presidency> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:startDate> "2015-01-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2014%20elections> <urn:graphragprov:predicate:gaveControlOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:2014%20elections> <urn:graphragprov:predicate:gaveControlOf> <urn:graphragprov:entity:both%20houses%20of%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlForFirstTimeSince> <urn:graphragprov:entity:109th%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:both%20houses%20of%20Congress> .
+  <urn:graphragprov:entity:Each%20House> <urn:graphragprov:predicate:mayDetermineRulesOf> <urn:graphragprov:entity:its%20proceedings> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:adoptedBy> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:governsProcedureOf> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:parliamentary%20procedures> .
+  <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:hasPowerToEstablishRules> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.462s | model=deepseek-v4-flash
+      tokens:   in=2452 | out=353 | total=2805 | cached=640 | uncached=1812
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  - <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  - <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:hasPowerToEstablishRules> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> . <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> ?answer . <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:hasPowerToEstablishRules> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_03702665607c765f>
+  FROM <urn:graphragprov:unit:u_0d76c6ab5795c1df>
+  FROM <urn:graphragprov:unit:u_d150dcb87414f2bc>
+  WHERE { <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> . <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> ?answer . <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:hasPowerToEstablishRules> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> . }
+
+GraphDB execution:
+  observed answers: ('2015-01',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['2014 United States Senate elections', 'Standing Rules of the United States Senate']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__87184_92991_76291
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__87184_92991_76291/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          20915
+output tokens:         6635
+total tokens:          27550
+cached input tokens:   15744
+uncached input tokens: 5171
+cumulative LLM seconds: 36.040
+
+statement occurrences: 31
+semantic triples:      31
+entity nodes:          23
+literal values:        6
+predicates:            23
+query attempts:        1
+observed answers:      ('2015-01',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.594s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.082s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.463s
+  graphdb.semantic [attempt=1]: 0.011s
+  provenance.execution [attempt=1]: 0.440s

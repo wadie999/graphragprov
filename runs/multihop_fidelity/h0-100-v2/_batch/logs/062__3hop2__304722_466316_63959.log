@@ -1,0 +1,913 @@
+
+H0 one-case execution
+  case:          3hop2__304722_466316_63959
+  hops:          3
+  question:      When was the last time the team that Arthur James was a member of beat the 1894-95 FA cup winner?
+  expected:      1 December 2010
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__304722_466316_63959/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=10 title='1894–95 FA Cup'
+  source unit: u_7cee9ea88431fdd5e23da7c52c95b3cdd3fdd1a5eb82ba5d6d19e27488398aad
+  text chars:  532
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.722s | model=deepseek-v4-flash
+      tokens:   in=5371 | out=1806 | total=7177 | cached=4992 | uncached=379
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 260 / 546 (47.6%)
+    characters text:     246 / 532 (46.2%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 4 (75.0%)
+    longest uncovered:  185 chars
+      'despite a £10 reward. According to the Police, it was taken sometime between 21:30 on Wednesday 11 September and 7:30 the following morning, along with cash from a drawer. The cup…'
+    statement density:  20.15 / 1000 chars
+    title reliance:      6 / 11 (54.5%)
+
+[GRAPH 2/3] paragraph=19 title='Arthur James (footballer)'
+  source unit: u_3a9d2ced31396412de255db9236e630c3253fc09962fc89b776e563aa63cb528
+  text chars:  241
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.136s | model=deepseek-v4-flash
+      tokens:   in=5446 | out=1843 | total=7289 | cached=4992 | uncached=454
+    [LLM graph.reference #3] sending...
+      provider: 2.456s | model=deepseek-v4-flash
+      tokens:   in=821 | out=376 | total=1197 | cached=0 | uncached=821
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 2
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'played for' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Small Heath Alliance",
+                "segment": "text"
+              }
+            ],
+            "value": "Small Heath Alliance"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "played for",
+                "segment": "text"
+              }
+            ],
+            "value": "memberOfSportsTeam"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "text"
+              }
+            ],
+            "value": "Arthur James"
+          }
+        }
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'played for' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Birmingham City",
+                "segment": "text"
+              }
+            ],
+            "value": "Birmingham City"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "played for",
+                "segment": "text"
+              }
+            ],
+            "value": "memberOfSportsTeam"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "text"
+              }
+            ],
+            "value": "Arthur James"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'played for' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Small Heath Alliance",
+                "segment": "text"
+              }
+            ],
+            "value": "Small Heath Alliance"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "played for",
+                "segment": "text"
+              }
+            ],
+            "value": "memberOfSportsTeam"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "text"
+              }
+            ],
+            "value": "Arthur James"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'played for' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Birmingham City",
+                "segment": "text"
+              }
+            ],
+            "value": "Birmingham City"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "played for",
+                "segment": "text"
+              }
+            ],
+            "value": "memberOfSportsTeam"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Arthur James",
+                "segment": "text"
+              }
+            ],
+            "value": "Arthur James"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 220 / 266 (82.7%)
+    characters text:     208 / 241 (86.3%)
+    characters title:    12 / 25 (48.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  5 chars
+      'who'
+    statement density:  30.08 / 1000 chars
+    title reliance:      7 / 8 (87.5%)
+
+[GRAPH 3/3] paragraph=16 title='Second City derby'
+  source unit: u_574be2f837968be24551b70f64dca2394560ea6969195152e97253573ab65de1
+  text chars:  980
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 71.681s | model=deepseek-v4-flash
+      tokens:   in=5778 | out=16384 | total=22162 | cached=5120 | uncached=658
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #5] sending...
+      provider: 48.124s | model=deepseek-v4-flash
+      tokens:   in=5823 | out=11002 | total=16825 | cached=5760 | uncached=63
+    [LLM graph.reference #6] sending...
+      provider: 10.023s | model=deepseek-v4-flash
+      tokens:   in=3100 | out=2048 | total=5148 | cached=384 | uncached=2716
+  extraction: ACCEPTED
+  statements: 68
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    56
+    initially rejected: 12
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "5 November 1887",
+                "segment": "text"
+              }
+            ],
+            "value": "5 November 1887"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Aston Villa",
+                "segment": "text"
+              }
+            ],
+            "value": "Aston Villa"
+          }
+        }
+
+    initial rejection #6
+      validator:
+        response.statements[6].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "23 March 1901",
+                "segment": "text"
+              }
+            ],
+            "value": "23 March 1901"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Small Heath",
+                "segment": "text"
+              }
+            ],
+            "value": "Small Heath"
+          }
+        }
+
+    initial rejection #11
+      validator:
+        response.statements[11].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "27 March 1901",
+                "segment": "text"
+              }
+            ],
+            "value": "27 March 1901"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Aston Villa",
+                "segment": "text"
+              }
+            ],
+            "value": "Aston Villa"
+          }
+        }
+
+    initial rejection #16
+      validator:
+        response.statements[16].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "23 May 1963",
+                "segment": "text"
+              }
+            ],
+            "value": "23 May 1963"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Birmingham City",
+                "segment": "text"
+              }
+            ],
+            "value": "Birmingham City"
+          }
+        }
+
+    initial rejection #22
+      validator:
+        response.statements[22].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "27 May 1963",
+                "segment": "text"
+              }
+            ],
+            "value": "27 May 1963"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 3,
+                "quote": "Aston Villa",
+                "segment": "text"
+              }
+            ],
+            "value": "Aston Villa"
+          }
+        }
+
+    initial rejection #28
+      validator:
+        response.statements[28].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "27 September 1988",
+                "segment": "text"
+              }
+            ],
+            "value": "27 September 1988"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Birmingham City",
+                "segment": "text"
+              }
+            ],
+            "value": "Birmingham City"
+          }
+        }
+
+    initial rejection #33
+      validator:
+        response.statements[33].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "12 October 1988",
+                "segment": "text"
+              }
+            ],
+            "value": "12 October 1988"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 4,
+                "quote": "Aston Villa",
+                "segment": "text"
+              }
+            ],
+            "value": "Aston Villa"
+          }
+        }
+
+    initial rejection #38
+      validator:
+        response.statements[38].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "9 November 1988",
+                "segment": "text"
+              }
+            ],
+            "value": "9 November 1988"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 5,
+                "quote": "Aston Villa",
+                "segment": "text"
+              }
+            ],
+            "value": "Aston Villa"
+          }
+        }
+
+    initial rejection #44
+      validator:
+        response.statements[44].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "21 September 1993",
+                "segment": "text"
+              }
+            ],
+            "value": "21 September 1993"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 3,
+                "quote": "Birmingham City",
+                "segment": "text"
+              }
+            ],
+            "value": "Birmingham City"
+          }
+        }
+
+    initial rejection #50
+      validator:
+        response.statements[50].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "6 October 1993",
+                "segment": "text"
+              }
+            ],
+            "value": "6 October 1993"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 6,
+                "quote": "Aston Villa",
+                "segment": "text"
+              }
+            ],
+            "value": "Aston Villa"
+          }
+        }
+
+    initial rejection #56
+      validator:
+        response.statements[56].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1 December 2010",
+                "segment": "text"
+              }
+            ],
+            "value": "1 December 2010"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 4,
+                "quote": "Birmingham City",
+                "segment": "text"
+              }
+            ],
+            "value": "Birmingham City"
+          }
+        }
+
+    initial rejection #62
+      validator:
+        response.statements[62].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "22 September 2015",
+                "segment": "text"
+              }
+            ],
+            "value": "22 September 2015"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Home team",
+                "segment": "text"
+              }
+            ],
+            "value": "homeTeamIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 7,
+                "quote": "Aston Villa",
+                "segment": "text"
+              }
+            ],
+            "value": "Aston Villa"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    12
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 68
+  coverage:
+    characters combined: 667 / 997 (66.9%)
+    characters text:     650 / 980 (66.3%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  36 chars
+      'Score Competition Round Attendance'
+    statement density:  68.20 / 1000 chars
+    title reliance:      1 / 68 (1.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 87
+  whole-source attempts: 4
+  whole-source retries: 1
+  targeted corrections: 2
+  initial rejections: 14
+  corrected valid: 12
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      67
+resource nodes:        32
+entity nodes:          32
+literal values:        31
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:bornInYear> "1855"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:diedInYear> "1911"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:footballer> .
+  <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:playedFromYear> "1875"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:playedPosition> <urn:graphragprov:entity:outside%20right> .
+  <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:playedUntilYear> "1887"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Small%20Heath%20Alliance> <urn:graphragprov:predicate:laterBecame> <urn:graphragprov:entity:Birmingham%20City> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:attendance> "34442"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:attendance> "35856"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:attendance> "37921"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:attendance> "8324"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:homeTeamIn> "1887-11-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:homeTeamIn> "1901-03-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:homeTeamIn> "1963-05-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:homeTeamIn> "1988-10-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:homeTeamIn> "1988-11-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:homeTeamIn> "1993-10-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:homeTeamIn> "2015-09-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:opponentIn> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInCompetition> <urn:graphragprov:entity:FA%20Cup> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInCompetition> <urn:graphragprov:entity:Full%20Members%20Cup> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInCompetition> <urn:graphragprov:entity:League%20Cup> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:1st%20Round> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:2nd%20Round> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:2nd%20Round%202nd%20leg> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:3rd%20Round> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:Final%202nd%20leg> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:Quarter%20Final%20replay> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:scoredGoals> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:scoredGoals> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:scoredGoals> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:scoredGoals> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:scoredGoals> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:attendance> "27679"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:attendance> "27815"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:attendance> "31850"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:homeTeamIn> "1963-05-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:homeTeamIn> "1988-09-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:homeTeamIn> "1993-09-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:homeTeamIn> "2010-12-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:opponentIn> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:opponentIn> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:playedInCompetition> <urn:graphragprov:entity:League%20Cup> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:2nd%20Round%201st%20leg> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:Final%201st%20leg> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:Quarter%20Final> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:scoredGoals> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:scoredGoals> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:scoredGoals> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Second%20City%20derby> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:football%20rivalry> .
+  <urn:graphragprov:entity:Small%20Heath> <urn:graphragprov:predicate:homeTeamIn> "1901-03-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Small%20Heath> <urn:graphragprov:predicate:opponentIn> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Small%20Heath> <urn:graphragprov:predicate:playedInCompetition> <urn:graphragprov:entity:FA%20Cup> .
+  <urn:graphragprov:entity:Small%20Heath> <urn:graphragprov:predicate:playedInRound> <urn:graphragprov:entity:Quarter%20Final> .
+  <urn:graphragprov:entity:Small%20Heath> <urn:graphragprov:predicate:scoredGoals> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:neverRecovered> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:replacedBy> <urn:graphragprov:entity:copy%20of%20the%20original> .
+  <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:stolenAfter> <urn:graphragprov:entity:Final> .
+  <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:stolenFrom> <urn:graphragprov:entity:W.%20Shillcock> .
+  <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:stolenFromLocation> <urn:graphragprov:entity:shop%20window> .
+  <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:stolenIn> <urn:graphragprov:entity:Birmingham> .
+  <urn:graphragprov:entity:Howard%20Vaughton> <urn:graphragprov:predicate:formerPlayerOf> <urn:graphragprov:entity:Aston%20Villa> .
+  <urn:graphragprov:entity:Howard%20Vaughton> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Howard%20Vaughton> <urn:graphragprov:predicate:openedBusiness> <urn:graphragprov:entity:silversmith%27s%20business> .
+  <urn:graphragprov:entity:Howard%20Vaughton> <urn:graphragprov:predicate:retiredFrom> <urn:graphragprov:entity:game> .
+  <urn:graphragprov:entity:copy%20of%20the%20original> <urn:graphragprov:predicate:madeBy> <urn:graphragprov:entity:Howard%20Vaughton> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.895s | model=deepseek-v4-flash
+      tokens:   in=4208 | out=427 | total=4635 | cached=640 | uncached=3568
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Birmingham%20City> .
+  - <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:winner> <urn:graphragprov:entity:Aston%20Villa> .
+  - <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:homeTeamIn> "2010-12-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  - <urn:graphragprov:entity:Birmingham%20City> <urn:graphragprov:predicate:opponentIn> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  - <urn:graphragprov:entity:Aston%20Villa> <urn:graphragprov:predicate:awayTeamIn> "2010-12-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:memberOf> ?team . <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:winner> ?winner . ?team <urn:graphragprov:predicate:homeTeamIn> ?date . ?team <urn:graphragprov:predicate:opponentIn> ?opponent . ?winner <urn:graphragprov:predicate:awayTeamIn> ?date . BIND(?date AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3a9d2ced31396412>
+  FROM <urn:graphragprov:unit:u_574be2f837968be2>
+  FROM <urn:graphragprov:unit:u_7cee9ea88431fdd5>
+  WHERE { <urn:graphragprov:entity:Arthur%20James> <urn:graphragprov:predicate:memberOf> ?team . <urn:graphragprov:entity:1894%E2%80%9395%20FA%20Cup> <urn:graphragprov:predicate:winner> ?winner . ?team <urn:graphragprov:predicate:homeTeamIn> ?date . ?team <urn:graphragprov:predicate:opponentIn> ?opponent . ?winner <urn:graphragprov:predicate:awayTeamIn> ?date . BIND(?date AS ?answer) }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__304722_466316_63959
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__304722_466316_63959/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          30547
+output tokens:         33886
+total tokens:          64433
+cached input tokens:   21888
+uncached input tokens: 8659
+cumulative LLM seconds: 154.036
+
+statement occurrences: 87
+semantic triples:      67
+entity nodes:          32
+literal values:        31
+predicates:            24
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 151.178s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.082s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.895s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.487s

@@ -1,0 +1,379 @@
+
+H0 one-case execution
+  case:          4hop1__152146_5274_458768_33633
+  hops:          4
+  question:      When did the explorer reach the headquarters location of the only company larger than Langa natter's record label?
+  expected:      August 3, 1769
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__152146_5274_458768_33633/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=18 title='Långa nätter'
+  source unit: u_83349bc631893e5723a6a48d0c8a65fc83695d66cf6f3f3540f88c65bae54da5
+  text chars:  294
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.046s | model=deepseek-v4-flash
+      tokens:   in=5363 | out=1669 | total=7032 | cached=4992 | uncached=371
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 237 / 306 (77.5%)
+    characters text:     225 / 294 (76.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  13 chars
+      'Långa nätter'
+    statement density:  32.68 / 1000 chars
+    title reliance:      9 / 10 (90.0%)
+
+[GRAPH 2/4] paragraph=1 title='Sony Music'
+  source unit: u_b2b2839417fb6bd0e90e840d9bbf60b9be56a98638073bf423f5871ea8976ee9
+  text chars:  636
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 15.343s | model=deepseek-v4-flash
+      tokens:   in=5557 | out=3147 | total=8704 | cached=4992 | uncached=565
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 479 / 646 (74.1%)
+    characters text:     479 / 636 (75.3%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  38 chars
+      ", following ARC's acquisition by CBS."
+    statement density:  29.41 / 1000 chars
+    title reliance:      0 / 19 (0.0%)
+
+[GRAPH 3/4] paragraph=9 title='The Right Stuff Records'
+  source unit: u_058f4b6abd0b757a62a79ddc66ff90730b278b21a18e85e710a1024008d1096b
+  text chars:  161
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.702s | model=deepseek-v4-flash
+      tokens:   in=5717 | out=791 | total=6508 | cached=5120 | uncached=597
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 118 / 184 (64.1%)
+    characters text:     95 / 161 (59.0%)
+    characters title:    23 / 23 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  24 chars
+      'The Right Stuff Records'
+    statement density:  27.17 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 4/4] paragraph=8 title='Santa Monica, California'
+  source unit: u_7941ba420f6107fecf95bd7730b34746ea725466306410e1389d2e31c4465371
+  text chars:  714
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 6.045s | model=deepseek-v4-flash
+      tokens:   in=5902 | out=1159 | total=7061 | cached=5120 | uncached=782
+    [LLM graph.reference #5] sending...
+      provider: 3.574s | model=deepseek-v4-flash
+      tokens:   in=1113 | out=486 | total=1599 | cached=0 | uncached=1113
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 3
+
+    initial rejection #4
+      validator:
+        response.statements[4].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 3 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Saint Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Saint Monica"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "named in honor of",
+                "segment": "text"
+              }
+            ],
+            "value": "namedInHonorOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 3,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+    initial rejection #5
+      validator:
+        response.statements[5].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 4 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Juan Crespí",
+                "segment": "text"
+              }
+            ],
+            "value": "Juan Crespí"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "named by",
+                "segment": "text"
+              }
+            ],
+            "value": "namedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 4,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+    initial rejection #6
+      validator:
+        response.statements[6].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 4 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Kuruvungna Springs",
+                "segment": "text"
+              }
+            ],
+            "value": "Kuruvungna Springs"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "on account of",
+                "segment": "text"
+              }
+            ],
+            "value": "namedOnAccountOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 4,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 230 / 738 (31.2%)
+    characters text:     230 / 714 (32.2%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  106 chars
+      'in the Tongva language. The first non-indigenous group to set foot in the area was the party of explorer'
+    statement density:  9.49 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 41
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 3
+  corrected valid: 3
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      41
+resource nodes:        34
+entity nodes:          34
+literal values:        8
+predicates:            32
+
+N-Triples:
+  <urn:graphragprov:entity:EMI> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Santa%20Monica> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reissue%20record%20label> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:California> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:EMI> .
+  <urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedNear> <urn:graphragprov:entity:intersection%20of%20Barrington%20and%20Ohio%20Avenues> .
+  <urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedOnDate> "1769-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:calledInTongvaLanguage> <urn:graphragprov:entity:Kecheek> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:inhabitedBy> <urn:graphragprov:entity:Tongva%20people> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedBy> <urn:graphragprov:entity:Juan%20Cresp%C3%AD> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedInHonorOf> <urn:graphragprov:entity:Saint%20Monica> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedOnAccountOf> <urn:graphragprov:entity:Kuruvungna%20Springs> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Melissa%20Horn> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:featuresSingle> <urn:graphragprov:entity:En%20famn%20f%C3%B6r%20mig> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:featuresSingle> <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:featuresSingle> <urn:graphragprov:entity:Som%20jag%20hade%20dig%20f%C3%B6rut> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:debut%20album> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jan%20Radesj%C3%B6> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Lasse%20Englund> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sony%20Music%20Entertainment> .
+  <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:releasedOn> "2008-04-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Som%20jag%20hade%20dig%20f%C3%B6rut> <urn:graphragprov:predicate:isDuetWith> <urn:graphragprov:entity:Lars%20Winnerb%C3%A4ck> .
+  <urn:graphragprov:entity:Sony%20Corporation> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Japanese> .
+  <urn:graphragprov:entity:Sony%20Corporation%20of%20America> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Sony%20Corporation> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:acquiredBy> <urn:graphragprov:entity:Sony%20Corporation%20of%20Japan> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:acquiredInYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:SME> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:Sony%20Music> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:foundedAs> <urn:graphragprov:entity:American%20Record%20Corporation> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:foundedInYear> "1929"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20music%20corporation> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:recorded%20music%20company> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:managedBy> <urn:graphragprov:entity:Sony%20Corporation%20of%20America> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:ranked> "second largest" .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedInYear> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedInYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Columbia%20Recording%20Corporation> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:SME> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:reorganizedInYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:reorganizedTo> <urn:graphragprov:entity:CBS%20Records> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:smallerThan> <urn:graphragprov:entity:Universal%20Music%20Group> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.750s | model=deepseek-v4-flash
+      tokens:   in=3124 | out=354 | total=3478 | cached=640 | uncached=2484
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sony%20Music%20Entertainment> .
+  - <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:smallerThan> <urn:graphragprov:entity:Universal%20Music%20Group> .
+  - <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Santa%20Monica> .
+  - <urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedOnDate> "1769-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:recordLabel> ?label . ?label <urn:graphragprov:predicate:smallerThan> ?company . ?company <urn:graphragprov:predicate:basedIn> ?location . ?explorer <urn:graphragprov:predicate:campedOnDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_058f4b6abd0b757a>
+  FROM <urn:graphragprov:unit:u_7941ba420f6107fe>
+  FROM <urn:graphragprov:unit:u_83349bc631893e57>
+  FROM <urn:graphragprov:unit:u_b2b2839417fb6bd0>
+  WHERE { <urn:graphragprov:entity:L%C3%A5nga%20n%C3%A4tter> <urn:graphragprov:predicate:recordLabel> ?label . ?label <urn:graphragprov:predicate:smallerThan> ?company . ?company <urn:graphragprov:predicate:basedIn> ?location . ?explorer <urn:graphragprov:predicate:campedOnDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__152146_5274_458768_33633
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__152146_5274_458768_33633/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26776
+output tokens:         7606
+total tokens:          34382
+cached input tokens:   20864
+uncached input tokens: 5912
+cumulative LLM seconds: 41.459
+
+statement occurrences: 41
+semantic triples:      41
+entity nodes:          34
+literal values:        8
+predicates:            32
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 38.733s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.078s
+  graph.materialization [attempt=1]: 0.099s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.751s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.545s

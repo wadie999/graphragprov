@@ -1,0 +1,181 @@
+
+H0 one-case execution
+  case:          2hop__91626_96912
+  hops:          2
+  question:      Who gives out the prize named after the author of The Wealth of Nations?
+  expected:      University of Cambridge
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__91626_96912/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=13 title='The Wealth of Nations'
+  source unit: u_a9ea1b2ea81a523f9eba663b4236ff7af03f90d11ad671366ac4cf2160e69c07
+  text chars:  166
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.558s | model=deepseek-v4-flash
+      tokens:   in=5243 | out=1113 | total=6356 | cached=4992 | uncached=251
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 152 / 187 (81.3%)
+    characters text:     131 / 166 (78.9%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  22 chars
+      'The Wealth of Nations'
+    statement density:  37.43 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/2] paragraph=5 title='Adam Smith Prize'
+  source unit: u_47610b97c08aa6c63d44565b7d7b128153553a34b969c42d6a075bd60714b199
+  text chars:  327
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.522s | model=deepseek-v4-flash
+      tokens:   in=5347 | out=1514 | total=6861 | cached=5120 | uncached=227
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 276 / 343 (80.5%)
+    characters text:     260 / 327 (79.5%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  24 chars
+      '. Previously the prize,'
+    statement density:  26.24 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 16
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      16
+resource nodes:        12
+entity nodes:          12
+literal values:        5
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:University%20of%20Cambridge> .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:awardedFor> "best performance in the Part IIB Economics Tripos examinations and dissertation" .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:awardedFor> "best submitted essay on a subject of the writer's choice" .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:awardedTriennially> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:establishedInYear> "1891"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:prize> .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Cambridge> .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:Adam%20Smith> .
+  <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Adam%20Smith> .
+  <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Scotland> .
+  <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Economics> .
+  <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Philosophy> .
+  <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:publicationDate> "1776"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:publisher> <urn:graphragprov:entity:W.%20Strahan%20and%20T.%20Cadell%2C%20London> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.964s | model=deepseek-v4-flash
+      tokens:   in=1613 | out=251 | total=1864 | cached=640 | uncached=973
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Adam%20Smith> .
+  - <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:Adam%20Smith> .
+  - <urn:graphragprov:entity:Adam%20Smith%20Prize> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:University%20of%20Cambridge> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:author> ?author . ?prize <urn:graphragprov:predicate:namedAfter> ?author . ?prize <urn:graphragprov:predicate:awardedBy> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_47610b97c08aa6c6>
+  FROM <urn:graphragprov:unit:u_a9ea1b2ea81a523f>
+  WHERE { <urn:graphragprov:entity:The%20Wealth%20of%20Nations> <urn:graphragprov:predicate:author> ?author . ?prize <urn:graphragprov:predicate:namedAfter> ?author . ?prize <urn:graphragprov:predicate:awardedBy> ?answer . }
+
+GraphDB execution:
+  observed answers: ('University of Cambridge',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Adam Smith Prize', 'The Wealth of Nations']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__91626_96912
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__91626_96912/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12203
+output tokens:         2878
+total tokens:          15081
+cached input tokens:   10752
+uncached input tokens: 1451
+cumulative LLM seconds: 16.043
+
+statement occurrences: 16
+semantic triples:      16
+entity nodes:          12
+literal values:        5
+predicates:            13
+query attempts:        1
+observed answers:      ('University of Cambridge',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.087s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.064s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.965s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.521s

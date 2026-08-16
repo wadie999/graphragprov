@@ -1,0 +1,299 @@
+
+H0 one-case execution
+  case:          3hop2__831456_467331_162182
+  hops:          3
+  question:      What is the region of the country of Sa Thầy and the territory of the Zone 5 Military Museam located?
+  expected:      South Central Coast
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__831456_467331_162182/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=19 title='Sa Thầy District'
+  source unit: u_25015cfc36e4dec407cb5005f4094ac8271c31e1f3761d5e0856b049b005ee68
+  text chars:  398
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.743s | model=deepseek-v4-flash
+      tokens:   in=5340 | out=1134 | total=6474 | cached=4992 | uncached=348
+    [LLM graph.reference #2] sending...
+      provider: 1.507s | model=deepseek-v4-flash
+      tokens:   in=617 | out=183 | total=800 | cached=0 | uncached=617
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 1
+
+    initial rejection #5
+      validator:
+        response.statements[5].object.evidence[0]: quote '2,412 km²' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "2,412 km²",
+                "segment": "text"
+              }
+            ],
+            "value": "2412 km²"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "covers an area of",
+                "segment": "text"
+              }
+            ],
+            "value": "hasArea"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sa Thầy",
+                "segment": "text"
+              }
+            ],
+            "value": "Sa Thầy"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote '2,412 km²' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "2,412 km²",
+                "segment": "text"
+              }
+            ],
+            "value": "2,412 km²"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "covers an area of",
+                "segment": "text"
+              }
+            ],
+            "value": "hasArea"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sa Thầy",
+                "segment": "text"
+              }
+            ],
+            "value": "Sa Thầy"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 6
+  coverage:
+    characters combined: 112 / 414 (27.1%)
+    characters text:     112 / 398 (28.1%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           3 / 6 (50.0%)
+    longest uncovered:  201 chars
+      '. This is a very mountainous district, with many hydro electric dam projects located along the major rivers. The district has one of the lowest population densities in Vietnam. As…'
+    statement density:  14.49 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/3] paragraph=16 title='Zone 5 Military Museum, Danang'
+  source unit: u_82550b72ef63e90c519b65c86552d84fd736040f637f69e67491eb261e7c68b2
+  text chars:  334
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.956s | model=deepseek-v4-flash
+      tokens:   in=5398 | out=1766 | total=7164 | cached=4992 | uncached=406
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 275 / 364 (75.5%)
+    characters text:     253 / 334 (75.7%)
+    characters title:    22 / 30 (73.3%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  22 chars
+      'with the French, the'
+    statement density:  24.73 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 3/3] paragraph=3 title='South Central Coast'
+  source unit: u_b22b53fcd3bb38851dc8bd369c23e4ae8e141f41cc780d6fa8088d0ffb2fb9e5
+  text chars:  389
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 6.957s | model=deepseek-v4-flash
+      tokens:   in=5535 | out=1298 | total=6833 | cached=5120 | uncached=415
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 215 / 408 (52.7%)
+    characters text:     196 / 389 (50.4%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  33 chars
+      'the independent municipality of'
+    statement density:  19.61 / 1000 chars
+    title reliance:      4 / 8 (50.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 23
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      23
+resource nodes:        23
+entity nodes:          23
+literal values:        1
+predicates:            7
+
+N-Triples:
+  <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:hasCapital> <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> .
+  <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:hasPopulation> "29605"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rural%20district> .
+  <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Central%20Highlands> .
+  <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Kon%20Tum%20Province> .
+  <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:Chinese%20occupation> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:First%20Indochina%20War> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:Vietnam%20War> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:all%20Vietnamese%20resistance%20to%20foreign%20occupation> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:current%20standoff%20with%20China%20over%20the%20Spratly%20Islands%20and%20the%20Paracel%20Islands> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:military%20museum> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:3%20Duy%20T%C3%A2n> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Da%20Nang> .
+  <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+  <urn:graphragprov:entity:B%C3%ACnh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:sometimesSeenAsPartOf> <urn:graphragprov:entity:Southeast%20region> .
+  <urn:graphragprov:entity:Ninh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:sometimesSeenAsPartOf> <urn:graphragprov:entity:Southeast%20region> .
+  <urn:graphragprov:entity:Paracel%20Islands> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Central%20Coast> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:seven%20other%20provinces> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:region%20of%20Vietnam> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+  <urn:graphragprov:entity:Spratly%20Islands> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Central%20Coast> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.710s | model=deepseek-v4-flash
+      tokens:   in=2090 | out=370 | total=2460 | cached=640 | uncached=1450
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+  - <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Da%20Nang> .
+  - <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> . <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Da%20Nang> . <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> . BIND(<urn:graphragprov:entity:South%20Central%20Coast> AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_25015cfc36e4dec4>
+  FROM <urn:graphragprov:unit:u_82550b72ef63e90c>
+  FROM <urn:graphragprov:unit:u_b22b53fcd3bb3885>
+  WHERE { <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> . <urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Da%20Nang> . <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> . BIND(<urn:graphragprov:entity:South%20Central%20Coast> AS ?answer) }
+
+GraphDB execution:
+  observed answers: ('South Central Coast',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__831456_467331_162182
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__831456_467331_162182/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          18980
+output tokens:         4751
+total tokens:          23731
+cached input tokens:   15744
+uncached input tokens: 3236
+cumulative LLM seconds: 26.873
+
+statement occurrences: 23
+semantic triples:      23
+entity nodes:          23
+literal values:        1
+predicates:            7
+query attempts:        1
+observed answers:      ('South Central Coast',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.177s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.055s
+  graph.materialization [attempt=1]: 0.088s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.711s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.436s

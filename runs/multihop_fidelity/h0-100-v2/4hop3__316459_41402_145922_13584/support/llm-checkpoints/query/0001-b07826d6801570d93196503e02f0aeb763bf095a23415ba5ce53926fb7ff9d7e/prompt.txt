@@ -1,0 +1,197 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Besides areas of the country gaining control of Florida after the conflict Charles Edmund Nugent participated in, what other differences exist between where Carlos Barral died and Real Madrid?
+
+Expected answer: two cities
+
+Gold decomposition:
+1. question='Charles Edmund Nugent >> conflict'; answer='Revolutionary War'; support_paragraph=7
+2. question='Who gained control of Florida after the conclusion of #1 ?'; answer='Spain'; support_paragraph=4
+3. question='In what city did Carlos Barral die?'; answer='Barcelona'; support_paragraph=6
+4. question='Besides the areas of #2 , what other differences are there between #3 and Real Madrid?'; answer='two cities'; support_paragraph=16
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:neverCommanded> <urn:graphragprov:entity:fleet> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:neverCommanded> <urn:graphragprov:entity:naval%20station> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:French%20Revolutionary%20Wars> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:Napoleonic%20Wars> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:invasions%20of%20Guadaloupe> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:invasions%20of%20Martinique> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:invasions%20of%20Saint%20Lucia> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:selectedToServeAs> <urn:graphragprov:entity:Captain%20of%20the%20Fleet> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:servedIn> <urn:graphragprov:entity:naval%20brigade> .
+<urn:graphragprov:entity:Charles%20Edmund%20Nugent> <urn:graphragprov:predicate:servedUnder> <urn:graphragprov:entity:William%20Cornwallis> .
+<urn:graphragprov:entity:Carlos%20Barral> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Barcelona> .
+<urn:graphragprov:entity:Carlos%20Barral> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Spain> .
+<urn:graphragprov:entity:Carlos%20Barral> <urn:graphragprov:predicate:joined> <urn:graphragprov:entity:V%C3%ADctor%20Seix> .
+<urn:graphragprov:entity:Carlos%20Barral> <urn:graphragprov:predicate:joinedInManagementOf> <urn:graphragprov:entity:Seix%20Barral> .
+<urn:graphragprov:entity:Carlos%20Barral> <urn:graphragprov:predicate:joinedInYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Seix%20Barral> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:most%20prestigious%20publishing%20house> .
+<urn:graphragprov:entity:Seix%20Barral> <urn:graphragprov:predicate:becameMostPrestigiousInDecade> "1960s" .
+<urn:graphragprov:entity:Seix%20Barral> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:his%20parents> .
+<urn:graphragprov:entity:Seix%20Barral> <urn:graphragprov:predicate:foundedInYear> "1911"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:American%20settlers> <urn:graphragprov:predicate:decidedToPlan> <urn:graphragprov:entity:town> .
+<urn:graphragprov:entity:American%20settlers> <urn:graphragprov:predicate:layingOut> <urn:graphragprov:entity:plats> .
+<urn:graphragprov:entity:American%20settlers> <urn:graphragprov:predicate:layingOut> <urn:graphragprov:entity:streets> .
+<urn:graphragprov:entity:American%20settlers> <urn:graphragprov:predicate:named> <urn:graphragprov:entity:town%20Jacksonville> .
+<urn:graphragprov:entity:Britain> <urn:graphragprov:predicate:cededControlAfter> <urn:graphragprov:entity:American%20Revolutionary%20War> .
+<urn:graphragprov:entity:Britain> <urn:graphragprov:predicate:cededControlInYear> "1783"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Britain> <urn:graphragprov:predicate:cededControlOf> <urn:graphragprov:entity:territory> .
+<urn:graphragprov:entity:Britain> <urn:graphragprov:predicate:cededControlTo> <urn:graphragprov:entity:Spain> .
+<urn:graphragprov:entity:British> <urn:graphragprov:predicate:constructed> <urn:graphragprov:entity:King%27s%20Road> .
+<urn:graphragprov:entity:British> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:cultivation%20of%20sugar%20cane> .
+<urn:graphragprov:entity:British> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:export%20of%20lumber> .
+<urn:graphragprov:entity:British> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:fruits> .
+<urn:graphragprov:entity:British> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:indigo> .
+<urn:graphragprov:entity:King%27s%20Road> <urn:graphragprov:predicate:connecting> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:King%27s%20Road> <urn:graphragprov:predicate:connecting> <urn:graphragprov:entity:St.%20Augustine> .
+<urn:graphragprov:entity:Spain> <urn:graphragprov:predicate:ceded> <urn:graphragprov:entity:Florida> .
+<urn:graphragprov:entity:Spain> <urn:graphragprov:predicate:ceded> <urn:graphragprov:entity:Florida%20Territory> .
+<urn:graphragprov:entity:Spain> <urn:graphragprov:predicate:cededInYear> "1763"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Spain> <urn:graphragprov:predicate:cededInYear> "1821"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Spain> <urn:graphragprov:predicate:cededTo> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:Spain> <urn:graphragprov:predicate:cededTo> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:charter> <urn:graphragprov:predicate:approvedBy> <urn:graphragprov:entity:Florida%20Legislative%20Council> .
+<urn:graphragprov:entity:charter> <urn:graphragprov:predicate:approvedOn> "1832-02-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:fact> <urn:graphragprov:predicate:that> <urn:graphragprov:entity:cattle%20were%20brought%20across%20the%20river%20there> .
+<urn:graphragprov:entity:names> <urn:graphragprov:predicate:reflect> <urn:graphragprov:entity:fact> .
+<urn:graphragprov:entity:narrow%20point> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Cow%20Ford> .
+<urn:graphragprov:entity:narrow%20point> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Cowford> .
+<urn:graphragprov:entity:narrow%20point> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Wacca%20Pilatka> .
+<urn:graphragprov:entity:narrow%20point> <urn:graphragprov:predicate:calledBy> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:narrow%20point> <urn:graphragprov:predicate:calledBy> <urn:graphragprov:entity:Seminole> .
+<urn:graphragprov:entity:northeastern%20Florida%20area> <urn:graphragprov:predicate:prospered> <urn:graphragprov:entity:economically> .
+<urn:graphragprov:entity:northeastern%20Florida%20area> <urn:graphragprov:predicate:prosperedMoreThan> <urn:graphragprov:entity:it%20had%20under%20the%20Spanish> .
+<urn:graphragprov:entity:residents> <urn:graphragprov:predicate:ledBy> <urn:graphragprov:entity:Isaiah%20D.%20Hart> .
+<urn:graphragprov:entity:residents> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:charter> .
+<urn:graphragprov:entity:road> <urn:graphragprov:predicate:crossed> <urn:graphragprov:entity:St.%20Johns%20River> .
+<urn:graphragprov:entity:road> <urn:graphragprov:predicate:crossedAt> <urn:graphragprov:entity:narrow%20point> .
+<urn:graphragprov:entity:settlement%20at%20the%20Cow%20Ford> <urn:graphragprov:predicate:continuedToGrow> <urn:graphragprov:entity:continued%20to%20grow> .
+<urn:graphragprov:entity:town%20Jacksonville> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:Andrew%20Jackson> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:representativeOf> <urn:graphragprov:entity:Catalonia> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:representativeOf> <urn:graphragprov:entity:city> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:rivalryWith> <urn:graphragprov:entity:Real%20Madrid> .
+<urn:graphragprov:entity:Real%20Madrid> <urn:graphragprov:predicate:representativeOf> <urn:graphragprov:entity:Castile> .
+<urn:graphragprov:entity:Real%20Madrid> <urn:graphragprov:predicate:representativeOf> <urn:graphragprov:entity:city> .
+<urn:graphragprov:entity:political%20and%20cultural%20tensions> <urn:graphragprov:predicate:feltBetween> <urn:graphragprov:entity:Castilians> .
+<urn:graphragprov:entity:political%20and%20cultural%20tensions> <urn:graphragprov:predicate:feltBetween> <urn:graphragprov:entity:Catalans> .
+<urn:graphragprov:entity:rivalry> <urn:graphragprov:predicate:reflects> <urn:graphragprov:entity:political%20and%20cultural%20tensions> .
+<urn:graphragprov:entity:rivalry> <urn:graphragprov:predicate:seenByAuthorAs> <urn:graphragprov:entity:re-enactment%20of%20the%20Spanish%20Civil%20War> .

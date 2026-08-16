@@ -1,0 +1,156 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: The group representing at least 70% of Jews worldwide and Italians may be genetically similar due to what two factors?
+
+Expected answer: inter-marriage and conversions in the time of the Roman Empire
+
+Gold decomposition:
+1. question='Which group represents at least 70% of Jews worldwide?'; answer='Ashkenazi Jews'; support_paragraph=17
+2. question='#1 and Italians may be genetically similar due to what two factors?'; answer='inter-marriage and conversions in the time of the Roman Empire'; support_paragraph=19
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:mostCloselyRelatedTo> <urn:graphragprov:entity:modern-day%20Italians> .
+<urn:graphragprov:entity:Atzmon-Ostrer%20et%20al.> <urn:graphragprov:predicate:stated> "Two major groups were identified by principal component, phylogenetic, and identity by descent (IBD) analysis: Middle Eastern Jews and European/Syrian Jews. The IBD segment sharing and the proximity of European Jews to each other and to southern European populations suggested similar origins for European Jewry and refuted large-scale genetic contributions of Central and Eastern European and Slavic populations to the formation of Ashkenazi Jewry" .
+<urn:graphragprov:entity:Jewish%20groups> <urn:graphragprov:predicate:shareLargeSwathsOfDNA> "large swaths of DNA" .
+<urn:graphragprov:entity:Middle%20Eastern%20Jews> <urn:graphragprov:predicate:shareCommonAncestorsWith> <urn:graphragprov:entity:European%2FSyrian%20Jews> .
+<urn:graphragprov:entity:Middle%20Eastern%20Jews> <urn:graphragprov:predicate:sharedCommonAncestorsAboutYearsAgo> "2500 years ago" .
+<urn:graphragprov:entity:Middle%20Eastern%20Jews> <urn:graphragprov:predicate:sharedCommonAncestorsIn> <urn:graphragprov:entity:Middle%20East> .
+<urn:graphragprov:entity:Results%20of%20the%20analysis> <urn:graphragprov:predicate:tallyWith> <urn:graphragprov:entity:biblical%20accounts%20of%20the%20fate%20of%20the%20Jews> .
+<urn:graphragprov:entity:SNP%20markers%20in%20genetic%20segments%20of%203%20million%20DNA%20letters%20or%20longer> <urn:graphragprov:predicate:were10TimesMoreLikelyToBeIdenticalAmongJewsThanNonJews> "10 times more likely to be identical among Jews than non-Jews" .
+<urn:graphragprov:entity:any%20two%20Ashkenazi%20Jewish%20participants%20in%20the%20study> <urn:graphragprov:predicate:sharedAboutAsMuchDNAAs> <urn:graphragprov:entity:fourth%20or%20fifth%20cousins> .
+<urn:graphragprov:entity:each%20of%20the%20Jewish%20groups%20in%20the%20study> <urn:graphragprov:predicate:hasOwnGeneticSignature> "own genetic signature" .
+<urn:graphragprov:entity:each%20of%20the%20Jewish%20groups%20in%20the%20study> <urn:graphragprov:predicate:isMoreCloselyRelatedTo> <urn:graphragprov:entity:other%20Jewish%20groups> .
+<urn:graphragprov:entity:each%20of%20the%20Jewish%20groups%20in%20the%20study> <urn:graphragprov:predicate:isMoreCloselyRelatedToThan> <urn:graphragprov:entity:fellow%20non-Jewish%20countrymen> .
+<urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> <urn:graphragprov:entity:conversions%20in%20the%20time%20of%20the%20Roman%20Empire> .
+<urn:graphragprov:entity:genetic-similarity%20between%20Ashkenazi%20Jews%20and%20Italians> <urn:graphragprov:predicate:mayBeDueTo> <urn:graphragprov:entity:inter-marriage> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:represent> <urn:graphragprov:entity:bulk%20of%20modern%20Jewry> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representAtLeast> "70% of Jews worldwide" .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Argentina> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Australia> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Brazil> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:Canada> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:New%20World%20continents> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representMajorityIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Ashkenazi%20Jews> <urn:graphragprov:predicate:representUpTo> "90% of Jews worldwide" .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasJewishPopulationRepresentativeOfAllGroups> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:isMeltingPot> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Jews%20from%20Algeria> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Sephardim> .
+<urn:graphragprov:entity:Jews%20from%20Algeria> <urn:graphragprov:predicate:outnumber> <urn:graphragprov:entity:Ashkenazim> .

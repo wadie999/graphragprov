@@ -1,0 +1,77 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_6027608e534f09273d03b7fe1d056a1afc485aba63113828d9586d816c82fb79
+Title: Eyal Golan
+Text:
+Eyal Golan (; born Eyal Biton on April 12, 1971) is an Israeli singer who sings in the Mizrahi style and considered one of the most successful singers of this genre in Israel. Eyal Golan reported the highest income of all singers in Israel in 2011.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Eyal Golan",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Eyal Golan",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "Eyal Golan",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "bornIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "born",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "April 12, 1971",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "April 12, 1971",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].object.value must use YYYY-MM-DD notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

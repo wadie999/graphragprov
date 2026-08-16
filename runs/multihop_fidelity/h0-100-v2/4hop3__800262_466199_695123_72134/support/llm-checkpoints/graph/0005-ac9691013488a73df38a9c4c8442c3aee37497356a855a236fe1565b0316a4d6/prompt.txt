@@ -1,0 +1,181 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_37d79d4f87ca02752e16ae2e0229cf9170ee922aede20f7ce5e54174e4f8fe3f
+Title: Springfield, Illinois
+Text:
+Springfield's original name was Calhoun, after Senator John C. Calhoun of South Carolina. The land that Springfield now occupies was originally settled by trappers and traders who came to the Sangamon River in 1818. The settlement's first cabin was built in 1820, by John Kelly. It was located at what is now the northwest corner of Second Street and Jefferson Street. In 1821, Calhoun became the county seat of Sangamon County due to fertile soil and trading opportunities. Settlers from Kentucky, Virginia, and as far as North Carolina came to the city. By 1832, Senator Calhoun had fallen out of the favor with the public and the town renamed itself Springfield after Springfield, Massachusetts. At that time, Springfield, Massachusetts was comparable to modern - day Silicon Valley -- known for industrial innovation, concentrated prosperity, and the celebrated Springfield Armory. Most importantly, it was a city that had built itself up from frontier outpost to national power through ingenuity -- an example that the newly named Springfield, Illinois, sought to emulate. Kaskaskia was the first capital of the Illinois Territory from its organization in 1809, continuing through statehood in 1818, and through the first year as a state in 1819. Vandalia was the second state capital of Illinois from 1819 to 1839. Springfield became the third and current capital of Illinois in 1839. The designation was largely due to the efforts of Abraham Lincoln and his associates; nicknamed the ``Long Nine ''for their combined height of 54 feet (16 m).
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "Springfield, Illinois",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Springfield, Illinois",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "settledInYear",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "settled ... in 1818",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1818",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "1818",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].predicate.evidence[0]: quote 'settled ... in 1818' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 5,
+    "statement": {
+      "subject": {
+        "value": "Springfield, Illinois",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Springfield, Illinois",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "firstCabinBuiltBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "built ... by John Kelly",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "John Kelly",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "John Kelly",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[5].predicate.evidence[0]: quote 'built ... by John Kelly' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 9,
+    "statement": {
+      "subject": {
+        "value": "Springfield, Illinois",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Springfield, Illinois",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "renamedInYear",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "By 1832 ... renamed itself",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1832",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "1832",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[9].predicate.evidence[0]: quote 'By 1832 ... renamed itself' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 16,
+    "statement": {
+      "subject": {
+        "value": "Springfield, Massachusetts",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Springfield, Massachusetts",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "builtItselfUpTo",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "built itself up ... to",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "national power",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "national power",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[16].predicate.evidence[0]: quote 'built itself up ... to' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

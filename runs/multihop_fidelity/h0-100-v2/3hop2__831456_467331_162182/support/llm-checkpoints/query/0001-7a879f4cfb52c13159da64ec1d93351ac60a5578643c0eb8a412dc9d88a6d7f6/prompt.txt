@@ -1,0 +1,153 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the region of the country of Sa Thầy and the territory of the Zone 5 Military Museam located?
+
+Expected answer: South Central Coast
+
+Gold decomposition:
+1. question='Sa Thầy >> country'; answer='Vietnam'; support_paragraph=19
+2. question='Zone 5 Military Museum >> located in the administrative territorial entity'; answer='Da Nang'; support_paragraph=16
+3. question='In what region of #1 is #2 located?'; answer='South Central Coast'; support_paragraph=3
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:hasCapital> <urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> .
+<urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:hasPopulation> "29605"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rural%20district> .
+<urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Central%20Highlands> .
+<urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Kon%20Tum%20Province> .
+<urn:graphragprov:entity:Sa%20Th%E1%BA%A7y> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:Chinese%20occupation> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:First%20Indochina%20War> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:Vietnam%20War> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:all%20Vietnamese%20resistance%20to%20foreign%20occupation> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:current%20standoff%20with%20China%20over%20the%20Spratly%20Islands%20and%20the%20Paracel%20Islands> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:military%20museum> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:3%20Duy%20T%C3%A2n> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Da%20Nang> .
+<urn:graphragprov:entity:Zone%205%20Military%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+<urn:graphragprov:entity:B%C3%ACnh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:sometimesSeenAsPartOf> <urn:graphragprov:entity:Southeast%20region> .
+<urn:graphragprov:entity:Ninh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:sometimesSeenAsPartOf> <urn:graphragprov:entity:Southeast%20region> .
+<urn:graphragprov:entity:Paracel%20Islands> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Central%20Coast> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:seven%20other%20provinces> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:region%20of%20Vietnam> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+<urn:graphragprov:entity:Spratly%20Islands> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Central%20Coast> .

@@ -1,0 +1,333 @@
+
+H0 one-case execution
+  case:          3hop1__671542_665330_47686
+  hops:          3
+  question:      Where do greyhound buses leave from in the city where the performer of Darlings formed?
+  expected:      Toronto Coach Terminal
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__671542_665330_47686/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=4 title='Darlings (Kevin Drew album)'
+  source unit: u_eeba7b9b6ba96b2c6ee5d802bc253a6fb8b73ba416159b72e479b7b5bc784323
+  text chars:  114
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.466s | model=deepseek-v4-flash
+      tokens:   in=5264 | out=916 | total=6180 | cached=4992 | uncached=272
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 102 / 141 (72.3%)
+    characters text:     94 / 114 (82.5%)
+    characters title:    8 / 27 (29.6%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  5 chars
+      'the'
+    statement density:  35.46 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 2/3] paragraph=13 title='Kevin Drew'
+  source unit: u_a5fbca352205e2c0500d194b113cab1da1daae09fc9ac33b73d496dff2e690ee
+  text chars:  327
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.533s | model=deepseek-v4-flash
+      tokens:   in=5349 | out=2232 | total=7581 | cached=4992 | uncached=357
+    [LLM graph.reference #3] sending...
+      provider: 1.530s | model=deepseek-v4-flash
+      tokens:   in=600 | out=205 | total=805 | cached=0 | uncached=600
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "September 9, 1976",
+                "segment": "text"
+              }
+            ],
+            "value": "September 9, 1976"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Kevin Drew",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Kevin Drew",
+                "segment": "text"
+              }
+            ],
+            "value": "Kevin Drew"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 13
+  coverage:
+    characters combined: 251 / 337 (74.5%)
+    characters text:     241 / 327 (73.7%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  18 chars
+      'the lesser-known'
+    statement density:  38.58 / 1000 chars
+    title reliance:      7 / 13 (53.8%)
+
+[GRAPH 3/3] paragraph=3 title='Toronto Coach Terminal'
+  source unit: u_0c3fa5834302f53de7767842a45f2d1979106081404abe6f027b08ccb4e92022
+  text chars:  666
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 18.531s | model=deepseek-v4-flash
+      tokens:   in=5557 | out=3962 | total=9519 | cached=5120 | uncached=437
+    [LLM graph.reference #5] sending...
+      provider: 1.841s | model=deepseek-v4-flash
+      tokens:   in=652 | out=180 | total=832 | cached=0 | uncached=652
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    22
+    initially rejected: 1
+
+    initial rejection #14
+      validator:
+        response.statements[14].object.value must use canonical decimal notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "decimal",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "$1.2 million",
+                "segment": "text"
+              }
+            ],
+            "value": "1.2 million"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "for $1.2 million annually",
+                "segment": "text"
+              }
+            ],
+            "value": "leasedForAnnualAmount"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "TTC",
+                "segment": "text"
+              }
+            ],
+            "value": "TTC"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 23
+  coverage:
+    characters combined: 539 / 688 (78.3%)
+    characters text:     517 / 666 (77.6%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  30 chars
+      'in its entirety to bus lines'
+    statement density:  33.43 / 1000 chars
+    title reliance:      11 / 23 (47.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 41
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      41
+resource nodes:        30
+entity nodes:          30
+literal values:        6
+predicates:            28
+
+N-Triples:
+  <urn:graphragprov:entity:Gray%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:interurban%20bus%20service> .
+  <urn:graphragprov:entity:Gray%20Coach> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:TTC> .
+  <urn:graphragprov:entity:Gray%20Line%20Terminal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:open%20air%20terminal> .
+  <urn:graphragprov:entity:TTC> <urn:graphragprov:predicate:leasedForAnnualAmount> "1.2"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:TTC> <urn:graphragprov:predicate:leasedOut> <urn:graphragprov:entity:Toronto%20Coach%20Terminal> .
+  <urn:graphragprov:entity:TTC> <urn:graphragprov:predicate:leasedTo> <urn:graphragprov:entity:Coach%20Canada> .
+  <urn:graphragprov:entity:TTC> <urn:graphragprov:predicate:leasedTo> <urn:graphragprov:entity:Greyhound%20Canada> .
+  <urn:graphragprov:entity:TTC> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:Toronto%20Coach%20Terminal> .
+  <urn:graphragprov:entity:TTC> <urn:graphragprov:predicate:managedUntil> "2012-07-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:architecturalStyle> <urn:graphragprov:entity:Art%20Deco> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:formerlyKnownAs> <urn:graphragprov:entity:Gray%20Coach%20Terminal> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:central%20bus%20station> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:610%20Bay%20Street> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Downtown%20Toronto> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:openedInYear> "1931"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Gray%20Line%20Terminal> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:inter-city%20services> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:wasHomeBaseFor> <urn:graphragprov:entity:Gray%20Coach> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:wholly%20owned%20subsidiary> .
+  <urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Toronto%20Transit%20Commission> .
+  <urn:graphragprov:entity:Toronto%20Transit%20Commission> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:TTC> .
+  <urn:graphragprov:entity:Broken%20Social%20Scene> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:baroque-pop> .
+  <urn:graphragprov:entity:Broken%20Social%20Scene> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:collective> .
+  <urn:graphragprov:entity:Broken%20Social%20Scene> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Charles%20Spearin> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Broken%20Social%20Scene> .
+  <urn:graphragprov:entity:KC%20Accidental> <urn:graphragprov:predicate:consistedOf> <urn:graphragprov:entity:Charles%20Spearin> .
+  <urn:graphragprov:entity:KC%20Accidental> <urn:graphragprov:predicate:consistedOf> <urn:graphragprov:entity:Kevin%20Drew> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:bornIn> "1976-09-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Broken%20Social%20Scene> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:foundedWith> <urn:graphragprov:entity:Brendan%20Canning> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:KC%20Accidental> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Darlings> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Kevin%20Drew> .
+  <urn:graphragprov:entity:Darlings> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:solo%20album> .
+  <urn:graphragprov:entity:Darlings> <urn:graphragprov:predicate:ordinalInSeries> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Darlings> <urn:graphragprov:predicate:releaseDate> "2014-03-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Broken%20Social%20Scene> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.712s | model=deepseek-v4-flash
+      tokens:   in=2757 | out=374 | total=3131 | cached=640 | uncached=2117
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Darlings> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Kevin%20Drew> .
+  - <urn:graphragprov:entity:Kevin%20Drew> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Broken%20Social%20Scene> .
+  - <urn:graphragprov:entity:Broken%20Social%20Scene> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  - <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  - <urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:central%20bus%20station> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Darlings> <urn:graphragprov:predicate:artist> ?performer . ?performer <urn:graphragprov:predicate:founded> ?formedBand . ?formedBand <urn:graphragprov:predicate:locatedIn> ?city . ?answer <urn:graphragprov:predicate:locatedIn> ?city . ?answer <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:central%20bus%20station> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0c3fa5834302f53d>
+  FROM <urn:graphragprov:unit:u_a5fbca352205e2c0>
+  FROM <urn:graphragprov:unit:u_eeba7b9b6ba96b2c>
+  WHERE { <urn:graphragprov:entity:Darlings> <urn:graphragprov:predicate:artist> ?performer . ?performer <urn:graphragprov:predicate:founded> ?formedBand . ?formedBand <urn:graphragprov:predicate:locatedIn> ?city . ?answer <urn:graphragprov:predicate:locatedIn> ?city . ?answer <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:central%20bus%20station> . }
+
+GraphDB execution:
+  observed answers: ('Toronto Coach Terminal',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Darlings (Kevin Drew album)', 'Kevin Drew', 'Toronto Coach Terminal']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__671542_665330_47686
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__671542_665330_47686/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          20179
+output tokens:         7869
+total tokens:          28048
+cached input tokens:   15744
+uncached input tokens: 4435
+cumulative LLM seconds: 40.614
+
+statement occurrences: 41
+semantic triples:      41
+entity nodes:          30
+literal values:        6
+predicates:            28
+query attempts:        1
+observed answers:      ('Toronto Coach Terminal',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 37.921s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.058s
+  graph.materialization [attempt=1]: 0.085s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.712s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.458s

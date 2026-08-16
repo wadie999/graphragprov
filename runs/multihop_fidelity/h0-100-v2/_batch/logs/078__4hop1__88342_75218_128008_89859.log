@@ -1,0 +1,270 @@
+
+H0 one-case execution
+  case:          4hop1__88342_75218_128008_89859
+  hops:          4
+  question:      When does regular season start in the league where a team has played the most games in the competition where they give out the MLB MVP award after?
+  expected:      March 29, 2018
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__88342_75218_128008_89859/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=9 title='Major League Baseball Most Valuable Player Award'
+  source unit: u_821252abb5cecd3d06c55dafd070996953144d494546205101076bf29167fcf4
+  text chars:  370
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.621s | model=deepseek-v4-flash
+      tokens:   in=5370 | out=1337 | total=6707 | cached=4992 | uncached=378
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 301 / 418 (72.0%)
+    characters text:     301 / 370 (81.4%)
+    characters title:    0 / 48 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  15 chars
+      'means, instead'
+    statement density:  19.14 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 2/4] paragraph=18 title='World Series'
+  source unit: u_b8a465dc7a0961d90db124f4ba24551db293aa10df48f8b0778ae8f0d1e91a39
+  text chars:  518
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 15.847s | model=deepseek-v4-flash
+      tokens:   in=5509 | out=3438 | total=8947 | cached=5248 | uncached=261
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 300 / 530 (56.6%)
+    characters text:     300 / 518 (57.9%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  64 chars
+      ', including the first World Series. In the National League, the'
+    statement density:  39.62 / 1000 chars
+    title reliance:      0 / 21 (0.0%)
+
+[GRAPH 3/4] paragraph=2 title='New York Yankees'
+  source unit: u_1ef2f09e331f343e2a9ea2674cb1d13d73eb4f2afae850cc0c5f72e4ae3ac853
+  text chars:  676
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 14.327s | model=deepseek-v4-flash
+      tokens:   in=5776 | out=3107 | total=8883 | cached=5248 | uncached=528
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 445 / 692 (64.3%)
+    characters text:     429 / 676 (63.5%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  48 chars
+      '(no relation to the modern Baltimore Orioles).'
+    statement density:  26.01 / 1000 chars
+    title reliance:      9 / 18 (50.0%)
+
+[GRAPH 4/4] paragraph=5 title='2018 Major League Baseball season'
+  source unit: u_038aed69eb199c19d2f6a8343d707a6d583011b00ce778fffd9b918042f37b19
+  text chars:  247
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 5.231s | model=deepseek-v4-flash
+      tokens:   in=5895 | out=950 | total=6845 | cached=5248 | uncached=647
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 248 / 280 (88.6%)
+    characters text:     215 / 247 (87.0%)
+    characters title:    33 / 33 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  9 chars
+      ', and is'
+    statement density:  17.86 / 1000 chars
+    title reliance:      2 / 5 (40.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 52
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      52
+resource nodes:        34
+entity nodes:          34
+literal values:        20
+predicates:            28
+
+N-Triples:
+  <urn:graphragprov:entity:2018%20Major%20League%20Baseball%20season> <urn:graphragprov:predicate:beganOn> "2018-03-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2018%20Major%20League%20Baseball%20season> <urn:graphragprov:predicate:scheduledToEndOn> "2018-09-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2018%20World%20Series> <urn:graphragprov:predicate:setToBeginOn> "2018-10-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Postseason> <urn:graphragprov:predicate:willBeginOn> "2018-10-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:potential%20Game%207> <urn:graphragprov:predicate:scheduledOn> "2018-10-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Bill%20Devery> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Bill%20Devery> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:franchise> .
+  <urn:graphragprov:entity:Bill%20Devery> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:New%20York%20Highlanders> .
+  <urn:graphragprov:entity:Frank%20Farrell> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Frank%20Farrell> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:franchise> .
+  <urn:graphragprov:entity:Frank%20Farrell> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:New%20York%20Highlanders> .
+  <urn:graphragprov:entity:New%20York%20Highlanders> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Yankees> .
+  <urn:graphragprov:entity:New%20York%20Mets> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20league%20club> .
+  <urn:graphragprov:entity:New%20York%20Mets> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:National%20League> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York%20City%20borough%20of%20the%20Bronx> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:beganPlayIn> <urn:graphragprov:entity:American%20League> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:formerlyKnownAs> <urn:graphragprov:entity:Baltimore%20Orioles> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20league%20club> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:professional%20baseball%20team> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:American%20League%20East%20division> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:beganByPolling> "three writers in each league city" .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:beganPollingInYear> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:doesNotOfferDefinition> <urn:graphragprov:entity:most%20valuable> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:leavesJudgmentTo> <urn:graphragprov:entity:individual%20voters> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:reducedPollingInYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:reducedPollingTo> "two per league city" .
+  <urn:graphragprov:entity:MVP%20voting> <urn:graphragprov:predicate:takesPlaceBefore> <urn:graphragprov:entity:postseason> .
+  <urn:graphragprov:entity:MVP%20voting%20results> <urn:graphragprov:predicate:announcedAfter> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:playedInCount> "12"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:wonCount> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:appearedInCount> "19"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:wonCount> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:appearedInCount> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:wonCount> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:playedInCount> "20"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:wonCount> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:playedInCount> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:wonCount> "27"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:playedInCount> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:wonCount> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:World%20Series> .
+  <urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:appearedInCount> "19"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:wonCount> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.545s | model=deepseek-v4-flash
+      tokens:   in=3615 | out=349 | total=3964 | cached=640 | uncached=2975
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+  - <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:playedInCount> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  - <urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> .
+  - <urn:graphragprov:entity:2018%20Major%20League%20Baseball%20season> <urn:graphragprov:predicate:beganOn> "2018-03-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?team <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> . ?team <urn:graphragprov:predicate:playedInCount> ?count . ?team <urn:graphragprov:predicate:competesIn> ?league . ?league <urn:graphragprov:predicate:beganOn> ?answer . } ORDER BY DESC(?count) LIMIT 1
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_038aed69eb199c19>
+  FROM <urn:graphragprov:unit:u_1ef2f09e331f343e>
+  FROM <urn:graphragprov:unit:u_821252abb5cecd3d>
+  FROM <urn:graphragprov:unit:u_b8a465dc7a0961d9>
+  WHERE { ?team <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> . ?team <urn:graphragprov:predicate:playedInCount> ?count . ?team <urn:graphragprov:predicate:competesIn> ?league . ?league <urn:graphragprov:predicate:beganOn> ?answer . } ORDER BY DESC(?count) LIMIT 1
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__88342_75218_128008_89859
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__88342_75218_128008_89859/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26165
+output tokens:         9181
+total tokens:          35346
+cached input tokens:   21376
+uncached input tokens: 4789
+cumulative LLM seconds: 45.571
+
+statement occurrences: 52
+semantic triples:      52
+entity nodes:          34
+literal values:        20
+predicates:            28
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 43.048s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.081s
+  graph.materialization [attempt=1]: 0.096s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.546s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.436s

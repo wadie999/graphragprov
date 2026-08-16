@@ -1,0 +1,109 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_114973c1651585177ba4a1146dfb73ef884d80f145d8aaaa1d0f5a4fbd9f89e1
+Title: Arizona
+Text:
+Arizona ( (listen); Navajo: Hoozdo Hahoodzo Navajo pronunciation: [xòːztò xɑ̀xòːtsò]; O'odham: Alĭ ṣonak Uto-Aztecan pronunciation: [ˡaɺi ˡʂonak]) is a state in the southwestern region of the United States. It is also part of the Western and the Mountain states. It is the sixth largest and the 14th most populous of the 50 states. Its capital and largest city is Phoenix. Arizona shares the Four Corners region with Utah, Colorado, and New Mexico; its other neighboring states are Nevada and California to the west and the Mexican states of Sonora and Baja California to the south and southwest.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 4,
+    "statement": {
+      "subject": {
+        "value": "Arizona",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Arizona",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "rankByArea",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "sixth largest",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "sixth",
+        "datatype": "integer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "sixth",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[4].object.value must use canonical integer notation"
+  },
+  {
+    "statement_index": 5,
+    "statement": {
+      "subject": {
+        "value": "Arizona",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Arizona",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "rankByPopulation",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "14th most populous",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "14th",
+        "datatype": "integer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "14th",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[5].object.value must use canonical integer notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

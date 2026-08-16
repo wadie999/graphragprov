@@ -1,0 +1,159 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who is the spouse of the person who voices Jarvis in Iron Man?
+
+Expected answer: Jennifer Connelly
+
+Gold decomposition:
+1. question="who's voice is jarvis in iron man"; answer='Paul Bettany'; support_paragraph=12
+2. question='#1 >> spouse'; answer='Jennifer Connelly'; support_paragraph=11
+
+Frozen RDF graph:
+<urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:releaseYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Christopher%20Plummer> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jennifer%20Connelly> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Paul%20Bettany> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Russell%20Crowe> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:composedBy> <urn:graphragprov:entity:James%20Horner> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:conductedBy> <urn:graphragprov:entity:James%20Horner> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:original%20soundtrack%20album> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Decca%20Records> .
+<urn:graphragprov:entity:A%20Beautiful%20Mind%20%28soundtrack%29> <urn:graphragprov:predicate:soundtrackOf> <urn:graphragprov:entity:A%20Beautiful%20Mind> .
+<urn:graphragprov:entity:Jennifer%20Connelly> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:Alicia%20Nash> .
+<urn:graphragprov:entity:Jennifer%20Connelly> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Supporting%20Actress> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:A%20Beautiful%20Mind> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:A%20Knight%27s%20Tale> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Avengers%3A%20Age%20of%20Ultron> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Captain%20America%3A%20Civil%20War> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Dogville> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Gangster%20No.%201> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man%202> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Iron%20Man%203> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Master%20and%20Commander%3A%20The%20Far%20Side%20of%20the%20World> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:The%20Avengers> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:The%20Da%20Vinci%20Code> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Wimbledon> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:bornInYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:voiceRole> <urn:graphragprov:entity:J.A.R.V.I.S.> .
+<urn:graphragprov:entity:Paul%20Bettany> <urn:graphragprov:predicate:voiceRole> <urn:graphragprov:entity:Vision> .

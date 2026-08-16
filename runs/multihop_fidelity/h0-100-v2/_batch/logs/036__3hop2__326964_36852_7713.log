@@ -1,0 +1,225 @@
+
+H0 one-case execution
+  case:          3hop2__326964_36852_7713
+  hops:          3
+  question:      How long was the city the Qing lost in 1853 the capital of the province where Yaxing Coach is headquartered?
+  expected:      about 400 years
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__326964_36852_7713/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=9 title='Yaxing Coach'
+  source unit: u_3e45bb064831ad6baeb5ed44e8d8350c61a0e8ab3259615d64b98e2151b5d12e
+  text chars:  265
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.098s | model=deepseek-v4-flash
+      tokens:   in=5329 | out=1467 | total=6796 | cached=4992 | uncached=337
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 143 / 277 (51.6%)
+    characters text:     131 / 265 (49.4%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  23 chars
+      'Motor Coach Co., Ltd)'
+    statement density:  32.49 / 1000 chars
+    title reliance:      8 / 9 (88.9%)
+
+[GRAPH 2/3] paragraph=15 title='Qing dynasty'
+  source unit: u_953317d087c5e811ba7288b640e77906db570ec2e5aae5d51a6de3610f9a2e1c
+  text chars:  1085
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 13.888s | model=deepseek-v4-flash
+      tokens:   in=5589 | out=2919 | total=8508 | cached=4992 | uncached=597
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 494 / 1097 (45.0%)
+    characters text:     494 / 1085 (45.5%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  102 chars
+      'from those provinces that the Taiping rebels directly threatened. This new force became known as the'
+    statement density:  16.41 / 1000 chars
+    title reliance:      0 / 18 (0.0%)
+
+[GRAPH 3/3] paragraph=18 title='Nanjing'
+  source unit: u_03e19494b8aa066125542d1dee8ce3cab0ee5aa14b1da7777511849a264b2c1e
+  text chars:  1363
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.596s | model=deepseek-v4-flash
+      tokens:   in=5910 | out=833 | total=6743 | cached=5120 | uncached=790
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 132 / 1370 (9.6%)
+    characters text:     125 / 1363 (9.2%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           2 / 10 (20.0%)
+    longest uncovered:  1066 chars
+      'Archaeological discovery shows that "Nanjing Man" lived in more than 500 thousand years ago. Zun, a kind of wine vessel, was found to exist in Beiyinyangying culture of Nanjing in…'
+    statement density:  3.65 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 32
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      32
+resource nodes:        29
+entity nodes:          29
+literal values:        6
+predicates:            22
+
+N-Triples:
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Danyang%20Prefecture> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOfForDuration> "about 400 years" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOfFrom> "late Han to early Tang" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:capital%20city> .
+  <urn:graphragprov:entity:Jiangsu%20Yaxing> <urn:graphragprov:predicate:foundedInYear> "1998"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bus%20manufacturer> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:China> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangsu> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Asiastar> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yangtse%EF%BC%88Yangzlv%EF%BC%89> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yaxing> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Jiangsu%20Yaxing> .
+  <urn:graphragprov:entity:Huai%20Army> <urn:graphragprov:predicate:collectivelyCalled> <urn:graphragprov:entity:Yong%20Ying> .
+  <urn:graphragprov:entity:Huai%20Army> <urn:graphragprov:predicate:createdBy> <urn:graphragprov:entity:Li%20Hongzhang> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:regional%20capital%20city> .
+  <urn:graphragprov:entity:Qing%20court> <urn:graphragprov:predicate:ordered> <urn:graphragprov:entity:Zeng%20Guofan> .
+  <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> "1853"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> <urn:graphragprov:entity:Nanjing> .
+  <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:sufferedDefeatIn> <urn:graphragprov:entity:Taiping%20Rebellion> .
+  <urn:graphragprov:entity:Taiping%20expeditionary%20force> <urn:graphragprov:predicate:penetratedTo> <urn:graphragprov:entity:suburbs%20of%20Tianjin> .
+  <urn:graphragprov:entity:Xiang%20Army> <urn:graphragprov:predicate:collectivelyCalled> <urn:graphragprov:entity:Yong%20Ying> .
+  <urn:graphragprov:entity:Xiang%20Army> <urn:graphragprov:predicate:fundedBy> <urn:graphragprov:entity:commanders> .
+  <urn:graphragprov:entity:Xiang%20Army> <urn:graphragprov:predicate:fundedBy> <urn:graphragprov:entity:regional%20coffers> .
+  <urn:graphragprov:entity:Xiang%20Army> <urn:graphragprov:predicate:instanceOf> "hybrid of local militia and standing army" .
+  <urn:graphragprov:entity:Xiang%20Army> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:Hunan%20region> .
+  <urn:graphragprov:entity:Xiang%20Army> <urn:graphragprov:predicate:receivedTraining> <urn:graphragprov:entity:professional%20training> .
+  <urn:graphragprov:entity:Xiang%20Army> <urn:graphragprov:predicate:successor> <urn:graphragprov:entity:Huai%20Army> .
+  <urn:graphragprov:entity:Zeng%20Guofan> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:tuanlian> .
+  <urn:graphragprov:entity:Zeng%20Guofan> <urn:graphragprov:predicate:organized> <urn:graphragprov:entity:regional%20and%20village%20militias> .
+  <urn:graphragprov:entity:Zeng%20Guofan> <urn:graphragprov:predicate:strategyWas> "rely on local gentry to raise a new type of military organization" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.201s | model=deepseek-v4-flash
+      tokens:   in=2318 | out=454 | total=2772 | cached=640 | uncached=1678
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> .
+  - <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> <urn:graphragprov:entity:Nanjing> .
+  - <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> "1853"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOfForDuration> "about 400 years" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> <urn:graphragprov:entity:Nanjing> . <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> "1853"^^<http://www.w3.org/2001/XMLSchema#gYear> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOfForDuration> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_03e19494b8aa0661>
+  FROM <urn:graphragprov:unit:u_3e45bb064831ad6b>
+  FROM <urn:graphragprov:unit:u_953317d087c5e811>
+  WHERE { <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> <urn:graphragprov:entity:Nanjing> . <urn:graphragprov:entity:Qing%20forces> <urn:graphragprov:predicate:lostCityInYear> "1853"^^<http://www.w3.org/2001/XMLSchema#gYear> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOfForDuration> ?answer . }
+
+GraphDB execution:
+  observed answers: ('about 400 years',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__326964_36852_7713
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__326964_36852_7713/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          19146
+output tokens:         5673
+total tokens:          24819
+cached input tokens:   15744
+uncached input tokens: 3402
+cumulative LLM seconds: 29.782
+
+statement occurrences: 32
+semantic triples:      32
+entity nodes:          29
+literal values:        6
+predicates:            22
+query attempts:        1
+observed answers:      ('about 400 years',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 26.595s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.053s
+  graph.materialization [attempt=1]: 0.080s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 3.202s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.497s

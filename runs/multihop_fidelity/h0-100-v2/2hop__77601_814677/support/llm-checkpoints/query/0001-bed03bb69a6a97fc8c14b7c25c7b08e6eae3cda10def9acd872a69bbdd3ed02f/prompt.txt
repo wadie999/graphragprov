@@ -1,0 +1,163 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What pantheon is the God of the underworld in ancient Egypt a part of?
+
+Expected answer: ancient Egyptian religion
+
+Gold decomposition:
+1. question='who was the god of the underworld in ancient egypt'; answer='Osiris'; support_paragraph=17
+2. question='#1 >> part of'; answer='ancient Egyptian religion'; support_paragraph=13
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:alignedWith> <urn:graphragprov:entity:north> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:amulet> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:canopic%20jar> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:commonlyDepictedWith> <urn:graphragprov:entity:head%20of%20a%20hamadryas%20baboon> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:depictedIn> <urn:graphragprov:entity:funerary%20literature> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Four%20sons%20of%20Horus> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Underworld> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:ancient%20Egyptian%20religion> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:protectedBy> <urn:graphragprov:entity:Nephthys> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:protects> <urn:graphragprov:entity:throne%20of%20Osiris> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:sonOf> <urn:graphragprov:entity:Heru-ur> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:sonOf> <urn:graphragprov:entity:Isis> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:sonOf> <urn:graphragprov:entity:Serqet> .
+<urn:graphragprov:entity:Hapi> <urn:graphragprov:predicate:taskedWith> <urn:graphragprov:entity:protecting%20the%20lungs%20of%20the%20deceased> .
+<urn:graphragprov:entity:Horus> <urn:graphragprov:predicate:sonOf> <urn:graphragprov:entity:Osiris> .
+<urn:graphragprov:entity:Khenti-Amentiu> <urn:graphragprov:predicate:meaning> "Foremost of the Westerners" .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:associatedWithEpithet> <urn:graphragprov:entity:Khenti-Amentiu> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:atTimesConsidered> <urn:graphragprov:entity:oldest%20son%20of%20the%20god%20Geb> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:brotherOf> <urn:graphragprov:entity:Isis> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:classicallyDepictedAs> <urn:graphragprov:entity:green-skinned%20deity> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:classicallyDepictedHolding> <urn:graphragprov:entity:symbolic%20crook%20and%20flail> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:classicallyDepictedWearing> <urn:graphragprov:entity:distinctive%20crown%20with%20two%20large%20ostrich%20feathers> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:classicallyDepictedWith> <urn:graphragprov:entity:mummy-wrapped%20legs> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:classicallyDepictedWith> <urn:graphragprov:entity:pharaoh%27s%20beard> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Ra> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:godOf> <urn:graphragprov:entity:Moon> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:husbandOf> <urn:graphragprov:entity:Isis> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:identifiedAs> <urn:graphragprov:entity:god%20of%20the%20afterlife> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:identifiedAs> <urn:graphragprov:entity:god%20of%20transition> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Egyptian%20god> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Nut> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:rulerOf> <urn:graphragprov:entity:dead> .
+<urn:graphragprov:entity:Osiris> <urn:graphragprov:predicate:sometimesCalled> <urn:graphragprov:entity:king%20of%20the%20living> .
+<urn:graphragprov:entity:ancient%20Egyptians> <urn:graphragprov:predicate:considered> <urn:graphragprov:entity:blessed%20dead%20as%20the%20living%20ones> .

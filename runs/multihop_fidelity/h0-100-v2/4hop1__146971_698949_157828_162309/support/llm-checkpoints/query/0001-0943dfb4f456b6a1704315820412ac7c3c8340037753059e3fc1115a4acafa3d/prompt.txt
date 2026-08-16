@@ -1,0 +1,172 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the country that has the same co-official language as that of the movie about the city where Petar Trifunović died send an independent team to the Olympics?
+
+Expected answer: 2016
+
+Gold decomposition:
+1. question='What city did Petar Trifunović live when he died?'; answer='Belgrade'; support_paragraph=2
+2. question='#1 >> original language of film or TV show'; answer='Serbian'; support_paragraph=17
+3. question='#2 is the co-official language of what country?'; answer='Kosovo'; support_paragraph=12
+4. question='When did #3 first attend the Olympics games as an independent team?'; answer='2016'; support_paragraph=8
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Bosnia%20and%20Herzegovina> <urn:graphragprov:predicate:beganCompetingIndependentlyAt> <urn:graphragprov:entity:1992%20Summer%20Games> .
+<urn:graphragprov:entity:Croatia> <urn:graphragprov:predicate:beganCompetingIndependentlyAt> <urn:graphragprov:entity:1992%20Winter%20Games> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:allowedToCompeteAs> <urn:graphragprov:entity:Independent%20Olympic%20Participants> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:competedAt> <urn:graphragprov:entity:1992%20Summer%20Olympics> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedFromYear> "1992"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedToYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:formedAsJointStateBy> <urn:graphragprov:entity:Montenegro> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:formedAsJointStateBy> <urn:graphragprov:entity:Serbia> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:notAllowedToCompeteAt> <urn:graphragprov:entity:1994%20Winter%20Olympics> .
+<urn:graphragprov:entity:Kosovo> <urn:graphragprov:predicate:madeOlympicDebutAs> <urn:graphragprov:entity:independent%20national%20team> .
+<urn:graphragprov:entity:Kosovo> <urn:graphragprov:predicate:madeOlympicDebutAt> <urn:graphragprov:entity:2016%20Summer%20Olympics> .
+<urn:graphragprov:entity:Slovenia> <urn:graphragprov:predicate:beganCompetingIndependentlyAt> <urn:graphragprov:entity:1992%20Winter%20Games> .
+<urn:graphragprov:entity:all%20six%20successor%20nations> <urn:graphragprov:predicate:haveParticipatedIndependentlySince> <urn:graphragprov:entity:2008%20Summer%20Olympics> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:coOfficialIn> <urn:graphragprov:entity:Kosovo> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:standardized%20variety> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:mainlyUsedBy> <urn:graphragprov:entity:Serbs> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:officialLanguageOf> <urn:graphragprov:entity:Serbia> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:oneOfOfficialLanguagesOf> <urn:graphragprov:entity:Bosnia%20and%20Herzegovina> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Croatia> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Czech%20Republic> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Hungary> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Montenegro> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:North%20Macedonia> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Romania> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Slovakia> .
+<urn:graphragprov:entity:Serbian%20language> <urn:graphragprov:predicate:varietyOf> <urn:graphragprov:entity:Serbo-Croatian%20language> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Belgrade> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:airDate> "2014-10-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:Radio%20Television%20Serbia> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Belgrade%20with%20Boris%20Malagurski> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:directedBy> <urn:graphragprov:entity:Boris%20Malagurski> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20film> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Serbian> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:worldPremiereDate> "2013-10-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Belgrade%20%28film%29> <urn:graphragprov:predicate:worldPremiereLocation> <urn:graphragprov:entity:Sava%20Centar> .
+<urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:birthDate> "1910-08-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:championCount> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:deathDate> "1980-12-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:International%20Grandmaster> .
+<urn:graphragprov:entity:Petar%20Trifunovi%C4%87> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Yugoslav%20Champion%20of%20chess> .

@@ -1,0 +1,156 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: At the end of which year did the tribes in the area where the Ashkenazi Jews can trace their ancestry to Jews who settled there invade the roman empire?
+
+Expected answer: 406
+
+Gold decomposition:
+1. question='In an ethnic sense, Ashkenazi Jews can trace their ancestry to Jews who settled where?'; answer='Central Europe'; support_paragraph=17
+2. question='At the end of which year did #1 tribes invade the Roman Empire?'; answer='406'; support_paragraph=11
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Briton%20colony%20and%20bishopric> <urn:graphragprov:predicate:wasEstablishedAs> <urn:graphragprov:entity:foederati%20and%20allies%20of%20the%20Suebi> .
+<urn:graphragprov:entity:Briton%20colony%20and%20bishopric> <urn:graphragprov:predicate:wasEstablishedIn> <urn:graphragprov:entity:Northern%20Galicia> .
+<urn:graphragprov:entity:Galicia> <urn:graphragprov:predicate:wasTakenBy> <urn:graphragprov:entity:Suebi> .
+<urn:graphragprov:entity:Galicia> <urn:graphragprov:predicate:wasTakenInYear> "0409"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Suebi> <urn:graphragprov:predicate:governedAs> <urn:graphragprov:entity:imperial%20allies> .
+<urn:graphragprov:entity:Suebi> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Galicia> .
+<urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasBroughtUnder> <urn:graphragprov:entity:Visigoth%20control> .
+<urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasCreatedInYear> "0411"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasFirstGermanicKingdomToMintCoinageIn> <urn:graphragprov:entity:Roman%20lands> .
+<urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> <urn:graphragprov:predicate:wasFirstMedievalKingdomCreatedIn> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:Visigothic%20King%20Leovigild> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> .
+<urn:graphragprov:entity:Visigothic%20King%20Leovigild> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Suebic%20kingdom%20of%20Galicia> .
+<urn:graphragprov:entity:Visigothic%20King%20Leovigild> <urn:graphragprov:predicate:invadedInYear> "0585"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Roman%20Empire> .
+<urn:graphragprov:entity:different%20tribes%20of%20Central%20Europe> <urn:graphragprov:predicate:invadedOnDate> "0406-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:2013%20study%20of%20Ashkenazi%20mitochondrial%20DNA> <urn:graphragprov:predicate:conductedBy> <urn:graphragprov:entity:University%20of%20Huddersfield> .
+<urn:graphragprov:entity:2013%20study%20of%20Ashkenazi%20mitochondrial%20DNA> <urn:graphragprov:predicate:suggests> <urn:graphragprov:entity:at%20least%2080%20percent%20of%20Ashkenazi%20maternal%20lineages%20derive%20from%20indigenous%20European%20mtDNAs> .
+<urn:graphragprov:entity:Ashkenazi%20Jew> <urn:graphragprov:predicate:hasAncestryTracedTo> <urn:graphragprov:entity:Jews%20who%20settled%20in%20Central%20Europe> .
+<urn:graphragprov:entity:Ashkenazi%20Jew> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:ethnic%20sense> .
+<urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:hadLittleInflowOrOutflow> <urn:graphragprov:entity:conversion> .
+<urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:hadLittleInflowOrOutflow> <urn:graphragprov:entity:intermarriage> .
+<urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:hadLittleInflowOrOutflow> <urn:graphragprov:entity:migration> .
+<urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:livedIn> <urn:graphragprov:entity:many%20countries> .
+<urn:graphragprov:entity:Ashkenazim> <urn:graphragprov:predicate:wereReproductivelyIsolatedPopulation> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:Human%20geneticists> <urn:graphragprov:predicate:argued> <urn:graphragprov:entity:genetic%20variations%20identified%20among%20Ashkenazi%20Jews> .
+<urn:graphragprov:entity:Many%20Ashkenazi%20Jews> <urn:graphragprov:predicate:haveIntermarried> <urn:graphragprov:entity:members%20of%20other%20Jewish%20communities> .
+<urn:graphragprov:entity:Many%20Ashkenazi%20Jews> <urn:graphragprov:predicate:haveIntermarried> <urn:graphragprov:entity:people%20of%20other%20nations%20and%20faiths> .

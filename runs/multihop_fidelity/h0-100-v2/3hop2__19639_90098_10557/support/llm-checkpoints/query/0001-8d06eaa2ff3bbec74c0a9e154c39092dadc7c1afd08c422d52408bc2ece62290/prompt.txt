@@ -1,0 +1,191 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What was the version of the language where the last name Sylvester originates, used in the era of the king that united the tribes in the 9th century, later called?
+
+Expected answer: Medieval Latin
+
+Gold decomposition:
+1. question='What king united the tribes in the 9th century?'; answer='Charlemagne'; support_paragraph=5
+2. question='where does the last name sylvester come from'; answer='from the Latin'; support_paragraph=16
+3. question="What was the #2 of #1 's era later known as?"; answer='Medieval Latin'; support_paragraph=14
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Frankish%20king> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:knownInGermanAs> <urn:graphragprov:entity:Karl%20der%20Gro%C3%9Fe> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:united> <urn:graphragprov:entity:large%20tribes> .
+<urn:graphragprov:entity:Eastern%20Germany> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:Slavonic-speaking> .
+<urn:graphragprov:entity:Eastern%20Germany> <urn:graphragprov:predicate:becameSlavonicSpeaking> <urn:graphragprov:entity:Sorbs> .
+<urn:graphragprov:entity:Eastern%20Germany> <urn:graphragprov:predicate:becameSlavonicSpeaking> <urn:graphragprov:entity:Veleti> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Alamanni> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Bavarii> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Burgundians> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Franci> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Lombards> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Saxons> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Suebi> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Thuringii> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Vandals> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:migration-period%20peoples> .
+<urn:graphragprov:entity:Germanic%20tribes> <urn:graphragprov:predicate:migratedInto> <urn:graphragprov:entity:former%20areas%20of%20the%20Roman%20Empire> .
+<urn:graphragprov:entity:Linguists> <urn:graphragprov:predicate:distinguish> <urn:graphragprov:entity:Alemannic> .
+<urn:graphragprov:entity:Linguists> <urn:graphragprov:predicate:distinguish> <urn:graphragprov:entity:Bavarian> .
+<urn:graphragprov:entity:Linguists> <urn:graphragprov:predicate:distinguish> <urn:graphragprov:entity:Franconian> .
+<urn:graphragprov:entity:Linguists> <urn:graphragprov:predicate:distinguish> <urn:graphragprov:entity:Thuringian> .
+<urn:graphragprov:entity:Linguists> <urn:graphragprov:predicate:distinguish> <urn:graphragprov:entity:low%20Saxon> .
+<urn:graphragprov:entity:Linguists> <urn:graphragprov:predicate:distinguishIn> <urn:graphragprov:entity:modern%20German> .
+<urn:graphragprov:entity:areas> <urn:graphragprov:predicate:vacatedBy> <urn:graphragprov:entity:Germanic%20tribes> .
+<urn:graphragprov:entity:five%20tribes> <urn:graphragprov:predicate:consideredAs> <urn:graphragprov:entity:major%20groups> .
+<urn:graphragprov:entity:five%20tribes> <urn:graphragprov:predicate:sometimesIncluding> <urn:graphragprov:entity:Frisians> .
+<urn:graphragprov:entity:five%20tribes> <urn:graphragprov:predicate:takePartIn> <urn:graphragprov:entity:formation%20of%20the%20Germans> .
+<urn:graphragprov:entity:large%20tribes> <urn:graphragprov:predicate:livedOnTerritoryOf> <urn:graphragprov:entity:modern%20Germany> .
+<urn:graphragprov:entity:large%20tribes> <urn:graphragprov:predicate:unitedInYear> "9th century" .
+<urn:graphragprov:entity:varieties%20of%20the%20German%20language> <urn:graphragprov:predicate:stillDividedInto> <urn:graphragprov:entity:these%20groups> .
+<urn:graphragprov:entity:Alcuin> <urn:graphragprov:predicate:brought> <urn:graphragprov:entity:education> .
+<urn:graphragprov:entity:Alcuin> <urn:graphragprov:predicate:diedInYear> "0804"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alcuin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:monk> .
+<urn:graphragprov:entity:Alcuin> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:Carolingian%20Renaissance> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cultural%20revival> .
+<urn:graphragprov:entity:Carolingian%20minuscule> <urn:graphragprov:predicate:allowed> <urn:graphragprov:entity:common%20writing%20style> .
+<urn:graphragprov:entity:Carolingian%20minuscule> <urn:graphragprov:predicate:knownTodayAs> <urn:graphragprov:entity:Carolingian%20minuscule> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:hadCourtIn> <urn:graphragprov:entity:Aachen> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:imposed> <urn:graphragprov:entity:Gregorian%20chant> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:imposed> <urn:graphragprov:entity:Roman%20form%20of%20church%20service> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:invited> <urn:graphragprov:entity:Alcuin> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:sponsored> <urn:graphragprov:entity:Carolingian%20Renaissance> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:sponsoredChangesIn> <urn:graphragprov:entity:church%20liturgy> .
+<urn:graphragprov:entity:Charlemagne> <urn:graphragprov:predicate:usedScript> <urn:graphragprov:entity:Carolingian%20minuscule> .
+<urn:graphragprov:entity:Grammarians%20of%20the%20period> <urn:graphragprov:predicate:modified> <urn:graphragprov:entity:Latin%20language> .
+<urn:graphragprov:entity:Latin%20language> <urn:graphragprov:predicate:changedFrom> <urn:graphragprov:entity:Classical%20Latin> .
+<urn:graphragprov:entity:Latin%20language> <urn:graphragprov:predicate:changedInto> <urn:graphragprov:entity:more%20flexible%20form> .
+<urn:graphragprov:entity:Latin%20language> <urn:graphragprov:predicate:divergedFrom> <urn:graphragprov:entity:classical> .
+<urn:graphragprov:entity:Latin%20language> <urn:graphragprov:predicate:laterCalled> <urn:graphragprov:entity:Medieval%20Latin> .
+<urn:graphragprov:entity:Classical%20Latin> <urn:graphragprov:predicate:representedSound> <urn:graphragprov:entity:y> .
+<urn:graphragprov:entity:Classical%20Latin> <urn:graphragprov:predicate:spellsWith> <urn:graphragprov:entity:i> .
+<urn:graphragprov:entity:Latin%20adjective%20silvestris> <urn:graphragprov:predicate:derivedFrom> <urn:graphragprov:entity:noun%20silva> .
+<urn:graphragprov:entity:Latin%20adjective%20silvestris> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:wild> .
+<urn:graphragprov:entity:Latin%20adjective%20silvestris> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:wooded> .
+<urn:graphragprov:entity:Spellings%20with%20Sylv-> <urn:graphragprov:predicate:dateFrom> <urn:graphragprov:entity:after%20the%20Classical%20period> .
+<urn:graphragprov:entity:Sylvester> <urn:graphragprov:predicate:derivedFrom> <urn:graphragprov:entity:Latin%20adjective%20silvestris> .
+<urn:graphragprov:entity:noun%20silva> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:woodland> .
+<urn:graphragprov:entity:y> <urn:graphragprov:predicate:cameToBePronouncedAs> <urn:graphragprov:entity:i> .
+<urn:graphragprov:entity:y> <urn:graphragprov:predicate:distinctFrom> <urn:graphragprov:entity:i> .
+<urn:graphragprov:entity:y> <urn:graphragprov:predicate:notNativeTo> <urn:graphragprov:entity:Latin> .
+<urn:graphragprov:entity:y> <urn:graphragprov:predicate:usedIn> <urn:graphragprov:entity:transcriptions%20of%20foreign%20words> .

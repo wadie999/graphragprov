@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_759899f2608ed17163843c2242f827d06e0a401a5cff614ed2fedf20d94fb725
+Title: Ottoman Empire
+Text:
+The discovery of new maritime trade routes by Western European states allowed them to avoid the Ottoman trade monopoly. The Portuguese discovery of the Cape of Good Hope in 1488 initiated a series of Ottoman-Portuguese naval wars in the Indian Ocean throughout the 16th century. The Somali Muslim Ajuran Empire, allied with the Ottomans, defied the Portuguese economic monopoly in the Indian Ocean by employing a new coinage which followed the Ottoman pattern, thus proclaiming an attitude of economic independence in regard to the Portuguese.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 9,
+    "statement": {
+      "subject": {
+        "value": "Somali Muslim Ajuran Empire",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Somali Muslim Ajuran Empire",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "defiedByEmploying",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "defied ... by employing",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "new coinage",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "new coinage",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[9].predicate.evidence[0]: quote 'defied ... by employing' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,262 @@
+
+H0 one-case execution
+  case:          3hop2__668732_223623_162182
+  hops:          3
+  question:      In what region of the country where An Phu is located is John Phan's birthplace?
+  expected:      South Central Coast
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__668732_223623_162182/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=13 title='An Phú District'
+  source unit: u_809284cbf81465f4adff6c6f85f53e96fd162d6c1f5f0fa0155a82a9ecec1f20
+  text chars:  305
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.730s | model=deepseek-v4-flash
+      tokens:   in=5314 | out=1446 | total=6760 | cached=4992 | uncached=322
+    [LLM graph.reference #2] sending...
+      provider: 1.006s | model=deepseek-v4-flash
+      tokens:   in=603 | out=8 | total=611 | cached=0 | uncached=603
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 1
+
+    initial rejection #7
+      validator:
+        response.statements[7].object.evidence[0]: quote '226 km²' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "226 km²",
+                "segment": "text"
+              }
+            ],
+            "value": "226 km²"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "covers an area of",
+                "segment": "text"
+              }
+            ],
+            "value": "hasArea"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "An Phú District",
+                "segment": "title"
+              }
+            ],
+            "value": "An Phú District"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 196 / 320 (61.3%)
+    characters text:     181 / 305 (59.3%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  55 chars
+      '. The district covers an area of 226 km². The district'
+    statement density:  25.00 / 1000 chars
+    title reliance:      2 / 8 (25.0%)
+
+[GRAPH 2/3] paragraph=19 title='John Phan'
+  source unit: u_f5590ebeb19b30309c83411e569e74c14dc761c46fd60da2793e7c320e75213f
+  text chars:  275
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.394s | model=deepseek-v4-flash
+      tokens:   in=5383 | out=1658 | total=7041 | cached=4992 | uncached=391
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 177 / 284 (62.3%)
+    characters text:     168 / 275 (61.1%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  31 chars
+      'and is a winner and four time'
+    statement density:  31.69 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 3/3] paragraph=11 title='South Central Coast'
+  source unit: u_b22b53fcd3bb38851dc8bd369c23e4ae8e141f41cc780d6fa8088d0ffb2fb9e5
+  text chars:  389
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 6.559s | model=deepseek-v4-flash
+      tokens:   in=5517 | out=1295 | total=6812 | cached=5120 | uncached=397
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 185 / 408 (45.3%)
+    characters text:     166 / 389 (42.7%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  110 chars
+      '. The two southern provinces Ninh Thuận and Bình Thuận are sometimes seen as part of the Southeast region.The'
+    statement density:  19.61 / 1000 chars
+    title reliance:      6 / 8 (75.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 25
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      25
+resource nodes:        25
+entity nodes:          25
+literal values:        2
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:An%20Ph%C3%BA> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Cambodia> .
+  <urn:graphragprov:entity:An%20Ph%C3%BA> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:district> .
+  <urn:graphragprov:entity:An%20Ph%C3%BA> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:western%20edge%20of%20Vietnam> .
+  <urn:graphragprov:entity:An%20Ph%C3%BA> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:An%20Giang%20Province> .
+  <urn:graphragprov:entity:An%20Ph%C3%BA> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mekong%20Delta%20region> .
+  <urn:graphragprov:entity:An%20Ph%C3%BA> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+  <urn:graphragprov:entity:An%20Ph%C3%BA%20District> <urn:graphragprov:predicate:capitalIs> <urn:graphragprov:entity:An%20Ph%C3%BA%20town> .
+  <urn:graphragprov:entity:An%20Ph%C3%BA%20District> <urn:graphragprov:predicate:hadPopulationInYear> "178613"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Paracel%20Islands> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Ho%C3%A0ng%20Sa%20District> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:seven%20other%20provinces> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Paracel%20Islands> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Spratly%20Islands> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:regions%20of%20Vietnam> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+  <urn:graphragprov:entity:Spratly%20Islands> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Tr%C6%B0%E1%BB%9Dng%20Sa%20District> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:California> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Stockton> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Da%20Nang> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornInYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:isFinalTablistOf> <urn:graphragprov:entity:World%20Poker%20Tour%20Championships> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:isWinnerOf> <urn:graphragprov:entity:World%20Poker%20Tour%20Championships> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:isWinnerOf> <urn:graphragprov:entity:World%20Series%20of%20Poker%20bracelet> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Vietnamese-American> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:professional%20poker%20player> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.029s | model=deepseek-v4-flash
+      tokens:   in=2102 | out=264 | total=2366 | cached=640 | uncached=1462
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Da%20Nang> .
+  - <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Da%20Nang> . <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> . BIND(<urn:graphragprov:entity:South%20Central%20Coast> AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_809284cbf81465f4>
+  FROM <urn:graphragprov:unit:u_b22b53fcd3bb3885>
+  FROM <urn:graphragprov:unit:u_f5590ebeb19b3030>
+  WHERE { <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Da%20Nang> . <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> . BIND(<urn:graphragprov:entity:South%20Central%20Coast> AS ?answer) }
+
+GraphDB execution:
+  observed answers: ('South Central Coast',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__668732_223623_162182
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__668732_223623_162182/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          18919
+output tokens:         4671
+total tokens:          23590
+cached input tokens:   15744
+uncached input tokens: 3175
+cumulative LLM seconds: 25.718
+
+statement occurrences: 25
+semantic triples:      25
+entity nodes:          25
+literal values:        2
+predicates:            16
+query attempts:        1
+observed answers:      ('South Central Coast',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 23.701s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.090s
+  graph.materialization [attempt=1]: 0.204s
+  graph.observation [attempt=1]: 0.011s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.030s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.443s

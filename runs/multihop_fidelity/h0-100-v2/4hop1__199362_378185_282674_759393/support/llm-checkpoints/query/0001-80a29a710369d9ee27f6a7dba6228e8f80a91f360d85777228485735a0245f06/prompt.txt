@@ -1,0 +1,166 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the capital of the county that shares a border with the county where WAPL is licensed to broadcast?
+
+Expected answer: Green Bay
+
+Gold decomposition:
+1. question='WAPL >> licensed to broadcast to'; answer='Appleton'; support_paragraph=18
+2. question='#1 >> located in the administrative territorial entity'; answer='Outagamie County'; support_paragraph=0
+3. question='#2 >> shares border with'; answer='Brown County'; support_paragraph=3
+4. question='#3 >> capital'; answer='Green Bay'; support_paragraph=7
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:hasMascot> <urn:graphragprov:entity:Red%20Raider> .
+<urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20high%20school> .
+<urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brown%20County> .
+<urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pulaski> .
+<urn:graphragprov:entity:Pulaski%20High%20School> <urn:graphragprov:predicate:servesGrades> "9 through 12" .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:classic%20rock> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:hasStudioIn> <urn:graphragprov:entity:College%20Avenue%20in%20Appleton> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:hasTransmittingFacilities> <urn:graphragprov:entity:Town%20of%20Glenmore> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:hasTransmittingFacilities> <urn:graphragprov:entity:WGBA%20Tower> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:hasTransmittingFacilities> <urn:graphragprov:entity:southeastern%20Brown%20County> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:hasTransmittingFacilities> <urn:graphragprov:entity:unincorporated%20Shirley> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:radio%20station> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:licensedToBroadcastTo> <urn:graphragprov:entity:Appleton> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Woodward%20Communications> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:servesArea> <urn:graphragprov:entity:Appleton-Oshkosh%20areas> .
+<urn:graphragprov:entity:WAPL> <urn:graphragprov:predicate:servesArea> <urn:graphragprov:entity:Green%20Bay> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:electedInYear> "1878"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:butcher> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:farmer> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:politicalAffiliation> <urn:graphragprov:entity:Greenback%20Democrat> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:politicalAffiliation> <urn:graphragprov:entity:Greenbacker> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:reElectedInYear> "1879"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:representedCounty> <urn:graphragprov:entity:Outagamie%20County> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:residedIn> <urn:graphragprov:entity:Appleton> .
+<urn:graphragprov:entity:John%20C.%20Petersen> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:member%20of%20the%20Wisconsin%20State%20Assembly> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Green%20Bay> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:realtor> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:politicalAffiliation> <urn:graphragprov:entity:Republican> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedFromYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedIn> <urn:graphragprov:entity:Wisconsin%20State%20Assembly> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:Brown%20County%2C%20Wisconsin%20Board%20of%20Supervisors> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:Green%20Bay%20Common%20Council> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:local%20Board%20of%20Education> .
+<urn:graphragprov:entity:Jerome%20Quinn> <urn:graphragprov:predicate:servedUntilYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .

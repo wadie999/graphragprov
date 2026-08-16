@@ -1,0 +1,356 @@
+
+H0 one-case execution
+  case:          4hop1__131611_32392_823060_610794
+  hops:          4
+  question:      In which county is the city sharing a border with the capitol of the state where Ocean Forest Country Club is located?
+  expected:      Richland County
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__131611_32392_823060_610794/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=1 title='Ocean Forest Country Club'
+  source unit: u_434ff5799da086b295062813748c536ee189a6487ebcc82534bea25e31305ea9
+  text chars:  670
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 16.057s | model=deepseek-v4-flash
+      tokens:   in=5409 | out=3249 | total=8658 | cached=4992 | uncached=417
+    [LLM graph.reference #2] sending...
+      provider: 0.895s | model=deepseek-v4-flash
+      tokens:   in=638 | out=8 | total=646 | cached=0 | uncached=638
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 1
+
+    initial rejection #7
+      validator:
+        response.statements[7].object.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "New York",
+                "segment": "text"
+              }
+            ],
+            "value": "nationality"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Raymond Hood",
+                "segment": "text"
+              }
+            ],
+            "value": "Raymond Hood"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 507 / 695 (72.9%)
+    characters text:     482 / 670 (71.9%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  50 chars
+      'in association with the club. It was designed by'
+    statement density:  24.46 / 1000 chars
+    title reliance:      12 / 17 (70.6%)
+
+[GRAPH 2/4] paragraph=6 title='Charleston, South Carolina'
+  source unit: u_9c8da72d4e32a136a78289508e35fb03e6440adab43ece8b719e86e3c8a42bd9
+  text chars:  656
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 13.721s | model=deepseek-v4-flash
+      tokens:   in=5601 | out=2843 | total=8444 | cached=4992 | uncached=609
+    [LLM graph.reference #4] sending...
+      provider: 1.388s | model=deepseek-v4-flash
+      tokens:   in=646 | out=176 | total=822 | cached=0 | uncached=646
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 1
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'making ... profitable' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "short-staple cotton",
+                "segment": "text"
+              }
+            ],
+            "value": "short-staple cotton"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "making ... profitable",
+                "segment": "text"
+              }
+            ],
+            "value": "madeProfitable"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "cotton gin",
+                "segment": "text"
+              }
+            ],
+            "value": "cotton gin"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 528 / 682 (77.4%)
+    characters text:     502 / 656 (76.5%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  38 chars
+      'of the post-Revolutionary years. The'
+    statement density:  24.93 / 1000 chars
+    title reliance:      4 / 17 (23.5%)
+
+[GRAPH 3/4] paragraph=15 title='WWNQ'
+  source unit: u_a3c286900f92ccab6dbd31e406a5d69bc68536c11edf56a8918113386c93208e
+  text chars:  217
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 6.066s | model=deepseek-v4-flash
+      tokens:   in=5717 | out=1126 | total=6843 | cached=5120 | uncached=597
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 162 / 221 (73.3%)
+    characters text:     158 / 217 (72.8%)
+    characters title:    4 / 4 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  18 chars
+      ', South Carolina,'
+    statement density:  27.15 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[GRAPH 4/4] paragraph=14 title='Forest Acres, South Carolina'
+  source unit: u_3e0a4a7ba67ef142b4ed71a54906e7ce9849587b4d4fd3673742fd955a5d9657
+  text chars:  194
+  whole-source attempt: 1/3
+    [LLM graph.reference #6] sending...
+      provider: 6.972s | model=deepseek-v4-flash
+      tokens:   in=5785 | out=1315 | total=7100 | cached=5248 | uncached=537
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 192 / 222 (86.5%)
+    characters text:     164 / 194 (84.5%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  6 chars
+      '. The'
+    statement density:  31.53 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 47
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      47
+resource nodes:        46
+entity nodes:          46
+literal values:        7
+predicates:            32
+
+N-Triples:
+  <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:hasPopulation> "10361"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:city> .
+  <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Richland%20County> .
+  <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Columbia%2C%20South%20Carolina%2C%20Metropolitan%20Statistical%20Area> .
+  <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:populationCountedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:18-hole%20course> <urn:graphragprov:predicate:datesFrom> "1946"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:27-hole%20golf%20course> <urn:graphragprov:predicate:designedBy> <urn:graphragprov:entity:Robert%20White> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:commonlyKnownAs> <urn:graphragprov:entity:Ocean%20Forest%20Hotel%20and%20Country%20Club> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:constructionCompletedInYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:constructionStartedInYear> "1926"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:designedBy> <urn:graphragprov:entity:Raymond%20Hood> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:exampleOf> <urn:graphragprov:entity:Classical%20Revival%20architecture> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:hasGolfCourse> <urn:graphragprov:entity:18-hole%20course> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:hasGolfCourse> <urn:graphragprov:entity:27-hole%20golf%20course> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country%20club> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:hotel> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Horry%20County> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Myrtle%20Beach> .
+  <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:Raymond%20Hood> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:architect> .
+  <urn:graphragprov:entity:Robert%20White> <urn:graphragprov:predicate:futurePresidentOf> <urn:graphragprov:entity:Professional%20Golfers%27%20Association%20of%20America> .
+  <urn:graphragprov:entity:Robert%20White> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:golf%20course%20designer> .
+  <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:becameMoreProsperousIn> <urn:graphragprov:entity:plantation-dominated%20economy> .
+  <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusInYear> "1786"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusOf> <urn:graphragprov:entity:state%20capital> .
+  <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusTo> <urn:graphragprov:entity:Columbia> .
+  <urn:graphragprov:entity:Lowcountry> <urn:graphragprov:predicate:devotedTo> <urn:graphragprov:entity:cotton%20plantations> .
+  <urn:graphragprov:entity:Piedmont%20region> <urn:graphragprov:predicate:developedInto> <urn:graphragprov:entity:cotton%20plantations> .
+  <urn:graphragprov:entity:Slaves> <urn:graphragprov:predicate:werePrimaryLaborForceIn> <urn:graphragprov:entity:the%20city> .
+  <urn:graphragprov:entity:Slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:artisans> .
+  <urn:graphragprov:entity:Slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:domestics> .
+  <urn:graphragprov:entity:Slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:laborers> .
+  <urn:graphragprov:entity:Slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:market%20workers> .
+  <urn:graphragprov:entity:cotton> <urn:graphragprov:predicate:quicklyBecame> <urn:graphragprov:entity:South%20Carolina%27s%20major%20export%20commodity> .
+  <urn:graphragprov:entity:cotton%20gin> <urn:graphragprov:predicate:inventedInYear> "1793"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:cotton%20gin> <urn:graphragprov:predicate:madeProfitable> <urn:graphragprov:entity:short-staple%20cotton> .
+  <urn:graphragprov:entity:cotton%20gin> <urn:graphragprov:predicate:revolutionizedProcessingOf> <urn:graphragprov:entity:this%20crop> .
+  <urn:graphragprov:entity:sea%20islands> <urn:graphragprov:predicate:devotedTo> <urn:graphragprov:entity:cotton%20plantations> .
+  <urn:graphragprov:entity:short-staple%20cotton> <urn:graphragprov:predicate:easilyGrownIn> <urn:graphragprov:entity:upland%20areas> .
+  <urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:brandedAs> <urn:graphragprov:entity:94.3%20The%20Dude> .
+  <urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:broadcastsFormat> <urn:graphragprov:entity:country%20music> .
+  <urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:radio%20station> .
+  <urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:licensedTo> <urn:graphragprov:entity:Forest%20Acres> .
+  <urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Midlands%20Media%20Group%20LLC> .
+  <urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:servesMarket> <urn:graphragprov:entity:Columbia%2C%20South%20Carolina%20market> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.974s | model=deepseek-v4-flash
+      tokens:   in=3176 | out=266 | total=3442 | cached=640 | uncached=2536
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  - <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusTo> <urn:graphragprov:entity:Columbia> .
+  - <urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Richland%20County> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:locatedIn> ?state . <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusTo> ?capital . ?city <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3e0a4a7ba67ef142>
+  FROM <urn:graphragprov:unit:u_434ff5799da086b2>
+  FROM <urn:graphragprov:unit:u_9c8da72d4e32a136>
+  FROM <urn:graphragprov:unit:u_a3c286900f92ccab>
+  WHERE { <urn:graphragprov:entity:Ocean%20Forest%20Country%20Club> <urn:graphragprov:predicate:locatedIn> ?state . <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusTo> ?capital . ?city <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Horry County', 'Myrtle Beach', 'South Carolina', 'United States', 'Richland County')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 18
+  provenance sources: ['Charleston, South Carolina', 'Forest Acres, South Carolina', 'Ocean Forest Country Club']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__131611_32392_823060_610794
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__131611_32392_823060_610794/support/result.json
+graph LLM executed:    6
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26972
+output tokens:         8983
+total tokens:          35955
+cached input tokens:   20992
+uncached input tokens: 5980
+cumulative LLM seconds: 47.073
+
+statement occurrences: 47
+semantic triples:      47
+entity nodes:          46
+literal values:        7
+predicates:            32
+query attempts:        1
+observed answers:      ('Horry County', 'Myrtle Beach', 'South Carolina', 'United States', 'Richland County')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 45.125s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.068s
+  graph.materialization [attempt=1]: 0.101s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.975s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.510s

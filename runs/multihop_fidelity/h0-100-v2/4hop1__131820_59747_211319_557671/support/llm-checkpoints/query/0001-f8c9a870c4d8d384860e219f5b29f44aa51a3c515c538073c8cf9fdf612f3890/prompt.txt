@@ -1,0 +1,167 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Which county shares a border with the county where the most populous city in the state where WEKL operates is located?
+
+Expected answer: Presque Isle County
+
+Gold decomposition:
+1. question='Which state is WEKL located?'; answer='Georgia'; support_paragraph=8
+2. question='what is the largest city in #1 by population'; answer='Atlanta'; support_paragraph=4
+3. question='#2 >> located in the administrative territorial entity'; answer='Montmorency County'; support_paragraph=17
+4. question='#3 >> shares border with'; answer='Presque Isle County'; support_paragraph=15
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:George%20N.%20Fletcher> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedInYear> "1881"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Alpena%2C%20Michigan> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20utility%20company> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:most%20of%20Alpena%20County> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:southeastern%20Presque%20Isle%20County> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:village%20of%20Hillman> .
+<urn:graphragprov:entity:village%20of%20Hillman> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+<urn:graphragprov:entity:WEKL> <urn:graphragprov:predicate:hasStudioLocation> <urn:graphragprov:entity:Augusta%20Corporate%20Center> .
+<urn:graphragprov:entity:WEKL> <urn:graphragprov:predicate:hasTransmitterLocation> <urn:graphragprov:entity:Augusta%20near%20Fort%20Gordon> .
+<urn:graphragprov:entity:WEKL> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Contemporary%20Christian%20radio%20station> .
+<urn:graphragprov:entity:WEKL> <urn:graphragprov:predicate:knownOnAirAs> <urn:graphragprov:entity:102.3%20K-Love> .
+<urn:graphragprov:entity:WEKL> <urn:graphragprov:predicate:licensedBy> <urn:graphragprov:entity:Federal%20Communications%20Commission> .
+<urn:graphragprov:entity:WEKL> <urn:graphragprov:predicate:licensedTo> <urn:graphragprov:entity:Augusta%2C%20Georgia> .
+<urn:graphragprov:entity:WEKL> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:hasPopulation> "420003"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:hasLandArea> "302.47 sq mi" .
+<urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:consolidated%20city-county> .
+<urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:largestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:hasLandArea> "0.18 sq mi" .
+<urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:hasPopulation> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:smallestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Santa%20Claus> <urn:graphragprov:predicate:hasLandArea> "0.18 sq mi" .
+<urn:graphragprov:entity:Competitors> <urn:graphragprov:predicate:mayBeEnteredIn> <urn:graphragprov:entity:any%20or%20all%20of%20these%20events> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:currentlyFirstEventOf> <urn:graphragprov:entity:Rally%20America%20National%20Rally%20Championship%20season> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:frequency> "annually" .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Atlanta%2C%20Michigan> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:heldIn> <urn:graphragprov:entity:Michigan> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:heldIn> <urn:graphragprov:entity:Montmorency%20County> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rally%20racing%20event> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:organizedInto> <urn:graphragprov:entity:national%20championship%20event> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:organizedInto> <urn:graphragprov:entity:three%20distinct%20rallies> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:organizedInto> <urn:graphragprov:entity:two%20regional%20rally%20events> .
+<urn:graphragprov:entity:national%20championship%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:both%20days%20of%20rallying> .
+<urn:graphragprov:entity:regional%20rally%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:one%20of%20the%20two%20days> .

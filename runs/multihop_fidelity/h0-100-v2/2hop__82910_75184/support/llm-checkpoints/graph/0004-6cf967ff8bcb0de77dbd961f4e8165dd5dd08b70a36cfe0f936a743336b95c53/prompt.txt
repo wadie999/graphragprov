@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_400b7c878182ce9029cb4c7bf9eed23445f9e551eebc94d574eacf627f176c99
+Title: List of Back to the Future characters
+Text:
+The character was played by Claudia Wells in Back to the Future. However, Wells was not available to film the sequels for personal reasons, and the role was recast to Elisabeth Shue although Wells reprised her role as Jennifer in Back to the Future: The Game as a punk rock version of her character. Consequently, the opening scene of Back to the Future Part II was re-shot with Shue taking Wells' place, rather than using the ending of Back to the Future. In the spin - off Back to the Future: the Animated Series, Jennifer was voiced by Cathy Cavadini.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 7,
+    "statement": {
+      "subject": {
+        "value": "Jennifer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Jennifer",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "appearedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "in the spin - off Back to the Future: the Animated Series",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Back to the Future: the Animated Series",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Back to the Future: the Animated Series",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[7].predicate.evidence[0]: quote 'in the spin - off Back to the Future: the Animated Series' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

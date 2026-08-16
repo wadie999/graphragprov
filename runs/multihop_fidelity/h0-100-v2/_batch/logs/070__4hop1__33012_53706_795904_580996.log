@@ -1,0 +1,295 @@
+
+H0 one-case execution
+  case:          4hop1__33012_53706_795904_580996
+  hops:          4
+  question:      What city shares a border with the place where the person who went to the state known for its Mediterranean climate during the gold rush worked?
+  expected:      Rio Linda
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__33012_53706_795904_580996/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=11 title='Geography of the United States'
+  source unit: u_751564c7573dae7fa9ba22cf4cfad7c2759e3fea140318be4dcac547da8d03be
+  text chars:  676
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.048s | model=deepseek-v4-flash
+      tokens:   in=5389 | out=2309 | total=7698 | cached=4992 | uncached=397
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 455 / 706 (64.4%)
+    characters text:     455 / 676 (67.3%)
+    characters title:    0 / 30 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  61 chars
+      'Due to its large size and wide range of geographic features,'
+    statement density:  19.83 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 2/4] paragraph=10 title='California Gold Rush'
+  source unit: u_434f9adc04d4f3753071f8231be0c37ff03827690323cb0a9622dfecf2d7f44a
+  text chars:  329
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.722s | model=deepseek-v4-flash
+      tokens:   in=5499 | out=811 | total=6310 | cached=4992 | uncached=507
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 149 / 349 (42.7%)
+    characters text:     149 / 329 (45.3%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  64 chars
+      'Rumors of the discovery of gold were confirmed in March 1848 by'
+    statement density:  14.33 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 3/4] paragraph=19 title='History of Sacramento, California'
+  source unit: u_f51c04694eadba8d12fdf0ecafd059934bb15933106fa28ffddf1a1092d41c4c
+  text chars:  261
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.507s | model=deepseek-v4-flash
+      tokens:   in=5541 | out=1006 | total=6547 | cached=5120 | uncached=421
+    [LLM graph.reference #4] sending...
+      provider: 1.095s | model=deepseek-v4-flash
+      tokens:   in=571 | out=8 | total=579 | cached=0 | uncached=571
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 1
+
+    initial rejection #4
+      validator:
+        response.statements[4].predicate.evidence[0]: quote 'constructed by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Sutter, Sr.",
+                "segment": "text"
+              }
+            ],
+            "value": "John Sutter, Sr."
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "constructed by",
+                "segment": "text"
+              }
+            ],
+            "value": "constructedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "embarcadero",
+                "segment": "text"
+              }
+            ],
+            "value": "embarcadero"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 162 / 294 (55.1%)
+    characters text:     140 / 261 (53.6%)
+    characters title:    22 / 33 (66.7%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  54 chars
+      'The history of Sacramento, California, began with its'
+    statement density:  17.01 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 4/4] paragraph=18 title='Rio Linda High School'
+  source unit: u_78ededf5377f2b1eb3939ef36935632d4cc7890b56db55a09b161970d6ec353d
+  text chars:  231
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 6.730s | model=deepseek-v4-flash
+      tokens:   in=5602 | out=1321 | total=6923 | cached=5120 | uncached=482
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 198 / 252 (78.6%)
+    characters text:     177 / 231 (76.6%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  14 chars
+      'students. It'
+    statement density:  27.78 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 31
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      31
+resource nodes:        25
+entity nodes:          25
+literal values:        11
+predicates:            23
+
+N-Triples:
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:merchant> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:publisher> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:shouted> "Gold! Gold! Gold from the American River!" .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:walkedThrough> <urn:graphragprov:entity:San%20Francisco> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:San%20Francisco> .
+  <urn:graphragprov:entity:United%20States> <urn:graphragprov:predicate:containsExamplesOf> "nearly every global climate" .
+  <urn:graphragprov:entity:United%20States> <urn:graphragprov:predicate:hasAgriculturalClimate> "favorable agricultural climate" .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isAridIn> <urn:graphragprov:entity:Great%20Basin> .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isMediterraneanIn> <urn:graphragprov:entity:coastal%20California> .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isPolarIn> <urn:graphragprov:entity:Alaska> .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isSemiaridIn> <urn:graphragprov:entity:Great%20Plains> .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isSubtropicalIn> <urn:graphragprov:entity:Southern%20United%20States> .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isTemperateIn> "most areas" .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isTropicalIn> <urn:graphragprov:entity:Hawaii> .
+  <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isTropicalIn> <urn:graphragprov:entity:southern%20Florida> .
+  <urn:graphragprov:entity:favorable%20agricultural%20climate> <urn:graphragprov:predicate:contributedTo> "country's rise as a world power" .
+  <urn:graphragprov:entity:favorable%20agricultural%20climate> <urn:graphragprov:predicate:hasCharacteristic> "general lack of widespread flooding" .
+  <urn:graphragprov:entity:favorable%20agricultural%20climate> <urn:graphragprov:predicate:hasCharacteristic> "infrequent severe drought" .
+  <urn:graphragprov:entity:favorable%20agricultural%20climate> <urn:graphragprov:predicate:hasCharacteristic> "mainly temperate climate that receives adequate precipitation" .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:formerlyPartOf> <urn:graphragprov:entity:Grant%20Unified%20School%20District> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:hasEnrollment> "2035"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:high%20school> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:CA> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rio%20Linda> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sacramento> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Twin%20Rivers%20Unified%20School%20District> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:John%20Augustus%20Sutter%2C%20Jr.> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Samuel%20Brannan> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedInYear> "1848"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:confluence%20of%20the%20American%20and%20Sacramento%20Rivers> .
+  <urn:graphragprov:entity:embarcadero> <urn:graphragprov:predicate:constructedInYear> "a few years prior" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.619s | model=deepseek-v4-flash
+      tokens:   in=2269 | out=292 | total=2561 | cached=640 | uncached=1629
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:climate> <urn:graphragprov:predicate:isMediterraneanIn> <urn:graphragprov:entity:coastal%20California> .
+  - <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:San%20Francisco> .
+  - <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rio%20Linda> .
+  - <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sacramento> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?climate <urn:graphragprov:predicate:isMediterraneanIn> ?state . ?person <urn:graphragprov:predicate:workedIn> ?workLocation . ?school <urn:graphragprov:predicate:locatedIn> ?answer . ?school <urn:graphragprov:predicate:locatedIn> ?workLocation . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_434f9adc04d4f375>
+  FROM <urn:graphragprov:unit:u_751564c7573dae7f>
+  FROM <urn:graphragprov:unit:u_78ededf5377f2b1e>
+  FROM <urn:graphragprov:unit:u_f51c04694eadba8d>
+  WHERE { ?climate <urn:graphragprov:predicate:isMediterraneanIn> ?state . ?person <urn:graphragprov:predicate:workedIn> ?workLocation . ?school <urn:graphragprov:predicate:locatedIn> ?answer . ?school <urn:graphragprov:predicate:locatedIn> ?workLocation . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__33012_53706_795904_580996
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__33012_53706_795904_580996/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          24871
+output tokens:         5747
+total tokens:          30618
+cached input tokens:   20864
+uncached input tokens: 4007
+cumulative LLM seconds: 31.721
+
+statement occurrences: 31
+semantic triples:      31
+entity nodes:          25
+literal values:        11
+predicates:            23
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 29.110s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.071s
+  graph.materialization [attempt=1]: 0.213s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.620s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.522s

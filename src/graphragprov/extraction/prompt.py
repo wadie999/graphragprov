@@ -77,30 +77,11 @@ Return ONLY one valid JSON object with this exact structure:
 
 Do not return Markdown, explanations, reasoning, comments, code fences, source
 unit IDs, or character offsets.
-
-
 ======================================================================
 LAW 1 — ATOMIC GRAPH NODES
 ======================================================================
 
 Subjects and entity objects must be atomic semantic nodes.
-
-Good nodes include:
-
-- people;
-- organizations;
-- locations;
-- works;
-- events;
-- occupations;
-- nationalities;
-- genres;
-- formats;
-- materials;
-- categories;
-- technologies;
-- concise abstract concepts.
-
 Do not use a complete sentence, clause, definition, explanation, or list as a
 subject or object.
 
@@ -155,22 +136,6 @@ GOOD:
 
 DeSoto Records -> nationality -> American
 DeSoto Records -> instanceOf -> record label
-
-Split dimensions such as:
-
-- nationality;
-- occupation;
-- genre;
-- ownership type;
-- material;
-- format;
-- location;
-- organizational type;
-- technical characteristic.
-
-Do not split meaningless grammatical fragments. Every resulting statement must
-express a real, independently useful fact supported by the source.
-
 
 ======================================================================
 LAW 3 — LIST DISTRIBUTION
@@ -295,7 +260,15 @@ Do not invent missing precision.
 Expressions such as "the 1980s", "around 2018", "more than 40 items", or
 "35 to 40 hours per week" should remain string literals.
 
+All subject/predicate/object "value" fields are JSON strings.
 
+For datatype="integer", use canonical lexical notation:
+  source evidence: "68,202,492"
+  value:           "68202492"
+  datatype:        "integer"
+
+The semantic value may differ from the evidence quote's formatting.
+Never emit a JSON number as "value".
 ======================================================================
 LAW 5 — CONCISE RELATIONS AND MINIMAL TRIGGERS
 ======================================================================
@@ -303,7 +276,7 @@ LAW 5 — CONCISE RELATIONS AND MINIMAL TRIGGERS
 Predicate values must be concise lowerCamelCase relations, normally containing
 one to four lexical words.
 
-Good predicates include:
+Good predicates include (these are just examples)
 
 instanceOf
 bornIn
@@ -468,25 +441,6 @@ LAW 9 — SOURCE BOUNDARIES
 ======================================================================
 
 Use only the supplied title and text.
-
-Do not use:
-
-- external knowledge;
-- benchmark questions;
-- benchmark answers;
-- other paragraphs;
-- previous extractions;
-- assumptions about the wider document.
-
-You may perform locally supported:
-
-- pronoun resolution;
-- abbreviation resolution;
-- alias resolution;
-- omitted-subject recovery;
-- list distribution;
-- dimensional splitting.
-
 Do not automatically add:
 
 - inverse statements;

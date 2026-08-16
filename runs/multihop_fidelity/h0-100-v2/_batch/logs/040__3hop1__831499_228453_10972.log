@@ -1,0 +1,207 @@
+
+H0 one-case execution
+  case:          3hop1__831499_228453_10972
+  hops:          3
+  question:      When did the city where the headquarters of Barton Premium Blend's manufacturer is located elect its first black mayor?
+  expected:      1970s
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__831499_228453_10972/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=15 title='Barton Premium Blend'
+  source unit: u_6b5b3edec4c34b82c11f0b11e4bb68cc32526d4e49d4e43aa66c8af30843f3bd
+  text chars:  243
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.109s | model=deepseek-v4-flash
+      tokens:   in=5301 | out=1531 | total=6832 | cached=4992 | uncached=309
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 220 / 263 (83.7%)
+    characters text:     200 / 243 (82.3%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  15 chars
+      'Barton Premium'
+    statement density:  34.22 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 2/3] paragraph=9 title='Sazerac'
+  source unit: u_67b848f9821c5d7b2241f5cebe3418efe4594e0e0a5752662b02cf7e5e255794
+  text chars:  235
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.721s | model=deepseek-v4-flash
+      tokens:   in=5419 | out=1003 | total=6422 | cached=4992 | uncached=427
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 149 / 242 (61.6%)
+    characters text:     142 / 235 (60.4%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  50 chars
+      '. The drink is most traditionally a combination of'
+    statement density:  24.79 / 1000 chars
+    title reliance:      3 / 6 (50.0%)
+
+[GRAPH 3/3] paragraph=7 title='Black people'
+  source unit: u_a1187dbfe32887e2f2c7a2df3af4353fc34e1772f8fc713ae1260463f1a8eaa8
+  text chars:  765
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.911s | model=deepseek-v4-flash
+      tokens:   in=5618 | out=184 | total=5802 | cached=5120 | uncached=498
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 52 / 777 (6.7%)
+    characters text:     52 / 765 (6.8%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           2 / 5 (40.0%)
+    longest uncovered:  341 chars
+      'Though Brazilians of at least partial African heritage make up a large percentage of the population, few blacks have been elected as politicians. The city of Salvador, Bahia, for…'
+    statement density:  1.29 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 16
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      16
+resource nodes:        14
+entity nodes:          14
+literal values:        5
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:local%20New%20Orleans%20variation> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:namedFor> <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:variationOf> <urn:graphragprov:entity:cognac%20or%20whiskey%20cocktail> .
+  <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:brand> .
+  <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cognac%20brandy> .
+  <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:original%20main%20ingredient> .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Kentucky%20Blended%20whiskey> .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:producedAt> <urn:graphragprov:entity:Barton%201792%20Distillery> .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Sazerac%20Company> .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:producedIn> <urn:graphragprov:entity:Bardstown> .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:soldIn> <urn:graphragprov:entity:glass> .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:soldInBottleSize> "1-liter bottles" .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:soldInBottleSize> "1.75L bottles" .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:soldInBottleSize> "16 oz pint bottles" .
+  <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:soldInBottleSize> "750ml bottles" .
+  <urn:graphragprov:entity:New%20Orleans> <urn:graphragprov:predicate:electedFirstBlackMayorIn> "1970s" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.668s | model=deepseek-v4-flash
+      tokens:   in=1618 | out=241 | total=1859 | cached=640 | uncached=978
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Sazerac%20Company> .
+  - <urn:graphragprov:entity:Sazerac%20Company> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:New%20Orleans> .
+  - <urn:graphragprov:entity:New%20Orleans> <urn:graphragprov:predicate:electedFirstBlackMayorIn> "1970s" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:producedBy> ?manufacturer . ?manufacturer <urn:graphragprov:predicate:headquartersLocation> ?city . ?city <urn:graphragprov:predicate:electedFirstBlackMayorIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_67b848f9821c5d7b>
+  FROM <urn:graphragprov:unit:u_6b5b3edec4c34b82>
+  FROM <urn:graphragprov:unit:u_a1187dbfe32887e2>
+  WHERE { <urn:graphragprov:entity:Barton%20Premium%20Blend> <urn:graphragprov:predicate:producedBy> ?manufacturer . ?manufacturer <urn:graphragprov:predicate:headquartersLocation> ?city . ?city <urn:graphragprov:predicate:electedFirstBlackMayorIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__831499_228453_10972
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__831499_228453_10972/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          17956
+output tokens:         2959
+total tokens:          20915
+cached input tokens:   15744
+uncached input tokens: 2212
+cumulative LLM seconds: 17.409
+
+statement occurrences: 16
+semantic triples:      16
+entity nodes:          14
+literal values:        5
+predicates:            10
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.749s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.062s
+  graph.materialization [attempt=1]: 0.082s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.669s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.481s

@@ -1,0 +1,187 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: In the Arabic dictionary what is the meaning of the word that also refers to the majority religion in India when the country containing the Neolithic graveyards was created?
+
+Expected answer: the country of India
+
+Gold decomposition:
+1. question='Where are the Neolithic graveyards?'; answer='Pakistan'; support_paragraph=10
+2. question='What was the majority religion in the area of British India that become India when #1 was created?'; answer='Hindu'; support_paragraph=11
+3. question='what is the meaning of #2 in arabic dictionary'; answer='the country of India'; support_paragraph=19
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Boloji> <urn:graphragprov:predicate:states> "in Punjab there were no riots but there was communal tension" .
+<urn:graphragprov:entity:British%20Government-commissioned%20report> <urn:graphragprov:predicate:preparedUnderChairmanshipOf> <urn:graphragprov:entity:Sir%20Cyril%20Radcliffe> .
+<urn:graphragprov:entity:East%20Pakistan> <urn:graphragprov:predicate:todayKnownAs> <urn:graphragprov:entity:Bangladesh> .
+<urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:observed> <urn:graphragprov:entity:maun%20vrat> .
+<urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:wasIsolatedBy> <urn:graphragprov:entity:Nehru> .
+<urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:wasIsolatedBy> <urn:graphragprov:entity:Patel> .
+<urn:graphragprov:entity:Gandhi> <urn:graphragprov:predicate:wroteReply> "Have I ever opposed you?" .
+<urn:graphragprov:entity:India> <urn:graphragprov:predicate:formedOutOf> <urn:graphragprov:entity:majority%20Hindu%20regions%20of%20British%20India> .
+<urn:graphragprov:entity:Jagmohan> <urn:graphragprov:predicate:hasStated> "this and what followed shows the glaring failure of the government machinery" .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:gaveAssurance> <urn:graphragprov:entity:Abul%20Kalam%20Azad> .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:hoped> "Gandhi would not oppose the partition" .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:isCivilian> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:isSoldier> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:repliedTo> <urn:graphragprov:entity:Abul%20Kalam%20Azad> .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:visited> <urn:graphragprov:entity:Gandhi> .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:willAdoptSternestMeasures> "to nip trouble in the bud" .
+<urn:graphragprov:entity:Mountbatten> <urn:graphragprov:predicate:willIssueOrders> "to prevent communal disturbances" .
+<urn:graphragprov:entity:Pakistan> <urn:graphragprov:predicate:cameIntoBeing> "with two non-contiguous enclaves" .
+<urn:graphragprov:entity:Pakistan> <urn:graphragprov:predicate:formedOutOf> <urn:graphragprov:entity:majority%20Muslim%20areas> .
+<urn:graphragprov:entity:Partition%20of%20India> <urn:graphragprov:predicate:acceptedBy> <urn:graphragprov:entity:Congress%20Working%20Committee> .
+<urn:graphragprov:entity:Partition%20of%20India> <urn:graphragprov:predicate:acceptedInPrinciple> <urn:graphragprov:entity:Mountbatten> .
+<urn:graphragprov:entity:Partition%20plan> <urn:graphragprov:predicate:acceptedBy> <urn:graphragprov:entity:Congress%20Working%20Committee> .
+<urn:graphragprov:entity:Partition%20plan> <urn:graphragprov:predicate:acceptedOnDate> "1947-06-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:West%20Pakistan> <urn:graphragprov:predicate:separatedGeographicallyBy> <urn:graphragprov:entity:India> .
+<urn:graphragprov:entity:border%20between%20India%20and%20Pakistan> <urn:graphragprov:predicate:determinedBy> <urn:graphragprov:entity:British%20Government-commissioned%20report> .
+<urn:graphragprov:entity:border%20between%20India%20and%20Pakistan> <urn:graphragprov:predicate:knownAs> <urn:graphragprov:entity:Radcliffe%20Line> .
+<urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:currentlyPracticedAs> <urn:graphragprov:entity:form%20of%20alternative%20medicine> .
+<urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:system%20of%20traditional%20medicine> .
+<urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:originatedBeforeYear> "2500 BC" .
+<urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:originatedIn> <urn:graphragprov:entity:ancient%20India> .
+<urn:graphragprov:entity:Ayurveda> <urn:graphragprov:predicate:practicedIn> <urn:graphragprov:entity:other%20parts%20of%20the%20world> .
+<urn:graphragprov:entity:Neolithic%20graveyards> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pakistan> .
+<urn:graphragprov:entity:Neolithic%20graveyards> <urn:graphragprov:predicate:showEvidenceOf> <urn:graphragprov:entity:proto-dentistry> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:authoredBy> <urn:graphragprov:entity:Su%C5%9Bruta> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:cataract%20surgery> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:other%20surgical%20procedures> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:perineal%20lithotomy> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:repair%20of%20torn%20ear%20lobes> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:rhinoplasty> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:describesProcedure> <urn:graphragprov:entity:several%20other%20excisions> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:isMostFamousTextOf> <urn:graphragprov:entity:Ayurveda> .
+<urn:graphragprov:entity:Su%C5%9Brutasamhit%C4%81> <urn:graphragprov:predicate:notableFor> <urn:graphragprov:entity:procedures%20on%20various%20forms%20of%20surgery> .
+<urn:graphragprov:entity:6th-century%20BCE%20inscription%20of%20Darius%20I> <urn:graphragprov:predicate:mentions> <urn:graphragprov:entity:province%20of%20Hi%28n%29dush> .
+<urn:graphragprov:entity:Al-Hind> <urn:graphragprov:predicate:referredTo> <urn:graphragprov:entity:the%20country%20of%20India> .
+<urn:graphragprov:entity:Hindu> <urn:graphragprov:predicate:derivedFrom> <urn:graphragprov:entity:Sindhu> .
+<urn:graphragprov:entity:Punjab%20region> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Hapta%20Hindu> .
+<urn:graphragprov:entity:Punjab%20region> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Sapta%20Sindhava> .
+<urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:means> "a large body of water" .
+<urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:referredTo> <urn:graphragprov:entity:its%20tributaries> .
+<urn:graphragprov:entity:Sindhu> <urn:graphragprov:predicate:usedAsNameOf> <urn:graphragprov:entity:Indus%20river> .
+<urn:graphragprov:entity:hindav%C4%AB> <urn:graphragprov:predicate:usedAsAdjectiveFor> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:people%20of%20India> <urn:graphragprov:predicate:referredToAs> <urn:graphragprov:entity:Hinduv%C4%81n%20%28Hindus%29> .
+<urn:graphragprov:entity:province%20of%20Hi%28n%29dush> <urn:graphragprov:predicate:referringTo> <urn:graphragprov:entity:northwestern%20India> .
+<urn:graphragprov:entity:term%20%27Hindu%27> <urn:graphragprov:predicate:didNotReferTo> <urn:graphragprov:entity:a%20religion> .
+<urn:graphragprov:entity:term%20%27Hindu%27> <urn:graphragprov:predicate:is> <urn:graphragprov:entity:an%20ethno-geographical%20term> .
+<urn:graphragprov:entity:term%20%27hindu%27> <urn:graphragprov:predicate:firstOccurs> <urn:graphragprov:entity:6th-century%20BCE%20inscription%20of%20Darius%20I> .
+<urn:graphragprov:entity:term%20%27hindu%27> <urn:graphragprov:predicate:is> "a Persian geographical term for the people who lived beyond the river Indus" .

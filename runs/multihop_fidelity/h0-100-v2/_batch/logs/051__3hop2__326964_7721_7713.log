@@ -1,0 +1,254 @@
+
+H0 one-case execution
+  case:          3hop2__326964_7721_7713
+  hops:          3
+  question:      How long had the city at the center of East Asia during the North-South division been the capitol city of Yaxing Coach's headquarters location?
+  expected:      about 400 years
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__326964_7721_7713/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=0 title='Yaxing Coach'
+  source unit: u_3e45bb064831ad6baeb5ed44e8d8350c61a0e8ab3259615d64b98e2151b5d12e
+  text chars:  265
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.046s | model=deepseek-v4-flash
+      tokens:   in=5343 | out=1696 | total=7039 | cached=4992 | uncached=351
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 157 / 277 (56.7%)
+    characters text:     145 / 265 (54.7%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  23 chars
+      'Motor Coach Co., Ltd)'
+    statement density:  32.49 / 1000 chars
+    title reliance:      8 / 9 (88.9%)
+
+[GRAPH 2/3] paragraph=13 title='Nanjing'
+  source unit: u_36aad505578d400802df2be5de6ffeb076ed7490cf06e4f4c131e2b399ddcf61
+  text chars:  397
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.245s | model=deepseek-v4-flash
+      tokens:   in=5457 | out=1148 | total=6605 | cached=4992 | uncached=465
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 221 / 404 (54.7%)
+    characters text:     214 / 397 (53.9%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  43 chars
+      'During the period of North–South division,'
+    statement density:  14.85 / 1000 chars
+    title reliance:      5 / 6 (83.3%)
+
+[GRAPH 3/3] paragraph=5 title='Nanjing'
+  source unit: u_03e19494b8aa066125542d1dee8ce3cab0ee5aa14b1da7777511849a264b2c1e
+  text chars:  1363
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.057s | model=deepseek-v4-flash
+      tokens:   in=5785 | out=679 | total=6464 | cached=5120 | uncached=665
+    [LLM graph.reference #4] sending...
+      provider: 0.750s | model=deepseek-v4-flash
+      tokens:   in=846 | out=8 | total=854 | cached=0 | uncached=846
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'was the capital city of' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Danyang Prefecture",
+                "segment": "text"
+              }
+            ],
+            "value": "Danyang Prefecture"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "was the capital city of",
+                "segment": "text"
+              }
+            ],
+            "value": "wasCapitalCityOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nanjing",
+                "segment": "title"
+              }
+            ],
+            "value": "Nanjing"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 2
+  coverage:
+    characters combined: 62 / 1370 (4.5%)
+    characters text:     55 / 1363 (4.0%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           2 / 10 (20.0%)
+    longest uncovered:  1066 chars
+      'Archaeological discovery shows that "Nanjing Man" lived in more than 500 thousand years ago. Zun, a kind of wine vessel, was found to exist in Beiyinyangying culture of Nanjing in…'
+    statement density:  1.46 / 1000 chars
+    title reliance:      2 / 2 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 17
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      17
+resource nodes:        13
+entity nodes:          13
+literal values:        6
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityForDuration> "about 400 years" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityOf> <urn:graphragprov:entity:Yangzhou> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hadRegisteredHouseholds> "280000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hadResidents> "more than 1.4 million" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:remainedCapitalOf> <urn:graphragprov:entity:Southern%20dynasties> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalForDuration> "more than two and a half centuries" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasInternationalHubOf> <urn:graphragprov:entity:East%20Asia> .
+  <urn:graphragprov:entity:average%20Nanjing%20household> <urn:graphragprov:predicate:hadSize> "5.1"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Jiangsu%20Yaxing> <urn:graphragprov:predicate:foundedInYear> "1998"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bus%20manufacturer> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:China> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangsu> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Asiastar> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yangtse%EF%BC%88Yangzlv%EF%BC%89> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yaxing> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Jiangsu%20Yaxing> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.844s | model=deepseek-v4-flash
+      tokens:   in=1652 | out=264 | total=1916 | cached=640 | uncached=1012
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityOf> <urn:graphragprov:entity:Yangzhou> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityForDuration> "about 400 years" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityOf> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityForDuration> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_03e19494b8aa0661>
+  FROM <urn:graphragprov:unit:u_36aad505578d4008>
+  FROM <urn:graphragprov:unit:u_3e45bb064831ad6b>
+  WHERE { <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityOf> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalCityForDuration> ?answer . }
+
+GraphDB execution:
+  observed answers: ('about 400 years',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Nanjing', 'Yaxing Coach']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__326964_7721_7713
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop2__326964_7721_7713/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          19083
+output tokens:         3795
+total tokens:          22878
+cached input tokens:   15744
+uncached input tokens: 3339
+cumulative LLM seconds: 21.941
+
+statement occurrences: 17
+semantic triples:      17
+entity nodes:          13
+literal values:        6
+predicates:            14
+query attempts:        1
+observed answers:      ('about 400 years',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.111s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.065s
+  graph.materialization [attempt=1]: 0.121s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.845s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.539s

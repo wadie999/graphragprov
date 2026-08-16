@@ -1,0 +1,306 @@
+
+H0 one-case execution
+  case:          2hop__126299_396277
+  hops:          2
+  question:      What other notable work did the person who illustrated Shrek work on?
+  expected:      Doctor De Soto
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__126299_396277/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=16 title='Shrek!'
+  source unit: u_4ca29f66e4d5dd63cd90c0fead43d21f1bbab345988cb9591745151792d3fd27
+  text chars:  399
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.239s | model=deepseek-v4-flash
+      tokens:   in=5306 | out=2605 | total=7911 | cached=4992 | uncached=314
+    [LLM graph.reference #2] sending...
+      provider: 1.589s | model=deepseek-v4-flash
+      tokens:   in=814 | out=166 | total=980 | cached=0 | uncached=814
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 2
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'written by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "William Steig",
+                "segment": "text"
+              }
+            ],
+            "value": "William Steig"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "written by",
+                "segment": "text"
+              }
+            ],
+            "value": "writtenBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Shrek!",
+                "segment": "title"
+              }
+            ],
+            "value": "Shrek!"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'illustrated by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "William Steig",
+                "segment": "text"
+              }
+            ],
+            "value": "William Steig"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "illustrated by",
+                "segment": "text"
+              }
+            ],
+            "value": "illustratedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Shrek!",
+                "segment": "title"
+              }
+            ],
+            "value": "Shrek!"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'written by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "William Steig",
+                "segment": "text"
+              }
+            ],
+            "value": "William Steig"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "written by",
+                "segment": "text"
+              }
+            ],
+            "value": "writtenBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Shrek!",
+                "segment": "title"
+              }
+            ],
+            "value": "Shrek!"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 14
+  coverage:
+    characters combined: 317 / 405 (78.3%)
+    characters text:     311 / 399 (77.9%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      '. The name "Shrek"'
+    statement density:  34.57 / 1000 chars
+    title reliance:      3 / 14 (21.4%)
+
+[GRAPH 2/2] paragraph=2 title='Doctor De Soto'
+  source unit: u_cea6ffe47291ba7703bce84061439abc761453851a7e3bfb48aa579a26d5d537
+  text chars:  201
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 6.777s | model=deepseek-v4-flash
+      tokens:   in=5431 | out=1274 | total=6705 | cached=4992 | uncached=439
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 153 / 215 (71.2%)
+    characters text:     139 / 201 (69.2%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  15 chars
+      'Doctor De Soto'
+    statement density:  37.21 / 1000 chars
+    title reliance:      5 / 8 (62.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 22
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      22
+resource nodes:        20
+entity nodes:          20
+literal values:        2
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Shrek> <urn:graphragprov:predicate:etymology> <urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> .
+  <urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:a%20repugnant%20and%20monstrous%20green%20creature> .
+  <urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:picture%20book> .
+  <urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:publishedInYear> "1990"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:William%20Steig> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:William%20Steig> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:book%20writer> .
+  <urn:graphragprov:entity:William%20Steig> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cartoonist> .
+  <urn:graphragprov:entity:a%20repugnant%20and%20monstrous%20green%20creature> <urn:graphragprov:predicate:endsUpSaving> <urn:graphragprov:entity:a%20princess> .
+  <urn:graphragprov:entity:a%20repugnant%20and%20monstrous%20green%20creature> <urn:graphragprov:predicate:leavesHomeTo> <urn:graphragprov:entity:see%20the%20world> .
+  <urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:correspondsTo> <urn:graphragprov:entity:German%20%22%22> .
+  <urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:fear> .
+  <urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:fright> .
+  <urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:oftenUsedInForm> <urn:graphragprov:entity:Oy%20Shrek%21> .
+  <urn:graphragprov:entity:the%20Yiddish%20word%20%D7%A9%D7%A8%D7%A2%D7%A7> <urn:graphragprov:predicate:usedAs> <urn:graphragprov:entity:a%20common%20exclamation> .
+  <urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:a%20mouse-dentist> .
+  <urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> .
+  <urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:picture%20book> .
+  <urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:publishedInYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:William%20Steig> .
+  <urn:graphragprov:entity:a%20fox> <urn:graphragprov:predicate:hasCondition> <urn:graphragprov:entity:a%20toothache> .
+  <urn:graphragprov:entity:a%20mouse-dentist> <urn:graphragprov:predicate:avoidsBeingEatenBy> <urn:graphragprov:entity:a%20fox> .
+  <urn:graphragprov:entity:a%20mouse-dentist> <urn:graphragprov:predicate:mustHelp> <urn:graphragprov:entity:a%20fox> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.611s | model=deepseek-v4-flash
+      tokens:   in=1987 | out=198 | total=2185 | cached=640 | uncached=1347
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> .
+  - <urn:graphragprov:entity:Doctor%20De%20Soto> <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> . ?answer <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4ca29f66e4d5dd63>
+  FROM <urn:graphragprov:unit:u_cea6ffe47291ba77>
+  WHERE { <urn:graphragprov:entity:Shrek%21> <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> . ?answer <urn:graphragprov:predicate:illustratedBy> <urn:graphragprov:entity:William%20Steig> . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__126299_396277
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__126299_396277/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13538
+output tokens:         4243
+total tokens:          17781
+cached input tokens:   10624
+uncached input tokens: 2914
+cumulative LLM seconds: 23.216
+
+statement occurrences: 22
+semantic triples:      22
+entity nodes:          20
+literal values:        2
+predicates:            18
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.617s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.612s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.508s

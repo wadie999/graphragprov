@@ -1,0 +1,316 @@
+
+H0 one-case execution
+  case:          3hop1__798544_514761_594810
+  hops:          3
+  question:      What record label does the spouse of the performer of Somethin' Bad belong to?
+  expected:      Warner Bros. Records
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__798544_514761_594810/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=18 title="Somethin' Bad"
+  source unit: u_fd461d61a7eb330831291664c5a764884422adaee829754f2d4b685b54f1022a
+  text chars:  435
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.975s | model=deepseek-v4-flash
+      tokens:   in=5341 | out=1979 | total=7320 | cached=4992 | uncached=349
+    [LLM graph.reference #2] sending...
+      provider: 2.133s | model=deepseek-v4-flash
+      tokens:   in=832 | out=342 | total=1174 | cached=0 | uncached=832
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 2
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'performed by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Miranda Lambert",
+                "segment": "text"
+              }
+            ],
+            "value": "Miranda Lambert"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed by",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Somethin' Bad",
+                "segment": "title"
+              }
+            ],
+            "value": "Somethin' Bad"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'performed by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Carrie Underwood",
+                "segment": "text"
+              }
+            ],
+            "value": "Carrie Underwood"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed by",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Somethin' Bad",
+                "segment": "title"
+              }
+            ],
+            "value": "Somethin' Bad"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 238 / 448 (53.1%)
+    characters text:     225 / 435 (51.7%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  62 chars
+      '" in advance of the album\'s release two weeks later. The song'
+    statement density:  26.79 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[GRAPH 2/3] paragraph=12 title='Candy Coburn'
+  source unit: u_a603d2715883c641e7282bff0b78b0c88ed8034c533c68ce581f8853b96d49d6
+  text chars:  398
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 11.569s | model=deepseek-v4-flash
+      tokens:   in=5482 | out=2490 | total=7972 | cached=4992 | uncached=490
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 297 / 410 (72.4%)
+    characters text:     285 / 398 (71.6%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  33 chars
+      'many notable artists, including'
+    statement density:  31.71 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[GRAPH 3/3] paragraph=10 title='Pure BS'
+  source unit: u_e9f58b458da05e3964c22a490bb774dc5aca5e6a3faab84879ce9eabb57fadbf
+  text chars:  473
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 14.285s | model=deepseek-v4-flash
+      tokens:   in=5669 | out=3057 | total=8726 | cached=5120 | uncached=549
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 338 / 480 (70.4%)
+    characters text:     331 / 473 (70.0%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  31 chars
+      'American country music artist'
+    statement density:  35.42 / 1000 chars
+    title reliance:      13 / 17 (76.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 42
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      42
+resource nodes:        34
+entity nodes:          34
+literal values:        8
+predicates:            30
+
+N-Triples:
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:mostNotableContribution> <urn:graphragprov:entity:Pink%20Warrior> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:country%20music%20artist> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:scheduledReleaseYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:scheduledToRelease> <urn:graphragprov:entity:third%20album> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Blake%20Shelton> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Brooks%20and%20Dunn> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Gary%20Allan> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Josh%20Turner> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Kellie%20Pickler> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Lady%20Antebellum> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Miranda%20Lambert> .
+  <urn:graphragprov:entity:Candy%20Coburn> <urn:graphragprov:predicate:sharedStageWith> <urn:graphragprov:entity:Montgomery%20Gentry> .
+  <urn:graphragprov:entity:Blake%20Shelton> <urn:graphragprov:predicate:coWroteTrackCount> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Home> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:Shelton%27s%20fourth%20Number%20One%20country%20hit> .
+  <urn:graphragprov:entity:Home> <urn:graphragprov:predicate:coverOf> <urn:graphragprov:entity:Michael%20Bubl%C3%A9%27s%20%22Home%22> .
+  <urn:graphragprov:entity:Home> <urn:graphragprov:predicate:releasedAsSingle> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Blake%20Shelton> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:certificationLevel> <urn:graphragprov:entity:Gold> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:certifiedBy> <urn:graphragprov:entity:RIAA> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:containsTrack> <urn:graphragprov:entity:Home> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:ordinalInSeries> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:producedSingle> <urn:graphragprov:entity:Don%27t%20Make%20Me> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:producedSingle> <urn:graphragprov:entity:The%20More%20I%20Drink> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:reReleasedInYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:reReleasedWithBonusTracks> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Warner%20Bros.%20Records%20Nashville> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:releasedInYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Pure%20BS> <urn:graphragprov:predicate:trackCount> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:fromAlbum> <urn:graphragprov:entity:Platinum> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Carrie%20Underwood> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Miranda%20Lambert> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:premieredAt> <urn:graphragprov:entity:2014%20Billboard%20Music%20Awards> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:premieredOn> "2014-05-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:recordedAs> <urn:graphragprov:entity:duet> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:releasedAs> <urn:graphragprov:entity:second%20single> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:releasedOn> "2014-05-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Brett%20James> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Chris%20DeStefano> .
+  <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Priscilla%20Renea> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.913s | model=deepseek-v4-flash
+      tokens:   in=2869 | out=249 | total=3118 | cached=640 | uncached=2229
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Miranda%20Lambert> .
+  - <urn:graphragprov:entity:Miranda%20Lambert> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Blake%20Shelton> .
+  - <urn:graphragprov:entity:Blake%20Shelton> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Warner%20Bros.%20Records> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:spouse> ?spouse . ?spouse <urn:graphragprov:predicate:recordLabel> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_a603d2715883c641>
+  FROM <urn:graphragprov:unit:u_e9f58b458da05e39>
+  FROM <urn:graphragprov:unit:u_fd461d61a7eb3308>
+  WHERE { <urn:graphragprov:entity:Somethin%27%20Bad> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:spouse> ?spouse . ?spouse <urn:graphragprov:predicate:recordLabel> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__798544_514761_594810
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/3hop1__798544_514761_594810/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          20193
+output tokens:         8117
+total tokens:          28310
+cached input tokens:   15744
+uncached input tokens: 4449
+cumulative LLM seconds: 39.874
+
+statement occurrences: 42
+semantic triples:      42
+entity nodes:          34
+literal values:        8
+predicates:            30
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 37.981s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.058s
+  graph.materialization [attempt=1]: 0.083s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.914s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.439s

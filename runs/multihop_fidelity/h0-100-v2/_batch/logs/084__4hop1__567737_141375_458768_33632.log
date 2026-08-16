@@ -1,0 +1,417 @@
+
+H0 one-case execution
+  case:          4hop1__567737_141375_458768_33632
+  hops:          4
+  question:      What day is the feast held in the city containing the headquarters of the company, that owns the record label that released Study in Brown?
+  expected:      May 4
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__567737_141375_458768_33632/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=5 title='Study in Brown'
+  source unit: u_51f884bd52ffe0d593332ae82e0fe1b3083041264cf48910ec4d160767ec75ed
+  text chars:  402
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.280s | model=deepseek-v4-flash
+      tokens:   in=5370 | out=1779 | total=7149 | cached=4992 | uncached=378
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 303 / 416 (72.8%)
+    characters text:     289 / 402 (71.9%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  24 chars
+      '", by tenor saxophonist'
+    statement density:  26.44 / 1000 chars
+    title reliance:      5 / 11 (45.5%)
+
+[GRAPH 2/4] paragraph=3 title='EmArcy Records'
+  source unit: u_a2775dfd15378a4b98395e23584f664bd5041888dd20af158d41704907dd3403
+  text chars:  220
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.291s | model=deepseek-v4-flash
+      tokens:   in=5440 | out=968 | total=6408 | cached=4992 | uncached=448
+    [LLM graph.reference #3] sending...
+      provider: 0.718s | model=deepseek-v4-flash
+      tokens:   in=554 | out=8 | total=562 | cached=0 | uncached=554
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'founded by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Mercury Records",
+                "segment": "text"
+              }
+            ],
+            "value": "Mercury Records"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "founded by",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "EmArcy Records",
+                "segment": "title"
+              }
+            ],
+            "value": "EmArcy Records"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 151 / 234 (64.5%)
+    characters text:     137 / 220 (62.3%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  53 chars
+      'by Mercury Records, and today a European jazz label'
+    statement density:  21.37 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 3/4] paragraph=19 title='The Right Stuff Records'
+  source unit: u_058f4b6abd0b757a62a79ddc66ff90730b278b21a18e85e710a1024008d1096b
+  text chars:  161
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 4.300s | model=deepseek-v4-flash
+      tokens:   in=5484 | out=792 | total=6276 | cached=5120 | uncached=364
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 122 / 184 (66.3%)
+    characters text:     99 / 161 (61.5%)
+    characters title:    23 / 23 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  24 chars
+      'The Right Stuff Records'
+    statement density:  27.17 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 4/4] paragraph=14 title='Santa Monica, California'
+  source unit: u_7941ba420f6107fecf95bd7730b34746ea725466306410e1389d2e31c4465371
+  text chars:  714
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 9.724s | model=deepseek-v4-flash
+      tokens:   in=5669 | out=1883 | total=7552 | cached=5248 | uncached=421
+    [LLM graph.reference #6] sending...
+      provider: 2.968s | model=deepseek-v4-flash
+      tokens:   in=1121 | out=494 | total=1615 | cached=0 | uncached=1121
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 3
+
+    initial rejection #5
+      validator:
+        response.statements[5].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 3 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Saint Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Saint Monica"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "named in honor of the feast day of",
+                "segment": "text"
+              }
+            ],
+            "value": "namedInHonorOfFeastDayOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 3,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+    initial rejection #7
+      validator:
+        response.statements[7].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 4 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Juan Crespí",
+                "segment": "text"
+              }
+            ],
+            "value": "Juan Crespí"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "named by",
+                "segment": "text"
+              }
+            ],
+            "value": "namedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 4,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+    initial rejection #8
+      validator:
+        response.statements[8].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 4 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Kuruvungna Springs",
+                "segment": "text"
+              }
+            ],
+            "value": "Kuruvungna Springs"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "on account of",
+                "segment": "text"
+              }
+            ],
+            "value": "namedOnAccountOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 4,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 424 / 738 (57.5%)
+    characters text:     424 / 714 (59.4%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  83 chars
+      '. There are two different versions of the naming of the city. One says that it was'
+    statement density:  14.91 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 32
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 4
+  corrected valid: 3
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      32
+resource nodes:        33
+entity nodes:          33
+literal values:        4
+predicates:            25
+
+N-Triples:
+  <urn:graphragprov:entity:EMI> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:California> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Santa%20Monica> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reissue%20record%20label> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:EMI> .
+  <urn:graphragprov:entity:Brown%27s%20solo%20on%20Cherokee> <urn:graphragprov:predicate:isAmong> <urn:graphragprov:entity:most%20acclaimed%20solos%20in%20jazz> .
+  <urn:graphragprov:entity:George%27s%20Dilemma> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Ulcer%20Department> .
+  <urn:graphragprov:entity:Lands%20End> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:jazz%20standard> .
+  <urn:graphragprov:entity:Lands%20End> <urn:graphragprov:predicate:composedBy> <urn:graphragprov:entity:Harold%20Land> .
+  <urn:graphragprov:entity:Sandu> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:jazz%20standard> .
+  <urn:graphragprov:entity:Sandu> <urn:graphragprov:predicate:composedBy> <urn:graphragprov:entity:Brown> .
+  <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Clifford%20Brown%20and%20Max%20Roach> .
+  <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:consistsPredominantlyOf> <urn:graphragprov:entity:originals%20by%20members%20of%20the%20band> .
+  <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:releasedBy> <urn:graphragprov:entity:EmArcy%20Records> .
+  <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:releasedInYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedNear> <urn:graphragprov:entity:present%20day%20intersection%20of%20Barrington%20and%20Ohio%20Avenues> .
+  <urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedOnDate> "1769-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:ledFirstNonIndigenousGroup> <urn:graphragprov:entity:first%20non-indigenous%20group%20to%20set%20foot%20in%20the%20area> .
+  <urn:graphragprov:entity:Kuruvungna%20Springs> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Serra%20Springs> .
+  <urn:graphragprov:entity:Kuruvungna%20Springs> <urn:graphragprov:predicate:reminiscentOf> <urn:graphragprov:entity:tears%20that%20Saint%20Monica%20shed%20over%20her%20son%27s%20early%20impiety> .
+  <urn:graphragprov:entity:Saint%20Monica> <urn:graphragprov:predicate:feastDay> "May 4" .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:calledInTongvaLanguage> <urn:graphragprov:entity:Kecheek> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:inhabitedBy> <urn:graphragprov:entity:Tongva%20people> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedBy> <urn:graphragprov:entity:Juan%20Cresp%C3%AD> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedInHonorOfFeastDayOf> <urn:graphragprov:entity:Saint%20Monica> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedOnAccountOf> <urn:graphragprov:entity:Kuruvungna%20Springs> .
+  <urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:foundedInYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:jazz%20record%20label> .
+  <urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:nameOrigin> <urn:graphragprov:entity:MRC> .
+  <urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .
+  <urn:graphragprov:entity:MRC> <urn:graphragprov:predicate:standsFor> <urn:graphragprov:entity:Mercury%20Record%20Company> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.775s | model=deepseek-v4-flash
+      tokens:   in=2515 | out=383 | total=2898 | cached=640 | uncached=1875
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:releasedBy> <urn:graphragprov:entity:EmArcy%20Records> .
+  - <urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .
+  - <urn:graphragprov:entity:Universal%20Music%20Group> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Santa%20Monica> .
+  - <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedInHonorOfFeastDayOf> <urn:graphragprov:entity:Saint%20Monica> .
+  - <urn:graphragprov:entity:Saint%20Monica> <urn:graphragprov:predicate:feastDay> "May 4" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:releasedBy> ?recordLabel . ?recordLabel <urn:graphragprov:predicate:ownedBy> ?company . ?company <urn:graphragprov:predicate:headquartersLocation> ?city . ?city <urn:graphragprov:predicate:namedInHonorOfFeastDayOf> ?saint . ?saint <urn:graphragprov:predicate:feastDay> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_058f4b6abd0b757a>
+  FROM <urn:graphragprov:unit:u_51f884bd52ffe0d5>
+  FROM <urn:graphragprov:unit:u_7941ba420f6107fe>
+  FROM <urn:graphragprov:unit:u_a2775dfd15378a4b>
+  WHERE { <urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:releasedBy> ?recordLabel . ?recordLabel <urn:graphragprov:predicate:ownedBy> ?company . ?company <urn:graphragprov:predicate:headquartersLocation> ?city . ?city <urn:graphragprov:predicate:namedInHonorOfFeastDayOf> ?saint . ?saint <urn:graphragprov:predicate:feastDay> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__567737_141375_458768_33632
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/4hop1__567737_141375_458768_33632/support/result.json
+graph LLM executed:    6
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          26153
+output tokens:         6307
+total tokens:          32460
+cached input tokens:   20992
+uncached input tokens: 5161
+cumulative LLM seconds: 35.056
+
+statement occurrences: 32
+semantic triples:      32
+entity nodes:          33
+literal values:        4
+predicates:            25
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 32.302s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.068s
+  graph.materialization [attempt=1]: 0.102s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.776s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.460s

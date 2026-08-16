@@ -1,0 +1,182 @@
+
+H0 one-case execution
+  case:          2hop__846388_19320
+  hops:          2
+  question:      What worldwide ranking does the university that Pedro Ramirez Vasquez attended hold?
+  expected:      74th
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_full_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__846388_19320/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Pedro Ramírez Vázquez'
+  source unit: u_b763988ab3f91abf0ab19ad6f51e0333384a8b5437d58f2f4ecb238125dcc82e
+  text chars:  614
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.775s | model=deepseek-v4-flash
+      tokens:   in=5335 | out=204 | total=5539 | cached=4992 | uncached=343
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 53 / 635 (8.3%)
+    characters text:     32 / 614 (5.2%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           2 / 4 (50.0%)
+    longest uncovered:  464 chars
+      "won several awards including the National Arts Award in 1973, Cemex Award in 2003 and IDSA's Special Award in 1969 for notable results, creative and innovative concepts and long-t…"
+    statement density:  1.57 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=17 title='Mexico City'
+  source unit: u_c932d89efb5945ea86177e7253be81acd1760c101100bb51d5ed6668051f722a
+  text chars:  800
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 14.003s | model=deepseek-v4-flash
+      tokens:   in=5375 | out=2745 | total=8120 | cached=4992 | uncached=383
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 436 / 811 (53.8%)
+    characters text:     436 / 800 (54.5%)
+    characters title:    0 / 11 (0.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  155 chars
+      "from all backgrounds. Three Nobel laureates, several Mexican entrepreneurs and most of Mexico's modern-day presidents are among its former students. UNAM"
+    statement density:  20.96 / 1000 chars
+    title reliance:      0 / 17 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 18
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      18
+resource nodes:        13
+entity nodes:          13
+literal values:        6
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Pedro%20Ram%C3%ADrez%20V%C3%A1zquez> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:UNAM> .
+  <urn:graphragprov:entity:Ciudad%20Universitaria> <urn:graphragprov:predicate:namedWorldHeritageSiteBy> <urn:graphragprov:entity:UNESCO> .
+  <urn:graphragprov:entity:Ciudad%20Universitaria> <urn:graphragprov:predicate:namedWorldHeritageSiteInYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:conductsShareOfResearch> "50%" .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:hasCampus> <urn:graphragprov:entity:satellite%20campuses> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:hasMainCampus> <urn:graphragprov:entity:Ciudad%20Universitaria> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:hasObservatory> <urn:graphragprov:entity:observatories> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:hasPresenceIn> <urn:graphragprov:entity:Mexico> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:hasResearchCentre> <urn:graphragprov:entity:research%20centres> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:hasStudentCount> "more than 300,000" .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:university> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:isHighestRankedAmong> <urn:graphragprov:entity:Spanish-speaking%20university> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:isLargestOnContinent> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mexico%20City> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:ranked> "74th" .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Times%20Higher%20Education> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:rankedIn> <urn:graphragprov:entity:Top%20200%20World%20University%20Ranking> .
+  <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:rankedInYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.820s | model=deepseek-v4-flash
+      tokens:   in=1610 | out=198 | total=1808 | cached=640 | uncached=970
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Pedro%20Ram%C3%ADrez%20V%C3%A1zquez> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:UNAM> .
+  - <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:ranked> "74th" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Pedro%20Ram%C3%ADrez%20V%C3%A1zquez> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:UNAM> . <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:ranked> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b763988ab3f91abf>
+  FROM <urn:graphragprov:unit:u_c932d89efb5945ea>
+  WHERE { <urn:graphragprov:entity:Pedro%20Ram%C3%ADrez%20V%C3%A1zquez> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:UNAM> . <urn:graphragprov:entity:UNAM> <urn:graphragprov:predicate:ranked> ?answer . }
+
+GraphDB execution:
+  observed answers: ('74th',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Mexico City', 'Pedro Ramírez Vázquez']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__846388_19320
+result:                /home/wadie/graphragprov/runs/multihop_fidelity/h0-100-v2/2hop__846388_19320/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12320
+output tokens:         3147
+total tokens:          15467
+cached input tokens:   10624
+uncached input tokens: 1696
+cumulative LLM seconds: 18.598
+
+statement occurrences: 18
+semantic triples:      18
+entity nodes:          13
+literal values:        6
+predicates:            18
+query attempts:        1
+observed answers:      ('74th',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 16.790s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.062s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.821s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.455s
