@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -40,12 +41,16 @@ from graphragprov.extraction.run import (
     GroundedExtractionRun,
 )
 from graphragprov.graphdb import GraphDBClient
-from graphragprov.metrics import measure_source_coverage
+from graphragprov.metrics import SourceCoverageMeasurements, measure_source_coverage
 from graphragprov.npcs import NPCSClient
-from graphragprov.providers.deepseek import DEFAULT_DEEPSEEK_MODEL, deepseek_generator
+from graphragprov.providers.deepseek import (
+    DEFAULT_DEEPSEEK_MODEL,
+    DEFAULT_DEEPSEEK_TIMEOUT_SECONDS,
+    deepseek_generator,
+)
 from graphragprov.qaagent import QAQueryAttempt
 
-RUN_ARTIFACT_FORMAT = "multihop-fidelity-h0-run-v1"
+RUN_ARTIFACT_FORMAT = "multihop-fidelity-h0-run-v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -62,6 +67,7 @@ class RunOneArguments:
     max_query_attempts: int
     reuse_llm_checkpoints: bool
     verbose: bool = False
+    llm_timeout_seconds: float = DEFAULT_DEEPSEEK_TIMEOUT_SECONDS
 
     def __post_init__(self) -> None:
         if not self.case_id.strip():
@@ -78,6 +84,9 @@ class RunOneArguments:
 
         if self.max_query_attempts < 1:
             raise ValueError("maximum query attempts must be positive")
+
+        if not math.isfinite(self.llm_timeout_seconds) or self.llm_timeout_seconds <= 0:
+            raise ValueError("LLM timeout must be finite and greater than zero")
 
 
 class CheckpointedGenerateResponse:
@@ -99,41 +108,29 @@ class CheckpointedGenerateResponse:
 
     def __call__(self, prompt: str) -> str:
         self._call_index += 1
-
         digest = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
 
         self.root.mkdir(parents=True, exist_ok=True)
-
         slot_prefix = f"{self._call_index:04d}-"
-
         expected_folder = self.root / f"{slot_prefix}{digest}"
-
         existing_slots = sorted(
             path
             for path in self.root.iterdir()
-            if (path.is_dir() and path.name.startswith(slot_prefix))
+            if path.is_dir() and path.name.startswith(slot_prefix)
         )
 
         if len(existing_slots) > 1:
             raise RuntimeError(f"multiple LLM checkpoints exist for call {self._call_index}")
 
-        if existing_slots:
-            existing_folder = existing_slots[0]
-
-            if existing_folder != expected_folder:
-                raise RuntimeError(
-                    "LLM checkpoint sequence "
-                    "diverged at call "
-                    f"{self._call_index}: "
-                    "the stored prompt does not "
-                    "match the prompt produced "
-                    "by this execution"
-                )
+        if existing_slots and existing_slots[0] != expected_folder:
+            raise RuntimeError(
+                "LLM checkpoint sequence diverged at call "
+                f"{self._call_index}: the stored prompt does not match the prompt "
+                "produced by this execution"
+            )
 
         folder = expected_folder
-
         prompt_path = folder / "prompt.txt"
-
         response_path = folder / "response.txt"
 
         if folder.exists():
@@ -148,30 +145,21 @@ class CheckpointedGenerateResponse:
             if response_path.is_file():
                 if not self.reuse_existing:
                     raise RuntimeError(
-                        "an LLM response checkpoint "
-                        "already exists for call "
-                        f"{self._call_index}; use "
-                        "--reuse-llm-checkpoints "
-                        "to resume this execution "
-                        "or choose a fresh "
-                        "--artifacts directory"
+                        "an LLM response checkpoint already exists for call "
+                        f"{self._call_index}; use --reuse-llm-checkpoints to resume "
+                        "this execution or choose a fresh --artifacts directory"
                     )
 
                 self.reused_count += 1
-
                 return response_path.read_text(encoding="utf-8")
 
         else:
             folder.mkdir(parents=True, exist_ok=False)
-
             prompt_path.write_text(prompt, encoding="utf-8")
 
         response = self.generate_response(prompt)
-
         response_path.write_text(response, encoding="utf-8")
-
         self.executed_count += 1
-
         return response
 
 
@@ -182,8 +170,8 @@ class VerboseGenerateResponse:
         self,
         *,
         operation: str,
-        generate_response: (CheckpointedGenerateResponse),
-        telemetry: (ExperimentTelemetryRecorder),
+        generate_response: CheckpointedGenerateResponse,
+        telemetry: ExperimentTelemetryRecorder,
         enabled: bool,
     ) -> None:
         self.operation = operation
@@ -192,12 +180,9 @@ class VerboseGenerateResponse:
         self.enabled = enabled
 
     def __call__(self, prompt: str) -> str:
-        before = self.telemetry.snapshot()
-
+        before_call_count = len(self.telemetry.snapshot().llm_calls)
         before_executed = self.generate_response.executed_count
-
         before_reused = self.generate_response.reused_count
-
         call_index = self.generate_response.call_count + 1
 
         if self.enabled:
@@ -206,27 +191,20 @@ class VerboseGenerateResponse:
         try:
             response = self.generate_response(prompt)
         except Exception as error:
-            after = self.telemetry.snapshot()
-
             if self.enabled:
                 self._print_result(
-                    before_call_count=len(before.llm_calls),
-                    after=after,
-                    before_executed=(before_executed),
-                    before_reused=(before_reused),
+                    before_call_count=before_call_count,
+                    before_executed=before_executed,
+                    before_reused=before_reused,
                     error=error,
                 )
-
             raise
-
-        after = self.telemetry.snapshot()
 
         if self.enabled:
             self._print_result(
-                before_call_count=len(before.llm_calls),
-                after=after,
-                before_executed=(before_executed),
-                before_reused=(before_reused),
+                before_call_count=before_call_count,
+                before_executed=before_executed,
+                before_reused=before_reused,
                 error=None,
             )
 
@@ -236,7 +214,6 @@ class VerboseGenerateResponse:
         self,
         *,
         before_call_count: int,
-        after: object,
         before_executed: int,
         before_reused: int,
         error: Exception | None,
@@ -251,12 +228,10 @@ class VerboseGenerateResponse:
 
         if new_calls:
             call = new_calls[-1]
-
             _print(f"      provider: {call.elapsed_seconds:.3f}s | model={call.model}")
 
             if call.usage is not None:
                 usage = call.usage
-
                 cache = ""
 
                 if (
@@ -264,20 +239,15 @@ class VerboseGenerateResponse:
                     and usage.uncached_input_tokens is not None
                 ):
                     cache = (
-                        " | cached="
-                        f"{usage.cached_input_tokens}"
-                        " | uncached="
-                        f"{usage.uncached_input_tokens}"
+                        f" | cached={usage.cached_input_tokens}"
+                        f" | uncached={usage.uncached_input_tokens}"
                     )
 
                 _print(
                     "      tokens:   "
-                    f"in={usage.input_tokens}"
-                    f" | out={usage.output_tokens}"
-                    f" | total={usage.total_tokens}"
-                    f"{cache}"
+                    f"in={usage.input_tokens} | out={usage.output_tokens} "
+                    f"| total={usage.total_tokens}{cache}"
                 )
-
             else:
                 _print("      tokens:   provider usage unavailable")
 
@@ -301,170 +271,107 @@ class VerboseH0Reporter:
         if not self.enabled:
             return
 
-        if event == ("graph.extraction.started"):
-            source_count = payload.get("source_count")
-
+        if event == "graph.extraction.started":
             _section("REFERENCE GRAPH EXTRACTION")
-
-            _print(f"supporting sources: {source_count}")
-
+            _print(f"supporting sources: {payload.get('source_count')}")
             return
 
-        if event == ("graph.source.started"):
+        if event == "graph.source.started":
             source = payload.get("source")
 
             if not isinstance(source, MusiqueSourceUnit):
                 return
 
-            position = payload.get("source_position")
-
-            count = payload.get("source_count")
-
-            paragraph_index = payload.get("paragraph_index")
-
             _print("")
-
-            _print(f"[GRAPH {position}/{count}] paragraph={paragraph_index} title={source.title!r}")
-
+            _print(
+                f"[GRAPH {payload.get('source_position')}/{payload.get('source_count')}] "
+                f"paragraph={payload.get('paragraph_index')} title={source.title!r}"
+            )
             _print(f"  source unit: {source.unit_id}")
-
             _print(f"  text chars:  {len(source.text)}")
-
             return
 
-        if event == ("graph.source.attempt.started"):
-            attempt_index = payload.get("attempt_index")
-
-            max_attempts = payload.get("max_attempts")
-
-            _print(f"  whole-source attempt: {attempt_index}/{max_attempts}")
-
+        if event == "graph.source.attempt.started":
+            _print(
+                "  whole-source attempt: "
+                f"{payload.get('attempt_index')}/{payload.get('max_attempts')}"
+            )
             validation_error = payload.get("validation_error")
 
             if isinstance(validation_error, str):
                 _print(f"  previous failure: {validation_error}")
-
             return
 
-        if event == ("graph.source.attempt.failed"):
+        if event == "graph.source.attempt.failed":
             failure = payload.get("failure")
+            rejected_run = payload.get("run")
+
+            if isinstance(rejected_run, GroundedExtractionRun):
+                _print_grounding_diagnostics(rejected_run)
 
             if isinstance(failure, GroundedExtractionFailure):
-                _print("  extraction attempt: FAILED")
-
-                _print(f"    stage: {failure.stage}")
-
-                _print(f"    error: {failure.error_type}: {failure.error_message}")
-
+                _print("  extraction attempt: REJECTED")
+                _print(f"    stage:  {failure.stage}")
+                _print(f"    error:  {failure.error_type}: {failure.error_message}")
+                _print("    action: whole-source retry")
             return
 
-        if event == ("graph.source.completed"):
+        if event == "graph.source.completed":
             run = payload.get("run")
 
             if not isinstance(run, GroundedExtractionRun):
                 return
 
             _print("  extraction: ACCEPTED")
-
             _print(f"  statements: {len(run.extraction.statements)}")
 
-            if run.correction is None:
-                _print("  targeted correction: none")
+            _print_grounding_diagnostics(run)
 
-            else:
-                correction = run.correction
-
-                _print("  targeted correction:")
-
-                _print(f"    rejected initially: {len(correction.requested_rejections)}")
-
-                _print(f"    valid before correction: {correction.initial_valid_statement_count}")
-
-                _print(f"    corrected valid: {correction.corrected_valid_statement_count}")
-
-                _print(f"    remaining rejected: {len(correction.remaining_rejections)}")
-
-            coverage = measure_source_coverage(
-                source=run.source, extraction=(run.extraction)
-            ).to_dict()
-
-            _print("  coverage:")
-
-            for metric_name in (
-                "character_coverage",
-                "sentence_coverage",
-                "longest_uncovered_text_region",
-                "statement_density",
-                "title_reliance",
-            ):
-                if metric_name not in coverage:
-                    continue
-
-                _print(f"    {metric_name}: {_compact_json(coverage[metric_name])}")
-
+            coverage = measure_source_coverage(source=run.source, extraction=run.extraction)
+            _print_source_coverage(coverage)
             return
 
-        if event == ("graph.extraction.measured"):
+        if event == "graph.extraction.measured":
             measurements = payload.get("measurements")
 
             if not isinstance(measurements, ReferenceExtractionMeasurements):
                 return
 
             _print("")
-
             _print("[REFERENCE EXTRACTION TOTALS]")
-
             _print(f"  sources: {measurements.source_count}")
-
             _print(f"  statement occurrences: {measurements.statement_occurrence_count}")
-
             _print(f"  whole-source attempts: {measurements.whole_source_attempt_count}")
-
             _print(f"  whole-source retries: {measurements.whole_source_retry_count}")
-
             _print(f"  targeted corrections: {measurements.targeted_correction_count}")
-
             _print(f"  initial rejections: {measurements.initial_rejection_count}")
-
             _print(f"  corrected valid: {measurements.corrected_valid_statement_count}")
-
             _print(f"  remaining rejections: {measurements.remaining_rejection_count}")
-
             return
 
-        if event == ("graph.materialization.started"):
+        if event == "graph.materialization.started":
             _print("")
-
             _print("[MATERIALIZATION]")
-
             _print("  writing grounded extractions to GraphDB...")
-
             return
 
-        if event == ("graph.materialization.completed"):
+        if event == "graph.materialization.completed":
             _print("  materialization: COMPLETE")
             return
 
         if event == "graph.frozen":
             measurements = payload.get("measurements")
-
             graph_ntriples = payload.get("graph_ntriples")
 
             if not isinstance(measurements, FrozenGraphMeasurements):
                 return
 
             _section("FROZEN SEMANTIC GRAPH")
-
             _print(f"named source graphs:   {measurements.named_graph_count}")
-
             _print(f"semantic triples:      {measurements.semantic_triple_count}")
-
             _print(f"resource nodes:        {measurements.resource_node_count}")
-
             _print(f"entity nodes:          {measurements.entity_node_count}")
-
             _print(f"literal values:        {measurements.literal_value_count}")
-
             _print(f"predicates:            {measurements.predicate_count}")
 
             if isinstance(graph_ntriples, str):
@@ -473,40 +380,29 @@ class VerboseH0Reporter:
 
                 for line in graph_ntriples.splitlines():
                     _print(f"  {line}")
-
             return
 
-        if event == ("query.attempt.started"):
-            attempt_index = payload.get("attempt_index")
-
-            max_attempts = payload.get("max_attempts")
-
-            _section(f"QUERY ATTEMPT {attempt_index}/{max_attempts}")
+        if event == "query.attempt.started":
+            _section(f"QUERY ATTEMPT {payload.get('attempt_index')}/{payload.get('max_attempts')}")
 
             if payload.get("has_feedback"):
                 _print("retry includes feedback from previous attempt")
-
             return
 
-        if event == ("query.validation.failed"):
+        if event == "query.validation.failed":
             _print("deterministic validation: FAILED")
-
             _print(f"reason: {payload.get('error')}")
-
             _print("action: retrying with validator feedback")
-
             return
 
         if event == "query.generated":
             generation = payload.get("generation")
-
             execution_sparql = payload.get("execution_sparql")
 
             if not isinstance(generation, ReferenceQueryGeneration):
                 return
 
             _print("deterministic validation: PASSED")
-
             _print("")
             _print("matched triples:")
 
@@ -525,52 +421,36 @@ class VerboseH0Reporter:
 
                 for line in execution_sparql.splitlines():
                     _print(f"  {line}")
-
             return
 
         if event == "query.executed":
-            observed = payload.get("observed_answers")
-
-            expected = payload.get("expected_answer")
-
-            correct = payload.get("answer_correct")
-
             _print("")
             _print("GraphDB execution:")
+            _print(f"  observed answers: {payload.get('observed_answers')}")
+            _print(f"  expected answer:  {payload.get('expected_answer')!r}")
+            _print(f"  answer correct:   {payload.get('answer_correct')}")
 
-            _print(f"  observed answers: {observed}")
-
-            _print(f"  expected answer:  {expected!r}")
-
-            _print(f"  answer correct:   {correct}")
-
-            if correct is False:
+            if payload.get("answer_correct") is False:
                 _print("  action: retrying with execution feedback")
-
             return
 
-        if event == ("provenance.started"):
+        if event == "provenance.started":
             _print("")
             _print("[PROVENANCE]")
-
             _print("  executing NPCS rewrite and provenance decoding...")
-
             return
 
-        if event == ("provenance.completed"):
+        if event == "provenance.completed":
             provenance = payload.get("provenance")
-
             support_covered = payload.get("gold_support_covered")
 
             if not isinstance(provenance, QAQueryAttempt):
                 return
 
             _print(f"  status: {provenance.provenance_status}")
-
             derivation_count = sum(
                 len(answer.decoded.derivations) for answer in provenance.answer_provenances
             )
-
             _print(f"  derivations: {derivation_count}")
 
             source_titles = sorted(
@@ -581,66 +461,53 @@ class VerboseH0Reporter:
                     for occurrence in derivation.occurrences
                 }
             )
-
             _print(f"  provenance sources: {source_titles}")
-
             _print(f"  gold support covered: {support_covered}")
-
             return
 
-        if event == ("query.gold_support.missing"):
+        if event == "query.gold_support.missing":
             _print("  answer is correct but gold support is incomplete")
-
             _print("  action: retrying query")
 
 
 def parse_arguments(argv: Sequence[str] | None = None) -> RunOneArguments:
     parser = argparse.ArgumentParser(
-        description=("Run one MuSiQue H0 reference graph/query/provenance case.")
+        description="Run one MuSiQue H0 reference graph/query/provenance case."
     )
-
     parser.add_argument("--case-id", required=True)
-
     parser.add_argument(
         "--query-scope",
         choices=(QueryScope.SUPPORT.value, QueryScope.REPOSITORY.value),
-        default=(QueryScope.SUPPORT.value),
+        default=QueryScope.SUPPORT.value,
     )
-
     parser.add_argument("--dataset-path", type=Path)
-
     parser.add_argument("--artifacts", type=Path, default=Path("runs/multihop_fidelity/h0"))
-
-    parser.add_argument("--model", default=(DEFAULT_DEEPSEEK_MODEL))
-
+    parser.add_argument("--model", default=DEFAULT_DEEPSEEK_MODEL)
     parser.add_argument("--max-tokens", type=int, default=16_384)
-
     parser.add_argument("--max-source-attempts", type=int, default=3)
-
     parser.add_argument("--max-query-attempts", type=int, default=5)
-
+    parser.add_argument(
+        "--llm-timeout-seconds",
+        type=float,
+        default=DEFAULT_DEEPSEEK_TIMEOUT_SECONDS,
+        help="Maximum duration of one DeepSeek API request. Transport retries are disabled.",
+    )
     parser.add_argument(
         "--reuse-llm-checkpoints",
         action="store_true",
-        help=("Reuse sequence- and prompt-matched LLM responses from an interrupted execution."),
+        help="Reuse sequence- and prompt-matched responses from an interrupted execution.",
     )
-
     parser.add_argument(
         "--verbose",
         action="store_true",
         help=(
-            "Print extraction progress, exact "
-            "provider usage, coverage metrics, "
-            "frozen graph, query attempts, "
-            "answers, provenance, and stage "
-            "timings in real time."
+            "Print extraction progress, provider usage, readable coverage metrics, "
+            "frozen graph, query attempts, provenance, and stage timings."
         ),
     )
 
     namespace = parser.parse_args(argv)
-
     dataset_path = namespace.dataset_path if isinstance(namespace.dataset_path, Path) else None
-
     artifacts = namespace.artifacts
 
     if not isinstance(artifacts, Path):
@@ -657,12 +524,12 @@ def parse_arguments(argv: Sequence[str] | None = None) -> RunOneArguments:
         max_query_attempts=int(namespace.max_query_attempts),
         reuse_llm_checkpoints=bool(namespace.reuse_llm_checkpoints),
         verbose=bool(namespace.verbose),
+        llm_timeout_seconds=float(namespace.llm_timeout_seconds),
     )
 
 
 def main() -> None:
     arguments = parse_arguments()
-
     api_key = os.getenv("DEEPSEEK_API_KEY")
 
     if not api_key:
@@ -671,43 +538,35 @@ def main() -> None:
     dataset_path = (
         arguments.dataset_path if arguments.dataset_path is not None else musique_dataset_path()
     )
-
     case = load_case(dataset_path, arguments.case_id)
 
     if not case.answerable:
         raise SystemExit("selected MuSiQue case is not answerable")
 
     configuration = ExperimentConfig(
-        graph_origin=(ArtifactOrigin.REFERENCE),
-        query_origin=(ArtifactOrigin.REFERENCE),
-        query_scope=(arguments.query_scope),
-        max_source_attempts=(arguments.max_source_attempts),
-        max_query_attempts=(arguments.max_query_attempts),
+        graph_origin=ArtifactOrigin.REFERENCE,
+        query_origin=ArtifactOrigin.REFERENCE,
+        query_scope=arguments.query_scope,
+        max_source_attempts=arguments.max_source_attempts,
+        max_query_attempts=arguments.max_query_attempts,
     )
 
     root = arguments.artifacts / case.case_id / arguments.query_scope.value
-
     result_path = root / "result.json"
 
     if result_path.is_file():
         raise SystemExit(
             "result artifact already exists: "
-            f"{result_path}. "
-            "Choose a fresh --artifacts "
-            "directory for a new "
-            "scientific run."
+            f"{result_path}. Choose a fresh --artifacts directory for a new scientific run."
         )
 
     root.mkdir(parents=True, exist_ok=True)
-
     run_configuration = _run_configuration_payload(
         case_id=case.case_id, dataset_path=dataset_path, arguments=arguments
     )
-
     _write_or_validate_configuration(root / "run-config.json", run_configuration)
 
     graphdb = GraphDBClient.from_environment()
-
     npcs = NPCSClient.from_environment()
 
     _print_plan(
@@ -721,7 +580,6 @@ def main() -> None:
         graphdb=graphdb,
         npcs=npcs,
     )
-
     _preflight(graphdb=graphdb, npcs=npcs)
 
     telemetry = ExperimentTelemetryRecorder()
@@ -729,76 +587,71 @@ def main() -> None:
     graph_provider = deepseek_generator(
         api_key=api_key,
         model=arguments.model,
-        max_tokens=(arguments.max_tokens),
-        observe_call=(telemetry.deepseek_observer(operation=("graph.reference"))),
+        max_tokens=arguments.max_tokens,
+        observe_call=telemetry.deepseek_observer(operation="graph.reference"),
+        timeout_seconds=arguments.llm_timeout_seconds,
     )
-
     query_provider = deepseek_generator(
         api_key=api_key,
         model=arguments.model,
-        max_tokens=(arguments.max_tokens),
-        observe_call=(telemetry.deepseek_observer(operation=("query.reference"))),
+        max_tokens=arguments.max_tokens,
+        observe_call=telemetry.deepseek_observer(operation="query.reference"),
+        timeout_seconds=arguments.llm_timeout_seconds,
     )
 
     graph_checkpoint = CheckpointedGenerateResponse(
-        root=(root / "llm-checkpoints" / "graph"),
-        generate_response=(graph_provider),
-        reuse_existing=(arguments.reuse_llm_checkpoints),
+        root=root / "llm-checkpoints" / "graph",
+        generate_response=graph_provider,
+        reuse_existing=arguments.reuse_llm_checkpoints,
     )
-
     query_checkpoint = CheckpointedGenerateResponse(
-        root=(root / "llm-checkpoints" / "query"),
-        generate_response=(query_provider),
-        reuse_existing=(arguments.reuse_llm_checkpoints),
+        root=root / "llm-checkpoints" / "query",
+        generate_response=query_provider,
+        reuse_existing=arguments.reuse_llm_checkpoints,
     )
 
     graph_generate = VerboseGenerateResponse(
         operation="graph.reference",
-        generate_response=(graph_checkpoint),
+        generate_response=graph_checkpoint,
         telemetry=telemetry,
         enabled=arguments.verbose,
     )
-
     query_generate = VerboseGenerateResponse(
         operation="query.reference",
-        generate_response=(query_checkpoint),
+        generate_response=query_checkpoint,
         telemetry=telemetry,
         enabled=arguments.verbose,
     )
-
     reporter = VerboseH0Reporter(enabled=arguments.verbose)
-
     sources = collect_musique_source_units((case,))
 
     outcome = run_h0_case(
         case=case,
         sources=sources,
         configuration=configuration,
-        graph_generate_response=(graph_generate),
-        query_generate_response=(query_generate),
+        graph_generate_response=graph_generate,
+        query_generate_response=query_generate,
         graphdb=graphdb,
         npcs=npcs,
         telemetry=telemetry,
-        progress_sink=(reporter if arguments.verbose else None),
+        progress_sink=reporter if arguments.verbose else None,
     )
 
     artifact = _build_run_artifact(
         outcome=outcome,
         dataset_path=dataset_path,
         arguments=arguments,
-        graph_generate=(graph_checkpoint),
-        query_generate=(query_checkpoint),
+        graph_generate=graph_checkpoint,
+        query_generate=query_checkpoint,
         graphdb=graphdb,
         npcs=npcs,
     )
-
     _write_json(result_path, artifact)
-
     _print_outcome_summary(
         outcome=outcome,
         result_path=result_path,
-        graph_generate=(graph_checkpoint),
-        query_generate=(query_checkpoint),
+        graph_generate=graph_checkpoint,
+        query_generate=query_checkpoint,
         verbose=arguments.verbose,
     )
 
@@ -808,9 +661,7 @@ def main() -> None:
 
 def _preflight(*, graphdb: GraphDBClient, npcs: NPCSClient) -> None:
     graphdb.query("SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }")
-
     npcs.rewrite("SELECT ?s WHERE { ?s ?p ?o }")
-
     _print("preflight: GraphDB OK; NPCS OK")
 
 
@@ -818,16 +669,17 @@ def _run_configuration_payload(
     *, case_id: str, dataset_path: Path, arguments: RunOneArguments
 ) -> dict[str, object]:
     return {
-        "format": (RUN_ARTIFACT_FORMAT),
+        "format": RUN_ARTIFACT_FORMAT,
         "case_id": case_id,
         "dataset_path": str(dataset_path.resolve()),
-        "graph_origin": (ArtifactOrigin.REFERENCE.value),
-        "query_origin": (ArtifactOrigin.REFERENCE.value),
-        "query_scope": (arguments.query_scope.value),
+        "graph_origin": ArtifactOrigin.REFERENCE.value,
+        "query_origin": ArtifactOrigin.REFERENCE.value,
+        "query_scope": arguments.query_scope.value,
         "model": arguments.model,
-        "max_tokens": (arguments.max_tokens),
-        "max_source_attempts": (arguments.max_source_attempts),
-        "max_query_attempts": (arguments.max_query_attempts),
+        "max_tokens": arguments.max_tokens,
+        "max_source_attempts": arguments.max_source_attempts,
+        "max_query_attempts": arguments.max_query_attempts,
+        "llm_timeout_seconds": arguments.llm_timeout_seconds,
     }
 
 
@@ -849,35 +701,35 @@ def _build_run_artifact(
     outcome: H0CaseOutcome,
     dataset_path: Path,
     arguments: RunOneArguments,
-    graph_generate: (CheckpointedGenerateResponse),
-    query_generate: (CheckpointedGenerateResponse),
+    graph_generate: CheckpointedGenerateResponse,
+    query_generate: CheckpointedGenerateResponse,
     graphdb: GraphDBClient,
     npcs: NPCSClient,
 ) -> dict[str, object]:
     return {
-        "format": (RUN_ARTIFACT_FORMAT),
+        "format": RUN_ARTIFACT_FORMAT,
         "dataset_path": str(dataset_path.resolve()),
         "model": arguments.model,
-        "max_tokens": (arguments.max_tokens),
-        "graphdb_repository_endpoint": (graphdb.repository_endpoint),
-        "npcs_rewrite_endpoint": (npcs.rewrite_endpoint),
+        "max_tokens": arguments.max_tokens,
+        "llm_timeout_seconds": arguments.llm_timeout_seconds,
+        "graphdb_repository_endpoint": graphdb.repository_endpoint,
+        "npcs_rewrite_endpoint": npcs.rewrite_endpoint,
         "llm_checkpoints": {
             "graph": {
-                "executed": (graph_generate.executed_count),
-                "reused": (graph_generate.reused_count),
+                "executed": graph_generate.executed_count,
+                "reused": graph_generate.reused_count,
             },
             "query": {
-                "executed": (query_generate.executed_count),
-                "reused": (query_generate.reused_count),
+                "executed": query_generate.executed_count,
+                "reused": query_generate.reused_count,
             },
         },
-        "outcome": (outcome.to_dict()),
+        "outcome": outcome.to_dict(),
     }
 
 
 def _write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-
     path.write_text(
         json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
@@ -904,6 +756,7 @@ def _print_plan(
     _print(f"  query scope:   {arguments.query_scope.value}")
     _print(f"  model:         {arguments.model}")
     _print(f"  max tokens:    {arguments.max_tokens}")
+    _print(f"  LLM timeout:   {arguments.llm_timeout_seconds:.1f}s")
     _print(f"  verbose:       {arguments.verbose}")
     _print(f"  dataset:       {dataset_path}")
     _print(f"  artifacts:     {root}")
@@ -915,83 +768,52 @@ def _print_outcome_summary(
     *,
     outcome: H0CaseOutcome,
     result_path: Path,
-    graph_generate: (CheckpointedGenerateResponse),
-    query_generate: (CheckpointedGenerateResponse),
+    graph_generate: CheckpointedGenerateResponse,
+    query_generate: CheckpointedGenerateResponse,
     verbose: bool,
 ) -> None:
     telemetry = outcome.telemetry
 
     _print("")
     _print("=" * 72)
-
-    if isinstance(outcome, H0CaseResult):
-        _print("H0 CASE PASSED")
-    else:
-        _print("H0 CASE FAILED")
-
+    _print("H0 CASE PASSED" if isinstance(outcome, H0CaseResult) else "H0 CASE FAILED")
     _print("=" * 72)
-
     _print(f"case:                  {outcome.case_id}")
-
     _print(f"result:                {result_path}")
-
     _print(f"graph LLM executed:    {graph_generate.executed_count}")
-
     _print(f"graph LLM reused:      {graph_generate.reused_count}")
-
     _print(f"query LLM executed:    {query_generate.executed_count}")
-
     _print(f"query LLM reused:      {query_generate.reused_count}")
-
     _print(f"provider usage complete: {telemetry.usage_complete}")
-
     _print(f"input tokens:          {telemetry.input_tokens}")
-
     _print(f"output tokens:         {telemetry.output_tokens}")
-
     _print(f"total tokens:          {telemetry.total_tokens}")
-
     _print(f"cached input tokens:   {telemetry.cached_input_tokens}")
-
     _print(f"uncached input tokens: {telemetry.uncached_input_tokens}")
-
     _print(f"cumulative LLM seconds: {telemetry.cumulative_llm_seconds:.3f}")
 
     if graph_generate.reused_count or query_generate.reused_count:
         _print("")
         _print(
-            "NOTE: token totals above "
-            "describe provider calls made "
-            "in this invocation only; reused "
-            "checkpoints were not billed again."
+            "NOTE: token totals describe provider calls made in this invocation only; "
+            "reused checkpoints were not billed again."
         )
 
     if isinstance(outcome, H0CaseResult):
         _print("")
-
         _print(
             f"statement occurrences: {outcome.extraction_measurements.statement_occurrence_count}"
         )
-
         _print(f"semantic triples:      {outcome.graph_measurements.semantic_triple_count}")
-
         _print(f"entity nodes:          {outcome.graph_measurements.entity_node_count}")
-
         _print(f"literal values:        {outcome.graph_measurements.literal_value_count}")
-
         _print(f"predicates:            {outcome.graph_measurements.predicate_count}")
-
         _print(f"query attempts:        {len(outcome.query_attempts)}")
-
         _print(f"provenance status:     {outcome.final_provenance.provenance_status}")
-
         _print(f"gold support covered:  {outcome.query_attempts[-1].gold_support_covered}")
-
     else:
         _print("")
-
         _print(f"failure stage:         {outcome.stage}")
-
         _print(f"failure:               {outcome.error_type}: {outcome.error_message}")
 
     if verbose:
@@ -1002,8 +824,143 @@ def _print_outcome_summary(
             _print(f"  {stage.stage} [attempt={stage.attempt_index}]: {stage.elapsed_seconds:.3f}s")
 
 
-def _compact_json(value: object) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(", ", ": "))
+def _print_grounding_diagnostics(run: GroundedExtractionRun) -> None:
+    """Print the deterministic grounding and correction lifecycle."""
+
+    correction = run.correction
+
+    _print("")
+    _print("  [DETERMINISTIC GROUNDING]")
+
+    if correction is None:
+        _print(f"    initially valid:    {len(run.extraction.statements)}")
+        _print("    initially rejected: 0")
+        _print("    targeted correction: not needed")
+        _print(f"    final grounded:     {len(run.extraction.statements)}")
+        return
+
+    _print(f"    initially valid:    {correction.initial_valid_statement_count}")
+    _print(f"    initially rejected: {len(correction.requested_rejections)}")
+
+    _print_rejections(correction.requested_rejections, label="initial rejection")
+
+    _print("")
+    _print("  [TARGETED CORRECTION]")
+
+    if correction.response is None:
+        _print("    response:           unavailable")
+    else:
+        _print("    response:           received")
+
+    _print(f"    corrected valid:    {correction.corrected_valid_statement_count}")
+    _print(f"    still rejected:     {len(correction.remaining_rejections)}")
+
+    _print_rejections(correction.remaining_rejections, label="remaining rejection")
+
+    if correction.error_message is not None:
+        _print(f"    correction error:  {correction.error_type}: {correction.error_message}")
+
+    _print("")
+    _print("  [FINAL GROUNDED EXTRACTION]")
+    _print(f"    grounded statements: {len(run.extraction.statements)}")
+
+
+def _print_rejections(rejections: object, *, label: str) -> None:
+    if not isinstance(rejections, tuple):
+        return
+
+    for rejection in rejections:
+        statement_index = getattr(rejection, "statement_index", None)
+        error_message = getattr(rejection, "error_message", None)
+        raw_statement = getattr(rejection, "raw_statement", None)
+
+        _print("")
+        _print(f"    {label} #{statement_index}")
+        _print("      validator:")
+        _print("        " + str(error_message))
+        _print("      proposed statement:")
+
+        serialized = json.dumps(
+            raw_statement, ensure_ascii=False, indent=2, sort_keys=True, default=str
+        )
+
+        for line in serialized.splitlines():
+            _print(f"        {line}")
+
+
+def _print_source_coverage(coverage: SourceCoverageMeasurements) -> None:
+    character = coverage.character_coverage.overall
+    sentence = coverage.sentence_coverage.overall
+    uncovered = coverage.longest_uncovered_text_region
+    density = coverage.statement_density
+    title_reliance = coverage.title_reliance.overall
+
+    _print("  coverage:")
+    _print(
+        "    characters combined: "
+        + _format_coverage(
+            character.combined.covered_characters,
+            character.combined.total_characters,
+            character.combined.coverage_ratio,
+        )
+    )
+    _print(
+        "    characters text:     "
+        + _format_coverage(
+            character.text.covered_characters,
+            character.text.total_characters,
+            character.text.coverage_ratio,
+        )
+    )
+    _print(
+        "    characters title:    "
+        + _format_coverage(
+            character.title.covered_characters,
+            character.title.total_characters,
+            character.title.coverage_ratio,
+        )
+    )
+    _print(
+        "    sentences:           "
+        + _format_coverage(
+            sentence.covered_sentences, sentence.total_sentences, sentence.coverage_ratio
+        )
+    )
+
+    if uncovered.exists:
+        _print(f"    longest uncovered:  {uncovered.length} chars")
+        _print(f"      {_short_quote(uncovered.quote)!r}")
+    else:
+        _print("    longest uncovered:  none")
+
+    if density.statements_per_scale is None:
+        density_text = "n/a"
+    else:
+        density_text = f"{density.statements_per_scale:.2f} / {density.scale} chars"
+
+    _print(f"    statement density:  {density_text}")
+    _print(
+        "    title reliance:      "
+        + _format_coverage(
+            title_reliance.title_reliant_statements,
+            title_reliance.total_statements,
+            title_reliance.reliance_rate,
+        )
+    )
+
+
+def _format_coverage(covered: int, total: int, ratio: float | None) -> str:
+    percentage = "n/a" if ratio is None else f"{ratio * 100:.1f}%"
+    return f"{covered} / {total} ({percentage})"
+
+
+def _short_quote(text: str, *, limit: int = 180) -> str:
+    normalized = " ".join(text.split())
+
+    if len(normalized) <= limit:
+        return normalized
+
+    return normalized[: limit - 1].rstrip() + "…"
 
 
 def _section(title: str) -> None:
