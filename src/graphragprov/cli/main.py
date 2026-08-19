@@ -4,6 +4,7 @@ from collections.abc import Callable, Sequence
 from typing import cast
 
 from graphragprov.cli.benchmark import add_benchmark_commands
+from graphragprov.cli.rdf import configure_rdf_parser
 
 CommandHandler = Callable[[argparse.Namespace], int]
 
@@ -17,6 +18,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     benchmark_parser = commands.add_parser("benchmark", help="Inspect supported benchmarks.")
     add_benchmark_commands(benchmark_parser)
+
+    rdf_parser = commands.add_parser("rdf", help="Transform and inspect RDF artifacts.")
+    configure_rdf_parser(rdf_parser)
 
     return parser
 
