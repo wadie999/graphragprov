@@ -17,3 +17,19 @@ def musique_dataset_path() -> Path:
         return DEFAULT_MUSIQUE_DATASET_PATH
 
     return Path(value).expanduser().resolve()
+
+
+DEFAULT_TWOWIKI_DATASET_PATH = (
+    PROJECT_ROOT / "external" / "benchmarks" / "2wikimultihop" / "train.json"
+)
+
+
+def twowiki_dataset_path() -> Path:
+    """Return the configured 2WikiMultiHopQA training dataset path."""
+
+    value = os.getenv("TWOWIKI_DATASET_PATH")
+
+    if value is None:
+        return DEFAULT_TWOWIKI_DATASET_PATH
+
+    return Path(value).expanduser().resolve()
