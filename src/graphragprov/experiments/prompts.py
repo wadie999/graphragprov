@@ -6,12 +6,36 @@ import json
 from collections.abc import Iterable
 
 from graphragprov.benchmarks.musique import MusiqueCase
+from graphragprov.benchmarks.twowiki import TwoWikiCase
 from graphragprov.domain import SourceUnit
 from graphragprov.extraction.prompt import SYSTEM_PROMPT
 from graphragprov.extraction.run import GroundedExtractionRun
 
 H0_QUERY_PROMPT_VERSION = "musique-sparql-evidence-first-v1"
 
+CONSTRUCT_TWOWIKI_QUESTION_GRAPH = """
+We are constructing a grounded RDF graph for one 2WikiMultiHopQA question.
+
+The question, expected answer, and benchmark evidence relations are coordination
+context. They tell you which semantic relations the final graph must represent.
+They are not textual evidence.
+
+For the CURRENT SOURCE only, return grounded RDF statements using the extraction
+schema below.
+
+Represent the benchmark relation or relations supported by CURRENT SOURCE.
+
+Reuse semantic names already present in the accepted graph when they denote the
+same thing.
+
+Every returned subject, predicate, and object must cite exact evidence from the
+CURRENT SOURCE.
+
+Do not use the question, expected answer, benchmark evidence relations, or
+another source as textual evidence.
+
+Python owns source identity; never return source IDs.
+""".strip()
 
 CONSTRUCT_MUSIQUE_QUESTION_GRAPH = """
 We are constructing a grounded RDF graph for one MuSiQue benchmark question.
@@ -248,3 +272,46 @@ def _render_accepted_graph(runs: Iterable[GroundedExtractionRun]) -> str:
             )
 
     return "\n".join(sorted(triples))
+
+
+def build_twowiki_graph_source_prompt(
+    *,
+    case: TwoWikiCase,
+    source: SourceUnit,
+    paragraph_index: int,
+    accepted_runs: Iterable[GroundedExtractionRun],
+    validation_error: str | None = None,
+) -> str:
+    accepted_graph = _render_accepted_graph(accepted_runs)
+
+    source_json = json.dumps(
+        {"title": source.title, "text": source.text}, ensure_ascii=False, indent=2
+    )
+
+    evidence_chain = "\n".join(
+        f"{i}. {evidence.subject} | {evidence.relation} | {evidence.object}"
+        for i, evidence in enumerate(case.evidences, start=1)
+    )
+
+    parts = [
+        SYSTEM_PROMPT,
+        "EXPERIMENT TASK — CONSTRUCT 2WIKI QUESTION GRAPH",
+        CONSTRUCT_TWOWIKI_QUESTION_GRAPH,
+        f"Question: {case.question}",
+        f"Expected answer: {case.answer}",
+        "Benchmark evidence relations:\n" + evidence_chain,
+        "Accepted semantic graph so far:\n" + (accepted_graph or "(empty)"),
+        f"CURRENT SOURCE — 2Wiki paragraph {paragraph_index}",
+        source_json,
+    ]
+
+    if validation_error is not None:
+        parts.extend(
+            [
+                "PREVIOUS RESPONSE WAS REJECTED BY THE DETERMINISTIC VALIDATOR",
+                validation_error,
+                "Return a corrected response for this same CURRENT SOURCE.",
+            ]
+        )
+
+    return "\n\n".join(parts) + "\n"
