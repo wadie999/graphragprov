@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import TypeAlias
 
 from graphragprov.benchmarks.musique import MusiqueCase, MusiqueParagraph, MusiqueSourceUnit
+from graphragprov.domain import SourceUnit
 from graphragprov.experiments.prompts import build_musique_graph_source_prompt
 from graphragprov.extraction.run import (
     GenerateResponse,
@@ -17,11 +18,21 @@ from graphragprov.extraction.run import (
 
 ReferenceGraphProgressSink: TypeAlias = Callable[[str, dict[str, object]], None]
 
+ReferenceGraphPromptBuilder: TypeAlias = Callable[
+    [SourceUnit, int, tuple[GroundedExtractionRun, ...], str | None], str
+]
+
 _EMPTY_REFERENCE_ERROR_TYPE = "EmptyReferenceExtraction"
 _EMPTY_REFERENCE_ERROR_MESSAGE = (
     "gold supporting paragraph produced zero validated grounded statements; "
     "H0 reference construction requires at least one grounded statement per supporting source"
 )
+
+
+@dataclass(frozen=True, slots=True)
+class ReferenceGraphSource:
+    paragraph_index: int
+    source_unit_id: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -103,18 +114,60 @@ def construct_reference_extractions(
     max_attempts: int,
     progress_sink: ReferenceGraphProgressSink | None = None,
 ) -> ReferenceGraphExtractionOutcome:
-    """Construct H0 reference extractions over gold supporting paragraphs.
+    """Construct H0 reference extractions over gold MuSiQue supporting paragraphs."""
+
+    support_sources = tuple(
+        ReferenceGraphSource(paragraph_index=paragraph.index, source_unit_id=paragraph.unit_id)
+        for paragraph in reference_supporting_paragraphs(case)
+    )
+
+    def build_prompt(
+        source: SourceUnit,
+        paragraph_index: int,
+        accepted_runs: tuple[GroundedExtractionRun, ...],
+        validation_error: str | None,
+    ) -> str:
+        return build_musique_graph_source_prompt(
+            case=case,
+            source=source,
+            paragraph_index=paragraph_index,
+            accepted_runs=accepted_runs,
+            validation_error=validation_error,
+        )
+
+    return construct_reference_source_extractions(
+        support_sources=support_sources,
+        sources=sources,
+        build_prompt=build_prompt,
+        generate_response=generate_response,
+        max_attempts=max_attempts,
+        progress_sink=progress_sink,
+    )
+
+
+def construct_reference_source_extractions(
+    *,
+    support_sources: tuple[ReferenceGraphSource, ...],
+    sources: tuple[SourceUnit, ...],
+    build_prompt: ReferenceGraphPromptBuilder,
+    generate_response: GenerateResponse,
+    max_attempts: int,
+    progress_sink: ReferenceGraphProgressSink | None = None,
+) -> ReferenceGraphExtractionOutcome:
+    """Construct validated grounded extractions for ordered reference sources.
 
     The generic extraction layer may legitimately return an empty, fully validated
-    ``ExtractionResult``. H0 has a stronger scientific invariant: every gold supporting
-    paragraph must contribute at least one grounded statement to the reference graph.
-    Empty final extractions are therefore rejected as whole-source attempts and retried.
+    ``ExtractionResult``. Reference graph construction has a stronger invariant:
+    every selected source must contribute at least one grounded statement.
+
+    Empty final extractions are therefore rejected as whole-source attempts and
+    retried.
     """
 
     if max_attempts < 1:
         raise ValueError("max attempts must be at least 1")
 
-    sources_by_id: dict[str, MusiqueSourceUnit] = {}
+    sources_by_id: dict[str, SourceUnit] = {}
 
     for candidate_source in sources:
         existing = sources_by_id.get(candidate_source.unit_id)
@@ -124,16 +177,16 @@ def construct_reference_extractions(
 
         sources_by_id[candidate_source.unit_id] = candidate_source
 
-    support_paragraphs = reference_supporting_paragraphs(case)
     completed: list[ReferenceSourceExtraction] = []
-    source_count = len(support_paragraphs)
+    source_count = len(support_sources)
 
-    for source_position, paragraph in enumerate(support_paragraphs, start=1):
-        support_source = sources_by_id.get(paragraph.unit_id)
+    for source_position, reference_source in enumerate(support_sources, start=1):
+        support_source = sources_by_id.get(reference_source.source_unit_id)
 
         if support_source is None:
             raise ValueError(
-                f"supporting source {paragraph.unit_id!r} is missing from supplied sources"
+                f"supporting source {reference_source.source_unit_id!r} "
+                "is missing from supplied sources"
             )
 
         _emit_progress(
@@ -142,7 +195,7 @@ def construct_reference_extractions(
             {
                 "source_position": source_position,
                 "source_count": source_count,
-                "paragraph_index": paragraph.index,
+                "paragraph_index": reference_source.paragraph_index,
                 "source": support_source,
             },
         )
@@ -162,7 +215,7 @@ def construct_reference_extractions(
                 {
                     "source_position": source_position,
                     "source_count": source_count,
-                    "paragraph_index": paragraph.index,
+                    "paragraph_index": reference_source.paragraph_index,
                     "source": support_source,
                     "attempt_index": attempt_index,
                     "max_attempts": max_attempts,
@@ -170,12 +223,11 @@ def construct_reference_extractions(
                 },
             )
 
-            prompt = build_musique_graph_source_prompt(
-                case=case,
-                source=support_source,
-                paragraph_index=paragraph.index,
-                accepted_runs=[item.run for item in completed],
-                validation_error=validation_error,
+            prompt = build_prompt(
+                support_source,
+                reference_source.paragraph_index,
+                tuple(item.run for item in completed),
+                validation_error,
             )
 
             outcome = run_grounded_extraction_outcome_with_prompt(
@@ -185,7 +237,9 @@ def construct_reference_extractions(
             if isinstance(outcome, GroundedExtractionRun):
                 if outcome.extraction.statements:
                     item = ReferenceSourceExtraction(
-                        paragraph_index=paragraph.index, attempt_count=attempt_index, run=outcome
+                        paragraph_index=reference_source.paragraph_index,
+                        attempt_count=attempt_index,
+                        run=outcome,
                     )
                     completed.append(item)
 
@@ -195,7 +249,7 @@ def construct_reference_extractions(
                         {
                             "source_position": source_position,
                             "source_count": source_count,
-                            "paragraph_index": paragraph.index,
+                            "paragraph_index": reference_source.paragraph_index,
                             "source": support_source,
                             "attempt_index": attempt_index,
                             "run": outcome,
@@ -213,7 +267,7 @@ def construct_reference_extractions(
                 {
                     "source_position": source_position,
                     "source_count": source_count,
-                    "paragraph_index": paragraph.index,
+                    "paragraph_index": reference_source.paragraph_index,
                     "source": support_source,
                     "attempt_index": attempt_index,
                     "failure": previous_failure,
@@ -224,7 +278,7 @@ def construct_reference_extractions(
             assert previous_failure is not None
 
             failure = ReferenceGraphExtractionFailure(
-                paragraph_index=paragraph.index,
+                paragraph_index=reference_source.paragraph_index,
                 source_unit_id=support_source.unit_id,
                 attempt_count=max_attempts,
                 failure=previous_failure,
@@ -237,7 +291,7 @@ def construct_reference_extractions(
                 {
                     "source_position": source_position,
                     "source_count": source_count,
-                    "paragraph_index": paragraph.index,
+                    "paragraph_index": reference_source.paragraph_index,
                     "source": support_source,
                     "failure": failure,
                 },
