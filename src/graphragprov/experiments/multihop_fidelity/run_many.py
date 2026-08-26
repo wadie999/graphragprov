@@ -15,6 +15,7 @@ from typing import NamedTuple
 from graphragprov.benchmarks.musique import iter_cases
 from graphragprov.config import musique_dataset_path
 from graphragprov.experiments.multihop_fidelity.config import QueryScope
+from graphragprov.experiments.multihop_fidelity.run_one import read_result_artifact_status
 from graphragprov.providers.deepseek import DEFAULT_DEEPSEEK_MODEL, DEFAULT_DEEPSEEK_TIMEOUT_SECONDS
 
 
@@ -57,12 +58,12 @@ def _load_jobs(dataset: Path, ids_file: Path) -> tuple[Job, ...]:
     )
 
 
-def _command(args: argparse.Namespace, job: Job, reuse: bool) -> list[str]:
+def _command(args: argparse.Namespace, job: Job, reuse: bool, *, worker_module: str) -> list[str]:
     command = [
         sys.executable,
         "-u",
         "-m",
-        "graphragprov.experiments.multihop_fidelity.run_one",
+        worker_module,
         "--case-id",
         job.case_id,
         "--query-scope",
@@ -91,7 +92,7 @@ def _command(args: argparse.Namespace, job: Job, reuse: bool) -> list[str]:
 
 
 async def _run_case(
-    args: argparse.Namespace, job: Job, total: int, logs: Path
+    args: argparse.Namespace, job: Job, total: int, logs: Path, *, worker_module: str
 ) -> dict[str, object]:
     result = args.artifacts / job.case_id / args.query_scope / "result.json"
 
@@ -107,7 +108,7 @@ async def _run_case(
     _say(f"START {job.ordinal:03d}/{total} case={job.case_id}")
 
     process = await asyncio.create_subprocess_exec(
-        *_command(args, job, reuse),
+        *_command(args, job, reuse, worker_module=worker_module),
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.STDOUT,
         env=env,
@@ -156,7 +157,7 @@ async def _run_case(
 
 
 async def _run_parallel(
-    args: argparse.Namespace, jobs: tuple[Job, ...], logs: Path
+    args: argparse.Namespace, jobs: tuple[Job, ...], logs: Path, *, worker_module: str
 ) -> list[dict[str, object]]:
     pending = list(jobs)
 
@@ -185,14 +186,16 @@ async def _run_parallel(
 
             locked_support_ids.update(job.support_ids)
 
-            task = asyncio.create_task(_run_case(args, job, len(jobs), logs))
+            task = asyncio.create_task(
+                _run_case(args, job, len(jobs), logs, worker_module=worker_module)
+            )
 
             active[task] = job
 
         if not active:
             raise RuntimeError("scheduler deadlocked")
 
-        done, _ = await asyncio.wait(active, return_when=(asyncio.FIRST_COMPLETED))
+        done, _ = await asyncio.wait(active, return_when=asyncio.FIRST_COMPLETED)
 
         for task in done:
             job = active.pop(task)
@@ -205,7 +208,7 @@ async def _run_parallel(
 
 
 def parse_arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=("Run many H0 cases through run_one."))
+    parser = argparse.ArgumentParser(description="Run many H0 cases through run_one.")
 
     parser.add_argument("--case-ids-file", type=Path, required=True)
 
@@ -230,7 +233,7 @@ def parse_arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-query-attempts", type=int, default=5)
 
     parser.add_argument(
-        "--llm-timeout-seconds", type=float, default=(DEFAULT_DEEPSEEK_TIMEOUT_SECONDS)
+        "--llm-timeout-seconds", type=float, default=DEFAULT_DEEPSEEK_TIMEOUT_SECONDS
     )
 
     parser.add_argument("--resume", action="store_true")
@@ -250,10 +253,8 @@ def parse_arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
     return args
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    args = parse_arguments(argv)
-
-    jobs = _load_jobs(args.dataset_path, args.case_ids_file)
+def run_batch(*, args: argparse.Namespace, jobs: tuple[Job, ...], worker_module: str) -> int:
+    """Execute a prepared batch through one run_one worker module."""
 
     logs = args.artifacts / "_batch" / "logs"
 
@@ -266,12 +267,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         result = args.artifacts / job.case_id / args.query_scope / "result.json"
 
         if args.resume and result.is_file():
-            _say(f"SKIP  {job.ordinal:03d}/{len(jobs)} case={job.case_id} result exists")
+            result_status = read_result_artifact_status(result)
 
-            results.append({"index": job.ordinal, "case_id": job.case_id, "status": "skipped"})
+            if result_status == "complete":
+                _say(
+                    f"SKIP  {job.ordinal:03d}/{len(jobs)} case={job.case_id} complete result exists"
+                )
 
-        else:
-            runnable.append(job)
+                results.append({"index": job.ordinal, "case_id": job.case_id, "status": "skipped"})
+                continue
+
+            _say(
+                f"RETRY {job.ordinal:03d}/{len(jobs)} "
+                f"case={job.case_id} prior result={result_status}"
+            )
+
+        runnable.append(job)
 
     _say(
         f"cases={len(jobs)} "
@@ -283,7 +294,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     started = time.monotonic()
 
     try:
-        results.extend(asyncio.run(_run_parallel(args, tuple(runnable), logs)))
+        results.extend(
+            asyncio.run(_run_parallel(args, tuple(runnable), logs, worker_module=worker_module))
+        )
 
     except KeyboardInterrupt:
         _say("INTERRUPT: active run_one processes terminated; checkpoints remain")
@@ -299,8 +312,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         json.dumps(
             {
                 "workers": args.workers,
-                "query_scope": (args.query_scope),
-                "elapsed_seconds": (time.monotonic() - started),
+                "query_scope": args.query_scope,
+                "worker_module": worker_module,
+                "elapsed_seconds": time.monotonic() - started,
                 "cases": results,
             },
             indent=2,
@@ -312,6 +326,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     _say(f"COMPLETE cases={len(jobs)} failed={failed} summary={summary}")
 
     return 0 if failed == 0 else 1
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parse_arguments(argv)
+
+    jobs = _load_jobs(args.dataset_path, args.case_ids_file)
+
+    return run_batch(
+        args=args, jobs=jobs, worker_module="graphragprov.experiments.multihop_fidelity.run_one"
+    )
 
 
 if __name__ == "__main__":

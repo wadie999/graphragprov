@@ -2,13 +2,21 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Literal, TypeAlias
 
 from graphragprov.benchmarks.musique import MusiqueCase, MusiqueSourceUnit
+from graphragprov.benchmarks.twowiki import TwoWikiCase
+from graphragprov.benchmarks.twowiki.selection import (
+    supporting_paragraphs as twowiki_supporting_paragraphs,
+)
+from graphragprov.benchmarks.twowiki.source_unit import TwoWikiSourceUnit
+from graphragprov.domain import SourceUnit
 from graphragprov.experiments.multihop_fidelity.config import ArtifactOrigin, ExperimentConfig
 from graphragprov.experiments.multihop_fidelity.graph import (
     ReferenceGraphExtractionFailure,
+    ReferenceGraphExtractionOutcome,
     ReferenceGraphExtractionResult,
     ReferenceGraphProgressSink,
     construct_reference_extractions,
@@ -21,6 +29,7 @@ from graphragprov.experiments.multihop_fidelity.measurements import (
     measure_reference_extractions,
 )
 from graphragprov.experiments.multihop_fidelity.query import (
+    ReferenceQueryGeneration,
     ReferenceQueryPlan,
     ReferenceQueryValidationError,
     answer_terms,
@@ -32,6 +41,12 @@ from graphragprov.experiments.multihop_fidelity.query import (
 from graphragprov.experiments.multihop_fidelity.telemetry import (
     ExperimentTelemetry,
     ExperimentTelemetryRecorder,
+)
+from graphragprov.experiments.multihop_fidelity.twowiki_graph import (
+    construct_twowiki_reference_extractions,
+)
+from graphragprov.experiments.multihop_fidelity.twowiki_query import (
+    generate_twowiki_reference_query,
 )
 from graphragprov.extraction.run import (
     GenerateResponse,
@@ -122,7 +137,7 @@ class H0QueryAttemptRecord:
 
 @dataclass(frozen=True, slots=True)
 class H0CaseResult:
-    """Completed observable H0 collection for one MuSiQue case."""
+    """Completed observable H0 collection for one benchmark case."""
 
     case_id: str
     question: str
@@ -221,6 +236,32 @@ class H0CaseFailure:
 H0CaseOutcome: TypeAlias = H0CaseResult | H0CaseFailure
 
 
+@dataclass(frozen=True, slots=True)
+class _H0CaseMetadata:
+    case_id: str
+    question: str
+    expected_answer: str
+    hop_count: int
+
+    def __post_init__(self) -> None:
+        if not self.case_id.strip():
+            raise ValueError("case ID must not be empty")
+        if not self.question.strip():
+            raise ValueError("question must not be empty")
+        if not self.expected_answer.strip():
+            raise ValueError("expected answer must not be empty")
+        if self.hop_count < 1:
+            raise ValueError("hop count must be positive")
+
+
+ReferenceGraphConstructor: TypeAlias = Callable[
+    [GenerateResponse, int, H0ProgressSink | None], ReferenceGraphExtractionOutcome
+]
+ReferenceQueryConstructor: TypeAlias = Callable[
+    [str, str | None, GenerateResponse], ReferenceQueryGeneration
+]
+
+
 def run_h0_case(
     *,
     case: MusiqueCase,
@@ -231,9 +272,146 @@ def run_h0_case(
     graphdb: GraphDBClient,
     npcs: NPCSClient,
     telemetry: ExperimentTelemetryRecorder,
-    progress_sink: (H0ProgressSink | None) = None,
+    progress_sink: H0ProgressSink | None = None,
 ) -> H0CaseOutcome:
-    """Run one complete H0 reference case."""
+    """Run one complete MuSiQue H0 reference case through the shared kernel."""
+
+    if not case.answerable:
+        raise ValueError("H0 requires an answerable MuSiQue case")
+
+    support_source_ids = tuple(
+        paragraph.unit_id for paragraph in reference_supporting_paragraphs(case)
+    )
+
+    def construct_graph(
+        generate_response: GenerateResponse, max_attempts: int, sink: H0ProgressSink | None
+    ) -> ReferenceGraphExtractionOutcome:
+        return construct_reference_extractions(
+            case=case,
+            sources=sources,
+            generate_response=generate_response,
+            max_attempts=max_attempts,
+            progress_sink=sink,
+        )
+
+    def generate_query(
+        graph_ntriples: str, feedback: str | None, generate_response: GenerateResponse
+    ) -> ReferenceQueryGeneration:
+        return generate_reference_query(
+            case=case,
+            graph_ntriples=graph_ntriples,
+            feedback=feedback,
+            generate_response=generate_response,
+        )
+
+    return _run_reference_h0_case(
+        case=_H0CaseMetadata(
+            case_id=case.case_id,
+            question=case.question,
+            expected_answer=case.answer,
+            hop_count=case.hop_count,
+        ),
+        sources=sources,
+        support_source_ids=support_source_ids,
+        configuration=configuration,
+        construct_graph=construct_graph,
+        generate_query=generate_query,
+        graph_generate_response=graph_generate_response,
+        query_generate_response=query_generate_response,
+        graphdb=graphdb,
+        npcs=npcs,
+        telemetry=telemetry,
+        progress_sink=progress_sink,
+    )
+
+
+def run_twowiki_h0_case(
+    *,
+    case: TwoWikiCase,
+    sources: tuple[TwoWikiSourceUnit, ...],
+    configuration: ExperimentConfig,
+    graph_generate_response: GenerateResponse,
+    query_generate_response: GenerateResponse,
+    graphdb: GraphDBClient,
+    npcs: NPCSClient,
+    telemetry: ExperimentTelemetryRecorder,
+    progress_sink: H0ProgressSink | None = None,
+) -> H0CaseOutcome:
+    """Run one complete 2Wiki H0 reference case through the shared kernel."""
+
+    if case.answer is None or not case.answer.strip():
+        raise ValueError("2Wiki H0 requires a non-empty gold answer")
+
+    if not case.evidences:
+        raise ValueError("2Wiki H0 requires at least one benchmark evidence relation")
+
+    support_source_ids = tuple(
+        paragraph.unit_id for paragraph in twowiki_supporting_paragraphs(case)
+    )
+
+    if not support_source_ids:
+        raise ValueError("2Wiki H0 requires at least one supporting source")
+
+    def construct_graph(
+        generate_response: GenerateResponse, max_attempts: int, sink: H0ProgressSink | None
+    ) -> ReferenceGraphExtractionOutcome:
+        return construct_twowiki_reference_extractions(
+            case=case,
+            sources=sources,
+            generate_response=generate_response,
+            max_attempts=max_attempts,
+            progress_sink=sink,
+        )
+
+    def generate_query(
+        graph_ntriples: str, feedback: str | None, generate_response: GenerateResponse
+    ) -> ReferenceQueryGeneration:
+        return generate_twowiki_reference_query(
+            case=case,
+            graph_ntriples=graph_ntriples,
+            feedback=feedback,
+            generate_response=generate_response,
+        )
+
+    return _run_reference_h0_case(
+        case=_H0CaseMetadata(
+            case_id=case.case_id,
+            question=case.question,
+            expected_answer=case.answer,
+            # 2Wiki exposes evidence relations rather than MuSiQue-style hop objects.
+            # In the shared artifact contract, hop_count records that relation count.
+            hop_count=len(case.evidences),
+        ),
+        sources=sources,
+        support_source_ids=support_source_ids,
+        configuration=configuration,
+        construct_graph=construct_graph,
+        generate_query=generate_query,
+        graph_generate_response=graph_generate_response,
+        query_generate_response=query_generate_response,
+        graphdb=graphdb,
+        npcs=npcs,
+        telemetry=telemetry,
+        progress_sink=progress_sink,
+    )
+
+
+def _run_reference_h0_case(
+    *,
+    case: _H0CaseMetadata,
+    sources: tuple[SourceUnit, ...],
+    support_source_ids: tuple[str, ...],
+    configuration: ExperimentConfig,
+    construct_graph: ReferenceGraphConstructor,
+    generate_query: ReferenceQueryConstructor,
+    graph_generate_response: GenerateResponse,
+    query_generate_response: GenerateResponse,
+    graphdb: GraphDBClient,
+    npcs: NPCSClient,
+    telemetry: ExperimentTelemetryRecorder,
+    progress_sink: H0ProgressSink | None = None,
+) -> H0CaseOutcome:
+    """Run the benchmark-independent H0 execution lifecycle."""
 
     if configuration.graph_origin is not ArtifactOrigin.REFERENCE:
         raise ValueError("H0 requires graph_origin=reference")
@@ -241,16 +419,15 @@ def run_h0_case(
     if configuration.query_origin is not ArtifactOrigin.REFERENCE:
         raise ValueError("H0 requires query_origin=reference")
 
-    if not case.answerable:
-        raise ValueError("H0 requires an answerable MuSiQue case")
+    if not support_source_ids:
+        raise ValueError("H0 requires at least one supporting source")
 
-    support_paragraphs = reference_supporting_paragraphs(case)
+    source_ids = {source.unit_id for source in sources}
+    missing_source_ids = tuple(
+        source_id for source_id in support_source_ids if source_id not in source_ids
+    )
 
-    source_by_id = {source.unit_id: source for source in sources}
-
-    try:
-        support_sources = tuple(source_by_id[paragraph.unit_id] for paragraph in support_paragraphs)
-    except KeyError as error:
+    if missing_source_ids:
         return _failure(
             case=case,
             configuration=configuration,
@@ -260,24 +437,18 @@ def run_h0_case(
                 "one or more supporting sources are missing from the supplied source collection"
             ),
             telemetry=telemetry,
-            partial={"missing_source_unit_id": (str(error.args[0]))},
+            partial={"missing_source_unit_ids": list(missing_source_ids)},
         )
-
-    support_source_ids = tuple(source.unit_id for source in support_sources)
 
     _emit_progress(
         progress_sink,
         "graph.extraction.started",
-        {"source_count": len(support_sources), "support_source_ids": (support_source_ids)},
+        {"source_count": len(support_source_ids), "support_source_ids": support_source_ids},
     )
 
     with telemetry.measure_stage("graph.reference.extraction"):
-        graph_outcome = construct_reference_extractions(
-            case=case,
-            sources=sources,
-            generate_response=(graph_generate_response),
-            max_attempts=(configuration.max_source_attempts),
-            progress_sink=(progress_sink),
+        graph_outcome = construct_graph(
+            graph_generate_response, configuration.max_source_attempts, progress_sink
         )
 
     if isinstance(graph_outcome, ReferenceGraphExtractionFailure):
@@ -457,12 +628,7 @@ def run_h0_case(
 
         try:
             with telemetry.measure_stage("query.reference.generation", attempt_index=attempt_index):
-                generation = generate_reference_query(
-                    case=case,
-                    graph_ntriples=graph_ntriples,
-                    feedback=feedback,
-                    generate_response=query_generate_response,
-                )
+                generation = generate_query(graph_ntriples, feedback, query_generate_response)
         except ReferenceQueryValidationError as error:
             # Mechanical interface recovery only.
             #
@@ -682,7 +848,7 @@ def run_h0_case(
         return H0CaseResult(
             case_id=case.case_id,
             question=case.question,
-            expected_answer=case.answer,
+            expected_answer=case.expected_answer,
             hop_count=case.hop_count,
             configuration=configuration,
             support_source_ids=support_source_ids,
@@ -720,7 +886,7 @@ def run_h0_case(
 
 def _failure(
     *,
-    case: MusiqueCase,
+    case: _H0CaseMetadata,
     configuration: ExperimentConfig,
     stage: H0FailureStage,
     error_type: str,
@@ -731,7 +897,7 @@ def _failure(
     return H0CaseFailure(
         case_id=case.case_id,
         question=case.question,
-        expected_answer=case.answer,
+        expected_answer=case.expected_answer,
         hop_count=case.hop_count,
         configuration=configuration,
         stage=stage,
