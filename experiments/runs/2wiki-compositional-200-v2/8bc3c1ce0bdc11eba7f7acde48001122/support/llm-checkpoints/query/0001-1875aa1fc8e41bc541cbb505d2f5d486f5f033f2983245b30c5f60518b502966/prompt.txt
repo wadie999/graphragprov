@@ -1,0 +1,100 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where did the director of film Adelheid (Film) die?
+
+Expected answer: Prague
+
+Benchmark evidence relations:
+1. Adelheid | director | František Vláčil
+2. František Vláčil | place of death | Prague
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:awardReason> <urn:graphragprov:entity:his%20longstanding%20contribution%20to%20world%20film%20culture> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Czech%20Lion%20Prize> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Prize%20of%20the%20International%20Film%20Festival%201998%20in%20Karlovy%20Vary> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:Czech%20Lion%20Prize> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:International%20Film%20Festival%201998%20in%20Karlovy%20Vary> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:birthDate> "1924-02-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:%C4%8Cesk%20%C3%BD%20T%C4%9B%C5%A1%C3%ADn> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:deathDate> "1999-01-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Masaryk%20University%20in%20Brno> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:fieldOfStudy> <urn:graphragprov:entity:esthetics%20and%20art%20history> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czech> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:graphic%20artist> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:painter> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Prague> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:votedAs> <urn:graphragprov:entity:greatest%20Czech%20director%20of%20all%20time> .
+<urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:votedBy> <urn:graphragprov:entity:poll%20of%20Czech%20film%20critics> .
+<urn:graphragprov:entity:Marketa%20Lazarov%C3%A1> <urn:graphragprov:predicate:consideredAs> <urn:graphragprov:entity:best%20Czech%20film%20ever%20made> .
+<urn:graphragprov:entity:Marketa%20Lazarov%C3%A1> <urn:graphragprov:predicate:consideredBy> <urn:graphragprov:entity:some%20critics> .
+<urn:graphragprov:entity:Marketa%20Lazarov%C3%A1> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> .
+<urn:graphragprov:entity:1967%20novel%20of%20the%20same%20name> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Vladim%C3%ADr%20K%C3%B6rner> .
+<urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:1967%20novel%20of%20the%20same%20name> .
+<urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> .
+<urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+<urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovak> .
+<urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:complicated%20relationship%20between%20Czech%20man%20Viktor%20and%20German%20woman%20Adelheid> .
+<urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:relationships%20between%20Czechs%20and%20Germans%20in%20postwar%20Czechoslovakia> .
+<urn:graphragprov:entity:Vladim%C3%ADr%20K%C3%B6rner> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czech> .
+<urn:graphragprov:entity:Vladim%C3%ADr%20K%C3%B6rner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .

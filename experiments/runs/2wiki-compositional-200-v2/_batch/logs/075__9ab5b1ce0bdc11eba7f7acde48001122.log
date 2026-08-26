@@ -1,0 +1,250 @@
+
+H0 one-case execution
+  case:          9ab5b1ce0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Der Frosch Mit Der Maske is from?
+  expected:      Austria
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9ab5b1ce0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Der Frosch mit der Maske'
+  source unit: u_c7227a1e7315120d5a87f3f50f1effc3784ec3943b0a2268d49555421c16e96b
+  text chars:  427
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.311s | model=deepseek-v4-flash
+      tokens:   in=2358 | out=2400 | total=4758 | cached=2048 | uncached=310
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 332 / 451 (73.6%)
+    characters text:     308 / 427 (72.1%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  26 chars
+      'Der Frosch mit der Maske('
+    statement density:  35.48 / 1000 chars
+    title reliance:      12 / 16 (75.0%)
+
+[GRAPH 2/2] paragraph=2 title='Harald Reinl'
+  source unit: u_e4ab01c7a8dd7efc7d4317ab80d1d1454950a87b8b459ac6bb79d4ff9e17ae7b
+  text chars:  943
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 15.444s | model=deepseek-v4-flash
+      tokens:   in=2732 | out=3642 | total=6374 | cached=2048 | uncached=684
+    [LLM graph.reference #3] sending...
+      provider: 1.034s | model=deepseek-v4-flash
+      tokens:   in=767 | out=8 | total=775 | cached=0 | uncached=767
+  extraction: ACCEPTED
+  statements: 24
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    24
+    initially rejected: 1
+
+    initial rejection #24
+      validator:
+        response.statements[24].object.evidence[0]: quote 'Der Frosch mit der Maske' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Der Frosch mit der Maske",
+                "segment": "text"
+              }
+            ],
+            "value": "Der Frosch mit der Maske"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "director",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harald Reinl",
+                "segment": "title"
+              }
+            ],
+            "value": "Harald Reinl"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 24
+  coverage:
+    characters combined: 482 / 955 (50.5%)
+    characters text:     470 / 943 (49.8%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           8 / 9 (88.9%)
+    longest uncovered:  100 chars
+      '" directed by and starring Leni Riefenstahl. Reinl\'s first movie as director was the mountain film"'
+    statement density:  25.13 / 1000 chars
+    title reliance:      22 / 24 (91.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 40
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      40
+resource nodes:        34
+entity nodes:          34
+literal values:        5
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Face%20of%20the%20Frog> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:The%20Fellowship%20of%20the%20Frog> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Danish> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:West%20German> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Rialto%20Film> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:series> <urn:graphragprov:entity:series%20of%20films%20based%20on%20works%20by%20Edgar%20Wallace> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Joachim%20Fuchsberger> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Siegfried%20Lowitz> .
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:translation> "The Frog with the Mask" .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:West%20Germany> .
+  <urn:graphragprov:entity:Rialto%20Film> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:West%20Germany> .
+  <urn:graphragprov:entity:The%20Fellowship%20of%20the%20Frog> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:novel> .
+  <urn:graphragprov:entity:The%20Fellowship%20of%20the%20Frog> <urn:graphragprov:predicate:publicationYear> "1925"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovakia> .
+  <urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:spouseOf> <urn:graphragprov:entity:Harald%20Reinl> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Bad%20Ischl> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:bornOn> "1908-07-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Austria> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedBy> <urn:graphragprov:entity:stabbing> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Santa%20Cruz%20de%20Tenerife> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedOn> "1986-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Chariots%20of%20the%20Gods> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Mountain%20Crystal> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:German%20war%20films> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Heimatfilms> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:mountain%20films> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:popular%20German%20film%20series> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:killedBy> <urn:graphragprov:entity:Daniela%20Maria%20Delis> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:films%20based%20on%20Edgar%20Wallace%20and%20Karl%20May%20books> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:retiredTo> <urn:graphragprov:entity:Canary%20Islands> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:startedCareerAs> <urn:graphragprov:entity:extra> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:workedOn> <urn:graphragprov:entity:Tiefland> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Arnold%20Fanck> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.887s | model=deepseek-v4-flash
+      tokens:   in=2586 | out=198 | total=2784 | cached=384 | uncached=2202
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> .
+  - <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Austria> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_c7227a1e7315120d>
+  FROM <urn:graphragprov:unit:u_e4ab01c7a8dd7efc>
+  WHERE { <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Austria', 'West Germany')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Der Frosch mit der Maske', 'Harald Reinl']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9ab5b1ce0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9ab5b1ce0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8443
+output tokens:         6248
+total tokens:          14691
+cached input tokens:   4480
+uncached input tokens: 3963
+cumulative LLM seconds: 28.676
+
+statement occurrences: 40
+semantic triples:      40
+entity nodes:          34
+literal values:        5
+predicates:            29
+query attempts:        1
+observed answers:      ('Austria', 'West Germany')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 26.801s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.061s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.887s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.289s

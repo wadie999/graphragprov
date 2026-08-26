@@ -1,0 +1,689 @@
+
+H0 one-case execution
+  case:          f71961a60bda11eba7f7acde48001122
+  hops:          2
+  question:      Where was the composer of song Theater (Song) born?
+  expected:      Munich
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/f71961a60bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Ralph Siegel'
+  source unit: u_43a5edbb94dfc9cb8bac552310a83684de9c198e9ac913677b3e1091bbac5545
+  text chars:  1481
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 23.006s | model=deepseek-v4-flash
+      tokens:   in=2588 | out=5424 | total=8012 | cached=2048 | uncached=540
+  extraction: ACCEPTED
+  statements: 37
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    37
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     37
+  coverage:
+    characters combined: 833 / 1493 (55.8%)
+    characters text:     821 / 1481 (55.4%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           15 / 15 (100.0%)
+    longest uncovered:  114 chars
+      '. After the success of their first hit, Dschinghis Khan, both men continued to write popular songs for this band,'
+    statement density:  24.78 / 1000 chars
+    title reliance:      11 / 37 (29.7%)
+
+[GRAPH 2/2] paragraph=9 title='Theater (song)'
+  source unit: u_08afc26851c11a2f5ae4492283258cac027523b5d3c69ce4420baa85a129ead8
+  text chars:  1152
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 23.726s | model=deepseek-v4-flash
+      tokens:   in=2965 | out=5943 | total=8908 | cached=2048 | uncached=917
+    [LLM graph.reference #3] sending...
+      provider: 4.557s | model=deepseek-v4-flash
+      tokens:   in=1869 | out=977 | total=2846 | cached=0 | uncached=1869
+  extraction: ACCEPTED
+  statements: 35
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    35
+    initially rejected: 6
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'performed by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Katja Ebstein",
+                "segment": "text"
+              }
+            ],
+            "value": "Katja Ebstein"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed by",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Theater (song)",
+                "segment": "title"
+              }
+            ],
+            "value": "Theater (song)"
+          }
+        }
+
+    initial rejection #10
+      validator:
+        response.statements[10].predicate.evidence[0]: quote 'with "Diese Welt"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Diese Welt",
+                "segment": "text"
+              }
+            ],
+            "value": "Diese Welt"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "with \"Diese Welt\"",
+                "segment": "text"
+              }
+            ],
+            "value": "performed"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Katja Ebstein",
+                "segment": "text"
+              }
+            ],
+            "value": "Katja Ebstein"
+          }
+        }
+
+    initial rejection #34
+      validator:
+        response.statements[34].predicate.evidence[0]: quote 'recorded the song in French' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French",
+                "segment": "text"
+              }
+            ],
+            "value": "French"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in French",
+                "segment": "text"
+              }
+            ],
+            "value": "recordedInLanguage"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Theater (song)",
+                "segment": "title"
+              }
+            ],
+            "value": "Theater (song)"
+          }
+        }
+
+    initial rejection #35
+      validator:
+        response.statements[35].predicate.evidence[0]: quote 'recorded the song in French ("Théâtre")' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "song",
+                "segment": "text"
+              }
+            ],
+            "value": "song"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in French (\"Théâtre\")",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Théâtre",
+                "segment": "text"
+              }
+            ],
+            "value": "Théâtre"
+          }
+        }
+
+    initial rejection #36
+      validator:
+        response.statements[36].predicate.evidence[0]: quote 'recorded the song in Italian' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Italian",
+                "segment": "text"
+              }
+            ],
+            "value": "Italian"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in Italian",
+                "segment": "text"
+              }
+            ],
+            "value": "recordedInLanguage"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Theater (song)",
+                "segment": "title"
+              }
+            ],
+            "value": "Theater (song)"
+          }
+        }
+
+    initial rejection #37
+      validator:
+        response.statements[37].predicate.evidence[0]: quote 'recorded the song in Italian ("Teatro")' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "song",
+                "segment": "text"
+              }
+            ],
+            "value": "song"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in Italian (\"Teatro\")",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Teatro",
+                "segment": "text"
+              }
+            ],
+            "value": "Teatro"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     6
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'performed by Katja Ebstein' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Katja Ebstein",
+                "segment": "text"
+              }
+            ],
+            "value": "Katja Ebstein"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed by Katja Ebstein",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Theater (song)",
+                "segment": "title"
+              }
+            ],
+            "value": "Theater (song)"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'with "Diese Welt"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Diese Welt",
+                "segment": "text"
+              }
+            ],
+            "value": "Diese Welt"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "with \"Diese Welt\"",
+                "segment": "text"
+              }
+            ],
+            "value": "performed"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Katja Ebstein",
+                "segment": "text"
+              }
+            ],
+            "value": "Katja Ebstein"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'recorded the song in French' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French",
+                "segment": "text"
+              }
+            ],
+            "value": "French"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in French",
+                "segment": "text"
+              }
+            ],
+            "value": "recordedInLanguage"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Theater (song)",
+                "segment": "title"
+              }
+            ],
+            "value": "Theater (song)"
+          }
+        }
+
+    remaining rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'recorded the song in French ("Théâtre")' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "song",
+                "segment": "text"
+              }
+            ],
+            "value": "song"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in French (\"Théâtre\")",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Théâtre",
+                "segment": "text"
+              }
+            ],
+            "value": "Théâtre"
+          }
+        }
+
+    remaining rejection #4
+      validator:
+        response.statements[4].predicate.evidence[0]: quote 'recorded the song in Italian' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Italian",
+                "segment": "text"
+              }
+            ],
+            "value": "Italian"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in Italian",
+                "segment": "text"
+              }
+            ],
+            "value": "recordedInLanguage"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Theater (song)",
+                "segment": "title"
+              }
+            ],
+            "value": "Theater (song)"
+          }
+        }
+
+    remaining rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'recorded the song in Italian ("Teatro")' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "song",
+                "segment": "text"
+              }
+            ],
+            "value": "song"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "recorded the song in Italian (\"Teatro\")",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Teatro",
+                "segment": "text"
+              }
+            ],
+            "value": "Teatro"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 35
+  coverage:
+    characters combined: 752 / 1166 (64.5%)
+    characters text:     738 / 1152 (64.1%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  63 chars
+      '- a situation which is said to be true of all performers. The'
+    statement density:  30.02 / 1000 chars
+    title reliance:      17 / 35 (48.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 72
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 6
+  corrected valid: 0
+  remaining rejections: 6
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      72
+resource nodes:        60
+entity nodes:          60
+literal values:        7
+predicates:            36
+
+N-Triples:
+  <urn:graphragprov:entity:Diese%20Welt> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:3rd%20position> .
+  <urn:graphragprov:entity:It%27s%20Showtime> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Johnny%20Blue> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201981> .
+  <urn:graphragprov:entity:Johnny%20Blue> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lena%20Valaitis> .
+  <urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+  <urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201970> .
+  <urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201971> .
+  <urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:performed> <urn:graphragprov:entity:Wunder%20gibt%20es%20immer%20wieder> .
+  <urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:Love%20Enough%20For%20Two> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:United%20Kingdom> .
+  <urn:graphragprov:entity:Love%20Enough%20For%20Two> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prima%20Donna> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:performedIn> <urn:graphragprov:entity:stage> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:playedInstrument> <urn:graphragprov:entity:piano> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:wearing> <urn:graphragprov:entity:gloves%20with%20small%20clowns%20on%20the%20fingers> .
+  <urn:graphragprov:entity:S%C3%A1miid%20%C3%86dnan> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Norway> .
+  <urn:graphragprov:entity:S%C3%A1miid%20%C3%86dnan> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Sverre%20Kjelsberg%20%26%20Mattis%20H%C3%A6tta> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:the%20manner%20in%20which%20clowns%20have%20to%20mask%20their%20true%20feelings%20when%20performing%20on%20stage> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:backingSingers> <urn:graphragprov:entity:four%20backing%20singers> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Bernd%20Meinunger> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:fieldSize> "19"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:2nd> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:followed> <urn:graphragprov:entity:S%C3%A1miid%20%C3%86dnan> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:lyricist> <urn:graphragprov:entity:Bernd%20Meinunger> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201980> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:performedTwelfth> <urn:graphragprov:entity:twelfth> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:precededBy> <urn:graphragprov:entity:Love%20Enough%20For%20Two> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:receivedPoints> "128"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:recordedInLanguage> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Johnny%20Blue> .
+  <urn:graphragprov:entity:Wunder%20gibt%20es%20immer%20wieder> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:3rd%20position> .
+  <urn:graphragprov:entity:four%20backing%20singers> <urn:graphragprov:predicate:dressedAs> <urn:graphragprov:entity:clowns> .
+  <urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+  <urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Switzerland> .
+  <urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:8th%20position> .
+  <urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lys%20Assia> .
+  <urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:hasSong> <urn:graphragprov:entity:Hadschi%20Halef%20Omar> .
+  <urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:hasSong> <urn:graphragprov:entity:Moskau> .
+  <urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Disco%20band> .
+  <urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:organizedBy> <urn:graphragprov:entity:Bernd%20Meinunger> .
+  <urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:organizedBy> <urn:graphragprov:entity:Ralph%20Siegel> .
+  <urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+  <urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:publicationYear> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Bernd%20Meinunger> .
+  <urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+  <urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Nicole> .
+  <urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+  <urn:graphragprov:entity:Giulia%20Siegel> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Hans%20Wehrmann> .
+  <urn:graphragprov:entity:Hans%20Wehrmann> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:entrepreneur> .
+  <urn:graphragprov:entity:Kriemhild%20Jahn> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:opera%20singer> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:1984%20video%20footage%20of%20Dschinghis%20Khan%20performing%20Corrida%20and%20Ole%20Ole> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Munich> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:bornOn> "1945-09-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:hasChild> <urn:graphragprov:entity:Giulia%20Siegel> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:numberOfSongs> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:record%20producer> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:playsInstrument> <urn:graphragprov:entity:classical%20guitar> .
+  <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Kriemhild%20Jahn> .
+  <urn:graphragprov:entity:River%20of%20Silence> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+  <urn:graphragprov:entity:River%20of%20Silence> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:last%20place> .
+  <urn:graphragprov:entity:River%20of%20Silence> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lee%20Bradshaw> .
+  <urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Sammarinese> .
+  <urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jimmie%20Wilson> .
+  <urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Valentina%20Monetta> .
+  <urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:publicationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.385s | model=deepseek-v4-flash
+      tokens:   in=4117 | out=196 | total=4313 | cached=384 | uncached=3733
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+  - <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Munich> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> . <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_08afc26851c11a2f>
+  FROM <urn:graphragprov:unit:u_43a5edbb94dfc9cb>
+  WHERE { <urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> . <urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Munich',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Ralph Siegel', 'Theater (song)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  f71961a60bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/f71961a60bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11539
+output tokens:         12540
+total tokens:          24079
+cached input tokens:   4480
+uncached input tokens: 7059
+cumulative LLM seconds: 52.674
+
+statement occurrences: 72
+semantic triples:      72
+entity nodes:          60
+literal values:        7
+predicates:            36
+query attempts:        1
+observed answers:      ('Munich',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 51.325s
+  graph.reference.measurements [attempt=1]: 0.013s
+  graph.clear_support [attempt=1]: 0.057s
+  graph.materialization [attempt=1]: 0.095s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.010s
+  query.reference.generation [attempt=1]: 1.386s
+  graphdb.semantic [attempt=1]: 0.009s
+  provenance.execution [attempt=1]: 0.512s

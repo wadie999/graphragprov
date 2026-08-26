@@ -1,0 +1,111 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When is Geneviève Élisabeth Disdéri's husband's birthday?
+
+Expected answer: 28 March 1819
+
+Benchmark evidence relations:
+1. Geneviève Élisabeth Disdéri | spouse | André-Adolphe-Eugène Disdéri
+2. André-Adolphe-Eugène Disdéri | date of birth | 28 March 1819
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:birthDate> "1819-03-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:characteristic> <urn:graphragprov:entity:brilliant%20showman> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:deathDate> "1889-10-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:madeWorldFamous> <urn:graphragprov:entity:system%20of%20mass-production%20portraiture> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:photographer> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:patented> <urn:graphragprov:entity:carte%20de%20visite> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:startedCareerAs> <urn:graphragprov:entity:daguerreotypist> .
+<urn:graphragprov:entity:carte%20de%20visite> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:small%20photographic%20image> .
+<urn:graphragprov:entity:carte%20de%20visite> <urn:graphragprov:predicate:mountedOn> <urn:graphragprov:entity:card> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:departureYear> "1852"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:leftFor> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:photographer> .
+<urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> .
+<urn:graphragprov:entity:Brest%20daguerrotype%20studio> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brest> .
+<urn:graphragprov:entity:Brest%20et%20ses%20Environs> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> .
+<urn:graphragprov:entity:Brest%20et%20ses%20Environs> <urn:graphragprov:predicate:publicationYear> "1856"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:activeAfter> <urn:graphragprov:entity:Bertha%20Beckmann> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:activeAfter> <urn:graphragprov:entity:Brita%20Sofia%20Hesselius> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:assistedBy> <urn:graphragprov:entity:Jules> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Francart> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:birthYear> "c.1817" .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:continuedToRun> <urn:graphragprov:entity:atelier> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:deathYear> "1878"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Paris%20hospital> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:female%20professional%20photographer> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:28%20views%20of%20Brest> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:marriageDate> "1843"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:moveDate> "1872"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:photographer> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:openedStudioAt> <urn:graphragprov:entity:Rue%20du%20Bac> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:operatedStudioUntil> "1878"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:partnerOf> <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:publicationYear> "1856"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:startDate> "1852"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:workPeriodStart> "late 1840s" .
+<urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:Brest%20daguerrotype%20studio> .
+<urn:graphragprov:entity:Jules> <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> .

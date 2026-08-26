@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_44a929f2263a12a7a53d2fb2c102071bca75be4e685315bf8947b46e96b14f96
+Title: Al Hilal (film)
+Text:
+Al Hilal (Judgement of Allah) is a 1935 Urdu/Hindi costume drama film. It was the debut directorial venture of Mehboob Khan. He went on to become "one of the pioneer directors of Indian Cinema". The film is thought to be inspired by Cecil B. DeMille's "The Sign of the Cross". The film was produced by Sagar Movietone. The director of photography was Faredoon Irani. The music composer was Pransukh Nayak with lyrics by Munshi Ehsan Lucknavi. It starred Kumar, Indira, Yakub, Sitara Devi, Kayam Ali and Mehboob Khan. The film depicted fictionalised history in the form of a Roman-Arab conflict, with the son of the Ottoman Empire being captured by the Roman army and his escape from them.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 24,
+    "statement": {
+      "subject": {
+        "value": "Mehboob Khan",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Mehboob Khan",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "placeOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Mehboob Khan",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Mumbai",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Mumbai",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[24].object.evidence[0]: quote 'Mumbai' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

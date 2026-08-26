@@ -1,0 +1,185 @@
+
+H0 one-case execution
+  case:          66b03e520bdd11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film So This Is London (1939 Film)?
+  expected:      May 22, 1987
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/66b03e520bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Thornton Freeland'
+  source unit: u_e085d2f690d635dd948cdbacb25f0b9d19e97ea8ca83c888e3d10ecd018b40b0
+  text chars:  168
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.993s | model=deepseek-v4-flash
+      tokens:   in=2306 | out=1206 | total=3512 | cached=2048 | uncached=258
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 129 / 185 (69.7%)
+    characters text:     112 / 168 (66.7%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  30 chars
+      'in a career that lasted from'
+    statement density:  37.84 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/2] paragraph=5 title='So This Is London (1939 film)'
+  source unit: u_ecb7d42902dcb58995fbcc5897334140078cd8e0033a204ebc8848c97eba3333
+  text chars:  479
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.537s | model=deepseek-v4-flash
+      tokens:   in=2456 | out=2097 | total=4553 | cached=2048 | uncached=408
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 284 / 508 (55.9%)
+    characters text:     284 / 479 (59.3%)
+    characters title:    0 / 29 (0.0%)
+    sentences:           3 / 4 (75.0%)
+    longest uncovered:  149 chars
+      '. An American clashes with an Englishman over the merits of their respective countries, only to find that their children have fallen in love. It was'
+    statement density:  27.56 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      21
+resource nodes:        15
+entity nodes:          15
+literal values:        7
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:careerEndYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:careerStartYear> "1924"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:dateOfBirth> "1898-02-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:dateOfDeath> "1987-05-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:26%20British%20and%20American%20films> .
+  <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281922%20play%29> <urn:graphragprov:predicate:publicationYear> "1922"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281922%20play%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Arthur%20Goodrich> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281930%20film%29> <urn:graphragprov:predicate:publicationYear> "1930"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:So%20This%20Is%20London%20%281922%20play%29> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:So%20This%20Is%20London%20%281930%20film%29> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Thornton%20Freeland> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:20th%20Century%20Fox%27s%20British%20subsidiary> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:productionLocation> <urn:graphragprov:entity:Pinewood%20Studios> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:publicationYear> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Alfred%20Drayton> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20Sanders> .
+  <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Robertson%20Hare> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.877s | model=deepseek-v4-flash
+      tokens:   in=1785 | out=239 | total=2024 | cached=384 | uncached=1401
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Thornton%20Freeland> .
+  - <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:dateOfDeath> "1987-05-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Thornton%20Freeland> . <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_e085d2f690d635dd>
+  FROM <urn:graphragprov:unit:u_ecb7d42902dcb589>
+  WHERE { <urn:graphragprov:entity:So%20This%20Is%20London%20%281939%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Thornton%20Freeland> . <urn:graphragprov:entity:Thornton%20Freeland> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1987-05-22',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['So This Is London (1939 film)', 'Thornton Freeland']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  66b03e520bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/66b03e520bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6547
+output tokens:         3542
+total tokens:          10089
+cached input tokens:   4480
+uncached input tokens: 2067
+cumulative LLM seconds: 17.408
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          15
+literal values:        7
+predicates:            15
+query attempts:        1
+observed answers:      ('1987-05-22',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.539s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.048s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.878s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.600s

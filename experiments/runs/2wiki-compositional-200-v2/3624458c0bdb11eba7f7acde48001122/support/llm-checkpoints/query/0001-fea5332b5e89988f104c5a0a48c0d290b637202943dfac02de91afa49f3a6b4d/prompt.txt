@@ -1,0 +1,111 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When did Yun San's husband die?
+
+Expected answer: 11 May 1760
+
+Benchmark evidence relations:
+1. Yun San | spouse | Alaungpaya
+2. Alaungpaya | date of death | 11 May 1760
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Burma> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Myanmar> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:dateOfDeath> "1760"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:King> .
+<urn:graphragprov:entity:Bodawpaya> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+<urn:graphragprov:entity:Hsinbyushin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+<urn:graphragprov:entity:Naungdawgyi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:birthYear> "1713"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:deathYear> "1771"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:diedDuringReignOf> <urn:graphragprov:entity:Hsinbyushin> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:queen> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:keeping%20the%20peace%20between%20her%20two%20eldest%20sons> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:motherOf> <urn:graphragprov:entity:Bodawpaya> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:motherOf> <urn:graphragprov:entity:Hsinbyushin> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:motherOf> <urn:graphragprov:entity:Naungdawgyi> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:royalTitle> <urn:graphragprov:entity:chief%20queen> .
+<urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Alaungpaya> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alongside> <urn:graphragprov:entity:Anawrahta> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alongside> <urn:graphragprov:entity:Bayinnaung> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alsoSpelled> <urn:graphragprov:entity:Alaung%20Phra> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alsoSpelled> <urn:graphragprov:entity:Alaunghpaya> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:illness> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:conquered> <urn:graphragprov:entity:Lan%20Na> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:consideredAs> <urn:graphragprov:entity:one%20of%20the%20three%20greatest%20monarchs%20of%20Burma> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:dateOfDeath> "1760-05-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:diedDuring> <urn:graphragprov:entity:campaign%20in%20Siam> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:droveOut> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:droveOut> <urn:graphragprov:entity:French> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:formerOccupation> <urn:graphragprov:entity:chief> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:formerResidence> <urn:graphragprov:entity:small%20village%20in%20Upper%20Burma> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Yangon> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:foundedInYear> "1755"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Konbaung%20Dynasty> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:founder> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:subdued> <urn:graphragprov:entity:Manipur> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:unified> <urn:graphragprov:entity:Burma> .
+<urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:unifiedForThirdTime> <urn:graphragprov:entity:Burma> .
+<urn:graphragprov:entity:British> <urn:graphragprov:predicate:gaveHelpTo> <urn:graphragprov:entity:Mon%20Restored%20Hanthawaddy%20Kingdom> .
+<urn:graphragprov:entity:French> <urn:graphragprov:predicate:gaveHelpTo> <urn:graphragprov:entity:Mon%20Restored%20Hanthawaddy%20Kingdom> .
+<urn:graphragprov:entity:Konbaung%20Dynasty> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Burma> .
+<urn:graphragprov:entity:Konbaung%20Dynasty> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Myanmar> .

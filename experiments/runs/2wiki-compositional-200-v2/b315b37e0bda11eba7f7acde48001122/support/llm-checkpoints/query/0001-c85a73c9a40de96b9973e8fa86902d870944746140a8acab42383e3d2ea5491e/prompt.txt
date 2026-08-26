@@ -1,0 +1,126 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of burial of the performer of song Poor Boy (Elvis Presley Song)?
+
+Expected answer: Graceland
+
+Benchmark evidence relations:
+1. Poor Boy | performer | Elvis
+2. Elvis | place of burial | Graceland
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Aloha%20from%20Hawaii> <urn:graphragprov:predicate:broadcastAroundWorld> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Aloha%20from%20Hawaii> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:concert> .
+<urn:graphragprov:entity:Aloha%20from%20Hawaii> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:Colonel%20Tom%20Parker> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:D.%20J.%20Fontana> <urn:graphragprov:predicate:joined> <urn:graphragprov:entity:classic%20quartet> .
+<urn:graphragprov:entity:Elvis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20comeback%20special> .
+<urn:graphragprov:entity:Elvis> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:accompaniedBy> <urn:graphragprov:entity:Bill%20Black> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:accompaniedBy> <urn:graphragprov:entity:Scotty%20Moore> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:ageAtDeath> "42"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Elvis> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bestSellingSoloArtistIn> <urn:graphragprov:entity:history%20of%20recorded%20music> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tupelo%2C%20Mississippi> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bornOn> "1935-01-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:devotedTo> <urn:graphragprov:entity:Hollywood%20films%20and%20soundtrack%20albums> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:diedAt> <urn:graphragprov:entity:Graceland%20estate> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:diedOn> "1977-08-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:draftedInto> <urn:graphragprov:entity:military%20service> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:blues> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:gospel> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:multiple%20music%20halls%20of%20fame> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:rhythm%20acoustic%20guitar> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:leadingFigureOf> <urn:graphragprov:entity:rock%20and%20roll> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:classic%20quartet> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:musicCareerBegan> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:rockabilly> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Graceland> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Sam%20Phillips> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:receivedAward> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:recordedAt> <urn:graphragprov:entity:Sun%20Records> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:relaunchedRecordingCareer> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:relocatedTo> <urn:graphragprov:entity:Memphis%2C%20Tennessee> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:wonGrammy> <urn:graphragprov:entity:three%20competitive%20Grammys> .
+<urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number-one%20hit%20in%20the%20United%20States> .
+<urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+<urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:releaseDate> "1956-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Love%20Me%20Tender> <urn:graphragprov:predicate:filmDebutOf> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:RCA%20Victor> <urn:graphragprov:predicate:acquiredContractOf> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:Ken%20Darby> <urn:graphragprov:predicate:principalWriter> <urn:graphragprov:entity:Poor%20Boy> .
+<urn:graphragprov:entity:Love%20Me%20Tender> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:20th%20Century%20Fox> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:creditedTo> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:creditedTo> <urn:graphragprov:entity:Vera%20Matson> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:featuredIn> <urn:graphragprov:entity:Love%20Me%20Tender> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:publicationYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:publishedBy> <urn:graphragprov:entity:Elvis%20Presley%20Music> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:releaseFormat> <urn:graphragprov:entity:RCA%20Victor%20EP> .
+<urn:graphragprov:entity:Vera%20Matson> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Ken%20Darby> .
+<urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:disambiguation%20page> .

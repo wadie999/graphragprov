@@ -1,0 +1,95 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When did the director of film The Trollenberg Terror die?
+
+Expected answer: 9 March 1979
+
+Benchmark evidence relations:
+1. The Trollenberg Terror | director | Quentin Lawrence
+2. Quentin Lawrence | date of death | 9 March 1979
+
+Frozen RDF graph:
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:alternativeTitle> <urn:graphragprov:entity:The%20Crawling%20Eye> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:1956%20British%20ITV%22%20Saturday%20Serial%22%20television%20programme> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:colorType> <urn:graphragprov:entity:black-%20and-%20white> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:countryOfOrigin> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Quentin%20Lawrence> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Eros%20Films%20Ltd.> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:science%20fiction%20monster%20film%20drama> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:plot> <urn:graphragprov:entity:Brooks%20suspects%20these%20deaths%20are%20related%20to%20a%20series%20of%20similar%20incidents%20that%20occurred%20three%20years%20earlier%20in%20the%20Andes%20mountains%2C%20which%20involved%20an%20unexplained%20radioactive%20mist%20and%20odd%20cloud%20formation%20believed%20by%20locals%20to%20be%20inhabited> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:plot> <urn:graphragprov:entity:United%20Nations%20troubleshooter%20Alan%20Brooks%2C%20later%20joined%20by%20journalist%20Philip%20Truscott%2C%20investigating%20unusual%20accidents%20occurring%20in%20the%20area%20of%20a%20resort%20hotel%20on%20%28the%20fictional%29%20Mount%20Trollenberg%20in%20Switzerland> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Monty%20Berman> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Robert%20S.%20Baker> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:publicationYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:releaseDate> "1958-07-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:specialEffectsBy> <urn:graphragprov:entity:Les%20Bowie> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Forrest%20Tucker> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Janet%20Munro> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jennifer%20Jayne> .
+<urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Laurence%20Payne> .
+<urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:birthDate> "1920-11-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Gravesend> .
+<urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:deathDate> "1979-03-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Halifax%2C%20Yorkshire> .
+<urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:television%20director> .

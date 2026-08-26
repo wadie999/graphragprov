@@ -1,0 +1,179 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_53833e05ef015d5510cb92f359ccfcdda43736555051f9144236353c4aa94149
+Title: Rudolph Maté
+Text:
+Rudolph Maté( 21 January 1898 – 27 October 1964), born Rudolf Mayer, was a Polish- Hungarian- American cinematographer, film director and film producer who worked as cameraman and cinematographer in Hungary, Austria, Germany, France and the United Kingdom, before moving to Hollywood in the mid 1930s.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 12,
+    "statement": {
+      "subject": {
+        "value": "Rudolph Maté",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Rudolph Maté",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "workedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "in Austria",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Austria",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Austria",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[12].predicate.evidence[0]: quote 'in Austria' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "Rudolph Maté",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Rudolph Maté",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "workedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "in Germany",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Germany",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Germany",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].predicate.evidence[0]: quote 'in Germany' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 14,
+    "statement": {
+      "subject": {
+        "value": "Rudolph Maté",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Rudolph Maté",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "workedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "in France",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "France",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "France",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[14].predicate.evidence[0]: quote 'in France' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 15,
+    "statement": {
+      "subject": {
+        "value": "Rudolph Maté",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Rudolph Maté",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "workedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "in the United Kingdom",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "United Kingdom",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "United Kingdom",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[15].predicate.evidence[0]: quote 'in the United Kingdom' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

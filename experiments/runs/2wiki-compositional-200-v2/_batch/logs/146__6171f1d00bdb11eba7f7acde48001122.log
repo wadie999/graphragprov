@@ -1,0 +1,192 @@
+
+H0 one-case execution
+  case:          6171f1d00bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of Buwei Yang Chao's husband?
+  expected:      3 November 1892
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6171f1d00bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Buwei Yang Chao'
+  source unit: u_352436e643732341c73a4856d56ec510f175df1152c99da05a2fb75d76095387
+  text chars:  213
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.686s | model=deepseek-v4-flash
+      tokens:   in=2304 | out=1154 | total=3458 | cached=2048 | uncached=256
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 148 / 228 (64.9%)
+    characters text:     133 / 213 (62.4%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  35 chars
+      'Buwei Yang Chao (née Yang Buwei; ;'
+    statement density:  35.09 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='Yuen Ren Chao'
+  source unit: u_0c00456d7b2908e55fe6ab0e9a0c3bff7c981855883e422b892af2b072a5ea0f
+  text chars:  725
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 13.230s | model=deepseek-v4-flash
+      tokens:   in=2507 | out=3208 | total=5715 | cached=2176 | uncached=331
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 363 / 738 (49.2%)
+    characters text:     350 / 725 (48.3%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  81 chars
+      ', who contributed to the modern study of Chinese phonology and grammar. Chao was'
+    statement density:  27.10 / 1000 chars
+    title reliance:      13 / 20 (65.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 28
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      28
+resource nodes:        23
+entity nodes:          23
+literal values:        5
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Gwoyeu%20Romatzyh> <urn:graphragprov:predicate:canTranscribe> <urn:graphragprov:entity:Mandarin%20Chinese%20pronunciation> .
+  <urn:graphragprov:entity:Gwoyeu%20Romatzyh> <urn:graphragprov:predicate:canTranscribeWithoutDiacritics> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Gwoyeu%20Romatzyh> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:romanization%20scheme> .
+  <urn:graphragprov:entity:Gwoyeu%20Romatzyh> <urn:graphragprov:predicate:unlike> <urn:graphragprov:entity:other%20romanization%20systems> .
+  <urn:graphragprov:entity:Gwoyeu%20Romatzyh> <urn:graphragprov:predicate:unlike> <urn:graphragprov:entity:pinyin> .
+  <urn:graphragprov:entity:Mandarin%20Primer> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:textbook> .
+  <urn:graphragprov:entity:Mandarin%20Primer> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Mandarin%20Chinese> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Mandarin%20Primer> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:birthDate> "1892-11-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:China> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:deathDate> "1982-02-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Cornell%20University> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Harvard%20University> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:inventor> <urn:graphragprov:entity:Gwoyeu%20Romatzyh> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Chinese-American> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:educator> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:linguist> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:poet> .
+  <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:scholar> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:birthYear> "1889"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:deathYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:one%20of%20the%20first%20women%20to%20practice%20Western%20medicine%20in%20China> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:physician> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:writer> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Chinese-American> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:recipe%20writer> .
+  <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yuen%20Ren%20Chao> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.902s | model=deepseek-v4-flash
+      tokens:   in=1907 | out=227 | total=2134 | cached=384 | uncached=1523
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yuen%20Ren%20Chao> .
+  - <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:birthDate> "1892-11-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yuen%20Ren%20Chao> . <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:birthDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0c00456d7b2908e5>
+  FROM <urn:graphragprov:unit:u_352436e643732341>
+  WHERE { <urn:graphragprov:entity:Buwei%20Yang%20Chao> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yuen%20Ren%20Chao> . <urn:graphragprov:entity:Yuen%20Ren%20Chao> <urn:graphragprov:predicate:birthDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1892-11-03',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Buwei Yang Chao', 'Yuen Ren Chao']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  6171f1d00bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6171f1d00bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6718
+output tokens:         4589
+total tokens:          11307
+cached input tokens:   4608
+uncached input tokens: 2110
+cumulative LLM seconds: 20.818
+
+statement occurrences: 28
+semantic triples:      28
+entity nodes:          23
+literal values:        5
+predicates:            16
+query attempts:        1
+observed answers:      ('1892-11-03',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.927s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.078s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.903s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.536s

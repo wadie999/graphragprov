@@ -1,0 +1,217 @@
+
+H0 one-case execution
+  case:          6897aa880bd911eba7f7acde48001122
+  hops:          2
+  question:      Who is the spouse of the director of film War And Love (1985 Film)?
+  expected:      Michal Bat-Adam
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6897aa880bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Moshé Mizrahi'
+  source unit: u_2689337288bddf5e35242114ca7b4cf4c09ba47b4623f00f8f325b99605be2f7
+  text chars:  1324
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 25.100s | model=deepseek-v4-flash
+      tokens:   in=2572 | out=6053 | total=8625 | cached=2048 | uncached=524
+  extraction: ACCEPTED
+  statements: 40
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    40
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     40
+  coverage:
+    characters combined: 975 / 1337 (72.9%)
+    characters text:     962 / 1324 (72.7%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           12 / 12 (100.0%)
+    longest uncovered:  63 chars
+      '" and "Madame Rosa", with the last of these winning the award.'
+    statement density:  29.92 / 1000 chars
+    title reliance:      23 / 40 (57.5%)
+
+[GRAPH 2/2] paragraph=8 title='War and Love (1985 film)'
+  source unit: u_b1ddbb117ecb4de9cb6b825a20ef575f311c430102bdfd351b8f036da396bc92
+  text chars:  273
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.618s | model=deepseek-v4-flash
+      tokens:   in=2905 | out=1968 | total=4873 | cached=2048 | uncached=857
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 241 / 297 (81.1%)
+    characters text:     217 / 273 (79.5%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  18 chars
+      'War and Love is a'
+    statement density:  43.77 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 53
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      53
+resource nodes:        37
+entity nodes:          37
+literal values:        13
+predicates:            38
+
+N-Triples:
+  <urn:graphragprov:entity:I%20Love%20You%20Rosa> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> .
+  <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie> <urn:graphragprov:predicate:hasSoundtrack> <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> .
+  <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie> <urn:graphragprov:predicate:reReleaseYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+  <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> <urn:graphragprov:predicate:profiledBy> <urn:graphragprov:entity:Alexander%20Geoffrey%20Frank> .
+  <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> <urn:graphragprov:predicate:profiledIn> <urn:graphragprov:entity:The%20FADER> .
+  <urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:awardCountry> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Simone%20Signoret> .
+  <urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:a%20former%20prostitute%20in%20Paris%20who%20survived%20Auschwitz> .
+  <urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:playedLeadRolesIn> <urn:graphragprov:entity:Mizrahi%27s%20films> .
+  <urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:teachesAt> <urn:graphragprov:entity:Tel%20Aviv%20University> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:birthDate> "1931-09-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Egypt> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:deathAge> "86"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:deathDate> "2018-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:directedFilmsCount> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Madame%20Rosa> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:filmNominations> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:honorDate> "1994-09"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:honorReason> <urn:graphragprov:entity:his%20lifetime%20contribution%20to%20Israel%20cinema> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:honoredBy> <urn:graphragprov:entity:Haifa%20Film%20Festival> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:pre-state%20Israel> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:immigrationYear> "1946"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:Tel%20Aviv> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:residenceStartDate> "2009-03"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Michal%20Bat-Adam> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:studiedIn> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:studyStartYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Israel> .
+  <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:worksAt> <urn:graphragprov:entity:Tel%20Aviv%20University%27s%20film%20school> .
+  <urn:graphragprov:entity:The%20House%20on%20Chelouche%20Street> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:The%20Cannon%20Group%2C%20Inc.> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:publicationYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:releaseDate> "1985-09-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Brita%20Youngblood> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Cheryl%20Gianini> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Spielberg> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Eda%20Reiss%20Merin> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kyra%20Sedgwick> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sebastian%20Keneas> .
+  <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Abby%20Mann> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.721s | model=deepseek-v4-flash
+      tokens:   in=3525 | out=207 | total=3732 | cached=384 | uncached=3141
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> .
+  - <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Michal%20Bat-Adam> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2689337288bddf5e>
+  FROM <urn:graphragprov:unit:u_b1ddbb117ecb4de9>
+  WHERE { <urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Michal Bat-Adam',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Moshé Mizrahi', 'War and Love (1985 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  6897aa880bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6897aa880bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9002
+output tokens:         8228
+total tokens:          17230
+cached input tokens:   4480
+uncached input tokens: 4522
+cumulative LLM seconds: 35.440
+
+statement occurrences: 53
+semantic triples:      53
+entity nodes:          37
+literal values:        13
+predicates:            38
+query attempts:        1
+observed answers:      ('Michal Bat-Adam',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.732s
+  graph.reference.measurements [attempt=1]: 0.011s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.066s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.722s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.392s

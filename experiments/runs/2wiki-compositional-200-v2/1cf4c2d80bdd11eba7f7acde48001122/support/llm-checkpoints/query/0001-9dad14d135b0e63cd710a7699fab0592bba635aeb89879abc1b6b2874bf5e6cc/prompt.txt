@@ -1,0 +1,118 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When did Johannes Winding Harbitz's father die?
+
+Expected answer: 22 November 1889
+
+Benchmark evidence relations:
+1. Johannes Winding Harbitz | father | Georg Prahl Harbitz
+2. Georg Prahl Harbitz | date of death | 22 November 1889
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:vicar> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:Minister%20of%20Auditing> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:Minister%20of%20Defence> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:second%20cabinet%20Stang> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointmentDate> "1 April the next year" .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointmentDate> "1893-05-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:birthDate> "1831-12-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Askvold> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:constituency> <urn:graphragprov:entity:T%C3%B8nsberg> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:deathDate> "1917-09-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:education> <urn:graphragprov:entity:student> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:educationStartYear> "1850"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:electedTo> <urn:graphragprov:entity:Norwegian%20Parliament> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:electionYear> "1880"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:heldPositionUntil> "1895-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:leftPositionDate> "1894-07-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:mayorOf> <urn:graphragprov:entity:T%C3%B8nsberg> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:mayorTenure> "twelve years" .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Maren%20Mariken%20Hof> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:moveYear> "1897"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Vestre%20Aker> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:seaman> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:ship-owner> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:shipmaster> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:vice%20consul> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupationPeriod> "1859-1869" .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupationStartYear> "mid-1880s" .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Conservative%20Party> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:member%20of%20the%20Council%20of%20State%20Division%20in%20Stockholm> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:qualification> <urn:graphragprov:entity:mate%27s%20examination> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:qualificationYear> "1852"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:reElected> "four occasions" .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:T%C3%B8nsberg> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Louise%20Henriette%20Betty%20Lunnevig> .
+<urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:termsServed> "five terms" .
+<urn:graphragprov:entity:Louise%20Henriette%20Betty%20Lunnevig> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Ole%20Lunnevig> .
+<urn:graphragprov:entity:Ole%20Lunnevig> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:T%C3%B8nsberg> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:birthDate> "1802-06-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:deathDate> "1889-11-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Parliament> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:priest> .
+<urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:President%20of%20the%20Storting> .

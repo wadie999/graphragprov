@@ -1,0 +1,184 @@
+
+H0 one-case execution
+  case:          53ccd4220bdc11eba7f7acde48001122
+  hops:          2
+  question:      When is the director of film Reach For Me 's birthday?
+  expected:      February 16, 1957
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/53ccd4220bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Reach for Me'
+  source unit: u_0d33c736c6518406d24995b06870c691c8f650211d8c38bb59b245ffa327bada
+  text chars:  157
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.414s | model=deepseek-v4-flash
+      tokens:   in=2294 | out=893 | total=3187 | cached=2048 | uncached=246
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 135 / 169 (79.9%)
+    characters text:     135 / 157 (86.0%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  35.50 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=9 title='LeVar Burton'
+  source unit: u_6d69d8a149d6ffd050a4f65de638eb4e483b7ae51c45ee56063f8f508010b2e7
+  text chars:  538
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.973s | model=deepseek-v4-flash
+      tokens:   in=2461 | out=2011 | total=4472 | cached=2176 | uncached=285
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 288 / 550 (52.4%)
+    characters text:     276 / 538 (51.3%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  43 chars
+      "of the long-running PBS children's series"
+    statement density:  25.45 / 1000 chars
+    title reliance:      14 / 14 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        18
+entity nodes:          18
+literal values:        3
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:AARP%20%27Movie%27s%20for%20Grownups%27%20Breakthrough%20Accomplishment%20award> .
+  <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:awardReceivedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Levar%20Burton> .
+  <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy-drama%20film> .
+  <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:publicationYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:1988%20television%20film> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Roots> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Levardis%20Robert%20Martyn%20Burton%20Jr.> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:dateOfBirth> "1957-02-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:television%20episodes> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:directedFor> <urn:graphragprov:entity:Star%20Trek> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:hostOf> <urn:graphragprov:entity:Reading%20Rainbow> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:author> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:presenter> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Lt.%20Commander%20Geordi%20La%20Forge> .
+  <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:young%20Kunta%20Kinte> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.963s | model=deepseek-v4-flash
+      tokens:   in=1504 | out=215 | total=1719 | cached=384 | uncached=1120
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Levar%20Burton> .
+  - <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:dateOfBirth> "1957-02-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Levar%20Burton> . <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0d33c736c6518406>
+  FROM <urn:graphragprov:unit:u_6d69d8a149d6ffd0>
+  WHERE { <urn:graphragprov:entity:Reach%20for%20Me> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Levar%20Burton> . <urn:graphragprov:entity:LeVar%20Burton> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1957-02-16',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['LeVar Burton', 'Reach for Me']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  53ccd4220bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/53ccd4220bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6259
+output tokens:         3119
+total tokens:          9378
+cached input tokens:   4608
+uncached input tokens: 1651
+cumulative LLM seconds: 16.351
+
+statement occurrences: 20
+semantic triples:      20
+entity nodes:          18
+literal values:        3
+predicates:            14
+query attempts:        1
+observed answers:      ('1957-02-16',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.398s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.964s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.535s

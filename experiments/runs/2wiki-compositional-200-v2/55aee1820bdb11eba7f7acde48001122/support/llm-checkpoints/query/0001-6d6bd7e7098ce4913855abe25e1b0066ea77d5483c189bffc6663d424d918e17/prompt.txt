@@ -1,0 +1,100 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of the director of film Neutral Port?
+
+Expected answer: West Sussex
+
+Benchmark evidence relations:
+1. Neutral Port | director | Marcel Varnel
+2. Marcel Varnel | place of death | West Sussex
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marcel%20Varnel> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:war%20film> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:publicationYear> "1940"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Leslie%20Banks> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Phyllis%20Calvert> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wally%20Patch> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Will%20Fyffe> .
+<urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Yvonne%20Arnaud> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:birthDate> "1892-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Marcel%20Hyacinthe%20le%20Bozec> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:car%20crash> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:deathDate> "1947-07-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Rake> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:British%20International%20Pictures> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Gainsborough%20Pictures> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:musical%20comedies> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:France> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:West%20Sussex> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:England> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:Hollywood> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:New%20York%20City> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:Paris%20stage> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Arthur%20Askey> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:George%20Formby> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:The%20Crazy%20Gang> .
+<urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Will%20Hay> .

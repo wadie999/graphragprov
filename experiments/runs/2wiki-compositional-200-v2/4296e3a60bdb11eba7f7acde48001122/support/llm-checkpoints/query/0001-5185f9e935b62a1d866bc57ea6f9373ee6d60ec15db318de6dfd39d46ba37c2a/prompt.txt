@@ -1,0 +1,158 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What nationality is the composer of film The Amazing Mr. Bickford?
+
+Expected answer: American
+
+Benchmark evidence relations:
+1. The Amazing Mr. Bickford | composer | Frank Zappa
+2. Frank Zappa | country of citizenship | American
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:admiredFor> <urn:graphragprov:entity:compositional%20complexity> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:abolition%20of%20censorship> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:freedom%20of%20speech> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:political%20participation> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:self-education> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:beganWritingClassicalMusicIn> <urn:graphragprov:entity:high%20school> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:birthDate> "1940-12-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:careerSpan> "more than 30 years" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:free-form%20improvisation> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:musical%20virtuosity> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:nonconformity> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:satire%20of%20American%20culture> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:sound%20experiments> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:commercialSuccess> "some commercial success" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:concept> <urn:graphragprov:entity:Project%2FObject> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:considered> "one of the most innovative and stylistically diverse rock musicians of his era" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:criticOf> <urn:graphragprov:entity:mainstream%20education> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:criticOf> <urn:graphragprov:entity:organized%20religion> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:criticizedFor> "lacking emotional depth" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:deathDate> "1993-12-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:debutAlbum> <urn:graphragprov:entity:Freak%20Out%21> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:godfather%20of%20comedy%20rock> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:designedAlbumCovers> <urn:graphragprov:entity:album%20covers> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:directedFilms> <urn:graphragprov:entity:feature-length%20films> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:directedMusicVideos> <urn:graphragprov:entity:music%20videos> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz%20fusion> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:musique%20concr%C3%A8te> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:orchestral> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rock> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:hadCommercialSuccessIn> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:musicians%20and%20composers> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:20th-century%20classical%20modernism> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:African-American%20rhythm%20and%20blues> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:doo-wop> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bandleader> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:composer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musician> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:drums> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:electric%20guitar> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:the%20Mothers%20of%20Invention> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:numberOfAlbums> "60-plus" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:album%20cover%20designer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:bandleader> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:multi-instrumentalist> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20video%20director> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:playedDrumsIn> <urn:graphragprov:entity:rhythm%20and%20blues%20bands> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:producedAlbums> "almost all of the 60-plus albums" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rank> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rank> "36"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rank> "71"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankYear> "2000"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedAt> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedAt> "36"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedAt> "71"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedOn> <urn:graphragprov:entity:100%20Greatest%20Artists%20of%20All%20Time> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedOn> <urn:graphragprov:entity:100%20Greatest%20Artists%20of%20Hard%20Rock> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedOn> <urn:graphragprov:entity:100%20Greatest%20Guitarists%20of%20All%20Time> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:receivedAward> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:releasedAlbumsAs> <urn:graphragprov:entity:solo%20artist> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:releasedAlbumsWith> <urn:graphragprov:entity:the%20Mothers%20of%20Invention> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:selfTaught> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:stanceOnDrugs> "disapproved of drugs" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:stanceOnDrugs> "supported their decriminalization and regulation" .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:switchedTo> <urn:graphragprov:entity:electric%20guitar> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:wasInductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:independent%20artist> .
+<urn:graphragprov:entity:Freak%20Out%21> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:the%20Mothers%20of%20Invention> .
+<urn:graphragprov:entity:Freak%20Out%21> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:animationBy> <urn:graphragprov:entity:Bruce%20Bickford> .
+<urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .
+<urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:orchestral%20pieces> .
+<urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:video> .
+<urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:notReleasedOn> <urn:graphragprov:entity:DVD> .
+<urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:releaseFormat> <urn:graphragprov:entity:direct-to-video> .
+<urn:graphragprov:entity:orchestral%20pieces> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .

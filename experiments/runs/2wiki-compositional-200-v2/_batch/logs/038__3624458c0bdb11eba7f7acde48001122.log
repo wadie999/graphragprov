@@ -1,0 +1,205 @@
+
+H0 one-case execution
+  case:          3624458c0bdb11eba7f7acde48001122
+  hops:          2
+  question:      When did Yun San's husband die?
+  expected:      11 May 1760
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/3624458c0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Yun San'
+  source unit: u_685f175a4b68ecbd962475fb4acdf44e66f0bc6f1e4b31a403ca97c5877ec6fd
+  text chars:  398
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 12.467s | model=deepseek-v4-flash
+      tokens:   in=2367 | out=2666 | total=5033 | cached=2048 | uncached=319
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 231 / 405 (57.0%)
+    characters text:     224 / 398 (56.3%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  58 chars
+      ', allowing Naungdawgyi to succeed Alaungpaya as king. She'
+    statement density:  41.98 / 1000 chars
+    title reliance:      10 / 17 (58.8%)
+
+[GRAPH 2/2] paragraph=5 title='Alaungpaya'
+  source unit: u_7f7e0c8b784fc8c8073f9ceb82f6003d6dfeb0e327aac30aa28d034fcc3ef28f
+  text chars:  588
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 15.341s | model=deepseek-v4-flash
+      tokens:   in=2588 | out=3496 | total=6084 | cached=2048 | uncached=540
+  extraction: ACCEPTED
+  statements: 24
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    24
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     24
+  coverage:
+    characters combined: 431 / 598 (72.1%)
+    characters text:     421 / 588 (71.6%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  21 chars
+      '. By the time of his'
+    statement density:  40.13 / 1000 chars
+    title reliance:      20 / 24 (83.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 41
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      41
+resource nodes:        29
+entity nodes:          29
+literal values:        5
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Burma> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Myanmar> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:dateOfDeath> "1760"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:King> .
+  <urn:graphragprov:entity:Bodawpaya> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+  <urn:graphragprov:entity:Hsinbyushin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+  <urn:graphragprov:entity:Naungdawgyi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:birthYear> "1713"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:deathYear> "1771"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:diedDuringReignOf> <urn:graphragprov:entity:Hsinbyushin> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:queen> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:keeping%20the%20peace%20between%20her%20two%20eldest%20sons> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:motherOf> <urn:graphragprov:entity:Bodawpaya> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:motherOf> <urn:graphragprov:entity:Hsinbyushin> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:motherOf> <urn:graphragprov:entity:Naungdawgyi> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:royalTitle> <urn:graphragprov:entity:chief%20queen> .
+  <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Alaungpaya> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alongside> <urn:graphragprov:entity:Anawrahta> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alongside> <urn:graphragprov:entity:Bayinnaung> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alsoSpelled> <urn:graphragprov:entity:Alaung%20Phra> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:alsoSpelled> <urn:graphragprov:entity:Alaunghpaya> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:illness> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:conquered> <urn:graphragprov:entity:Lan%20Na> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:consideredAs> <urn:graphragprov:entity:one%20of%20the%20three%20greatest%20monarchs%20of%20Burma> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:dateOfDeath> "1760-05-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:diedDuring> <urn:graphragprov:entity:campaign%20in%20Siam> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:droveOut> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:droveOut> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:formerOccupation> <urn:graphragprov:entity:chief> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:formerResidence> <urn:graphragprov:entity:small%20village%20in%20Upper%20Burma> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Yangon> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:foundedInYear> "1755"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Konbaung%20Dynasty> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:founder> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:subdued> <urn:graphragprov:entity:Manipur> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:unified> <urn:graphragprov:entity:Burma> .
+  <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:unifiedForThirdTime> <urn:graphragprov:entity:Burma> .
+  <urn:graphragprov:entity:British> <urn:graphragprov:predicate:gaveHelpTo> <urn:graphragprov:entity:Mon%20Restored%20Hanthawaddy%20Kingdom> .
+  <urn:graphragprov:entity:French> <urn:graphragprov:predicate:gaveHelpTo> <urn:graphragprov:entity:Mon%20Restored%20Hanthawaddy%20Kingdom> .
+  <urn:graphragprov:entity:Konbaung%20Dynasty> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Burma> .
+  <urn:graphragprov:entity:Konbaung%20Dynasty> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Myanmar> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.864s | model=deepseek-v4-flash
+      tokens:   in=2382 | out=205 | total=2587 | cached=384 | uncached=1998
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Alaungpaya> .
+  - <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:dateOfDeath> "1760-05-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Alaungpaya> . <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_685f175a4b68ecbd>
+  FROM <urn:graphragprov:unit:u_7f7e0c8b784fc8c8>
+  WHERE { <urn:graphragprov:entity:Yun%20San> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Alaungpaya> . <urn:graphragprov:entity:Alaungpaya> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1760', '1760-05-11')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Alaungpaya', 'Yun San']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3624458c0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/3624458c0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7337
+output tokens:         6367
+total tokens:          13704
+cached input tokens:   4480
+uncached input tokens: 2857
+cumulative LLM seconds: 29.672
+
+statement occurrences: 41
+semantic triples:      41
+entity nodes:          29
+literal values:        5
+predicates:            27
+query attempts:        1
+observed answers:      ('1760', '1760-05-11')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 27.823s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.865s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.500s

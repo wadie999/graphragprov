@@ -1,0 +1,484 @@
+
+H0 one-case execution
+  case:          ce7a7b9a0bda11eba7f7acde48001122
+  hops:          2
+  question:      When is the composer of song Life On Mars (Song) 's birthday?
+  expected:      8 January 1947
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/ce7a7b9a0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='David Bowie'
+  source unit: u_93e611781378c6c1bdaddbd5d69089882c4528432e548795a7bd1c8363766819
+  text chars:  3330
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 36.294s | model=deepseek-v4-flash
+      tokens:   in=3021 | out=8410 | total=11431 | cached=2048 | uncached=973
+    [LLM graph.reference #2] sending...
+      provider: 3.917s | model=deepseek-v4-flash
+      tokens:   in=2148 | out=809 | total=2957 | cached=0 | uncached=2148
+  extraction: ACCEPTED
+  statements: 58
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    53
+    initially rejected: 5
+
+    initial rejection #33
+      validator:
+        response.statements[33].predicate.evidence[0]: quote 'Low (1977)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1977",
+                "segment": "text"
+              }
+            ],
+            "value": "1977"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Low (1977)",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "album \"Low\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Low"
+          }
+        }
+
+    initial rejection #37
+      validator:
+        response.statements[37].predicate.evidence[0]: quote 'Lodger (1979)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1979",
+                "segment": "text"
+              }
+            ],
+            "value": "1979"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lodger (1979)",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Lodger\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Lodger"
+          }
+        }
+
+    initial rejection #48
+      validator:
+        response.statements[48].predicate.evidence[0]: quote 'roles included Jareth the Goblin King' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "David Bowie",
+                "segment": "title"
+              }
+            ],
+            "value": "David Bowie"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "roles included Jareth the Goblin King",
+                "segment": "text"
+              }
+            ],
+            "value": "starring"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Labyrinth",
+                "segment": "text"
+              }
+            ],
+            "value": "Labyrinth"
+          }
+        }
+
+    initial rejection #50
+      validator:
+        response.statements[50].predicate.evidence[0]: quote 'roles included Pontius Pilate' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "David Bowie",
+                "segment": "title"
+              }
+            ],
+            "value": "David Bowie"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "roles included Pontius Pilate",
+                "segment": "text"
+              }
+            ],
+            "value": "starring"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Last Temptation of Christ",
+                "segment": "text"
+              }
+            ],
+            "value": "The Last Temptation of Christ"
+          }
+        }
+
+    initial rejection #52
+      validator:
+        response.statements[52].predicate.evidence[0]: quote 'roles included Nikola Tesla' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "David Bowie",
+                "segment": "title"
+              }
+            ],
+            "value": "David Bowie"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "roles included Nikola Tesla",
+                "segment": "text"
+              }
+            ],
+            "value": "starring"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Prestige",
+                "segment": "text"
+              }
+            ],
+            "value": "The Prestige"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    5
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 58
+  coverage:
+    characters combined: 1466 / 3341 (43.9%)
+    characters text:     1455 / 3330 (43.7%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           19 / 22 (86.4%)
+    longest uncovered:  379 chars
+      '. He was a leading figure in the music industry and is considered one of the most influential musicians of the 20th century, acclaimed by critics and musicians, particularly for h…'
+    statement density:  17.36 / 1000 chars
+    title reliance:      29 / 58 (50.0%)
+
+[GRAPH 2/2] paragraph=4 title='Life on Mars (song)'
+  source unit: u_d3cca08fb3c4c7808d8619bfd09279c6094cd3e82980cc009d198cf27e763690
+  text chars:  1097
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 14.888s | model=deepseek-v4-flash
+      tokens:   in=3147 | out=3287 | total=6434 | cached=2048 | uncached=1099
+    [LLM graph.reference #4] sending...
+      provider: 0.957s | model=deepseek-v4-flash
+      tokens:   in=765 | out=8 | total=773 | cached=0 | uncached=765
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 1
+
+    initial rejection #21
+      validator:
+        response.statements[21].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "David Bowie",
+                "segment": "text"
+              }
+            ],
+            "value": "8 January 1947"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "David Bowie",
+                "segment": "text"
+              }
+            ],
+            "value": "dateOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "David Bowie",
+                "segment": "text"
+              }
+            ],
+            "value": "David Bowie"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 21
+  coverage:
+    characters combined: 574 / 1116 (51.4%)
+    characters text:     555 / 1097 (50.6%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           10 / 11 (90.9%)
+    longest uncovered:  137 chars
+      ", is 'stripped down' and has only strings, piano and Bowie's vocals. A special music video to promote the compilation was also released,"
+    statement density:  18.82 / 1000 chars
+    title reliance:      21 / 21 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 79
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 6
+  corrected valid: 5
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      77
+resource nodes:        60
+entity nodes:          60
+literal values:        21
+predicates:            38
+
+N-Triples:
+  <urn:graphragprov:entity:Ashes%20to%20Ashes> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Blackstar> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Blackstar> <urn:graphragprov:predicate:releaseYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:gold%20certification> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:platinum%20album%20certification> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:platinum%20certification> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:silver%20certification> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:David%20Robert%20Jones> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Brixton> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:South%20London> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornOn> "1947-01-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:liver%20cancer> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:createdAlterEgo> <urn:graphragprov:entity:Ziggy%20Stardust> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:diedOn> "2016-01-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:inductedInYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:lastLivePerformance> <urn:graphragprov:entity:charity%20event> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:numberOneAlbums> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer-songwriter> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:recordSales> "140000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:startedCareer> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:stoppedTouring> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:styleShiftedTo> <urn:graphragprov:entity:plastic%20soul> .
+  <urn:graphragprov:entity:Fame> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number-one> .
+  <urn:graphragprov:entity:Heroes> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Brian%20Eno> .
+  <urn:graphragprov:entity:Heroes> <urn:graphragprov:predicate:releaseYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:releaseYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+  <urn:graphragprov:entity:Let%27s%20Dance> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Let%27s%20Dance> <urn:graphragprov:predicate:releaseYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Lodger> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Brian%20Eno> .
+  <urn:graphragprov:entity:Lodger> <urn:graphragprov:predicate:releaseYear> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Low> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Brian%20Eno> .
+  <urn:graphragprov:entity:Low> <urn:graphragprov:predicate:releaseYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Merry%20Christmas%2C%20Mr.%20Lawrence> <urn:graphragprov:predicate:releaseYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Merry%20Christmas%2C%20Mr.%20Lawrence> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+  <urn:graphragprov:entity:Scary%20Monsters%20%28and%20Super%20Creeps%29> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Space%20Oddity> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:top-five> .
+  <urn:graphragprov:entity:Space%20Oddity> <urn:graphragprov:predicate:releaseDate> "1969-07"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Starman> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Station%20to%20Station> <urn:graphragprov:predicate:releaseYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Last%20Temptation%20of%20Christ> <urn:graphragprov:predicate:releaseYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Last%20Temptation%20of%20Christ> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Fell%20to%20Earth> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Nicolas%20Roeg> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Fell%20to%20Earth> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cult%20film> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Fell%20to%20Earth> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+  <urn:graphragprov:entity:The%20Next%20Day> <urn:graphragprov:predicate:releaseYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Prestige> <urn:graphragprov:predicate:releaseYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Prestige> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+  <urn:graphragprov:entity:The%20Rise%20and%20Fall%20of%20Ziggy%20Stardust%20and%20the%20Spiders%20from%20Mars> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Under%20Pressure> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Queen> .
+  <urn:graphragprov:entity:Under%20Pressure> <urn:graphragprov:predicate:releaseYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Young%20Americans> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Ziggy%20Stardust> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:glam%20rock> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Hunky%20Dory> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Legacy%20%28The%20Very%20Best%20of%20David%20Bowie%29> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:UK%20Singles%20Chart> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:chartDuration> "13 weeks" .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20three> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:David%20Bowie> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:lyricist> <urn:graphragprov:entity:David%20Bowie> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:musicVideoDirector> <urn:graphragprov:entity:Mick%20Rock> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:pianist> <urn:graphragprov:entity:Rick%20Wakeman> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Ken%20Scott> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Neil%20McCormick> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Pitchfork> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedInDecade> "1970s" .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedInList> <urn:graphragprov:entity:100%20Greatest%20Songs%20of%20All%20Time> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedNumber> <urn:graphragprov:entity:best%20song> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedNumber> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:releaseYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:releaseYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.885s | model=deepseek-v4-flash
+      tokens:   in=4371 | out=221 | total=4592 | cached=512 | uncached=3859
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:David%20Bowie> .
+  - <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornOn> "1947-01-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:David%20Bowie> . <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornOn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_93e611781378c6c1>
+  FROM <urn:graphragprov:unit:u_d3cca08fb3c4c780>
+  WHERE { <urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:David%20Bowie> . <urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornOn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1947-01-08',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['David Bowie', 'Life on Mars (song)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  ce7a7b9a0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/ce7a7b9a0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13452
+output tokens:         12735
+total tokens:          26187
+cached input tokens:   4608
+uncached input tokens: 8844
+cumulative LLM seconds: 57.940
+
+statement occurrences: 79
+semantic triples:      77
+entity nodes:          60
+literal values:        21
+predicates:            38
+query attempts:        1
+observed answers:      ('1947-01-08',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 56.080s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.036s
+  graph.materialization [attempt=1]: 0.051s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.886s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.571s

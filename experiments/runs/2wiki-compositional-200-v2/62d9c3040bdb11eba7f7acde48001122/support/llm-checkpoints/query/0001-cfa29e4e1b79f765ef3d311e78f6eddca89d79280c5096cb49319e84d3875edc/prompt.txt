@@ -1,0 +1,123 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What nationality is the composer of film Netaji Subhas Chandra Bose: The Forgotten Hero?
+
+Expected answer: India
+
+Benchmark evidence relations:
+1. Netaji Subhas Chandra Bose: The Forgotten Hero | composer | A. R. Rahman
+2. A. R. Rahman | country of citizenship | India
+
+Frozen RDF graph:
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award%20for%20Best%20Feature%20Film%20on%20National%20Integration> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award%20for%20Best%20Production%20Design> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:A.%20R.%20Rahman> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:life%20of%20the%20Indian%20independence%20leader%20Subhas%20Chandra%20Bose> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Shyam%20Benegal> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:epic%20biographical%20war%20film> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:productionDesigner> <urn:graphragprov:entity:Samir%20Chanda> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:publicationYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:receivedCriticalAcclaimAt> <urn:graphragprov:entity:BFI%20London%20Film%20Festival> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:screenedAt> <urn:graphragprov:entity:Independence%20Day%20Film%20Festival> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:screenedOn> "2016-08-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Arif%20Zakaria> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Divya%20Dutta> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kulbhushan%20Kharbanda> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Rajit%20Kapur> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sachin%20Khedekar> .
+<urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Shyam%20Benegal> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:BAFTA%20Award> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Award> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Awards%20South> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Globe%20Award> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Award> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Padma%20Bhushan> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceivedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:A.%20S.%20Dileep%20Kumar> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:bornOn> "1967-01-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:debutFilm> <urn:graphragprov:entity:Roja> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Le%20Musk> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:filmScoringCareerStart> "early 1990s" .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:humanitarian> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:includedIn> <urn:graphragprov:entity:Time%20100> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:includedInYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:namedAs> <urn:graphragprov:entity:Tomorrow%27s%20World%20Music%20Icons> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:namedBy> <urn:graphragprov:entity:Songlines> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:namedInYear> "2011-08"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Isai%20Puyalthe%20Musical%20Storm> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Mozart%20of%20Madras> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20director> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20producer> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:philanthropist> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:recordSales> "150000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:studio> <urn:graphragprov:entity:Panchathan%20Record%20Inn> .
+<urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:writer> <urn:graphragprov:entity:Le%20Musk> .
+<urn:graphragprov:entity:Le%20Musk> <urn:graphragprov:predicate:publicationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Padma%20Bhushan> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:Government%20of%20India> .
+<urn:graphragprov:entity:Panchathan%20Record%20Inn> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Chennai> .
+<urn:graphragprov:entity:Roja> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .

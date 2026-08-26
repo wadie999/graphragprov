@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_ecbb0e68cbaebccac3d46dcee2e515154bf5f3e3bf242646475fa2e9be4d02b4
+Title: Jessica Mauboy
+Text:
+Jessica Hilda Mauboy (born 4 August 1989) is an Australian R&B and pop singer, songwriter, and actress. Born and raised in Darwin, Northern Territory, Mauboy rose to fame in 2006 on the fourth season of "Australian Idol"; she became the runner-up and subsequently signed a recording contract with Sony Music Australia. After releasing a live album of her "Idol" performances and briefly being a member of the girl group Young Divas in 2007, Mauboy released her debut studio album, "Been Waiting", the following year. It earned Mauboy her first number-one single "Burn", became the second highest-selling Australian album of 2009, and was certified double platinum by the Australian Recording Industry Association (ARIA). Mauboy's second studio album, "Get 'Em Girls" (2010), showcased a more hard-edged R&B sound than her previous release, and produced four platinum singles. Her third studio album, "Beautiful" (2013), which explored a mixture of dance-oriented tracks with R&B and pop, included the top-ten hits "Pop a Bottle (Fill Me Up)Never Be the Same" and "Can I Get a Moment?". Aside from her music career, Mauboy has also ventured into acting, with starring roles in films "Bran Nue Dae" (2010) and "The Sapphires" (2012), which earned her the AACTA Award for Best Actress in a Supporting Role. She returned to acting in 2016, playing the lead role in the television drama series "The Secret Daughter" for two seasons. It was Mauboy's first major TV role and was written especially for her. Mauboy released two accompanying soundtrack albums for "The Secret Daughter", the first of which made her the first Indigenous artist to achieve a number-one album on the ARIA Albums Chart. Her fourth studio album, "Hilda" (October 2019), debuted at number one. Mauboy is one of Australia's most successful female artists. She has achieved six top-ten albums (including two number-ones) and 16 top-twenty singles (including 9 top-ten hits). She has won two ARIA Music Awards from 25 nominations, and was ranked sixteenth on the "Herald Sun"'s list of the "100 Greatest Australian Singers of All Time". Mauboy has collaborated with several international artists such as Flo Rida, Snoop Dogg, Ludacris, Jay Sean, and Pitbull. She has also toured with Beyoncé and Chris Brown, and performed at many notable events, including the Australian visits for Oprah Winfrey, Ellen DeGeneres, and US President Barack Obama. Mauboy was a guest performer at the second semi-final of the Eurovision Song Contest in 2014. She competed for Australia at the 2018 Eurovision Song Contest and reached 20th place. Jessica's 2019 album “hilda” debut at #1 on the aria charts.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 61,
+    "statement": {
+      "subject": {
+        "value": "Jessica Mauboy",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Jessica Mauboy",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "performedAt",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "performed at many notable events",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Australian visits for Ellen DeGeneres",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Australian visits for Ellen DeGeneres",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[61].object.evidence[0]: quote 'Australian visits for Ellen DeGeneres' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 62,
+    "statement": {
+      "subject": {
+        "value": "Jessica Mauboy",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Jessica Mauboy",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "performedAt",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "performed at many notable events",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Australian visits for US President Barack Obama",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Australian visits for US President Barack Obama",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[62].object.evidence[0]: quote 'Australian visits for US President Barack Obama' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

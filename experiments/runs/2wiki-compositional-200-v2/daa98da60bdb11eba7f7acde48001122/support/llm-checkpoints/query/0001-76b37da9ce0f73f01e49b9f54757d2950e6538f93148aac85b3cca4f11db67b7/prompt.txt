@@ -1,0 +1,117 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the husband of Maimu Berg born?
+
+Expected answer: Aravu
+
+Benchmark evidence relations:
+1. Maimu Berg | spouse | Vaino Vahing
+2. Vaino Vahing | place of birth | Aravu
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Julia%20Laffranque> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:judge> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:novels%20and%20short%20stories> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:birthDate> "1945-08-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Tallinn> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidacyYear> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidacyYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidacyYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidateFor> <urn:graphragprov:entity:Parliament> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Julia%20Laffranque> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:editorOf> <urn:graphragprov:entity:Siluett> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:editorialEndYear> "1990"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:editorialStartYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Tartu> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:secondary%20school%20in%20Tallinn> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:electedInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:employmentEndYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:employmentStartYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:fieldOfStudy> <urn:graphragprov:entity:Estonian%20language%20and%20literature> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:graduationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:People%27s%20Union%20of%20Estonia> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Riigikogu> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Social%20Democratic%20Party> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:membershipEndYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:membershipStartYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Estonian> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:critic> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:journalist> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:translator> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:Tallinn%20City%20Council> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:serviceEndYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:serviceStartYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Vaino%20Vahing> .
+<urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:university%20library> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthDate> "1940-02-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Aravu> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:P%C3%B5lva%20County> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:deathDate> "2008-03-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Tartu> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Estonian%20Writers%20Union> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:membershipStartYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Estonian> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playwright> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:prosaist> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:psychiatrist> .
+<urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .

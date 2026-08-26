@@ -1,0 +1,275 @@
+
+H0 one-case execution
+  case:          4b90bcb00bdc11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Thaka Thimi Tha is from?
+  expected:      India
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4b90bcb00bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Thaka Thimi Tha'
+  source unit: u_9c472461b17dc197b7cdd60e7c13dc7067d643d22a9cbffc1ca2405f90ee349e
+  text chars:  58
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.376s | model=deepseek-v4-flash
+      tokens:   in=2265 | out=588 | total=2853 | cached=2048 | uncached=217
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 48 / 73 (65.8%)
+    characters text:     48 / 58 (82.8%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  54.79 / 1000 chars
+    title reliance:      0 / 4 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='Sundar C.'
+  source unit: u_058089c7a8b41422a7984bc3fbf08bd286dd8e65363c4f1c441c253b6f1fb797
+  text chars:  1527
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 36.642s | model=deepseek-v4-flash
+      tokens:   in=2717 | out=8939 | total=11656 | cached=2176 | uncached=541
+    [LLM graph.reference #3] sending...
+      provider: 1.123s | model=deepseek-v4-flash
+      tokens:   in=942 | out=169 | total=1111 | cached=0 | uncached=942
+  extraction: ACCEPTED
+  statements: 61
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    60
+    initially rejected: 1
+
+    initial rejection #50
+      validator:
+        response.statements[50].object.evidence[0]: quote 'India' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "India",
+                "segment": "text"
+              }
+            ],
+            "value": "India"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "India's most watched television series",
+                "segment": "text"
+              }
+            ],
+            "value": "mostWatchedTVSeriesIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The show",
+                "segment": "text"
+              }
+            ],
+            "value": "Nandini"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 61
+  coverage:
+    characters combined: 983 / 1536 (64.0%)
+    characters text:     983 / 1527 (64.4%)
+    characters title:    0 / 9 (0.0%)
+    sentences:           13 / 13 (100.0%)
+    longest uncovered:  61 chars
+      'successful career as a director continued with movies like "'
+    statement density:  39.71 / 1000 chars
+    title reliance:      0 / 61 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 65
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      65
+resource nodes:        38
+entity nodes:          38
+literal values:        13
+predicates:            32
+
+N-Triples:
+  <urn:graphragprov:entity:Anbe%20Sivam> <urn:graphragprov:predicate:publicationYear> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Aranamanai%20film%20series> <urn:graphragprov:predicate:publicationYear> "2014"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Aranmanai> <urn:graphragprov:predicate:publicationYear> "2014"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Arunachalam> <urn:graphragprov:predicate:publicationYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Giri> <urn:graphragprov:predicate:publicationYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kalakalappu> <urn:graphragprov:predicate:moderateSuccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Kalakalappu> <urn:graphragprov:predicate:publicationYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kalakalappu%202> <urn:graphragprov:predicate:publicationYear> "2018"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kamal%20Haasan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Super%20Star> .
+  <urn:graphragprov:entity:Kamal%20Haasan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Tamil%20Cinema> .
+  <urn:graphragprov:entity:Kamal%20Haasan> <urn:graphragprov:predicate:starredIn> <urn:graphragprov:entity:Anbe%20Sivam> .
+  <urn:graphragprov:entity:Kushboo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Kushboo> <urn:graphragprov:predicate:spouseOf> <urn:graphragprov:entity:Sundar%20C.> .
+  <urn:graphragprov:entity:Nandini> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:Sun%20TV> .
+  <urn:graphragprov:entity:Nandini> <urn:graphragprov:predicate:hugeSuccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Nandini> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:TV%20series> .
+  <urn:graphragprov:entity:Nandini> <urn:graphragprov:predicate:mostWatchedTVSeriesIn> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Nandini> <urn:graphragprov:predicate:receivedPraise> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Nandini> <urn:graphragprov:predicate:wellReceived> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Rajinikanth> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Super%20Star> .
+  <urn:graphragprov:entity:Rajinikanth> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Tamil%20Cinema> .
+  <urn:graphragprov:entity:Rajinikanth> <urn:graphragprov:predicate:starredIn> <urn:graphragprov:entity:Arunachalam> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:actedCount> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:actorDebutFilm> <urn:graphragprov:entity:Thalai%20Nagaram> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:actorDebutYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Sundar.%20C> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:assistantDirectorTo> <urn:graphragprov:entity:Manivannan> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Vinayagar%20Sundar%20Vel> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Aranamanai%20film%20series> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Kamal%20Haasan> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Rajinikanth> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:directedCount> "16"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Anbe%20Sivam> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Aranmanai> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Arunachalam> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Giri> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Kalakalappu> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Kalakalappu%202> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Theeya%20Velai%20Seiyyanum%20Kumaru> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Ullathai%20Allitha> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Winner> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:pioneerIn> <urn:graphragprov:entity:television%20industry> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:Hello%20Naan%20Pei%20PesurenMuthina%20Kathirika> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:Meesaya%20Murukku> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:Nandini> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:producedTVSeriesInLanguages> <urn:graphragprov:entity:Kannada> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:producedTVSeriesInLanguages> <urn:graphragprov:entity:Malayalam> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:producedTVSeriesInLanguages> <urn:graphragprov:entity:Tamil> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:producedTVSeriesInLanguages> <urn:graphragprov:entity:Telugu> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:producedWith> <urn:graphragprov:entity:Kushboo> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:returnedToDirectionWith> <urn:graphragprov:entity:Kalakalappu> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:tookBreakFrom> <urn:graphragprov:entity:direction> .
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:assistant%20director> .
+  <urn:graphragprov:entity:Thalai%20Nagaram> <urn:graphragprov:predicate:commercialFailure> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Theeya%20Velai%20Seiyyanum%20Kumaru> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ullathai%20Allitha> <urn:graphragprov:predicate:publicationYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Winner> <urn:graphragprov:predicate:publicationYear> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Sundar%20C.> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:publicationYear> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.172s | model=deepseek-v4-flash
+      tokens:   in=3583 | out=183 | total=3766 | cached=384 | uncached=3199
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Sundar%20C.> .
+  - <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_058089c7a8b41422>
+  FROM <urn:graphragprov:unit:u_9c472461b17dc197>
+  WHERE { <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('India',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Sundar C.', 'Thaka Thimi Tha']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4b90bcb00bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4b90bcb00bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9507
+output tokens:         9879
+total tokens:          19386
+cached input tokens:   4608
+uncached input tokens: 4899
+cumulative LLM seconds: 44.313
+
+statement occurrences: 65
+semantic triples:      65
+entity nodes:          38
+literal values:        13
+predicates:            32
+query attempts:        1
+observed answers:      ('India',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 42.158s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.067s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.009s
+  query.reference.generation [attempt=1]: 2.173s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.491s

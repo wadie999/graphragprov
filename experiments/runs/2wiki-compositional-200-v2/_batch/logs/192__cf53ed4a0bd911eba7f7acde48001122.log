@@ -1,0 +1,337 @@
+
+H0 one-case execution
+  case:          cf53ed4a0bd911eba7f7acde48001122
+  hops:          2
+  question:      Where was the composer of film Petulia born?
+  expected:      York
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/cf53ed4a0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Petulia'
+  source unit: u_e7f3b441634f6db0770d51a71a91a6bb3af57a9b9f6e4666a53765fe6561031d
+  text chars:  268
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.153s | model=deepseek-v4-flash
+      tokens:   in=2291 | out=1531 | total=3822 | cached=2048 | uncached=243
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 209 / 275 (76.0%)
+    characters text:     209 / 268 (78.0%)
+    characters title:    0 / 7 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  12 chars
+      'the novel"'
+    statement density:  40.00 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='John Barry (composer)'
+  source unit: u_9fb37d7d4acd89ece88bdc3b5501270b2150804e7b5b9ca63e6a496421bdcd22
+  text chars:  2205
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 36.819s | model=deepseek-v4-flash
+      tokens:   in=2854 | out=8981 | total=11835 | cached=2176 | uncached=678
+    [LLM graph.reference #3] sending...
+      provider: 0.755s | model=deepseek-v4-flash
+      tokens:   in=1453 | out=8 | total=1461 | cached=0 | uncached=1453
+  extraction: ACCEPTED
+  statements: 44
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    58
+    initially rejected: 3
+
+    initial rejection #7
+      validator:
+        response.statements[7].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Bond films",
+                "segment": "text"
+              }
+            ],
+            "value": "James Bond films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composed the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              }
+            ],
+            "value": "John Barry (composer)"
+          }
+        }
+
+    initial rejection #43
+      validator:
+        response.statements[43].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Bond films",
+                "segment": "text"
+              }
+            ],
+            "value": "James Bond films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composed the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              }
+            ],
+            "value": "John Barry (composer)"
+          }
+        }
+
+    initial rejection #52
+      validator:
+        response.statements[52].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Bond films",
+                "segment": "text"
+              }
+            ],
+            "value": "James Bond films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composed the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              }
+            ],
+            "value": "John Barry (composer)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 44
+  coverage:
+    characters combined: 1031 / 2226 (46.3%)
+    characters text:     1010 / 2205 (45.8%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           17 / 19 (89.5%)
+    longest uncovered:  184 chars
+      '. He came to the notice of the makers of the first James Bond film "Dr. No", who were dissatisfied with a theme for James Bond given to them by Monty Norman. This started a succes…'
+    statement density:  19.77 / 1000 chars
+    title reliance:      44 / 44 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 55
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 3
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      53
+resource nodes:        44
+entity nodes:          44
+literal values:        6
+predicates:            34
+
+N-Triples:
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:arranged> <urn:graphragprov:entity:James%20Bond%20Theme> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:Eon%20Productions> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Awards> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:BAFTA%20Award%20for%20Best%20Film%20Music> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Best%20Original%20Score> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Fellow%20of%20the%20British%20Academy%20of%20Film%20and%20Television%20Arts> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Fellow%20of%20the%20British%20Academy%20of%20Songwriters%2C%20Composers%20and%20Authors> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Globe%20Award%20nominations> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Awards> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:OBE> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:York> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:bornOn> "1933-11-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:careerStart> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:childCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Don%20Black> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Born%20Free> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Brighton%20Rock> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Dances%20with%20Wolves> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Dr.%20No> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Enigma> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Out%20of%20Africa> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:The%20Lion%20in%20Winter> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:The%20Persuaders%21> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:diedOn> "2011-01-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:fatherOwned> <urn:graphragprov:entity:cinemas> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:formedBand> <urn:graphragprov:entity:The%20John%20Barry%20Seven> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:formedBandInYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:John%20Barry%20Prendergast> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:film%20music> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:trumpet> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:livedIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:militaryService> <urn:graphragprov:entity:British%20Army> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:conductor> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:performed> <urn:graphragprov:entity:James%20Bond%20Theme> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:recordedAlbum> <urn:graphragprov:entity:Eternal%20Echoes> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:servedIn> <urn:graphragprov:entity:Cyprus> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:spouseCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:cinemas> .
+  <urn:graphragprov:entity:Me%20and%20the%20Arch%20Kook%20Petulia> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Haase> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Me%20and%20the%20Arch%20Kook%20Petulia> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Barry> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Richard%20Lester> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:screenplayBy> <urn:graphragprov:entity:Lawrence%20B.%20Marcus> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20C.%20Scott> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Christie> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Richard%20Chamberlain> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.899s | model=deepseek-v4-flash
+      tokens:   in=3302 | out=199 | total=3501 | cached=384 | uncached=2918
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Barry> .
+  - <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:York> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Barry> . <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9fb37d7d4acd89ec>
+  FROM <urn:graphragprov:unit:u_e7f3b441634f6db0>
+  WHERE { <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Barry> . <urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('York',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['John Barry (composer)', 'Petulia']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  cf53ed4a0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/cf53ed4a0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9900
+output tokens:         10719
+total tokens:          20619
+cached input tokens:   4608
+uncached input tokens: 5292
+cumulative LLM seconds: 46.626
+
+statement occurrences: 55
+semantic triples:      53
+entity nodes:          44
+literal values:        6
+predicates:            34
+query attempts:        1
+observed answers:      ('York',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 44.751s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.056s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.900s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.621s

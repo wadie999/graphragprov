@@ -1,0 +1,173 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the cause of death of creator of The Land Of Gorch?
+
+Expected answer: toxic shock syndrome
+
+Benchmark evidence relations:
+1. The Land of Gorch | creator | Jim Henson
+2. Jim Henson | cause of death | toxic shock syndrome
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Al%20Franken> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+<urn:graphragprov:entity:Alan%20Zweibel> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+<urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:helped> <urn:graphragprov:entity:Jim%20Henson> .
+<urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Dan%20Aykroyd> .
+<urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Gilda%20Radner> .
+<urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:John%20Belushi> .
+<urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Lorne%20Michaels> .
+<urn:graphragprov:entity:Commentators> <urn:graphragprov:predicate:agreed> <urn:graphragprov:entity:the%20reception%20for%20%22The%20Land%20of%20Gorch%22%20was%20universally%20negative> .
+<urn:graphragprov:entity:DVD%20Talk> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:the%20feature%20the%20worst%20mistake%20in%20the%20first%20season%20of%20%22Saturday%20Night%20Live%22> .
+<urn:graphragprov:entity:Dinosaurs> <urn:graphragprov:predicate:publicationYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Frank%20Oz> <urn:graphragprov:predicate:agreed> <urn:graphragprov:entity:the%20partnership%20between%20Henson%27s%20team%20and%20the%20show%27s%20writers%20was%20imperfect> .
+<urn:graphragprov:entity:Frank%20Oz> <urn:graphragprov:predicate:thankful> <urn:graphragprov:entity:they%20moved%20on%20to%20%22The%20Muppet%20Show%22> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:The%20Ed%20Sullivan%20Show> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:late-night%20comedy%20television%20programs> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:Sam%20and%20Friends> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:puppetry%20work> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:The%20Land%20of%20Gorch> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:feared> <urn:graphragprov:entity:he%20would%20become%20typecast%20into%20working%20on%20children%27s%20television%20series> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:felt> <urn:graphragprov:entity:they%20were%20trying%20to%20write%20for%20situational%20comedy%20rather%20than%20staying%20within%20his%20intended%20story> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:representedBy> <urn:graphragprov:entity:Bernie%20Brillstein> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:transitionedTo> <urn:graphragprov:entity:Saturday%20Night%20Live> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:workedFor> <urn:graphragprov:entity:adult%20audiences> .
+<urn:graphragprov:entity:Michael%20J.%20Bernsten> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:in%20his%20essay%20%22The%20Muppetry%20of%20Nightmares%22%20that%20the%20idea%20failed%20because%20the%20characters%20were%20irredeemable%20and%20unfunny> .
+<urn:graphragprov:entity:Michael%20O%27Donoghue> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+<urn:graphragprov:entity:Mighty%20Favog> <urn:graphragprov:predicate:consultedBy> <urn:graphragprov:entity:characters> .
+<urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:behaved> <urn:graphragprov:entity:boorishly> .
+<urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:madeReferencesTo> <urn:graphragprov:entity:consumption%20of%20alcohol> .
+<urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:madeReferencesTo> <urn:graphragprov:entity:drug%20abuse> .
+<urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:madeReferencesTo> <urn:graphragprov:entity:sexual%20activity> .
+<urn:graphragprov:entity:San%20Francisco%20Chronicle> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:the%20characters%20the%20opposite%20of%20Kermit%20the%20Frog> .
+<urn:graphragprov:entity:San%20Francisco%20Chronicle> <urn:graphragprov:predicate:compared> <urn:graphragprov:entity:them%20to%20trolls> .
+<urn:graphragprov:entity:The%20A.V.%20Club> <urn:graphragprov:predicate:said> <urn:graphragprov:entity:it%20was%20an%20in-joke%20that%20nobody%20wanted%20to%20keep%20the%20sketches%20on%20%22Saturday%20Night%20Live> .
+<urn:graphragprov:entity:The%20Dark%20Crystal> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Saturday%20Night%20Live> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:featured> <urn:graphragprov:entity:Jim%20Henson%27s%20Muppets> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:hadImpactOn> <urn:graphragprov:entity:later%20Henson%20works> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:King%20Ploobis> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Queen%20Peuta> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Scred> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Vazh> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Wiss> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Dinosaurs> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:The%20Dark%20Crystal> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:recurring%20skit> .
+<urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:premise> <urn:graphragprov:entity:featured%20Muppet%20characters%2C%20who%20were%20members%20of%20a%20royal%20family%2C%20in%20a%20faraway%20locale> .
+<urn:graphragprov:entity:Tom%20Davis> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+<urn:graphragprov:entity:writers%20of%20Saturday%20Night%20Live> <urn:graphragprov:predicate:clashedWith> <urn:graphragprov:entity:Henson%27s%20vision> .
+<urn:graphragprov:entity:Fraggle%20Rock> <urn:graphragprov:predicate:activeYears> "1983–1987" .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:Saturday%20Night%20Live> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:ashesScatteredNear> <urn:graphragprov:entity:Taos%2C%20New%20Mexico> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:beganDeveloping> <urn:graphragprov:entity:puppets> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Greenville%2C%20Mississippi> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:bornOn> "1936-09-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:celebratedWith> <urn:graphragprov:entity:wave%20of%20tributes> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:coFounded> <urn:graphragprov:entity:Muppets%2C%20Inc.> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:Sam%20and%20Friends> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:createdWhile> <urn:graphragprov:entity:freshman%20at%20the%20University%20of%20Maryland%2C%20College%20Park> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Fraggle%20Rock> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:The%20Muppets> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:degree> <urn:graphragprov:entity:home%20economics> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:experimental%20films> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedAtAge> "53"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedFrom> <urn:graphragprov:entity:toxic%20shock%20syndrome> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York%20City> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedOn> "1990-05-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Labyrinth> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Dark%20Crystal> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Jim%20Henson%20Foundation> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Jim%20Henson%27s%20Creature%20Shop> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:James%20Maury%20Henson> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:graduatedFrom> <urn:graphragprov:entity:University%20of%20Maryland> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:helpedDevelop> <urn:graphragprov:entity:characters%20for%20Sesame%20Street> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:inductedInYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:joined> <urn:graphragprov:entity:Sesame%20Street> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:joinedInYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:animator> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cartoonist> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:inventor> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:puppeteer> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:posthumouslyInductedInto> <urn:graphragprov:entity:Hollywood%20Walk%20of%20Fame> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:The%20Muppet%20Show> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:coffee%20advertisements> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:Leland%2C%20Mississippi> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:remainsCremated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:selectedAs> <urn:graphragprov:entity:Disney%20Legends> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:selectedInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Emmy%20Award> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFameFor> <urn:graphragprov:entity:Ernie> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFameFor> <urn:graphragprov:entity:Kermit%20the%20Frog> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFameFor> <urn:graphragprov:entity:Rowlf%20the%20Dog> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFor> <urn:graphragprov:entity:The%20Jim%20Henson%20Hour> .
+<urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFor> <urn:graphragprov:entity:The%20Storyteller> .
+<urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:publicationYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Muppets%2C%20Inc.> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:The%20Jim%20Henson%20Company> .
+<urn:graphragprov:entity:Muppets%2C%20Inc.> <urn:graphragprov:predicate:foundedInYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sam%20and%20Friends> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:short-form%20comedy%20television%20program> .
+<urn:graphragprov:entity:The%20Dark%20Crystal> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Muppet%20Show> <urn:graphragprov:predicate:premieredInYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Muppets> <urn:graphragprov:predicate:activeYears> "1955–present" .

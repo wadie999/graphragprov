@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_978352ffa0d8c98f4bc78f061679f96543efad62716e0528cc5967cf80f0be1f
+Title: Maimu Berg
+Text:
+Maimu Berg (born August 27, 1945 in Tallinn) is an Estonian writer, critic, translator, and journalist. She was a member of the Riigikogu, elected in 2011. Berg graduated from secondary school in Tallinn in 1968, and took her degree in Estonian language and literature from the University of Tartu. She worked in the university library from 1969 to 1974, and edited the magazine "Siluett" from 1974 to 1990. She also worked as a journalist for various publications. She was a member of the People's Union of Estonia from 2002 to 2006, whereupon she became a member of the Social Democratic Party. She served on the Tallinn City Council from 2007 to 2009. She was nominated to stand for Parliament in 2003 and 2007, and for the European Parliament in 2004. Berg was married for a time to the writer Vaino Vahing, by whom she had a daughter, the judge Julia Laffranque. She has written novels and short stories.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 29,
+    "statement": {
+      "subject": {
+        "value": "Maimu Berg",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Maimu Berg",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "candidateFor",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "nominated to stand for Parliament",
+            "occurrence": 2
+          }
+        ]
+      },
+      "object": {
+        "value": "Parliament",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Parliament",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[29].predicate.evidence[0]: quote 'nominated to stand for Parliament' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  },
+  {
+    "statement_index": 31,
+    "statement": {
+      "subject": {
+        "value": "Maimu Berg",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Maimu Berg",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "candidateFor",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "nominated to stand for the European Parliament",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "European Parliament",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "European Parliament",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[31].predicate.evidence[0]: quote 'nominated to stand for the European Parliament' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

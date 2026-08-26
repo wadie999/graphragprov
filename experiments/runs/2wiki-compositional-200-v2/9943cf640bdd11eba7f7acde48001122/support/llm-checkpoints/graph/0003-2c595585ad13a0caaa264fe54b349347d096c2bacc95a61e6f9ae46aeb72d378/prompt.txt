@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_64179260992132fba7a9b6e08e8aec8cf03f28d4557f2057c9b5f053aa8b2a6a
+Title: Pharaoh's Curse (film)
+Text:
+__notoc_ _ Pharaoh's Curse is a 1957 American horror film directed by Lee Sholem and written by Richard H. Landau. The film stars Mark Dana, Ziva Rodann, Diane Brewster, George N. Neise, Alvaro Guillot and Ben Wright. The film was released in February 1957 by United Artists, as a double feature with "Voodoo Island".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 12,
+    "statement": {
+      "subject": {
+        "value": "Pharaoh's Curse (film)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Pharaoh's Curse (film)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "distributedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "released ... by United Artists",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "United Artists",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "United Artists",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[12].predicate.evidence[0]: quote 'released ... by United Artists' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,404 @@
+
+H0 one-case execution
+  case:          981871520bd911eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the performer of song Sunday (Jessica Mauboy Song)?
+  expected:      Darwin
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/981871520bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Jessica Mauboy'
+  source unit: u_ecbb0e68cbaebccac3d46dcee2e515154bf5f3e3bf242646475fa2e9be4d02b4
+  text chars:  2652
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 39.848s | model=deepseek-v4-flash
+      tokens:   in=2872 | out=9820 | total=12692 | cached=2048 | uncached=824
+    [LLM graph.reference #2] sending...
+      provider: 2.079s | model=deepseek-v4-flash
+      tokens:   in=1379 | out=352 | total=1731 | cached=0 | uncached=1379
+  extraction: ACCEPTED
+  statements: 65
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    65
+    initially rejected: 2
+
+    initial rejection #61
+      validator:
+        response.statements[61].object.evidence[0]: quote 'Australian visits for Ellen DeGeneres' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Australian visits for Ellen DeGeneres",
+                "segment": "text"
+              }
+            ],
+            "value": "Australian visits for Ellen DeGeneres"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed at many notable events",
+                "segment": "text"
+              }
+            ],
+            "value": "performedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jessica Mauboy",
+                "segment": "title"
+              }
+            ],
+            "value": "Jessica Mauboy"
+          }
+        }
+
+    initial rejection #62
+      validator:
+        response.statements[62].object.evidence[0]: quote 'Australian visits for US President Barack Obama' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Australian visits for US President Barack Obama",
+                "segment": "text"
+              }
+            ],
+            "value": "Australian visits for US President Barack Obama"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed at many notable events",
+                "segment": "text"
+              }
+            ],
+            "value": "performedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jessica Mauboy",
+                "segment": "title"
+              }
+            ],
+            "value": "Jessica Mauboy"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote 'Australian visits for Ellen DeGeneres' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Australian visits for Ellen DeGeneres",
+                "segment": "text"
+              }
+            ],
+            "value": "Australian visits for Ellen DeGeneres"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed at many notable events",
+                "segment": "text"
+              }
+            ],
+            "value": "performedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jessica Mauboy",
+                "segment": "title"
+              }
+            ],
+            "value": "Jessica Mauboy"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].object.evidence[0]: quote 'Australian visits for US President Barack Obama' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Australian visits for US President Barack Obama",
+                "segment": "text"
+              }
+            ],
+            "value": "Australian visits for US President Barack Obama"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performed at many notable events",
+                "segment": "text"
+              }
+            ],
+            "value": "performedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jessica Mauboy",
+                "segment": "title"
+              }
+            ],
+            "value": "Jessica Mauboy"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 65
+  coverage:
+    characters combined: 1684 / 2666 (63.2%)
+    characters text:     1670 / 2652 (63.0%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           19 / 19 (100.0%)
+    longest uncovered:  78 chars
+      '. After releasing a live album of her "Idol" performances and briefly being a'
+    statement density:  24.38 / 1000 chars
+    title reliance:      41 / 65 (63.1%)
+
+[GRAPH 2/2] paragraph=4 title='Sunday (Jessica Mauboy song)'
+  source unit: u_73790404ddbb8229d9027d78cfc8160b76fe8fa73322be7a6393c667879ca788
+  text chars:  880
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 13.761s | model=deepseek-v4-flash
+      tokens:   in=3238 | out=2923 | total=6161 | cached=2048 | uncached=1190
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 650 / 908 (71.6%)
+    characters text:     622 / 880 (70.7%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  84 chars
+      '. Upon release, Mauboy said: "My favourite part of the song is where the lyrics go \''
+    statement density:  20.93 / 1000 chars
+    title reliance:      13 / 19 (68.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 84
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      82
+resource nodes:        65
+entity nodes:          65
+literal values:        12
+predicates:            41
+
+N-Triples:
+  <urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:albumSequence> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:albumType> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Jessica%20Mauboy> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Australian> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:recording%20artist> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Australia> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:discussedOn> <urn:graphragprov:entity:Nova%2096.9> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:fromAlbum> <urn:graphragprov:entity:Hilda> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:inspiredBy> <urn:graphragprov:entity:heated%20argument%20with%20her%20boyfriend> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsQuote> "I forgive you then you forget, you're sleeping even if you didn't make that bed" .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:deep%20lyrics> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:irritating%20and%20annoying%20little%20things> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:sass> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:unspoken%20grievances%20escalating> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jessica%20Mauboy> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:releaseDate> "2019-04-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:releaseType> <urn:graphragprov:entity:digital> .
+  <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:singleType> <urn:graphragprov:entity:lead%20single> .
+  <urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:containsSingle> <urn:graphragprov:entity:Can%20I%20Get%20a%20Moment%3F> .
+  <urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:containsSingle> <urn:graphragprov:entity:Pop%20a%20Bottle%20%28Fill%20Me%20Up%29Never%20Be%20the%20Same> .
+  <urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:dance-oriented%20tracks%20with%20R%26B%20and%20pop> .
+  <urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:certification> <urn:graphragprov:entity:double%20platinum> .
+  <urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:certifiedBy> <urn:graphragprov:entity:Australian%20Recording%20Industry%20Association> .
+  <urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:containsSingle> <urn:graphragprov:entity:Burn> .
+  <urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:publicationYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:salesRanking> <urn:graphragprov:entity:second%20highest-selling%20Australian%20album%20of%202009> .
+  <urn:graphragprov:entity:Bran%20Nue%20Dae> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Burn> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Get%20%27Em%20Girls> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:hard-edged%20R%26B> .
+  <urn:graphragprov:entity:Get%20%27Em%20Girls> <urn:graphragprov:predicate:producedSingles> <urn:graphragprov:entity:four%20platinum%20singles> .
+  <urn:graphragprov:entity:Get%20%27Em%20Girls> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:publicationYear> "2019-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:16%20top-twenty%20singles> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:20th%20place> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:9%20top-ten%20hits> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:one%20of%20Australia%27s%20most%20successful%20female%20artists> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:runner-up> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:six%20top-ten%20albums> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:two%20number-ones> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:Bran%20Nue%20Dae> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:The%20Sapphires> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:The%20Secret%20Daughter> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:awardNominations> "25"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:ARIA%20Music%20Awards> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:bornOn> "1989-08-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Flo%20Rida> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Jay%20Sean> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Ludacris> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Pitbull> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Snoop%20Dogg> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%202018> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:R%26B> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Young%20Divas> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Australian> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Australian%20Idol> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:fourth%20season> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:performedAt> <urn:graphragprov:entity:Australian%20visits%20for%20Oprah%20Winfrey> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:performedAt> <urn:graphragprov:entity:Eurovision%20Song%20Contest%202014%20second%20semi-final> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Darwin> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Northern%20Territory> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:rankedIn> <urn:graphragprov:entity:100%20Greatest%20Australian%20Singers%20of%20All%20Time> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Beautiful> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Been%20Waiting> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Get%20%27Em%20Girls> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Hilda> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:The%20Secret%20Daughter%20soundtrack%20albums> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:signedWith> <urn:graphragprov:entity:Sony%20Music%20Australia> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:touredWith> <urn:graphragprov:entity:Beyonc%C3%A9> .
+  <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:touredWith> <urn:graphragprov:entity:Chris%20Brown> .
+  <urn:graphragprov:entity:The%20Sapphires> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:AACTA%20Award%20for%20Best%20Actress%20in%20a%20Supporting%20Role> .
+  <urn:graphragprov:entity:The%20Sapphires> <urn:graphragprov:predicate:publicationYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Secret%20Daughter> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20drama%20series> .
+  <urn:graphragprov:entity:The%20Secret%20Daughter> <urn:graphragprov:predicate:numberOfSeasons> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:The%20Secret%20Daughter> <urn:graphragprov:predicate:writtenFor> <urn:graphragprov:entity:Jessica%20Mauboy> .
+  <urn:graphragprov:entity:The%20Secret%20Daughter%20soundtrack%20albums> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:first%20Indigenous%20artist%20to%20achieve%20a%20number-one%20album%20on%20the%20ARIA%20Albums%20Chart> .
+  <urn:graphragprov:entity:The%20Secret%20Daughter%20soundtrack%20albums> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:The%20Secret%20Daughter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.886s | model=deepseek-v4-flash
+      tokens:   in=4710 | out=218 | total=4928 | cached=512 | uncached=4198
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jessica%20Mauboy> .
+  - <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Darwin> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jessica%20Mauboy> . <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_73790404ddbb8229>
+  FROM <urn:graphragprov:unit:u_ecbb0e68cbaebcca>
+  WHERE { <urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jessica%20Mauboy> . <urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Australia', 'Darwin', 'Northern Territory')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 3
+  provenance sources: ['Jessica Mauboy', 'Sunday (Jessica Mauboy song)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  981871520bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/981871520bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12199
+output tokens:         13313
+total tokens:          25512
+cached input tokens:   4608
+uncached input tokens: 7591
+cumulative LLM seconds: 57.573
+
+statement occurrences: 84
+semantic triples:      82
+entity nodes:          65
+literal values:        12
+predicates:            41
+query attempts:        1
+observed answers:      ('Australia', 'Darwin', 'Northern Territory')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 55.719s
+  graph.reference.measurements [attempt=1]: 0.011s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.069s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.887s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.464s

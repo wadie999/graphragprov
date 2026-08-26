@@ -1,0 +1,90 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the director of film Jeff Gordon, Secret Agent born?
+
+Expected answer: Rabat
+
+Benchmark evidence relations:
+1. Jeff Gordon | director | Raoul André
+2. Raoul André | place of birth | Rabat
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Raoul%20Andr%C3%A9> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20spy%20film> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French-%20Italian> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:originalTitle> <urn:graphragprov:entity:Des%20frissons%20partout> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:originalTitle> <urn:graphragprov:entity:Jeff%20Gordon%2C%20il%20diabolico%20detective> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:publicationYear> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Daniel%20Emilfork> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Eddie%20Constantine> .
+<urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Perrette%20Pradier> .
+<urn:graphragprov:entity:Louise%20Carletti> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Rabat> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Morocco> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:birthDate> "1916-05-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Rabat> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Ariane%20Carletti> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:deathDate> "1992-11-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:marriageDate> "1955-12"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Louise%20Carletti> .

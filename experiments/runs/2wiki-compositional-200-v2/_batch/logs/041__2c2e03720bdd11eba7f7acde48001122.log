@@ -1,0 +1,298 @@
+
+H0 one-case execution
+  case:          2c2e03720bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where did Jimmy Cochran's father graduate from?
+  expected:      University of Vermont
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/2c2e03720bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Jimmy Cochran'
+  source unit: u_5765e0b418cc3c4fd46a3d0068fff2f12d2f6e7094f25d258eb16a9510d8d769
+  text chars:  725
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 21.054s | model=deepseek-v4-flash
+      tokens:   in=2433 | out=4805 | total=7238 | cached=2048 | uncached=385
+    [LLM graph.reference #2] sending...
+      provider: 0.718s | model=deepseek-v4-flash
+      tokens:   in=707 | out=8 | total=715 | cached=0 | uncached=707
+  extraction: ACCEPTED
+  statements: 32
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    32
+    initially rejected: 1
+
+    initial rejection #32
+      validator:
+        response.statements[32].predicate.evidence[0]: quote 'University of Vermont' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "University of Vermont",
+                "segment": "text"
+              }
+            ],
+            "value": "University of Vermont"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "University of Vermont",
+                "segment": "text"
+              }
+            ],
+            "value": "educatedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bob Cochran",
+                "segment": "text"
+              }
+            ],
+            "value": "Bob Cochran"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 32
+  coverage:
+    characters combined: 453 / 738 (61.4%)
+    characters text:     453 / 725 (62.5%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  34 chars
+      'and slalom on successive days in'
+    statement density:  43.36 / 1000 chars
+    title reliance:      0 / 32 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='Bob Cochran (skier)'
+  source unit: u_7baabd3125652f702a464650d4cd9e6020f6c1c29c46646857e87834f78af33c
+  text chars:  1685
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 40.444s | model=deepseek-v4-flash
+      tokens:   in=3079 | out=9828 | total=12907 | cached=2048 | uncached=1031
+  extraction: ACCEPTED
+  statements: 58
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    58
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     58
+  coverage:
+    characters combined: 1430 / 1704 (83.9%)
+    characters text:     1411 / 1685 (83.7%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           18 / 18 (100.0%)
+    longest uncovered:  55 chars
+      ', although not an official World Cup race at the time.'
+    statement density:  34.04 / 1000 chars
+    title reliance:      45 / 58 (77.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 90
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      87
+resource nodes:        44
+entity nodes:          44
+literal values:        22
+predicates:            55
+
+N-Triples:
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestOlympicFinish> "12th" .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestOlympicFinishEvent> <urn:graphragprov:entity:slalom> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestOlympicFinishYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestWorldChampionshipEvent> <urn:graphragprov:entity:slalom> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestWorldChampionshipLocation> <urn:graphragprov:entity:Val%20d%27Is%C3%A8re> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestWorldChampionshipResult> "tenth" .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestWorldChampionshipYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestWorldCupFinish> "seventh" .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestWorldCupFinishDate> "2005-12"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bestWorldCupFinishInEvent> <urn:graphragprov:entity:Giant%20slalom> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Burlington%2C%20Vermont> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:bornOn> "1981-05-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:Winter%20Olympics> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:World%20Championships> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:competedInYear> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:competedInYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:competedInYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:competedInYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:competedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Bob%20Cochran> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:alpine%20ski%20racer> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Skiing%20Cochrans> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:U.S.> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:specializedIn> <urn:graphragprov:entity:technical%20events> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:U.S.%20national%20titles> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:wonTitleAt> <urn:graphragprov:entity:Alyeska> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:wonTitleIn> <urn:graphragprov:entity:Alaska> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:wonTitleInEvent> <urn:graphragprov:entity:giant%20slalom> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:wonTitleInEvent> <urn:graphragprov:entity:slalom> .
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:wonTitleInYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Skiing%20Cochrans> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Richmond%2C%20Vermont> .
+  <urn:graphragprov:entity:1972%20Winter%20Olympics> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Japan> .
+  <urn:graphragprov:entity:Barbara%20Cochran> <urn:graphragprov:predicate:inductedInYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Barbara%20Cochran> <urn:graphragprov:predicate:inductedInYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:family%20practice%20physician> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:bestWorldCupSeasonFinish> <urn:graphragprov:entity:eighth%20overall> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:bestWorldCupSeasonFinishInEvent> <urn:graphragprov:entity:slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:bestWorldCupSeasonFinishYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Claremont%2C%20New%20Hampshire> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:bornOn> "1951-12-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:1972%20Winter%20Olympics> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:World%20Championships> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:World%20Cup> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:consideredWeakestEvent> <urn:graphragprov:entity:giant%20slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Vermont> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:fatherOf> <urn:graphragprov:entity:Jimmy%20Cochran> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:fellInEvent> <urn:graphragprov:entity:giant%20slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:fellInEvent> <urn:graphragprov:entity:slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:finishedInEvent> <urn:graphragprov:entity:downhill> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:finishedInEvent> <urn:graphragprov:entity:giant%20slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:firstAmericanMaleToWinWorldCupGiantSlalom> <urn:graphragprov:entity:American%20male> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:firstAmericanToWinEvent> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:graduatedInYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:hadPodiums> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:hadTopTenFinishes> "21"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:hadTopTenResultInEvent> <urn:graphragprov:entity:giant%20slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:inductedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:National%20Ski%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:alpine%20ski%20racer> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:joinedInHallOfFame> <urn:graphragprov:entity:Barbara%20Cochran> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:joinedInHallOfFame> <urn:graphragprov:entity:Marilyn%20Cochran> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:lastCompetedInWorldCupYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Skiing%20Cochrans> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Vermont%20Sports%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:placedInEvent> <urn:graphragprov:entity:downhill> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:placedInEventLocation> <urn:graphragprov:entity:Italy> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:placedInEventLocation> <urn:graphragprov:entity:Switzerland> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:placedInEventYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:placedInEventYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:racedIn> <urn:graphragprov:entity:pro%20tour> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:studiedAt> <urn:graphragprov:entity:University%20of%20Vermont> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:topTenResultsSplitBetween> <urn:graphragprov:entity:downhill%20and%20slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:World%20Cup%20victory> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:wonEventAt> <urn:graphragprov:entity:combined%20event> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:wonWorldCupInEvent> <urn:graphragprov:entity:giant%20slalom> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:New%20Hampshire> .
+  <urn:graphragprov:entity:Jimmy%20Cochran> <urn:graphragprov:predicate:bornOn> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jimmy%20Cochran> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:World%20Cup%20racer> .
+  <urn:graphragprov:entity:Marilyn%20Cochran> <urn:graphragprov:predicate:inductedInYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Marilyn%20Cochran> <urn:graphragprov:predicate:inductedInYear> "2014"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Skiing%20Cochrans> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Richmond%2C%20Vermont> .
+  <urn:graphragprov:entity:University%20of%20Vermont> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Burlington> .
+  <urn:graphragprov:entity:Vermont%20Sports%20Hall%20of%20Fame> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Barbara%20Cochran> .
+  <urn:graphragprov:entity:Vermont%20Sports%20Hall%20of%20Fame> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Marilyn%20Cochran> .
+  <urn:graphragprov:entity:combined%20event> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Kitzb%C3%BChel%2C%20Austria> .
+  <urn:graphragprov:entity:pro%20tour> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:North%20America> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.220s | model=deepseek-v4-flash
+      tokens:   in=4941 | out=178 | total=5119 | cached=384 | uncached=4557
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Bob%20Cochran> .
+  - <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Vermont> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5765e0b418cc3c4f>
+  FROM <urn:graphragprov:unit:u_7baabd3125652f70>
+  WHERE { <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+GraphDB execution:
+  observed answers: ('University of Vermont',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Bob Cochran (skier)', 'Jimmy Cochran']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2c2e03720bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/2c2e03720bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11160
+output tokens:         14819
+total tokens:          25979
+cached input tokens:   4480
+uncached input tokens: 6680
+cumulative LLM seconds: 64.436
+
+statement occurrences: 90
+semantic triples:      87
+entity nodes:          44
+literal values:        22
+predicates:            55
+query attempts:        1
+observed answers:      ('University of Vermont',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 62.242s
+  graph.reference.measurements [attempt=1]: 0.012s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.114s
+  graph.observation [attempt=1]: 0.011s
+  graph.frozen.measurements [attempt=1]: 0.009s
+  query.reference.generation [attempt=1]: 2.221s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.549s

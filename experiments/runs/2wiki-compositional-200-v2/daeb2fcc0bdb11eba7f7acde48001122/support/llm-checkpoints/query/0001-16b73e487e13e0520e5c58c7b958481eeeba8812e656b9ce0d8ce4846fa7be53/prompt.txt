@@ -1,0 +1,108 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the place of birth of Princess Clotilde Of Saxe-Coburg And Gotha's husband?
+
+Expected answer: Pressburg
+
+Benchmark evidence relations:
+1. Princess Clotilde of Saxe-Coburg and Gotha | spouse | Archduke Joseph Karl of Austria
+2. Archduke Joseph Karl of Austria | place of birth | Pressburg
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Albert%20Thomas%20Sinclair> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Albert%20Thomas%20Sinclair> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:lawyer> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:a%20large%20octavo%20volume%20handsomely%20bound> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:Palatine%20of%20Hungary> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Pressburg> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:bornOn> "1833-03-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Archduke%20Joseph%2C%20Palatine%20of%20Hungary> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Duchess%20Maria%20Dorothea%20of%20W%C3%BCrttemberg> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:commanded> <urn:graphragprov:entity:Brigade%20in%20the%20North%20Army> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:correspondedWith> <urn:graphragprov:entity:Albert%20Thomas%20Sinclair> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Fiume> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:diedOn> "1905-06-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:member%20of%20the%20Habsburg%20dynasty> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:interest> <urn:graphragprov:entity:Romani%20language> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Austrian%20Army> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:militaryRank> <urn:graphragprov:entity:Major%20General> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:militaryRankStartYear> "1860"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:military> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Austro-Prussian%20War> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:participatedInBattle> <urn:graphragprov:entity:K%C3%B6niggr%C3%A4tz> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:predecessor> <urn:graphragprov:entity:Stephen> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:startYear> "1867"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Archduke%20Joseph%2C%20Palatine%20of%20Hungary> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Leopold%20II%2C%20Holy%20Roman%20Emperor> .
+<urn:graphragprov:entity:a%20large%20octavo%20volume%20handsomely%20bound> <urn:graphragprov:predicate:topic> <urn:graphragprov:entity:philological%20work%20comparing%20the%20gypsy%20words%20with%20Sanskrit%2C%20Hindustani%20Persian%2C%20etc.> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Archduke> .
+<urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Austria> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Neuilly-sur-Seine> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:bornOn> "1846-07-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Alcs%C3%BAt> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:diedOn> "1927-06-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:fullName> "Marie Adelheid Amalie Clotilde, Prinzessin von Sachsen-Coburg und Gotha, Herzogin zu Sachsen" .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Archduchess> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Princess> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:%C3%8Ele-de-France> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hungary> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Kingdom%20of%20the%20French> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Saxe-Coburg%20and%20Gotha> .
+<urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> .

@@ -1,0 +1,194 @@
+
+H0 one-case execution
+  case:          66205b4e0bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film Hoodman Blind?
+  expected:      August 31, 1973
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/66205b4e0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Hoodman Blind'
+  source unit: u_d46a299a166c83e7d2a3b4bc6cca630bfa3538726e829c479276e43ddde8f035
+  text chars:  282
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.555s | model=deepseek-v4-flash
+      tokens:   in=2324 | out=1314 | total=3638 | cached=2048 | uncached=276
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 207 / 295 (70.2%)
+    characters text:     207 / 282 (73.4%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  14 chars
+      '. The film is'
+    statement density:  30.51 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=6 title='John Ford'
+  source unit: u_b147c77cfe71fcf6b4d6a20a03998ab4f20886e8d8d8977bcc23e965233b30bc
+  text chars:  1049
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 13.005s | model=deepseek-v4-flash
+      tokens:   in=2629 | out=3041 | total=5670 | cached=2048 | uncached=581
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 442 / 1058 (41.8%)
+    characters text:     433 / 1049 (41.3%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  92 chars
+      '"( 1962), as well as adaptations of classic 20th- century American novels such as the film"'
+    statement density:  19.85 / 1000 chars
+    title reliance:      20 / 21 (95.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 30
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      30
+resource nodes:        22
+entity nodes:          22
+literal values:        9
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:How%20Green%20Was%20My%20Valley> <urn:graphragprov:predicate:wonBestPicture> <urn:graphragprov:entity:Best%20Picture> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Director> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:awardWinningYear> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:awardWinningYear> "1940"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:awardWinningYear> "1941"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:awardWinningYear> "1952"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:careerSpan> "more than 50 years" .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:dateOfBirth> "1894-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:dateOfDeath> "1973-08-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Stagecoach> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20Grapes%20of%20Wrath> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20Man%20Who%20Shot%20Liberty%20Valance> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20Searchers> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:directedFilmCount> "more than 140" .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Ingmar%20Bergman> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Orson%20Welles> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:regardedAs> <urn:graphragprov:entity:one%20of%20the%20most%20important%20and%20influential%20filmmakers> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:usedTechnique> <urn:graphragprov:entity:location%20shooting> .
+  <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:usedTechnique> <urn:graphragprov:entity:long%20shots> .
+  <urn:graphragprov:entity:1913%20film%20of%20the%20same%20name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Gordon> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:1916%20William%20Farnum%20Fox%20feature%20titled%20%22A%20Man%20of%20Sorrow%22> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:play%20%22Hoodman%20Blind%22> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:John%20Ford> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:publicationYear> "1923"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:remakeOf> <urn:graphragprov:entity:1913%20film%20of%20the%20same%20name> .
+  <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:lost> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.613s | model=deepseek-v4-flash
+      tokens:   in=1993 | out=181 | total=2174 | cached=512 | uncached=1481
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:John%20Ford> .
+  - <urn:graphragprov:entity:John%20Ford> <urn:graphragprov:predicate:dateOfDeath> "1973-08-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b147c77cfe71fcf6>
+  FROM <urn:graphragprov:unit:u_d46a299a166c83e7>
+  WHERE { <urn:graphragprov:entity:Hoodman%20Blind> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1973-08-31',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Hoodman Blind', 'John Ford']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  66205b4e0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/66205b4e0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6946
+output tokens:         4536
+total tokens:          11482
+cached input tokens:   4608
+uncached input tokens: 2338
+cumulative LLM seconds: 21.173
+
+statement occurrences: 30
+semantic triples:      30
+entity nodes:          22
+literal values:        9
+predicates:            19
+query attempts:        1
+observed answers:      ('1973-08-31',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 19.572s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.056s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.614s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.457s

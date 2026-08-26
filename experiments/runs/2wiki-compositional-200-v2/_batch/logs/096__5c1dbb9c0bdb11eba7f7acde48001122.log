@@ -1,0 +1,189 @@
+
+H0 one-case execution
+  case:          5c1dbb9c0bdb11eba7f7acde48001122
+  hops:          2
+  question:      When was Rózsika Rothschild's husband born?
+  expected:      9 May 1877
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/5c1dbb9c0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Rózsika Rothschild'
+  source unit: u_e6aa1e3c0b73ff0fe9041924152b58ac70400bebfb60f03a9cc62b1f0a0cbc1c
+  text chars:  241
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.819s | model=deepseek-v4-flash
+      tokens:   in=2319 | out=1603 | total=3922 | cached=2048 | uncached=271
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 172 / 259 (66.4%)
+    characters text:     154 / 241 (63.9%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  23 chars
+      'Rózsika Rothschild was'
+    statement density:  42.47 / 1000 chars
+    title reliance:      7 / 11 (63.6%)
+
+[GRAPH 2/2] paragraph=0 title='Charles Rothschild'
+  source unit: u_62c668e3a317851296f2969456c234b821eb580325d0a3680ef4f5f13b9744b6
+  text chars:  300
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.841s | model=deepseek-v4-flash
+      tokens:   in=2464 | out=2235 | total=4699 | cached=2048 | uncached=416
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 230 / 318 (72.3%)
+    characters text:     212 / 300 (70.7%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  20 chars
+      'that he considered'
+    statement density:  44.03 / 1000 chars
+    title reliance:      10 / 14 (71.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 25
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      23
+resource nodes:        17
+entity nodes:          17
+literal values:        6
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Nathaniel%20Charles%20Rothschild> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:bornOn> "1877-05-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:diedOn> "1923-10-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:knownAs> <urn:graphragprov:entity:Charles> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Rothschild%20family> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:banker> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:entomologist> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:rememberedFor> <urn:graphragprov:entity:The%20Rothschild%20List> .
+  <urn:graphragprov:entity:The%20Rothschild%20List> <urn:graphragprov:predicate:coversLocation> <urn:graphragprov:entity:Britain> .
+  <urn:graphragprov:entity:The%20Rothschild%20List> <urn:graphragprov:predicate:createdBy> <urn:graphragprov:entity:Charles%20Rothschild> .
+  <urn:graphragprov:entity:The%20Rothschild%20List> <urn:graphragprov:predicate:creationYear> "1915"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Rothschild%20List> <urn:graphragprov:predicate:numberOfSites> "284"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:The%20Rothschild%20List> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:nature%20reserves> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:banker> .
+  <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:entomologist> .
+  <urn:graphragprov:entity:Nagyv%C3%A1rad> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hungary> .
+  <urn:graphragprov:entity:Nagyv%C3%A1rad> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Romania> .
+  <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:R%C3%B3zsika%20Edle%20von%20Wertheimstein> .
+  <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Nagyv%C3%A1rad> .
+  <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:bornOn> "1870-10-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:London> .
+  <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:diedOn> "1940-06-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:tennis%20player> .
+  <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Charles%20Rothschild> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.653s | model=deepseek-v4-flash
+      tokens:   in=1741 | out=219 | total=1960 | cached=384 | uncached=1357
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Charles%20Rothschild> .
+  - <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:bornOn> "1877-05-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Charles%20Rothschild> . <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:bornOn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_62c668e3a3178512>
+  FROM <urn:graphragprov:unit:u_e6aa1e3c0b73ff0f>
+  WHERE { <urn:graphragprov:entity:R%C3%B3zsika%20Rothschild> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Charles%20Rothschild> . <urn:graphragprov:entity:Charles%20Rothschild> <urn:graphragprov:predicate:bornOn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1877-05-09',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Charles Rothschild', 'Rózsika Rothschild']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  5c1dbb9c0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/5c1dbb9c0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6524
+output tokens:         4057
+total tokens:          10581
+cached input tokens:   4480
+uncached input tokens: 2044
+cumulative LLM seconds: 19.313
+
+statement occurrences: 25
+semantic triples:      23
+entity nodes:          17
+literal values:        6
+predicates:            17
+query attempts:        1
+observed answers:      ('1877-05-09',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 17.666s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.654s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.685s

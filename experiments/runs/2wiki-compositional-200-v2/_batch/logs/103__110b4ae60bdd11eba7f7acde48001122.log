@@ -1,0 +1,499 @@
+
+H0 one-case execution
+  case:          110b4ae60bdd11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the performer of song Her Town Too?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/110b4ae60bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Her Town Too'
+  source unit: u_1fa574d6ff27715cb7b56252fe9c6623c7e355cc1f56bdc0a60f26660aa77450
+  text chars:  2193
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 66.989s | model=deepseek-v4-flash
+      tokens:   in=2755 | out=16384 | total=19139 | cached=2048 | uncached=707
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #2] sending...
+      provider: 34.901s | model=deepseek-v4-flash
+      tokens:   in=2800 | out=8198 | total=10998 | cached=2688 | uncached=112
+    [LLM graph.reference #3] sending...
+      provider: 2.695s | model=deepseek-v4-flash
+      tokens:   in=1693 | out=511 | total=2204 | cached=0 | uncached=1693
+  extraction: ACCEPTED
+  statements: 52
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    51
+    initially rejected: 4
+
+    initial rejection #15
+      validator:
+        response.statements[15].predicate.evidence[0]: quote 'reached #21 on the Mainstream Rock chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "#21",
+                "segment": "text"
+              }
+            ],
+            "value": "21"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "reached #21 on the Mainstream Rock chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Her Town Too\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Her Town Too"
+          }
+        }
+
+    initial rejection #18
+      validator:
+        response.statements[18].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taylor",
+                "segment": "text"
+              }
+            ],
+            "value": "James Taylor"
+          }
+        }
+
+    initial rejection #32
+      validator:
+        response.statements[32].predicate.evidence[0]: quote 'a gently incisive divorce song' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a gently incisive divorce song",
+                "segment": "text"
+              }
+            ],
+            "value": "a gently incisive divorce song"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a gently incisive divorce song",
+                "segment": "text"
+              }
+            ],
+            "value": "describedAs"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Her Town Too\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Her Town Too"
+          }
+        }
+
+    initial rejection #47
+      validator:
+        response.statements[47].predicate.evidence[0]: quote '1977' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "1977",
+                "segment": "text"
+              }
+            ],
+            "value": "1977"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "1977",
+                "segment": "text"
+              }
+            ],
+            "value": "publicationYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"JT",
+                "segment": "text"
+              }
+            ],
+            "value": "JT"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'reached #21 on the Mainstream Rock chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "#21",
+                "segment": "text"
+              }
+            ],
+            "value": "21"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "reached #21 on the Mainstream Rock chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Her Town Too\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Her Town Too"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'a gently incisive divorce song' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a gently incisive divorce song",
+                "segment": "text"
+              }
+            ],
+            "value": "a gently incisive divorce song"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a gently incisive divorce song",
+                "segment": "text"
+              }
+            ],
+            "value": "describedAs"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Her Town Too\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Her Town Too"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 52
+  coverage:
+    characters combined: 1217 / 2205 (55.2%)
+    characters text:     1217 / 2193 (55.5%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           17 / 17 (100.0%)
+    longest uncovered:  86 chars
+      'about how difficult it was to be friends" with both parties after the breakup. Since'
+    statement density:  23.58 / 1000 chars
+    title reliance:      0 / 52 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='James Taylor'
+  source unit: u_b631bb902f1284449a81f00d1b53a05ff04cf79f3ab41d8fc8c4df0374ec03d9
+  text chars:  1132
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 23.664s | model=deepseek-v4-flash
+      tokens:   in=3136 | out=5594 | total=8730 | cached=2048 | uncached=1088
+  extraction: ACCEPTED
+  statements: 39
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    39
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     39
+  coverage:
+    characters combined: 687 / 1144 (60.1%)
+    characters text:     675 / 1132 (59.6%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           12 / 12 (100.0%)
+    longest uncovered:  58 chars
+      '. He enjoyed a resurgence in chart performance during the'
+    statement density:  34.09 / 1000 chars
+    title reliance:      28 / 39 (71.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 91
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 1
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      89
+resource nodes:        51
+entity nodes:          51
+literal values:        18
+predicates:            57
+
+N-Triples:
+  <urn:graphragprov:entity:Betsy%20Asher> <urn:graphragprov:predicate:divorcedFrom> <urn:graphragprov:entity:Peter%20Asher> .
+  <urn:graphragprov:entity:Dad%20Loves%20His%20Work> <urn:graphragprov:predicate:publicationYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Don%20Shewey> <urn:graphragprov:predicate:critic> <urn:graphragprov:entity:Rolling%20Stone> .
+  <urn:graphragprov:entity:Don%20Shewey> <urn:graphragprov:predicate:noted> <urn:graphragprov:entity:the%20narrative%20never%20quite%20reaches%20a%20resolution> .
+  <urn:graphragprov:entity:Greatest%20Hits%20Volume%202> <urn:graphragprov:predicate:publicationYear> "2000"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Dad%20Loves%20His%20Work> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Billboard%20Adult%20Contemporary%20chart> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Billboard%20Hot%20100> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Mainstream%20Rock%20chart> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chartPosition> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chartPosition> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:a%20catchy%2C%20mindless%20ditty> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:a%20relentless%20bolero%20quality> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:a%20tender%2C%20well-meaning%20song> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:mellifluous%20melody> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:enteredChartAt> "38"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:enteredTop40> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:hasLyric> <urn:graphragprov:entity:she%20always%20figured%20that%20they%20were%20her%20friends%20but%20maybe%20they%20can%20live%20without%20her> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:hasMaturityInSongStructure> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:hasMellifluousMelody> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:notReachTop10> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:J.%20D.%20Souther> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:publicationYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:releasedAsSingle> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:releasedOnCompilation> <urn:graphragprov:entity:Greatest%20Hits%20Volume%202> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:resonatesWith> <urn:graphragprov:entity:people%20who%20have%20had%20friendships%20with%20one%20or%20the%20other%20partner%20disintegrate%20after%20a%20relationship%20ends> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:speculatedAbout> <urn:graphragprov:entity:Carly%20Simon> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:statedSubject> <urn:graphragprov:entity:the%20ex-wife%20of%20a%20mutual%20friend> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:aftermath%20of%20a%20breakup%20of%20a%20long%20term%20relationship> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:subjectPerson> <urn:graphragprov:entity:Betsy%20Asher> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:J.%20D.%20Souther> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:James%20Taylor> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Waddy%20Wachtel> .
+  <urn:graphragprov:entity:J.%20D.%20Souther> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Her%20Town%20Too> .
+  <urn:graphragprov:entity:JT> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:lastSingleToReachTop40> <urn:graphragprov:entity:Her%20Town%20Too> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:manager> <urn:graphragprov:entity:Peter%20Asher> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Her%20Town%20Too> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Peter%20Asher> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Carly%20Simon> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:wroteSong> <urn:graphragprov:entity:Her%20Town%20Too> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:wroteSong> <urn:graphragprov:entity:Your%20Smiling%20Face> .
+  <urn:graphragprov:entity:John%20Griffin> <urn:graphragprov:predicate:critic> <urn:graphragprov:entity:Montreal%20Gazette> .
+  <urn:graphragprov:entity:John%20Griffin> <urn:graphragprov:predicate:praised> <urn:graphragprov:entity:Her%20Town%20Too> .
+  <urn:graphragprov:entity:Peter%20Asher> <urn:graphragprov:predicate:managerOf> <urn:graphragprov:entity:James%20Taylor> .
+  <urn:graphragprov:entity:Peter%20Asher> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:James%20Taylor> .
+  <urn:graphragprov:entity:Rolling%20Stone%20Album%20Guide> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:Her%20Town%20Too> .
+  <urn:graphragprov:entity:Waddy%20Wachtel> <urn:graphragprov:predicate:wroteSong> <urn:graphragprov:entity:Her%20Town%20Too> .
+  <urn:graphragprov:entity:Your%20Smiling%20Face> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Before%20This%20World> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Before%20This%20World> <urn:graphragprov:predicate:publicationYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Fire%20and%20Rain> <urn:graphragprov:predicate:chartPosition> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:certification> <urn:graphragprov:entity:Diamond> .
+  <urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:sales> "12000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:salesRegion> <urn:graphragprov:entity:US> .
+  <urn:graphragprov:entity:JT> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:albumSales> "1000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:albumSalesPeriod> "1977-2007" .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:awardCount> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Award> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:awardWinner> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:breakthroughSingle> <urn:graphragprov:entity:Fire%20and%20Rain> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:breakthroughYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:firstNumberOneHit> <urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:James%20Vernon%20Taylor> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:inductedInYear> "2000"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:best-selling%20music%20artist> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Handy%20Man> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:How%20Sweet%20It%20Is%20%28To%20Be%20Loved%20by%20You%29> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Sweet%20Baby%20James> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:guitarist> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer-songwriter> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordSales> "100000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordSalesScope> <urn:graphragprov:entity:worldwide> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordSalesUnit> <urn:graphragprov:entity:record> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedSong> <urn:graphragprov:entity:Before%20This%20World> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedSong> <urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedWork> <urn:graphragprov:entity:Covers> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedWork> <urn:graphragprov:entity:Hourglass> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedWork> <urn:graphragprov:entity:October%20Road> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:resurgencePeriod> "late 1990s and 2000s" .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:retainedLargeAudience> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Carole%20King> .
+  <urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> <urn:graphragprov:predicate:writtenInYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.415s | model=deepseek-v4-flash
+      tokens:   in=5002 | out=189 | total=5191 | cached=384 | uncached=4618
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> .
+  - <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> . <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1fa574d6ff27715c>
+  FROM <urn:graphragprov:unit:u_b631bb902f128444>
+  WHERE { <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> . <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Her Town Too', 'James Taylor']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  110b4ae60bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/110b4ae60bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          15386
+output tokens:         30876
+total tokens:          46262
+cached input tokens:   7168
+uncached input tokens: 8218
+cumulative LLM seconds: 129.663
+
+statement occurrences: 91
+semantic triples:      89
+entity nodes:          51
+literal values:        18
+predicates:            57
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 128.275s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.034s
+  graph.materialization [attempt=1]: 0.092s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.416s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.260s

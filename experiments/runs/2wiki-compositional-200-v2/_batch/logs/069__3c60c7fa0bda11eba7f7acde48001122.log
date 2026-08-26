@@ -1,0 +1,359 @@
+
+H0 one-case execution
+  case:          3c60c7fa0bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the cause of death of creator of The Land Of Gorch?
+  expected:      toxic shock syndrome
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/3c60c7fa0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='The Land of Gorch'
+  source unit: u_26c8ed312d618409d8ca5788b98ba8e328bc9919dcb8b3111e14c86675884c96
+  text chars:  2255
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 29.166s | model=deepseek-v4-flash
+      tokens:   in=2753 | out=6929 | total=9682 | cached=2048 | uncached=705
+    [LLM graph.reference #2] sending...
+      provider: 1.358s | model=deepseek-v4-flash
+      tokens:   in=1044 | out=172 | total=1216 | cached=0 | uncached=1044
+  extraction: ACCEPTED
+  statements: 47
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    46
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.evidence[0]: quote 'season one of the American comedy television program "Saturday Night Live"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "season one of the American comedy television program \"Saturday Night Live\"",
+                "segment": "text"
+              }
+            ],
+            "value": "season one of the American comedy television program \"Saturday Night Live\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "appeared in",
+                "segment": "text"
+              }
+            ],
+            "value": "appearedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Land of Gorch",
+                "segment": "title"
+              }
+            ],
+            "value": "The Land of Gorch"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 47
+  coverage:
+    characters combined: 1606 / 2272 (70.7%)
+    characters text:     1589 / 2255 (70.5%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           19 / 19 (100.0%)
+    longest uncovered:  64 chars
+      '. Prior to his work for children on "Sesame Street", Henson had'
+    statement density:  20.69 / 1000 chars
+    title reliance:      13 / 47 (27.7%)
+
+[GRAPH 2/2] paragraph=7 title='Jim Henson'
+  source unit: u_5504e76e112312257378137613b6619b4a99f0d1f68f6f7f148b8db21f2a21fb
+  text chars:  1823
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 33.539s | model=deepseek-v4-flash
+      tokens:   in=3364 | out=8254 | total=11618 | cached=2048 | uncached=1316
+    [LLM graph.reference #4] sending...
+      provider: 1.029s | model=deepseek-v4-flash
+      tokens:   in=960 | out=8 | total=968 | cached=0 | uncached=960
+  extraction: ACCEPTED
+  statements: 56
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    56
+    initially rejected: 1
+
+    initial rejection #21
+      validator:
+        response.statements[21].predicate.evidence[0]: quote 'raised in University Park, Maryland' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "University Park, Maryland",
+                "segment": "text"
+              }
+            ],
+            "value": "University Park, Maryland"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "raised in University Park, Maryland",
+                "segment": "text"
+              }
+            ],
+            "value": "raisedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jim Henson",
+                "segment": "title"
+              }
+            ],
+            "value": "Jim Henson"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 56
+  coverage:
+    characters combined: 1228 / 1833 (67.0%)
+    characters text:     1218 / 1823 (66.8%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           16 / 16 (100.0%)
+    longest uncovered:  53 chars
+      '. During the later years of his life, he founded the'
+    statement density:  30.55 / 1000 chars
+    title reliance:      48 / 56 (85.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 103
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      101
+resource nodes:        94
+entity nodes:          94
+literal values:        13
+predicates:            65
+
+N-Triples:
+  <urn:graphragprov:entity:Al%20Franken> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+  <urn:graphragprov:entity:Alan%20Zweibel> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+  <urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:helped> <urn:graphragprov:entity:Jim%20Henson> .
+  <urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Dan%20Aykroyd> .
+  <urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Gilda%20Radner> .
+  <urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:John%20Belushi> .
+  <urn:graphragprov:entity:Bernie%20Brillstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Lorne%20Michaels> .
+  <urn:graphragprov:entity:Commentators> <urn:graphragprov:predicate:agreed> <urn:graphragprov:entity:the%20reception%20for%20%22The%20Land%20of%20Gorch%22%20was%20universally%20negative> .
+  <urn:graphragprov:entity:DVD%20Talk> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:the%20feature%20the%20worst%20mistake%20in%20the%20first%20season%20of%20%22Saturday%20Night%20Live%22> .
+  <urn:graphragprov:entity:Dinosaurs> <urn:graphragprov:predicate:publicationYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Frank%20Oz> <urn:graphragprov:predicate:agreed> <urn:graphragprov:entity:the%20partnership%20between%20Henson%27s%20team%20and%20the%20show%27s%20writers%20was%20imperfect> .
+  <urn:graphragprov:entity:Frank%20Oz> <urn:graphragprov:predicate:thankful> <urn:graphragprov:entity:they%20moved%20on%20to%20%22The%20Muppet%20Show%22> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:The%20Ed%20Sullivan%20Show> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:late-night%20comedy%20television%20programs> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:Sam%20and%20Friends> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:puppetry%20work> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:The%20Land%20of%20Gorch> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:feared> <urn:graphragprov:entity:he%20would%20become%20typecast%20into%20working%20on%20children%27s%20television%20series> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:felt> <urn:graphragprov:entity:they%20were%20trying%20to%20write%20for%20situational%20comedy%20rather%20than%20staying%20within%20his%20intended%20story> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:representedBy> <urn:graphragprov:entity:Bernie%20Brillstein> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:transitionedTo> <urn:graphragprov:entity:Saturday%20Night%20Live> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:workedFor> <urn:graphragprov:entity:adult%20audiences> .
+  <urn:graphragprov:entity:Michael%20J.%20Bernsten> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:in%20his%20essay%20%22The%20Muppetry%20of%20Nightmares%22%20that%20the%20idea%20failed%20because%20the%20characters%20were%20irredeemable%20and%20unfunny> .
+  <urn:graphragprov:entity:Michael%20O%27Donoghue> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+  <urn:graphragprov:entity:Mighty%20Favog> <urn:graphragprov:predicate:consultedBy> <urn:graphragprov:entity:characters> .
+  <urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:behaved> <urn:graphragprov:entity:boorishly> .
+  <urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:madeReferencesTo> <urn:graphragprov:entity:consumption%20of%20alcohol> .
+  <urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:madeReferencesTo> <urn:graphragprov:entity:drug%20abuse> .
+  <urn:graphragprov:entity:Muppet%20characters> <urn:graphragprov:predicate:madeReferencesTo> <urn:graphragprov:entity:sexual%20activity> .
+  <urn:graphragprov:entity:San%20Francisco%20Chronicle> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:the%20characters%20the%20opposite%20of%20Kermit%20the%20Frog> .
+  <urn:graphragprov:entity:San%20Francisco%20Chronicle> <urn:graphragprov:predicate:compared> <urn:graphragprov:entity:them%20to%20trolls> .
+  <urn:graphragprov:entity:The%20A.V.%20Club> <urn:graphragprov:predicate:said> <urn:graphragprov:entity:it%20was%20an%20in-joke%20that%20nobody%20wanted%20to%20keep%20the%20sketches%20on%20%22Saturday%20Night%20Live> .
+  <urn:graphragprov:entity:The%20Dark%20Crystal> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Saturday%20Night%20Live> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:featured> <urn:graphragprov:entity:Jim%20Henson%27s%20Muppets> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:hadImpactOn> <urn:graphragprov:entity:later%20Henson%20works> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:King%20Ploobis> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Queen%20Peuta> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Scred> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Vazh> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:includedCharacter> <urn:graphragprov:entity:Wiss> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Dinosaurs> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:The%20Dark%20Crystal> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:recurring%20skit> .
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:premise> <urn:graphragprov:entity:featured%20Muppet%20characters%2C%20who%20were%20members%20of%20a%20royal%20family%2C%20in%20a%20faraway%20locale> .
+  <urn:graphragprov:entity:Tom%20Davis> <urn:graphragprov:predicate:triedToAvoid> <urn:graphragprov:entity:writing%20the%20weekly%20sketches> .
+  <urn:graphragprov:entity:writers%20of%20Saturday%20Night%20Live> <urn:graphragprov:predicate:clashedWith> <urn:graphragprov:entity:Henson%27s%20vision> .
+  <urn:graphragprov:entity:Fraggle%20Rock> <urn:graphragprov:predicate:activeYears> "1983–1987" .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:Saturday%20Night%20Live> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:ashesScatteredNear> <urn:graphragprov:entity:Taos%2C%20New%20Mexico> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:beganDeveloping> <urn:graphragprov:entity:puppets> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Greenville%2C%20Mississippi> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:bornOn> "1936-09-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:celebratedWith> <urn:graphragprov:entity:wave%20of%20tributes> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:coFounded> <urn:graphragprov:entity:Muppets%2C%20Inc.> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:Sam%20and%20Friends> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:createdWhile> <urn:graphragprov:entity:freshman%20at%20the%20University%20of%20Maryland%2C%20College%20Park> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Fraggle%20Rock> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:The%20Muppets> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:degree> <urn:graphragprov:entity:home%20economics> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:experimental%20films> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedAtAge> "53"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedFrom> <urn:graphragprov:entity:toxic%20shock%20syndrome> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedOn> "1990-05-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Labyrinth> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Dark%20Crystal> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Jim%20Henson%20Foundation> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Jim%20Henson%27s%20Creature%20Shop> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:James%20Maury%20Henson> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:graduatedFrom> <urn:graphragprov:entity:University%20of%20Maryland> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:helpedDevelop> <urn:graphragprov:entity:characters%20for%20Sesame%20Street> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:inductedInYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:joined> <urn:graphragprov:entity:Sesame%20Street> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:joinedInYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:animator> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cartoonist> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:inventor> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:puppeteer> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:posthumouslyInductedInto> <urn:graphragprov:entity:Hollywood%20Walk%20of%20Fame> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:The%20Muppet%20Show> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:coffee%20advertisements> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:Leland%2C%20Mississippi> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:remainsCremated> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:selectedAs> <urn:graphragprov:entity:Disney%20Legends> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:selectedInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Emmy%20Award> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFameFor> <urn:graphragprov:entity:Ernie> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFameFor> <urn:graphragprov:entity:Kermit%20the%20Frog> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFameFor> <urn:graphragprov:entity:Rowlf%20the%20Dog> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFor> <urn:graphragprov:entity:The%20Jim%20Henson%20Hour> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:wonFor> <urn:graphragprov:entity:The%20Storyteller> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:publicationYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Muppets%2C%20Inc.> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:The%20Jim%20Henson%20Company> .
+  <urn:graphragprov:entity:Muppets%2C%20Inc.> <urn:graphragprov:predicate:foundedInYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sam%20and%20Friends> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:short-form%20comedy%20television%20program> .
+  <urn:graphragprov:entity:The%20Dark%20Crystal> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Muppet%20Show> <urn:graphragprov:predicate:premieredInYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Muppets> <urn:graphragprov:predicate:activeYears> "1955–present" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.716s | model=deepseek-v4-flash
+      tokens:   in=5800 | out=205 | total=6005 | cached=512 | uncached=5288
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:The%20Land%20of%20Gorch> .
+  - <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedFrom> <urn:graphragprov:entity:toxic%20shock%20syndrome> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:The%20Land%20of%20Gorch> . <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedFrom> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_26c8ed312d618409>
+  FROM <urn:graphragprov:unit:u_5504e76e11231225>
+  WHERE { <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:The%20Land%20of%20Gorch> . <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:diedFrom> ?answer . }
+
+GraphDB execution:
+  observed answers: ('toxic shock syndrome',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Jim Henson', 'The Land of Gorch']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3c60c7fa0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/3c60c7fa0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13921
+output tokens:         15568
+total tokens:          29489
+cached input tokens:   4608
+uncached input tokens: 9313
+cumulative LLM seconds: 66.808
+
+statement occurrences: 103
+semantic triples:      101
+entity nodes:          94
+literal values:        13
+predicates:            65
+query attempts:        1
+observed answers:      ('toxic shock syndrome',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 65.114s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.032s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.717s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.478s

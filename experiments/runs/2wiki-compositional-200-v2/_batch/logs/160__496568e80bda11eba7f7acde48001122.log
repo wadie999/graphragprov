@@ -1,0 +1,384 @@
+
+H0 one-case execution
+  case:          496568e80bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of the director of film La Fièvre Monte À El Pao?
+  expected:      22 February 1900
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/496568e80bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Luis Buñuel'
+  source unit: u_6d26f9311a6ba6dafaf2095e13f34ab2e822aa6e32d78e564c38722e963ed092
+  text chars:  1779
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 31.302s | model=deepseek-v4-flash
+      tokens:   in=2712 | out=7621 | total=10333 | cached=2048 | uncached=664
+    [LLM graph.reference #2] sending...
+      provider: 3.304s | model=deepseek-v4-flash
+      tokens:   in=1717 | out=709 | total=2426 | cached=0 | uncached=1717
+  extraction: ACCEPTED
+  statements: 51
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    47
+    initially rejected: 4
+
+    initial rejection #44
+      validator:
+        response.statements[44].object.evidence[0]: quote "Sight & Sound's 2012 critics' poll of the top 250 films of all time" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sight & Sound's 2012 critics' poll of the top 250 films of all time",
+                "segment": "text"
+              }
+            ],
+            "value": "Sight & Sound's 2012 critics' poll of the top 250 films of all time"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "included in",
+                "segment": "text"
+              }
+            ],
+            "value": "filmIncludedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Luis Buñuel",
+                "segment": "title"
+              }
+            ],
+            "value": "Luis Buñuel"
+          }
+        }
+
+    initial rejection #46
+      validator:
+        response.statements[46].object.evidence[0]: quote "They Shoot Pictures, Don't They? list of the 1,000 greatest films of all time" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "They Shoot Pictures, Don't They? list of the 1,000 greatest films of all time",
+                "segment": "text"
+              }
+            ],
+            "value": "They Shoot Pictures, Don't They? list of the 1,000 greatest films of all time"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "included in",
+                "segment": "text"
+              }
+            ],
+            "value": "filmIncludedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Luis Buñuel",
+                "segment": "title"
+              }
+            ],
+            "value": "Luis Buñuel"
+          }
+        }
+
+    initial rejection #47
+      validator:
+        response.statements[47].predicate.evidence[0]: quote 'ranks second only to Jean-Luc Godard' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "second",
+                "segment": "text"
+              }
+            ],
+            "value": "second"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ranks second only to Jean-Luc Godard",
+                "segment": "text"
+              }
+            ],
+            "value": "rank"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Luis Buñuel",
+                "segment": "title"
+              }
+            ],
+            "value": "Luis Buñuel"
+          }
+        }
+
+    initial rejection #48
+      validator:
+        response.statements[48].object.evidence[0]: quote 'Jean-Luc Godard' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jean-Luc Godard",
+                "segment": "text"
+              }
+            ],
+            "value": "Jean-Luc Godard"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "second only to",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedAfter"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Luis Buñuel",
+                "segment": "title"
+              }
+            ],
+            "value": "Luis Buñuel"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    4
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 51
+  coverage:
+    characters combined: 1076 / 1790 (60.1%)
+    characters text:     1065 / 1779 (59.9%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           11 / 11 (100.0%)
+    longest uncovered:  141 chars
+      'him" an iconoclast, moralist, and revolutionary who was a leader of avant- garde surrealism in his youth and a dominant international movie'
+    statement density:  28.49 / 1000 chars
+    title reliance:      36 / 51 (70.6%)
+
+[GRAPH 2/2] paragraph=7 title='La Fièvre Monte à El Pao'
+  source unit: u_3c3443f8d9350b07ce9d9b2903a34007f6c084dab428549b5e503d355dca5763
+  text chars:  276
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.900s | model=deepseek-v4-flash
+      tokens:   in=3066 | out=1709 | total=4775 | cached=2048 | uncached=1018
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 251 / 300 (83.7%)
+    characters text:     227 / 276 (82.2%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  7 chars
+      ') is a'
+    statement density:  36.67 / 1000 chars
+    title reliance:      10 / 11 (90.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 62
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 4
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      62
+resource nodes:        53
+entity nodes:          53
+literal values:        12
+predicates:            35
+
+N-Triples:
+  <urn:graphragprov:entity:G%C3%A9rard%20Philipe> <urn:graphragprov:predicate:diedDuring> <urn:graphragprov:entity:filming> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Republic%20of%20Sin> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:completedWith> <urn:graphragprov:entity:picture> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:hadScenesRewritten> <urn:graphragprov:entity:scenes> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:hadScenesShotUsing> <urn:graphragprov:entity:double> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:lastFilmOf> <urn:graphragprov:entity:G%C3%A9rard%20Philipe> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:originalTitle> <urn:graphragprov:entity:La%20fi%C3%A8vre%20monte%20%C3%A0%20El%20Pao> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:translation> <urn:graphragprov:entity:Fever%20Mounts%20at%20El%20Pao> .
+  <urn:graphragprov:entity:Bu%C3%B1uel%27s%20work> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:the%20marriage%20of%20the%20film%20image%20to%20the%20poetic%20image%2C%20creating%20a%20new%20reality%20...%20scandalous%20and%20subversive> .
+  <urn:graphragprov:entity:Ingmar%20Bergman> <urn:graphragprov:predicate:putIt> <urn:graphragprov:entity:Bu%C3%B1uel%20nearly%20always%20made%20Bu%C3%B1uel%20films> .
+  <urn:graphragprov:entity:John%20Huston> <urn:graphragprov:predicate:believed> <urn:graphragprov:entity:a%20Bu%C3%B1uel%20film%20is%20so%20distinctive%20as%20to%20be%20instantly%20recognizable> .
+  <urn:graphragprov:entity:John%20Huston> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:surrealist%20movement> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:surrealist%20movement%20of%20the%201920s> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:createdFilmsFrom> "1920s through the 1970s" .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:createdFilmsIn> "1920s" .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:createdFilmsIn> "1970s" .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:dateOfBirth> "1900-02-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:dateOfDeath> "1983-07-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Un%20Chien%20Andalou> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:filmCount> "15"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:filmCount> "7"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:filmIncludedIn> <urn:graphragprov:entity:Sight%20%26%20Sound%27s%202012%20critics%27%20poll%20of%20the%20top%20250%20films%20of%20all%20time> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:filmIncludedIn> <urn:graphragprov:entity:They%20Shoot%20Pictures%2C%20Don%27t%20They%3F%20list%20of%20the%201%2C000%20greatest%20films%20of%20all%20time> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:adventure> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:comedy> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:costume%20dramas> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:documentary> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:erotica> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:experimental%20film> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:fantasy> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:melodrama> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:musical> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:romance> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:satire> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:western> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Mexican> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Spanish> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:rank> "13"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:rank> "second" .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:rankedAfter> <urn:graphragprov:entity:Jean-Luc%20Godard> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:rankedOn> <urn:graphragprov:entity:their%20list%20of%20the%20top%20250%20directors> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:workSpans> "two continents, three languages" .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Mexico> .
+  <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Spain> .
+  <urn:graphragprov:entity:Octavio%20Paz> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Bu%C3%B1uel%27s%20work> .
+  <urn:graphragprov:entity:Octavio%20Paz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Writer> .
+  <urn:graphragprov:entity:Roger%20Ebert> <urn:graphragprov:predicate:critic> <urn:graphragprov:entity:critic> .
+  <urn:graphragprov:entity:That%20Obscure%20Object%20of%20Desire> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:National%20Board%20of%20Review> .
+  <urn:graphragprov:entity:That%20Obscure%20Object%20of%20Desire> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:National%20Society%20of%20Film%20Critics> .
+  <urn:graphragprov:entity:That%20Obscure%20Object%20of%20Desire> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> .
+  <urn:graphragprov:entity:That%20Obscure%20Object%20of%20Desire> <urn:graphragprov:predicate:madeIn> "48 years later" .
+  <urn:graphragprov:entity:That%20Obscure%20Object%20of%20Desire> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Best%20Director%20awards> .
+  <urn:graphragprov:entity:Un%20Chien%20Andalou> <urn:graphragprov:predicate:calledBy> <urn:graphragprov:entity:the%20most%20famous%20short%20film%20ever%20made> .
+  <urn:graphragprov:entity:Un%20Chien%20Andalou> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:picture> .
+  <urn:graphragprov:entity:Un%20Chien%20Andalou> <urn:graphragprov:predicate:madeIn> <urn:graphragprov:entity:silent%20era> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.504s | model=deepseek-v4-flash
+      tokens:   in=3952 | out=263 | total=4215 | cached=384 | uncached=3568
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> .
+  - <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:dateOfBirth> "1900-02-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> . <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3c3443f8d9350b07>
+  FROM <urn:graphragprov:unit:u_6d26f9311a6ba6da>
+  WHERE { <urn:graphragprov:entity:La%20Fi%C3%A8vre%20Monte%20%C3%A0%20El%20Pao> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> . <urn:graphragprov:entity:Luis%20Bu%C3%B1uel> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1900-02-22',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['La Fièvre Monte à El Pao', 'Luis Buñuel']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  496568e80bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/496568e80bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11447
+output tokens:         10302
+total tokens:          21749
+cached input tokens:   4480
+uncached input tokens: 6967
+cumulative LLM seconds: 45.010
+
+statement occurrences: 62
+semantic triples:      62
+entity nodes:          53
+literal values:        12
+predicates:            35
+query attempts:        1
+observed answers:      ('1900-02-22',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 42.529s
+  graph.reference.measurements [attempt=1]: 0.010s
+  graph.clear_support [attempt=1]: 0.058s
+  graph.materialization [attempt=1]: 0.066s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.009s
+  query.reference.generation [attempt=1]: 2.505s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.620s

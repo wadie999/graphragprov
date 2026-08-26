@@ -1,0 +1,180 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_6d26f9311a6ba6dafaf2095e13f34ab2e822aa6e32d78e564c38722e963ed092
+Title: Luis Buñuel
+Text:
+Luis Buñuel Portolés( 22 February 1900 – 29 July 1983) was a Spanish- born Mexican filmmaker who worked in France, Mexico and Spain. When Buñuel died at age 83, his obituary in" The New York Times" called him" an iconoclast, moralist, and revolutionary who was a leader of avant- garde surrealism in his youth and a dominant international movie director half a century later". His first picture," Un Chien Andalou" —made in the silent era—was called" the most famous short film ever made" by critic Roger Ebert, and his last film," That Obscure Object of Desire" —made 48 years later—won him Best Director awards from the National Board of Review and the National Society of Film Critics. Writer Octavio Paz called Buñuel's work" the marriage of the film image to the poetic image, creating a new reality ... scandalous and subversive". Often associated with the surrealist movement of the 1920s, Buñuel created films from the 1920s through the 1970s. His work spans two continents, three languages, and an array of genres, including experimental film, documentary, melodrama, satire, musical, erotica, comedy, romance, costume dramas, fantasy, crime film, adventure, and western. Despite this variety, filmmaker John Huston believed that, regardless of genre, a Buñuel film is so distinctive as to be instantly recognizable, or, as Ingmar Bergman put it," Buñuel nearly always made Buñuel films". Seven of Buñuel's films are included in" Sight& Sound"< nowiki>'</ nowiki >s 2012 critics' poll of the top 250 films of all time. Fifteen of his films are included in the" They Shoot Pictures, Do n't They?" list of the 1,000 greatest films of all time, for which he ranks second only to Jean- Luc Godard, with sixteen, and he ranks number 13 on their list of the top 250 directors.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 44,
+    "statement": {
+      "subject": {
+        "value": "Luis Buñuel",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Luis Buñuel",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "filmIncludedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "included in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Sight & Sound's 2012 critics' poll of the top 250 films of all time",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Sight & Sound's 2012 critics' poll of the top 250 films of all time",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[44].object.evidence[0]: quote \"Sight & Sound's 2012 critics' poll of the top 250 films of all time\" does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 46,
+    "statement": {
+      "subject": {
+        "value": "Luis Buñuel",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Luis Buñuel",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "filmIncludedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "included in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "They Shoot Pictures, Don't They? list of the 1,000 greatest films of all time",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "They Shoot Pictures, Don't They? list of the 1,000 greatest films of all time",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[46].object.evidence[0]: quote \"They Shoot Pictures, Don't They? list of the 1,000 greatest films of all time\" does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 47,
+    "statement": {
+      "subject": {
+        "value": "Luis Buñuel",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Luis Buñuel",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "rank",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "ranks second only to Jean-Luc Godard",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "second",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "second",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[47].predicate.evidence[0]: quote 'ranks second only to Jean-Luc Godard' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 48,
+    "statement": {
+      "subject": {
+        "value": "Luis Buñuel",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Luis Buñuel",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "rankedAfter",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "second only to",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Jean-Luc Godard",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Jean-Luc Godard",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[48].object.evidence[0]: quote 'Jean-Luc Godard' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

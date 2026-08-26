@@ -1,0 +1,114 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When did the director of film The Street With No Name die?
+
+Expected answer: June 24, 1984
+
+Benchmark evidence relations:
+1. The Street with No Name | director | William Keighley
+2. William Keighley | date of death | June 24, 1984
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Center%20City> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Los%20Angeles> .
+<urn:graphragprov:entity:Cordell%27s%20superior> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:FBI%20Inspector> .
+<urn:graphragprov:entity:Gene%20Cordell> <urn:graphragprov:predicate:infiltrates> <urn:graphragprov:entity:deadly%20crime%20gang> .
+<urn:graphragprov:entity:Gene%20Cordell> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:undercover%20FBI%20agent> .
+<urn:graphragprov:entity:Gene%20Cordell> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Mark%20Stevens> .
+<urn:graphragprov:entity:George%20A.%20Briggs> <urn:graphragprov:predicate:appearsIn> <urn:graphragprov:entity:The%20House%20on%2092nd%20Street> .
+<urn:graphragprov:entity:George%20A.%20Briggs> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:FBI%20Inspector> .
+<urn:graphragprov:entity:George%20A.%20Briggs> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Lloyd%20Nolan> .
+<urn:graphragprov:entity:Skid%20Row%20section> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Center%20City> .
+<urn:graphragprov:entity:The%20House%20on%2092nd%20Street> <urn:graphragprov:predicate:publicationYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:filmingStyle> <urn:graphragprov:entity:semidocumentary%20style> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:followUpTo> <urn:graphragprov:entity:The%20House%20on%2092nd%20Street> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20noir> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:publicationYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:publicationYear> "1948"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:takesPlaceIn> <urn:graphragprov:entity:Skid%20Row%20section> .
+<urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:tellsStoryOf> <urn:graphragprov:entity:Gene%20Cordell> .
+<urn:graphragprov:entity:First%20Motion%20Picture%20Unit> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:U.S.%20Army%20Air%20Forces> .
+<urn:graphragprov:entity:Genevieve%20Tobin> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:The%20Adventures%20of%20Robin%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Errol%20Flynn> .
+<urn:graphragprov:entity:The%20Adventures%20of%20Robin%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Olivia%20de%20Havilland> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:activeIn> <urn:graphragprov:entity:1910s%20and%201920s> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Philadelphia%2C%20Pennsylvania> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:bornOn> "1889-08-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:stroke> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> "1984-06-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York%2C%20New%20York> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Adventures%20of%20Robin%20Hood> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Ludlum%20School%20of%20Dramatic%20Art> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Warner%20Bros.> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:William%20Jackson%20Keighley> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20actor> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:still%20photographer> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:relocatedTo> <urn:graphragprov:entity:Hollywood> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:replacedBy> <urn:graphragprov:entity:Michael%20Curtiz> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:retiredIn> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Genevieve%20Tobin> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:startedActingAtAge> "23"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:supervised> <urn:graphragprov:entity:First%20Motion%20Picture%20Unit> .
+<urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Broadway> .

@@ -1,0 +1,184 @@
+
+H0 one-case execution
+  case:          df9be2b60bd911eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Cidade Ameaçada die?
+  expected:      14 May 2018
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/df9be2b60bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Cidade Ameaçada'
+  source unit: u_3728991545ae79822d194ce84e22bbf83827a909b1c257d8863424e82e3f7053
+  text chars:  260
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.419s | model=deepseek-v4-flash
+      tokens:   in=2322 | out=1087 | total=3409 | cached=2048 | uncached=274
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 220 / 275 (80.0%)
+    characters text:     220 / 260 (84.6%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  11 chars
+      ', which is'
+    statement density:  25.45 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Roberto Farias'
+  source unit: u_719aa1f52fc271542e2ce17a01999ebf313367f54d1aa57d4a528f87f583179c
+  text chars:  372
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.935s | model=deepseek-v4-flash
+      tokens:   in=2469 | out=1877 | total=4346 | cached=2048 | uncached=421
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 212 / 386 (54.9%)
+    characters text:     198 / 372 (53.2%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  77 chars
+      "( the's' was added to his surname due to an error at the registry) is also a"
+    statement density:  33.68 / 1000 chars
+    title reliance:      9 / 13 (69.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        15
+entity nodes:          15
+literal values:        4
+predicates:            12
+
+N-Triples:
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Brazilian> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:plotFollows> <urn:graphragprov:entity:a%20S%C3%A3o%20Paulo%20criminal%20known%20as%20%22Passarinho%22> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:publicationYear> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:submittedTo> <urn:graphragprov:entity:1960%20Cannes%20Film%20Festival> .
+  <urn:graphragprov:entity:a%20S%C3%A3o%20Paulo%20criminal%20known%20as%20%22Passarinho%22> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:an%20actual%20criminal%20dubbed%20%22Promessinha%22> .
+  <urn:graphragprov:entity:Pra%20Frente%2C%20Brasil> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> .
+  <urn:graphragprov:entity:Pra%20Frente%2C%20Brasil> <urn:graphragprov:predicate:enteredInto> <urn:graphragprov:entity:33rd%20Berlin%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Pra%20Frente%2C%20Brasil> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Reginaldo%20Faria> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Reginaldo%20Faria> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Reginaldo%20Faria> <urn:graphragprov:predicate:siblingOf> <urn:graphragprov:entity:Roberto%20Farias> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:bornOn> "1932-03-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> "2018-05-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:15%20films> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Brazilian> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.106s | model=deepseek-v4-flash
+      tokens:   in=1589 | out=221 | total=1810 | cached=384 | uncached=1205
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> .
+  - <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> "2018-05-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> . <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3728991545ae7982>
+  FROM <urn:graphragprov:unit:u_719aa1f52fc27154>
+  WHERE { <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> . <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2018-05-14',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Cidade Ameaçada', 'Roberto Farias']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  df9be2b60bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/df9be2b60bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6380
+output tokens:         3185
+total tokens:          9565
+cached input tokens:   4480
+uncached input tokens: 1900
+cumulative LLM seconds: 15.460
+
+statement occurrences: 20
+semantic triples:      20
+entity nodes:          15
+literal values:        4
+predicates:            12
+query attempts:        1
+observed answers:      ('2018-05-14',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.362s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.046s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.107s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.470s

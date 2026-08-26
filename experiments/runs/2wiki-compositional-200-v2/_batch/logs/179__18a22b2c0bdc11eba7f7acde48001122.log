@@ -1,0 +1,330 @@
+
+H0 one-case execution
+  case:          18a22b2c0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the performer of song Batdance?
+  expected:      Chanhassen, Minnesota
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/18a22b2c0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Batdance'
+  source unit: u_fcf1976a4c2f83608a58b88941b73295d62595fa7e8fff2ba75e70165f445fd6
+  text chars:  209
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 64.513s | model=deepseek-v4-flash
+      tokens:   in=2293 | out=16384 | total=18677 | cached=2048 | uncached=245
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #2] sending...
+      provider: 4.439s | model=deepseek-v4-flash
+      tokens:   in=2338 | out=1002 | total=3340 | cached=2176 | uncached=162
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 140 / 217 (64.5%)
+    characters text:     140 / 209 (67.0%)
+    characters title:    0 / 8 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  44 chars
+      ". Helped by the film's popularity, the song"
+    statement density:  32.26 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Prince (musician)'
+  source unit: u_fc1dd1f27dcb3302bc17c15c3dd2b1b9dc5c33a8387e0178009c1a74fa25f61c
+  text chars:  3180
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 39.017s | model=deepseek-v4-flash
+      tokens:   in=3042 | out=9661 | total=12703 | cached=2176 | uncached=866
+    [LLM graph.reference #4] sending...
+      provider: 1.220s | model=deepseek-v4-flash
+      tokens:   in=1253 | out=175 | total=1428 | cached=0 | uncached=1253
+  extraction: ACCEPTED
+  statements: 65
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    65
+    initially rejected: 1
+
+    initial rejection #42
+      validator:
+        response.statements[42].predicate.evidence[0]: quote 'debuted The New Power Generation band' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The New Power Generation",
+                "segment": "text"
+              }
+            ],
+            "value": "The New Power Generation"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "debuted The New Power Generation band",
+                "segment": "text"
+              }
+            ],
+            "value": "bandMember"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Prince (musician)",
+                "segment": "title"
+              }
+            ],
+            "value": "Prince (musician)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'debuted The New Power Generation band' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The New Power Generation",
+                "segment": "text"
+              }
+            ],
+            "value": "The New Power Generation"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "debuted The New Power Generation band",
+                "segment": "text"
+              }
+            ],
+            "value": "bandMember"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Prince (musician)",
+                "segment": "title"
+              }
+            ],
+            "value": "Prince (musician)"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 65
+  coverage:
+    characters combined: 1400 / 3197 (43.8%)
+    characters text:     1383 / 3180 (43.5%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           21 / 25 (84.0%)
+    longest uncovered:  245 chars
+      '. A guitar virtuoso known for his genre-crossing work, falsetto singing voice and flamboyant stage appearances, Prince is regarded as one of the greatest musicians of all time. Hi…'
+    statement density:  20.33 / 1000 chars
+    title reliance:      52 / 65 (80.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 72
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      72
+resource nodes:        56
+entity nodes:          56
+literal values:        14
+predicates:            28
+
+N-Triples:
+  <urn:graphragprov:entity:1999> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Controversy> <urn:graphragprov:predicate:publicationYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Dirty%20Mind> <urn:graphragprov:predicate:publicationYear> "1980"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:For%20You> <urn:graphragprov:predicate:publicationYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hit%20n%20Run%20Phase%20Two> <urn:graphragprov:predicate:publicationYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Musicology> <urn:graphragprov:predicate:publicationYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:publicationYear> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:American%20Music%20Award%20for%20Achievement%20and%20of%20Merit> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:American%20Music%20Awards> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Billboard%20Icon%20Award> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Brit%20Awards> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Globe%20Award> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Awards> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20President%27s%20Merit%20Award> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:MTV%20Video%20Music%20Awards> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:bandMember> <urn:graphragprov:entity:The%20Revolution> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Minneapolis%2C%20Minnesota> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:bornOn> "1958-06-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:accidental%20fentanyl%20overdose> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:changedNameTo> <urn:graphragprov:entity:Love%20Symbol> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:diedAt> <urn:graphragprov:entity:Paisley%20Park> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Chanhassen%2C%20Minnesota> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:diedOn> "2016-04-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Prince%20Rogers%20Nelson> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:R%26B> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:funk> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:new%20wave> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:psychedelia> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rock> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:soul> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rhythm%20and%20Blues%20Music%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:dancer> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:record%20producer> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:rank> "27"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Rolling%20Stone> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:recordSales> "over 130 million" .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:1999> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Controversy> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Dirty%20Mind> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:For%20You> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Hit%20n%20Run%20Phase%20Two> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Musicology> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Prince> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Purple%20Rain> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Sign%20o%27%20the%20Times> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:Minneapolis%2C%20Minnesota> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:signedWith> <urn:graphragprov:entity:Arista%20Records> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:signedWith> <urn:graphragprov:entity:Warner%20Bros.%20Records> .
+  <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Funk%20Machine> .
+  <urn:graphragprov:entity:Purple%20Rain> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one%20on%20Billboard%20200> .
+  <urn:graphragprov:entity:Purple%20Rain> <urn:graphragprov:predicate:fromSoundtrack> <urn:graphragprov:entity:Purple%20Rain%20%28film%29> .
+  <urn:graphragprov:entity:Purple%20Rain> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:soundtrack%20album> .
+  <urn:graphragprov:entity:Purple%20Rain> <urn:graphragprov:predicate:publicationYear> "1984"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Purple%20Rain%20%28film%29> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Original%20Song%20Score> .
+  <urn:graphragprov:entity:Sign%20o%27%20the%20Times> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:Prince%27s%20fourth%20American%20number-one%20single> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one%20in%20the%20US> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:fromSoundtrack> <urn:graphragprov:entity:1989%20Batman%20soundtrack> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.921s | model=deepseek-v4-flash
+      tokens:   in=4087 | out=195 | total=4282 | cached=384 | uncached=3703
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> .
+  - <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Chanhassen%2C%20Minnesota> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> . <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:diedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_fc1dd1f27dcb3302>
+  FROM <urn:graphragprov:unit:u_fcf1976a4c2f8360>
+  WHERE { <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> . <urn:graphragprov:entity:Prince%20%28musician%29> <urn:graphragprov:predicate:diedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Chanhassen, Minnesota',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Batdance', 'Prince (musician)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  18a22b2c0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/18a22b2c0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13013
+output tokens:         27417
+total tokens:          40430
+cached input tokens:   6784
+uncached input tokens: 6229
+cumulative LLM seconds: 111.110
+
+statement occurrences: 72
+semantic triples:      72
+entity nodes:          56
+literal values:        14
+predicates:            28
+query attempts:        1
+observed answers:      ('Chanhassen, Minnesota',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 109.217s
+  graph.reference.measurements [attempt=1]: 0.011s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.065s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.922s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.541s

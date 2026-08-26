@@ -1,0 +1,244 @@
+
+H0 one-case execution
+  case:          54fd3aca0bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Second To None (Film) born?
+  expected:      Wimborne
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/54fd3aca0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Jack Raymond'
+  source unit: u_c2c24bc25be6bab48ffa1c2d40447890efbf8a6814513e35b6ba07d217f7e9e0
+  text chars:  706
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 18.187s | model=deepseek-v4-flash
+      tokens:   in=2407 | out=3979 | total=6386 | cached=2048 | uncached=359
+    [LLM graph.reference #2] sending...
+      provider: 0.787s | model=deepseek-v4-flash
+      tokens:   in=682 | out=8 | total=690 | cached=0 | uncached=682
+  extraction: ACCEPTED
+  statements: 27
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    27
+    initially rejected: 1
+
+    initial rejection #27
+      validator:
+        response.statements[27].predicate.evidence[0]: quote 'directed' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Second to None",
+                "segment": "text"
+              }
+            ],
+            "value": "Second to None"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "directed",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jack Raymond",
+                "segment": "title"
+              }
+            ],
+            "value": "Jack Raymond"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 27
+  coverage:
+    characters combined: 559 / 718 (77.9%)
+    characters text:     547 / 706 (77.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  29 chars
+      '", one of the earliest films'
+    statement density:  37.60 / 1000 chars
+    title reliance:      22 / 27 (81.5%)
+
+[GRAPH 2/2] paragraph=0 title='Second to None (film)'
+  source unit: u_7961c1bde6b313d4e35613ce226bef83257a586ae62b1d064543d3fbd90bbe35
+  text chars:  277
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.727s | model=deepseek-v4-flash
+      tokens:   in=2551 | out=1320 | total=3871 | cached=2048 | uncached=503
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 250 / 298 (83.9%)
+    characters text:     229 / 277 (82.7%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  20 chars
+      'Second to None is a'
+    statement density:  30.20 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 36
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      34
+resource nodes:        26
+entity nodes:          26
+literal values:        8
+predicates:            26
+
+N-Triples:
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:war%20film> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:screenplayConcerns> <urn:graphragprov:entity:a%20Naval%20family%20who%20come%20under%20strain%20when%20their%20son%20goes%20absent%20without%20leave%20to%20settle%20a%20domestic%20problem%20with%20his%20wife> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Benita%20Hume> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ian%20Fleming> .
+  <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Moore%20Marriott> .
+  <urn:graphragprov:entity:Hepworth%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Walton%20on%20Thames> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:A%20Detective%20for%20a%20Day> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:ageAtPostcard> <urn:graphragprov:entity:early%20twenties> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:a%20studio%20publicity%20postcard> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:Hepworth%20Studios> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Dorset> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:birthYear> "1886"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:concentratedOn> <urn:graphragprov:entity:directing> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:deathYear> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:his%20first%20film> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:directedFilms> <urn:graphragprov:entity:more%20than%20forty%20films> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:directedFirstFilmIn> "1921"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:graduallyReducedActing> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:hadMajorSuccessIn> "1930"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Wimborne> .
+  <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:startedActing> <urn:graphragprov:entity:before%20the%20First%20World%20War> .
+  <urn:graphragprov:entity:The%20Great%20Game> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> .
+  <urn:graphragprov:entity:The%20Great%20Game> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:The%20Great%20Game> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:football> .
+  <urn:graphragprov:entity:Up%20for%20the%20Cup> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> .
+  <urn:graphragprov:entity:Up%20for%20the%20Cup> <urn:graphragprov:predicate:publicationYear> "1931"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Up%20for%20the%20Cup> <urn:graphragprov:predicate:remadeIn> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.187s | model=deepseek-v4-flash
+      tokens:   in=2255 | out=211 | total=2466 | cached=384 | uncached=1871
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> .
+  - <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Wimborne> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> . <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_7961c1bde6b313d4>
+  FROM <urn:graphragprov:unit:u_c2c24bc25be6bab4>
+  WHERE { <urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> . <urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Wimborne',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Jack Raymond', 'Second to None (film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  54fd3aca0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/54fd3aca0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7895
+output tokens:         5518
+total tokens:          13413
+cached input tokens:   4480
+uncached input tokens: 3415
+cumulative LLM seconds: 26.889
+
+statement occurrences: 36
+semantic triples:      34
+entity nodes:          26
+literal values:        8
+predicates:            26
+query attempts:        1
+observed answers:      ('Wimborne',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.715s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.063s
+  graph.materialization [attempt=1]: 0.134s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.188s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.450s

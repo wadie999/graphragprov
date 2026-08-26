@@ -1,0 +1,239 @@
+
+H0 one-case execution
+  case:          4163ce1c0bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film ... Nur Ein Komödiant?
+  expected:      10 May 1966
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4163ce1c0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='... nur ein Komödiant'
+  source unit: u_2f0abc97a35446acae9b0ddd00406977ec9f88711f0b6c37e4d2476c32a17ea7
+  text chars:  743
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 16.685s | model=deepseek-v4-flash
+      tokens:   in=2435 | out=3687 | total=6122 | cached=2048 | uncached=387
+    [LLM graph.reference #2] sending...
+      provider: 0.700s | model=deepseek-v4-flash
+      tokens:   in=710 | out=8 | total=718 | cached=0 | uncached=710
+  extraction: ACCEPTED
+  statements: 24
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    24
+    initially rejected: 1
+
+    initial rejection #13
+      validator:
+        response.statements[13].predicate.evidence[0]: quote 'opening in the " Capitol" in Berlin' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Capitol",
+                "segment": "text"
+              }
+            ],
+            "value": "Capitol"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "opening in the \" Capitol\" in Berlin",
+                "segment": "text"
+              }
+            ],
+            "value": "openingVenue"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "... nur ein Komödiant",
+                "segment": "title"
+              }
+            ],
+            "value": "... nur ein Komödiant"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 24
+  coverage:
+    characters combined: 443 / 764 (58.0%)
+    characters text:     422 / 743 (56.8%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  89 chars
+      'but of Austria can only have been because all political references were veiled by their'
+    statement density:  31.41 / 1000 chars
+    title reliance:      21 / 24 (87.5%)
+
+[GRAPH 2/2] paragraph=3 title='Erich Engel'
+  source unit: u_f0cb183b7910c83db3459c8d1229b4fbde0710af0dc41bb6befe1c9ee0b8bd51
+  text chars:  84
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.036s | model=deepseek-v4-flash
+      tokens:   in=2610 | out=840 | total=3450 | cached=2048 | uncached=562
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 80 / 95 (84.2%)
+    characters text:     69 / 84 (82.1%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  8 chars
+      ') was a'
+    statement density:  52.63 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 29
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      29
+resource nodes:        20
+entity nodes:          20
+literal values:        7
+predicates:            25
+
+N-Triples:
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:alternativeTitle> <urn:graphragprov:entity:K%C3%B6nig%20der%20Maske> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erich%20Engel> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:englishTitle> <urn:graphragprov:entity:%E2%80%A6%20just%20a%20Comedian> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:englishTitle> <urn:graphragprov:entity:King%20of%20the%20Mask> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:generalReleaseDate> "1935-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:generalReleaseLocation> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Austrian%20film> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:openingCity> <urn:graphragprov:entity:Berlin> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:openingVenueInAustria> <urn:graphragprov:entity:Vienna> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:passedCensor> <urn:graphragprov:entity:Austria> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:passedCensor> <urn:graphragprov:entity:Third%20Reich> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:premiereDate> "1935-09-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:premiereLocation> <urn:graphragprov:entity:Ufa-Palast> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:premiereLocationCity> <urn:graphragprov:entity:Hamburg> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:publicationYear> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:releaseDateInAustria> "1936-01-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:releaseLocation> <urn:graphragprov:entity:Austria> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:setting> <urn:graphragprov:entity:royal%20court> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:settingCentury> "18th century" .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:statementAgainst> <urn:graphragprov:entity:authoritarian%20government> .
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:statementAgainst> <urn:graphragprov:entity:fascism> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:politicalStatus> <urn:graphragprov:entity:political%20emigrant> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:temporarilyIn> <urn:graphragprov:entity:Vienna> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:dateOfBirth> "1891-02-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:dateOfDeath> "1966-05-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:theatre%20director> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.806s | model=deepseek-v4-flash
+      tokens:   in=2122 | out=207 | total=2329 | cached=384 | uncached=1738
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erich%20Engel> .
+  - <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:dateOfDeath> "1966-05-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2f0abc97a35446ac>
+  FROM <urn:graphragprov:unit:u_f0cb183b7910c83d>
+  WHERE { <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1966-05-10',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['... nur ein Komödiant', 'Erich Engel']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4163ce1c0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4163ce1c0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7877
+output tokens:         4742
+total tokens:          12619
+cached input tokens:   4480
+uncached input tokens: 3397
+cumulative LLM seconds: 23.228
+
+statement occurrences: 29
+semantic triples:      29
+entity nodes:          20
+literal values:        7
+predicates:            25
+query attempts:        1
+observed answers:      ('1966-05-10',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.435s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.056s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.807s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.633s

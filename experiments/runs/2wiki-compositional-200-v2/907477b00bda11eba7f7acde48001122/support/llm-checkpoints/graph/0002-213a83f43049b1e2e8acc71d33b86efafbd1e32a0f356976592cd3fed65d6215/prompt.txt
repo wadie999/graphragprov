@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_82a95d68324b282e5792f78320c00387b2c398eb62d75380eb4acd92d50629e9
+Title: Josef von Báky
+Text:
+Josef von Báky( 23 March 1902, Zombor, Austria- Hungary( now, Slovakia) – 28 July 1966, Munich, Germany) was a Hungarian filmmaker. He was also known as" Josef v. Baky" and" József Baky". He was born in the town of Zombor( Sombor) in the Kingdom of Hungary( now in Vojvodina, Serbia). He worked as an assistant to Géza von Bolváry. He worked as director or producer on no less than 48 films. He died in Munich, Bavaria, Germany. Báky's best known film is" Münchhausen", which was released in 1943. It is a fantasy- comedy and is noted for how it avoids politics of its time. The film was ordered by Nazi propaganda minister Goebbels to celebrate the 25th anniversary of UFA and to compete with Hollywood productions.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 19,
+    "statement": {
+      "subject": {
+        "value": "Münchhausen",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Münchhausen",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "genre",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "fantasy-comedy",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "fantasy-comedy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "fantasy-comedy",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[19].predicate.evidence[0]: quote 'fantasy-comedy' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

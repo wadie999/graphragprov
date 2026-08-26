@@ -1,0 +1,284 @@
+
+H0 one-case execution
+  case:          690398040bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where did the performer of song Only People (Song) die?
+  expected:      New York
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/690398040bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=8 title='Only People'
+  source unit: u_add371585dab47c8c35439b51510f70e1b91af7cc0cd84ad604161a5d244f20c
+  text chars:  25
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.193s | model=deepseek-v4-flash
+      tokens:   in=2242 | out=8 | total=2250 | cached=0 | uncached=2242
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    0
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     0
+  extraction attempt: REJECTED
+    stage:  response_validation
+    error:  EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    [LLM graph.reference #2] sending...
+      provider: 1.462s | model=deepseek-v4-flash
+      tokens:   in=2301 | out=147 | total=2448 | cached=2176 | uncached=125
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 23 / 36 (63.9%)
+    characters text:     12 / 25 (48.0%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  12 chars
+      'Only People'
+    statement density:  27.78 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/3] paragraph=1 title='John Lennon'
+  source unit: u_5cfd76a81abc65d8f28aa5559c23d99b63db3b15f9491360620a76ab4174a09a
+  text chars:  2186
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 65.495s | model=deepseek-v4-flash
+      tokens:   in=2765 | out=16384 | total=19149 | cached=2176 | uncached=589
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 33.556s | model=deepseek-v4-flash
+      tokens:   in=2810 | out=8167 | total=10977 | cached=2688 | uncached=122
+  extraction: ACCEPTED
+  statements: 57
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    57
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     57
+  coverage:
+    characters combined: 1145 / 2197 (52.1%)
+    characters text:     1134 / 2186 (51.9%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           18 / 18 (100.0%)
+    longest uncovered:  109 chars
+      ', and some of his songs were soon adopted as anthems by the anti-war movement and the larger counterculture.'
+    statement density:  25.94 / 1000 chars
+    title reliance:      55 / 57 (96.5%)
+
+[GRAPH 3/3] paragraph=9 title='Only People (song)'
+  source unit: u_be9b9b001e453f0499c3999478d5220a30b105a99564fa97fd322790995f2b44
+  text chars:  372
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 6.940s | model=deepseek-v4-flash
+      tokens:   in=2980 | out=1506 | total=4486 | cached=2176 | uncached=804
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 309 / 390 (79.2%)
+    characters text:     291 / 372 (78.2%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      '"Only People" is a'
+    statement density:  25.64 / 1000 chars
+    title reliance:      7 / 10 (70.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 68
+  whole-source attempts: 5
+  whole-source retries: 2
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      68
+resource nodes:        42
+entity nodes:          42
+literal values:        19
+predicates:            57
+
+N-Triples:
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:John%20Winston%20Lennon> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Liverpool> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:bornOn> "1940-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:coLeadVocalistOf> <urn:graphragprov:entity:the%20Beatles> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:controversialThrough> <urn:graphragprov:entity:political%20and%20peace%20activism> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:criticized> <urn:graphragprov:entity:Vietnam%20War> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:deportationAttempt> <urn:graphragprov:entity:Nixon%20administration> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Manhattan> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedInYear> "1980"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedOn> "1980-12-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:disengagedFromMusicBusiness> <urn:graphragprov:entity:music%20business> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:disengagedInYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:formed> <urn:graphragprov:entity:the%20Quarrymen> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:formedInYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:the%20Beatles> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:inductedAsMemberOf> <urn:graphragprov:entity:the%20Beatles> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:inductedAsMemberOfInYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:inductedAsSoloArtist> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:inductedAsSoloArtistInYear> "1994"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Songwriters%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:inductedIntoInYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:peace%20activist> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:acerbic%20wit> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:rebellious%20nature> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:the%20Beatles> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:lyricsEspouse> <urn:graphragprov:entity:pacifist%20message> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:movedToInYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:producedRecordsFrom> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:producedRecordsTo> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:producedRecordsWith> <urn:graphragprov:entity:Yoko%20Ono> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:raisedSon> <urn:graphragprov:entity:Sean> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:rankedByRollingStone> <urn:graphragprov:entity:fifth-greatest%20singer%20of%20all%20time> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:rankedByRollingStoneInYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:John%20Lennon%2FPlastic%20Ono%20Band> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:releasedSingle> <urn:graphragprov:entity:Give%20Peace%20a%20Chance> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:releasedSingle> <urn:graphragprov:entity:Happy%20Xmas%20%28War%20Is%20Over%29> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:releasedSingle> <urn:graphragprov:entity:Imagine> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:releasedSingle> <urn:graphragprov:entity:Instant%20Karma%21> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:returnedInYear> "1980"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:returnedWith> <urn:graphragprov:entity:Double%20Fantasy> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:rhythmGuitaristOf> <urn:graphragprov:entity:the%20Beatles> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:soloAlbumSales> "72000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:songwritingPartner> <urn:graphragprov:entity:Paul%20McCartney> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yoko%20Ono> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:Plastic%20Ono%20Band> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:startedInYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:votedInBBCPoll> <urn:graphragprov:entity:eighth> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:votedInBBCPollInYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:the%20Quarrymen> <urn:graphragprov:predicate:evolvedInto> <urn:graphragprov:entity:the%20Beatles> .
+  <urn:graphragprov:entity:the%20Quarrymen> <urn:graphragprov:predicate:evolvedIntoInYear> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Only%20People> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:disambiguation%20page> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:quoted> "It was a good lick, but I couldn't get the words to make sense." .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:said> <urn:graphragprov:entity:it%20failed%20as%20a%20song> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:saidInInterview> <urn:graphragprov:entity:Playboy%20Magazine> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:includedOnAlbum> <urn:graphragprov:entity:Gimme%20Some%20Truth> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:includedOnAlbumInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:publicationYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:releasedOnAlbum> <urn:graphragprov:entity:Mind%20Games> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:revolvesAround> <urn:graphragprov:entity:Lennon%27s%20and%20Ono%27s%20personal%20philosophy> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Lennon> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.733s | model=deepseek-v4-flash
+      tokens:   in=3942 | out=208 | total=4150 | cached=384 | uncached=3558
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Lennon> .
+  - <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Lennon> . <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5cfd76a81abc65d8>
+  FROM <urn:graphragprov:unit:u_add371585dab47c8>
+  FROM <urn:graphragprov:unit:u_be9b9b001e453f04>
+  WHERE { <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Lennon> . <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:diedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('New York', 'New York City', 'Manhattan')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 3
+  provenance sources: ['John Lennon', 'Only People (song)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  690398040bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/690398040bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          17040
+output tokens:         26420
+total tokens:          43460
+cached input tokens:   9600
+uncached input tokens: 7440
+cumulative LLM seconds: 111.379
+
+statement occurrences: 68
+semantic triples:      68
+entity nodes:          42
+literal values:        19
+predicates:            57
+query attempts:        1
+observed answers:      ('New York', 'New York City', 'Manhattan')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 109.667s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.115s
+  graph.materialization [attempt=1]: 0.110s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.734s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.512s

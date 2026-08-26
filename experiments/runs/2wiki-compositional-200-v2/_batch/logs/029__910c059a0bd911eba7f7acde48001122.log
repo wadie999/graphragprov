@@ -1,0 +1,306 @@
+
+H0 one-case execution
+  case:          910c059a0bd911eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of Marie Elisabeth Of France's father?
+  expected:      30 May 1574
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/910c059a0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Marie Elisabeth of France'
+  source unit: u_3d0f45a4a50aa8227bdeb1622fb34b6d52f67d9f0b5e1d8b054a7145335d0bfb
+  text chars:  359
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.443s | model=deepseek-v4-flash
+      tokens:   in=2329 | out=1609 | total=3938 | cached=2048 | uncached=281
+    [LLM graph.reference #2] sending...
+      provider: 2.575s | model=deepseek-v4-flash
+      tokens:   in=804 | out=330 | total=1134 | cached=0 | uncached=804
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 2
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'father' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Charles IX of France",
+                "segment": "text"
+              }
+            ],
+            "value": "Charles IX of France"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "father",
+                "segment": "text"
+              }
+            ],
+            "value": "father"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marie Elisabeth of France",
+                "segment": "title"
+              }
+            ],
+            "value": "Marie Elisabeth of France"
+          }
+        }
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'mother' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Elisabeth of Austria",
+                "segment": "text"
+              }
+            ],
+            "value": "Elisabeth of Austria"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "mother",
+                "segment": "text"
+              }
+            ],
+            "value": "mother"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marie Elisabeth of France",
+                "segment": "title"
+              }
+            ],
+            "value": "Marie Elisabeth of France"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 262 / 384 (68.2%)
+    characters text:     237 / 359 (66.0%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  27 chars
+      'Marie Elisabeth of France ('
+    statement density:  28.65 / 1000 chars
+    title reliance:      11 / 11 (100.0%)
+
+[GRAPH 2/2] paragraph=0 title='Charles IX of France'
+  source unit: u_10f582fff3e5c34c6fdd8423d8627d4970828147a53cd7dac6f560a84c9618d1
+  text chars:  1494
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 66.119s | model=deepseek-v4-flash
+      tokens:   in=2718 | out=16384 | total=19102 | cached=2048 | uncached=670
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 23.753s | model=deepseek-v4-flash
+      tokens:   in=2763 | out=5530 | total=8293 | cached=2688 | uncached=75
+  extraction: ACCEPTED
+  statements: 37
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    37
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     37
+  coverage:
+    characters combined: 830 / 1514 (54.8%)
+    characters text:     810 / 1494 (54.2%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           11 / 11 (100.0%)
+    longest uncovered:  120 chars
+      ', in a last desperate bid to reconcile his people. Facing popular hostility against this policy of appeasement, Charles'
+    statement density:  24.44 / 1000 chars
+    title reliance:      17 / 37 (45.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 48
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      48
+resource nodes:        34
+entity nodes:          34
+literal values:        8
+predicates:            38
+
+N-Triples:
+  <urn:graphragprov:entity:Catherine%20de%27%20Medici> <urn:graphragprov:predicate:initiallySoughtPeaceBetween> <urn:graphragprov:entity:Catholics%20and%20Protestants> .
+  <urn:graphragprov:entity:Catherine%20de%27%20Medici> <urn:graphragprov:predicate:religiousBelief> <urn:graphragprov:entity:Roman%20Catholic> .
+  <urn:graphragprov:entity:Catherine%20de%27%20Medici> <urn:graphragprov:predicate:supportedPersecutionOf> <urn:graphragprov:entity:Huguenots> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:birthDate> "1550-06-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:tuberculosis> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:deathDate> "1574-05-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:diedWithoutLegitimateMaleIssue> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Catherine%20de%27%20Medici> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:King%20of%20France> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Catherine%20de%27%20Medici> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:orderedMarriageOf> <urn:graphragprov:entity:Henry%20of%20Navarre> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:orderedMarriageOf> <urn:graphragprov:entity:Margaret%20of%20Valois> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:orderedSiegeOf> <urn:graphragprov:entity:La%20Rochelle> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:predecessor> <urn:graphragprov:entity:Francis%20II%20of%20France> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:reignEnd> "1574"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:reignStart> "1560"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Francis%20II%20of%20France> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Henry%20III%20of%20France> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Margaret%20of%20Valois> .
+  <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:successor> <urn:graphragprov:entity:Henry%20III%20of%20France> .
+  <urn:graphragprov:entity:Francis%20II%20of%20France> <urn:graphragprov:predicate:deathDate> "1560"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Henry%20of%20Navarre> <urn:graphragprov:predicate:futureTitle> <urn:graphragprov:entity:King%20Henry%20IV%20of%20France> .
+  <urn:graphragprov:entity:Henry%20of%20Navarre> <urn:graphragprov:predicate:inLineOfSuccessionTo> <urn:graphragprov:entity:French%20throne> .
+  <urn:graphragprov:entity:Henry%20of%20Navarre> <urn:graphragprov:predicate:religiousAffiliation> <urn:graphragprov:entity:Protestant> .
+  <urn:graphragprov:entity:Margaret%20of%20Valois> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Henry%20of%20Navarre> .
+  <urn:graphragprov:entity:Siege%20of%20La%20Rochelle> <urn:graphragprov:predicate:orderedBy> <urn:graphragprov:entity:Charles%20IX%20of%20France> .
+  <urn:graphragprov:entity:Siege%20of%20La%20Rochelle> <urn:graphragprov:predicate:outcome> <urn:graphragprov:entity:failure> .
+  <urn:graphragprov:entity:Siege%20of%20La%20Rochelle> <urn:graphragprov:predicate:target> <urn:graphragprov:entity:Protestant%20stronghold> .
+  <urn:graphragprov:entity:St.%20Bartholomew%27s%20Day%20massacre> <urn:graphragprov:predicate:impactOn> <urn:graphragprov:entity:Huguenot%20movement> .
+  <urn:graphragprov:entity:St.%20Bartholomew%27s%20Day%20massacre> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:massacre> .
+  <urn:graphragprov:entity:St.%20Bartholomew%27s%20Day%20massacre> <urn:graphragprov:predicate:instigatedBy> <urn:graphragprov:entity:Catherine%20de%27%20Medici> .
+  <urn:graphragprov:entity:St.%20Bartholomew%27s%20Day%20massacre> <urn:graphragprov:predicate:location> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:St.%20Bartholomew%27s%20Day%20massacre> <urn:graphragprov:predicate:orderedBy> <urn:graphragprov:entity:Charles%20IX%20of%20France> .
+  <urn:graphragprov:entity:St.%20Bartholomew%27s%20Day%20massacre> <urn:graphragprov:predicate:victimGroup> <urn:graphragprov:entity:Huguenot%20leaders> .
+  <urn:graphragprov:entity:War> <urn:graphragprov:predicate:between> <urn:graphragprov:entity:Protestants%20and%20Catholics> .
+  <urn:graphragprov:entity:War> <urn:graphragprov:predicate:startDate> "1562"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:War> <urn:graphragprov:predicate:triggeredBy> <urn:graphragprov:entity:massacre%20of%20Vassy> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:birthDate> "1572-10-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:child%20of> <urn:graphragprov:entity:Charles%20IX%20of%20France> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:child%20of> <urn:graphragprov:entity:Elisabeth%20of%20Austria> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:deathDate> "1578-04-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:princess> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:maternalGrandfather> <urn:graphragprov:entity:Maximilian%20II%2C%20Holy%20Roman%20Emperor> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:maternalGrandmother> <urn:graphragprov:entity:Maria%20of%20Spain> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:House%20of%20Valois> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:paternalGrandfather> <urn:graphragprov:entity:Henry%20II%20of%20France> .
+  <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:paternalGrandmother> <urn:graphragprov:entity:Catherine%20de%27%20Medici> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.842s | model=deepseek-v4-flash
+      tokens:   in=3121 | out=241 | total=3362 | cached=512 | uncached=2609
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:child%20of> <urn:graphragprov:entity:Charles%20IX%20of%20France> .
+  - <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:deathDate> "1574-05-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:child%20of> <urn:graphragprov:entity:Charles%20IX%20of%20France> . <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:deathDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_10f582fff3e5c34c>
+  FROM <urn:graphragprov:unit:u_3d0f45a4a50aa822>
+  WHERE { <urn:graphragprov:entity:Marie%20Elisabeth%20of%20France> <urn:graphragprov:predicate:child%20of> <urn:graphragprov:entity:Charles%20IX%20of%20France> . <urn:graphragprov:entity:Charles%20IX%20of%20France> <urn:graphragprov:predicate:deathDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1574-05-30',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Charles IX of France', 'Marie Elisabeth of France']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  910c059a0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/910c059a0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11735
+output tokens:         24094
+total tokens:          35829
+cached input tokens:   7296
+uncached input tokens: 4439
+cumulative LLM seconds: 101.732
+
+statement occurrences: 48
+semantic triples:      48
+entity nodes:          34
+literal values:        8
+predicates:            38
+query attempts:        1
+observed answers:      ('1574-05-30',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 99.908s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.051s
+  graph.materialization [attempt=1]: 0.153s
+  graph.observation [attempt=1]: 0.011s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.843s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.456s

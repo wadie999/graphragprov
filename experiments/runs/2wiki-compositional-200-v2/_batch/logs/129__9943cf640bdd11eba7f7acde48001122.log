@@ -1,0 +1,279 @@
+
+H0 one-case execution
+  case:          9943cf640bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Pharaoh'S Curse (Film) born?
+  expected:      Paris
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9943cf640bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Lee Sholem'
+  source unit: u_c3d3e6719bf4b57bb22c46e2a9d8382b0aee3abf45c8b92f6300eb5e477202a9
+  text chars:  563
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.807s | model=deepseek-v4-flash
+      tokens:   in=2380 | out=3133 | total=5513 | cached=2048 | uncached=332
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 346 / 573 (60.4%)
+    characters text:     336 / 563 (59.7%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  63 chars
+      "have, as yet, been unsurpassed in Hollywood history. Sholem's"
+    statement density:  33.16 / 1000 chars
+    title reliance:      17 / 19 (89.5%)
+
+[GRAPH 2/2] paragraph=4 title="Pharaoh's Curse (film)"
+  source unit: u_64179260992132fba7a9b6e08e8aec8cf03f28d4557f2057c9b5f053aa8b2a6a
+  text chars:  317
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.531s | model=deepseek-v4-flash
+      tokens:   in=2540 | out=2083 | total=4623 | cached=2048 | uncached=492
+    [LLM graph.reference #3] sending...
+      provider: 1.328s | model=deepseek-v4-flash
+      tokens:   in=614 | out=177 | total=791 | cached=0 | uncached=614
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 1
+
+    initial rejection #12
+      validator:
+        response.statements[12].predicate.evidence[0]: quote 'released ... by United Artists' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "United Artists",
+                "segment": "text"
+              }
+            ],
+            "value": "United Artists"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released ... by United Artists",
+                "segment": "text"
+              }
+            ],
+            "value": "distributedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Pharaoh's Curse (film)",
+                "segment": "title"
+              }
+            ],
+            "value": "Pharaoh's Curse (film)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'released ... by United Artists' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "United Artists",
+                "segment": "text"
+              }
+            ],
+            "value": "United Artists"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released ... by United Artists",
+                "segment": "text"
+              }
+            ],
+            "value": "distributedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Pharaoh's Curse (film)",
+                "segment": "title"
+              }
+            ],
+            "value": "Pharaoh's Curse (film)"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 13
+  coverage:
+    characters combined: 228 / 339 (67.3%)
+    characters text:     206 / 317 (65.0%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  32 chars
+      "__notoc_ _ Pharaoh's Curse is a"
+    statement density:  38.35 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 32
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      32
+resource nodes:        26
+entity nodes:          26
+literal values:        6
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lee%20Sholem> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:doubleFeatureWith> <urn:graphragprov:entity:Voodoo%20Island> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:horror%20film> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:releaseDate> "1957-02"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Alvaro%20Guillot> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ben%20Wright> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Diane%20Brewster> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20N.%20Neise> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mark%20Dana> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ziva%20Rodann> .
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Richard%20H.%20Landau> .
+  <urn:graphragprov:entity:Doomsday%20Machine> <urn:graphragprov:predicate:publicationYear> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Lee%20Tabor%20Sholem> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Paris%2C%20Illinois> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:bornOn> "1913-05-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:careerDuration> <urn:graphragprov:entity:40%20years> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Los%20Angeles%2C%20California> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:diedOn> "2000-08-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:TV%20episodes> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:features> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:more%20than%201300%20shows> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:firstFilm> <urn:graphragprov:entity:Tarzan%27s%20Magic%20Fountain> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:speed%20and%20efficiency> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:lastFilm> <urn:graphragprov:entity:Doomsday%20Machine> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Roll%27%20Em%22%20Sholem%22> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:television%20director> .
+  <urn:graphragprov:entity:Tarzan%27s%20Magic%20Fountain> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.890s | model=deepseek-v4-flash
+      tokens:   in=2163 | out=218 | total=2381 | cached=384 | uncached=1779
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lee%20Sholem> .
+  - <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Paris%2C%20Illinois> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lee%20Sholem> . <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_64179260992132fb>
+  FROM <urn:graphragprov:unit:u_c3d3e6719bf4b57b>
+  WHERE { <urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lee%20Sholem> . <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Paris, Illinois',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Lee Sholem', "Pharaoh's Curse (film)"]
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9943cf640bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9943cf640bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7697
+output tokens:         5611
+total tokens:          13308
+cached input tokens:   4480
+uncached input tokens: 3217
+cumulative LLM seconds: 26.557
+
+statement occurrences: 32
+semantic triples:      32
+entity nodes:          26
+literal values:        6
+predicates:            20
+query attempts:        1
+observed answers:      ('Paris, Illinois',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.681s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.083s
+  graph.materialization [attempt=1]: 0.074s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.891s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.540s

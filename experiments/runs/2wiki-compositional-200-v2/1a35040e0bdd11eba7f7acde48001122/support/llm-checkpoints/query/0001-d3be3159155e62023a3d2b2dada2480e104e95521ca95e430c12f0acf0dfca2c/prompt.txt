@@ -1,0 +1,89 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the date of death of the director of film The Story Of Sin?
+
+Expected answer: 3 February 2006
+
+Benchmark evidence relations:
+1. The Story of Sin | director | Walerian Borowczyk
+2. Walerian Borowczyk | date of death | 3 February 2006
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Dzieje%20grzechu> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Stefan%20%C5%BBeromski> .
+<urn:graphragprov:entity:The%20Story%20of%20Sin> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Dzieje%20grzechu> .
+<urn:graphragprov:entity:The%20Story%20of%20Sin> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Walerian%20Borowczyk> .
+<urn:graphragprov:entity:The%20Story%20of%20Sin> <urn:graphragprov:predicate:enteredIn> <urn:graphragprov:entity:1975%20Cannes%20Film%20Festival> .
+<urn:graphragprov:entity:The%20Story%20of%20Sin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+<urn:graphragprov:entity:The%20Story%20of%20Sin> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Polish> .
+<urn:graphragprov:entity:The%20Story%20of%20Sin> <urn:graphragprov:predicate:publicationYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:activeYears> "between 1946 and 1988" .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:dateOfBirth> "1923-10-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:dateOfDeath> "2006-02-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:describedBy> <urn:graphragprov:entity:film%20critics> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:description> "a' genius who also happened to be a pornographer'" .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:40%20films> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:internationally%20known> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Polish> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:settledInYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Walerian%20Borowczyk> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:France> .

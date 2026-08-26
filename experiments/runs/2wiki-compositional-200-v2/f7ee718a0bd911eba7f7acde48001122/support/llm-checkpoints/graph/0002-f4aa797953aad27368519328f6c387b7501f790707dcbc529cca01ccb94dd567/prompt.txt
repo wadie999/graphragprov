@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_fccb4aef5280d1d6eb46d4deb0e7cb0f1e25dadc82a2810bcdbda30b3e29f357
+Title: Kiss of Araby
+Text:
+Kiss of Araby is a 1933 American Pre-Code adventure film directed by Phil Rosen and starring Maria Alba, Walter Byron and Claire Windsor. It is an action melodrama set in the Middle East. A British Army officer is forced to resign his commission, and joins forces in the desert with a local Arab leader against his own former comrades.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "British Army officer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "A British Army officer",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "opposes",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "against",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "his former comrades",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "his former comrades",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].object.evidence[0]: quote 'his former comrades' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

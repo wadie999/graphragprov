@@ -1,0 +1,187 @@
+
+H0 one-case execution
+  case:          6ccd71960bd911eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film The Girl Who Dared born?
+  expected:      Tacoma, Washington
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6ccd71960bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='The Girl Who Dared'
+  source unit: u_058fee9dd620e5097085a43942b8c7c8116c93138e8fdad5c4a3c057179644b1
+  text chars:  277
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.466s | model=deepseek-v4-flash
+      tokens:   in=2320 | out=2019 | total=4339 | cached=2048 | uncached=272
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 217 / 295 (73.6%)
+    characters text:     217 / 277 (78.3%)
+    characters title:    0 / 18 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  15 chars
+      '. The film was'
+    statement density:  47.46 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Howard Bretherton'
+  source unit: u_3e426bfc9e490e28e2dcb5214d96071dc39a6ed64c066e0b26b8a44ac14be139
+  text chars:  187
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.463s | model=deepseek-v4-flash
+      tokens:   in=2465 | out=1488 | total=3953 | cached=2048 | uncached=417
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 159 / 204 (77.9%)
+    characters text:     142 / 187 (75.9%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  13 chars
+      'film editor'
+    statement density:  44.12 / 1000 chars
+    title reliance:      8 / 9 (88.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 23
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      23
+resource nodes:        18
+entity nodes:          18
+literal values:        4
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Howard%20Bretherton> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:distributor> <urn:graphragprov:entity:Republic%20Pictures> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:mystery> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:publicationYear> "1944"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:releaseDate> "1944-08-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Grant%20Withers> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:John%20Hamilton> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lorna%20Gray> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Peter%20Cookson> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Veda%20Ann%20Borg> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Willie%20Best> .
+  <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20K.%20Butler> .
+  <urn:graphragprov:entity:David%20Bretherton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20editor> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tacoma%2C%20Washington> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:bornOn> "1890-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:San%20Diego%2C%20California> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:diedOn> "1969-04-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:fatherOf> <urn:graphragprov:entity:David%20Bretherton> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20editor> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.542s | model=deepseek-v4-flash
+      tokens:   in=1648 | out=210 | total=1858 | cached=384 | uncached=1264
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Howard%20Bretherton> .
+  - <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tacoma%2C%20Washington> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Howard%20Bretherton> . <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_058fee9dd620e509>
+  FROM <urn:graphragprov:unit:u_3e426bfc9e490e28>
+  WHERE { <urn:graphragprov:entity:The%20Girl%20Who%20Dared> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Howard%20Bretherton> . <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Tacoma, Washington',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Howard Bretherton', 'The Girl Who Dared']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  6ccd71960bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6ccd71960bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6433
+output tokens:         3717
+total tokens:          10150
+cached input tokens:   4480
+uncached input tokens: 1953
+cumulative LLM seconds: 16.471
+
+statement occurrences: 23
+semantic triples:      23
+entity nodes:          18
+literal values:        4
+predicates:            15
+query attempts:        1
+observed answers:      ('Tacoma, Washington',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.936s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.038s
+  graph.materialization [attempt=1]: 0.044s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.543s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.463s

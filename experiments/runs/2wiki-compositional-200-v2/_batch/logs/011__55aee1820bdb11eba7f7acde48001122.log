@@ -1,0 +1,194 @@
+
+H0 one-case execution
+  case:          55aee1820bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the director of film Neutral Port?
+  expected:      West Sussex
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/55aee1820bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Neutral Port'
+  source unit: u_87264f2a16345675040973ec45602276d417fa9bea2a8ff4e53d5aa6b2709a16
+  text chars:  180
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.538s | model=deepseek-v4-flash
+      tokens:   in=2289 | out=1266 | total=3555 | cached=0 | uncached=2289
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 124 / 192 (64.6%)
+    characters text:     124 / 180 (68.9%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  29 chars
+      ', with a supporting role for'
+    statement density:  46.88 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='Marcel Varnel'
+  source unit: u_bf42c8f095b58431acb57b62d4ae2c3a7c7e650f7fa8ff8667cfda83937b0d51
+  text chars:  796
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 12.587s | model=deepseek-v4-flash
+      tokens:   in=2521 | out=3027 | total=5548 | cached=2176 | uncached=345
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 276 / 809 (34.1%)
+    characters text:     263 / 796 (33.0%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  127 chars
+      'working as director in several Broadway operettas, musicals and dramas for the Shubert family. This was followed by a move to'
+    statement density:  25.96 / 1000 chars
+    title reliance:      21 / 21 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 30
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      30
+resource nodes:        28
+entity nodes:          28
+literal values:        3
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marcel%20Varnel> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:war%20film> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:publicationYear> "1940"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Leslie%20Banks> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Phyllis%20Calvert> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wally%20Patch> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Will%20Fyffe> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Yvonne%20Arnaud> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:birthDate> "1892-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Marcel%20Hyacinthe%20le%20Bozec> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:car%20crash> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:deathDate> "1947-07-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Rake> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:British%20International%20Pictures> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Gainsborough%20Pictures> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:musical%20comedies> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:West%20Sussex> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:Paris%20stage> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Arthur%20Askey> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:George%20Formby> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:The%20Crazy%20Gang> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Will%20Hay> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.030s | model=deepseek-v4-flash
+      tokens:   in=1880 | out=173 | total=2053 | cached=384 | uncached=1496
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marcel%20Varnel> .
+  - <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:West%20Sussex> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_87264f2a16345675>
+  FROM <urn:graphragprov:unit:u_bf42c8f095b58431>
+  WHERE { <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('West Sussex',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Marcel Varnel', 'Neutral Port']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  55aee1820bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/55aee1820bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6690
+output tokens:         4466
+total tokens:          11156
+cached input tokens:   2560
+uncached input tokens: 4130
+cumulative LLM seconds: 22.155
+
+statement occurrences: 30
+semantic triples:      30
+entity nodes:          28
+literal values:        3
+predicates:            17
+query attempts:        1
+observed answers:      ('West Sussex',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.133s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.063s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.031s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.256s

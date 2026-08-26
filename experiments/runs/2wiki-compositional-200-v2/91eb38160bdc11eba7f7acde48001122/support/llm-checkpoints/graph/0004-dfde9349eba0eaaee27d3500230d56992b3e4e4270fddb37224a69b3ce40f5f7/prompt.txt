@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_2e894ddd91131ee08b945baca749ae907fa7d3246b14e18aaa54f4d9dad4fe0c
+Title: Chuck (film)
+Text:
+Chuck( The Bleeder in the UK and Ireland) is a 2016 American biographical sports drama film directed by Philippe Falardeau and written by Jeff Feuerzeig, Jerry Stahl, Michael Cristofer and Liev Schreiber, who also stars in the title role. The cast includes Elisabeth Moss, Ron Perlman, Naomi Watts, Jim Gaffigan, Michael Rapaport, Pooch Hall, Morgan Spector, and Jason Jones. The film depicts the life of heavyweight boxer Chuck Wepner and his 1975 title fight with the heavyweight champion, Muhammad Ali, which inspired Sylvester Stallone's character and screenplay for the 1976 film" Rocky". Principal photography began on October 26, 2015 in Suffern, New York. " Chuck" received its world premiere at the 2016 Venice Film Festival on September 2, 2016. It was released May 5, 2017, by IFC Films.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 19,
+    "statement": {
+      "subject": {
+        "value": "Chuck (film)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Chuck (film)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "inspired",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "inspired",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Sylvester Stallone's character and screenplay for the 1976 film \"Rocky\"",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Sylvester Stallone's character and screenplay for the 1976 film \"Rocky\"",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[19].object.evidence[0]: quote 'Sylvester Stallone\\'s character and screenplay for the 1976 film \"Rocky\"' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

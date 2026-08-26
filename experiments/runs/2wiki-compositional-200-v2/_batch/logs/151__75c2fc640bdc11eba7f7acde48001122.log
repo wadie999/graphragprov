@@ -1,0 +1,248 @@
+
+H0 one-case execution
+  case:          75c2fc640bdc11eba7f7acde48001122
+  hops:          2
+  question:      Which country the performer of song Too Much Water is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/75c2fc640bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Too Much Water'
+  source unit: u_e6bd17de81fce70ff6bc81f010b68ccfbc39abe8af3b8f824448d90b8353d150
+  text chars:  445
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.830s | model=deepseek-v4-flash
+      tokens:   in=2349 | out=1899 | total=4248 | cached=2048 | uncached=301
+    [LLM graph.reference #2] sending...
+      provider: 1.064s | model=deepseek-v4-flash
+      tokens:   in=615 | out=8 | total=623 | cached=0 | uncached=615
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 1
+
+    initial rejection #12
+      validator:
+        response.statements[12].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "George Jones",
+                "segment": "text"
+              }
+            ],
+            "value": "George Jones"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 270 / 459 (58.8%)
+    characters text:     270 / 445 (60.7%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  70 chars
+      '. Like most of Jones\'s singles to this point, "Too Much Water" was an'
+    statement density:  26.14 / 1000 chars
+    title reliance:      0 / 12 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='George Jones'
+  source unit: u_130cac9133d47f81c2d6e1e41e7e544983fcece32640b0084e9412e045583a3c
+  text chars:  1871
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 14.830s | model=deepseek-v4-flash
+      tokens:   in=2801 | out=3644 | total=6445 | cached=2048 | uncached=753
+  extraction: ACCEPTED
+  statements: 26
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    26
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     26
+  coverage:
+    characters combined: 374 / 1883 (19.9%)
+    characters text:     362 / 1871 (19.3%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           17 / 18 (94.4%)
+    longest uncovered:  271 chars
+      '. He achieved international fame for his long list of hit records, including his best-known song " He Stopped Loving Her Today", as well as his distinctive voice and phrasing. For…'
+    statement density:  13.81 / 1000 chars
+    title reliance:      25 / 26 (96.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 38
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      38
+resource nodes:        31
+entity nodes:          31
+literal values:        6
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Texas> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:bornOn> "1931-09-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:diedFrom> <urn:graphragprov:entity:hypoxic%20respiratory%20failure> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:diedOn> "2013-04-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:dischargedIn> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:honky-tonk> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:hasDuetCareer> <urn:graphragprov:entity:duets> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:hasSoloCareer> <urn:graphragprov:entity:solo%20artist> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Bill%20Malone> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Robert%20Christgau> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Waylon%20Jennings> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:No%20Show%20Jones> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:The%20Possum> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:numberOfHits> "more than 150" .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:recorded> <urn:graphragprov:entity:White%20Lightning> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:servedIn> <urn:graphragprov:entity:United%20States%20Marine%20Corps> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Dorothy%20Bonvillion> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Nancy%20Sepulvado> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Shirley%20Ann%20Corley> .
+  <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Tammy%20Wynette> .
+  <urn:graphragprov:entity:White%20Lightning> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:J.%20P.%20Richardson> .
+  <urn:graphragprov:entity:14%20Top%20Country%20Favorites> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:chartPosition> "13"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:honky%20tonk> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:hasMusicalEdge> <urn:graphragprov:entity:rockabilly%20edge> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:14%20Top%20Country%20Favorites> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Ernest%20Tubb-Hank%20Williams%20tradition> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:George%20Jones> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Mercury-Starday%20label> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:releaseDate> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:George%20Jones> .
+  <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Sonny%20James> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.587s | model=deepseek-v4-flash
+      tokens:   in=2251 | out=189 | total=2440 | cached=384 | uncached=1867
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:George%20Jones> .
+  - <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:George%20Jones> . <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_130cac9133d47f81>
+  FROM <urn:graphragprov:unit:u_e6bd17de81fce70f>
+  WHERE { <urn:graphragprov:entity:Too%20Much%20Water> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:George%20Jones> . <urn:graphragprov:entity:George%20Jones> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['George Jones', 'Too Much Water']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  75c2fc640bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/75c2fc640bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8016
+output tokens:         5740
+total tokens:          13756
+cached input tokens:   4480
+uncached input tokens: 3536
+cumulative LLM seconds: 26.312
+
+statement occurrences: 38
+semantic triples:      38
+entity nodes:          31
+literal values:        6
+predicates:            24
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.736s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.133s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.588s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.501s

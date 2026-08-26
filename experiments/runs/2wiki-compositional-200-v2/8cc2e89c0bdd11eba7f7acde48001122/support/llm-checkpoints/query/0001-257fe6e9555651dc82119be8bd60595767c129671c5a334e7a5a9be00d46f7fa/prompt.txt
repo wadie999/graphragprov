@@ -1,0 +1,96 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where did Philip Ii, Count Of Nevers's father die?
+
+Expected answer: Halle
+
+Benchmark evidence relations:
+1. Phillip II, Count of Nevers | father | Philip the Bold
+2. Philip the Bold | place of death | Halle
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:birthDate> "1389-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Villaines-en-Duesmois> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:four%20illegitimate%20children> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:two%20children> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:two%20sons> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:deathDate> "1415-10-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Agincourt> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Philip%20the%20Bold> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Margaret%20III%20of%20Flanders> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Battle%20of%20Agincourt> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Anthony%2C%20Duke%20of%20Brabant> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:John%20the%20Fearless> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Bonne%20of%20Artois> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Isabelle%20de%20Coucy> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Charles> .
+<urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count%20of%20Nevers> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Agincourt> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:birthDate> "1342-01-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:King%20John%20II%20of%20France> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:deathDate> "1404-04-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Burgundian%20branch%20of%20the%20House%20of%20Valois> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Bonne%20of%20Luxembourg> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Halle> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:premier%20peer%20of%20the%20kingdom%20of%20France> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count%20of%20Flanders> .
+<urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Duke%20of%20Burgundy> .

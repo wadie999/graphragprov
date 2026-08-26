@@ -1,0 +1,396 @@
+
+H0 one-case execution
+  case:          aab7892c0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the performer of song Beautiful Loser (Song)?
+  expected:      Detroit
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/aab7892c0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Bob Seger'
+  source unit: u_adb2fd0ef6536b72428241d5ed4504e6d0a5952fe1781a65d64dff30cd99b1bc
+  text chars:  2157
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 36.167s | model=deepseek-v4-flash
+      tokens:   in=2766 | out=8541 | total=11307 | cached=2048 | uncached=718
+    [LLM graph.reference #2] sending...
+      provider: 3.242s | model=deepseek-v4-flash
+      tokens:   in=1732 | out=668 | total=2400 | cached=0 | uncached=1732
+  extraction: ACCEPTED
+  statements: 59
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    55
+    initially rejected: 4
+
+    initial rejection #12
+      validator:
+        response.statements[12].object.evidence[0]: quote "Ramblin' Gamblin' Man" occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Ramblin' Gamblin' Man",
+                "segment": "text"
+              }
+            ],
+            "value": "Ramblin' Gamblin' Man"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "contained",
+                "segment": "text"
+              }
+            ],
+            "value": "contains"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Ramblin' Gamblin' Man",
+                "segment": "text"
+              }
+            ],
+            "value": "Ramblin' Gamblin' Man"
+          }
+        }
+
+    initial rejection #13
+      validator:
+        response.statements[13].subject.evidence[0]: quote "Ramblin' Gamblin' Man" occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "national hit",
+                "segment": "text"
+              }
+            ],
+            "value": "national hit"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "national hit",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Ramblin' Gamblin' Man",
+                "segment": "text"
+              }
+            ],
+            "value": "Ramblin' Gamblin' Man"
+          }
+        }
+
+    initial rejection #17
+      validator:
+        response.statements[17].predicate.evidence[0]: quote 'performed' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Silver Bullet Band",
+                "segment": "text"
+              }
+            ],
+            "value": "Silver Bullet Band"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "performed",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bob Seger",
+                "segment": "title"
+              }
+            ],
+            "value": "Bob Seger"
+          }
+        }
+
+    initial rejection #42
+      validator:
+        response.statements[42].predicate.evidence[0]: quote 'topped the Billboard Hot 100 chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "topped",
+                "segment": "text"
+              }
+            ],
+            "value": "1"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "topped the Billboard Hot 100 chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Shakedown",
+                "segment": "text"
+              }
+            ],
+            "value": "Shakedown"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    4
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 59
+  coverage:
+    characters combined: 1061 / 2166 (49.0%)
+    characters text:     1052 / 2157 (48.8%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           12 / 13 (92.3%)
+    longest uncovered:  140 chars
+      ". By the early 1970s, he had dropped the 'System' from his recordings and continued to strive for broader success with various other bands."
+    statement density:  27.24 / 1000 chars
+    title reliance:      39 / 59 (66.1%)
+
+[GRAPH 2/2] paragraph=2 title='Beautiful Loser (song)'
+  source unit: u_94645c24beac38187b9e85ce2beb9dc39b58bf84ce559c26c48b091fd98319df
+  text chars:  345
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 9.233s | model=deepseek-v4-flash
+      tokens:   in=3038 | out=2150 | total=5188 | cached=2048 | uncached=990
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 219 / 367 (59.7%)
+    characters text:     197 / 345 (57.1%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  43 chars
+      ', but became more widely known when it was'
+    statement density:  40.87 / 1000 chars
+    title reliance:      8 / 15 (53.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 74
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 4
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      73
+resource nodes:        49
+entity nodes:          49
+literal values:        16
+predicates:            40
+
+N-Triples:
+  <urn:graphragprov:entity:%27Live%27%20Bullet> <urn:graphragprov:predicate:breakoutAlbumOf> <urn:graphragprov:entity:Bob%20Seger> .
+  <urn:graphragprov:entity:%27Live%27%20Bullet> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:%27Live%27%20Bullet> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Beautiful%20Loser> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Beautiful%20Loser> <urn:graphragprov:predicate:publicationYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:chartPerformance> "just missed inclusion on the US Top 100" .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:%27Live%27%20Bullet> .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:pairedWith> <urn:graphragprov:entity:Travelin%27%20Man> .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Bob%20Seger> .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:titleTrackOf> <urn:graphragprov:entity:Beautiful%20Loser> .
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Bob%20Seger> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:rock%20artist> .
+  <urn:graphragprov:entity:Beverly%20Hills%20Cop%20II> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:activeYearsStart> "1960s" .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:announcedFarewellTour> <urn:graphragprov:entity:farewell%20tour> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:announcementDate> "2018-09"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Legend%20of%20Live> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Songwriters%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:birthDate> "1945-05-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Robert%20Clark%20Seger> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:careerSpan> "six decades" .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:coWriter> <urn:graphragprov:entity:Heartache%20Tonight> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:firstAlbum> <urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:formedBand> <urn:graphragprov:entity:Silver%20Bullet%20Band> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:heartland%20rock> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:roots%20rock> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Against%20the%20Wind> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Hollywood%20Nights> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Like%20a%20Rock> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Night%20Moves> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Shakedown> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Shame%20on%20the%20Moon> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Still%20the%20Same> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Turn%20the%20Page> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:We%27ve%20Got%20Tonite> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:You%27ll%20Accomp%27ny%20Me> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger%20System> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger%20and%20the%20Last%20Heard> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Silver%20Bullet%20Band> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Detroit> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:recordSales> "75000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:songTheme> <urn:graphragprov:entity:love%2C%20women%2C%20and%20blue-collar%20themes> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:voiceType> <urn:graphragprov:entity:raspy%2C%20powerful%20voice> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Muscle%20Shoals%20Rhythm%20Section> .
+  <urn:graphragprov:entity:Cobo%20Hall> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Detroit%2C%20Michigan> .
+  <urn:graphragprov:entity:Heartache%20Tonight> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Heartache%20Tonight> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Eagles> .
+  <urn:graphragprov:entity:Live%20Bullet> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Live%20Bullet> <urn:graphragprov:predicate:recordedInYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Live%20Bullet> <urn:graphragprov:predicate:recordedLiveAt> <urn:graphragprov:entity:Cobo%20Hall> .
+  <urn:graphragprov:entity:Muscle%20Shoals%20Rhythm%20Section> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Alabama> .
+  <urn:graphragprov:entity:Night%20Moves> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Night%20Moves> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Old%20Time%20Rock%20and%20Roll> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Songs%20of%20the%20Century> .
+  <urn:graphragprov:entity:Old%20Time%20Rock%20and%20Roll> <urn:graphragprov:predicate:awardYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Old%20Time%20Rock%20and%20Roll> <urn:graphragprov:predicate:recordingOf> <urn:graphragprov:entity:Bob%20Seger> .
+  <urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> .
+  <urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:national%20hit> .
+  <urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Shakedown> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Shakedown> <urn:graphragprov:predicate:writtenFor> <urn:graphragprov:entity:Beverly%20Hills%20Cop%20II> .
+  <urn:graphragprov:entity:Silver%20Bullet%20Band> <urn:graphragprov:predicate:formedInYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Silver%20Bullet%20Band> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Detroit-area%20musicians> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.622s | model=deepseek-v4-flash
+      tokens:   in=4136 | out=206 | total=4342 | cached=512 | uncached=3624
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> .
+  - <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Detroit> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> . <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_94645c24beac3818>
+  FROM <urn:graphragprov:unit:u_adb2fd0ef6536b72>
+  WHERE { <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> . <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Detroit',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Beautiful Loser (song)', 'Bob Seger']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  aab7892c0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/aab7892c0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11672
+output tokens:         11565
+total tokens:          23237
+cached input tokens:   4608
+uncached input tokens: 7064
+cumulative LLM seconds: 50.264
+
+statement occurrences: 74
+semantic triples:      73
+entity nodes:          49
+literal values:        16
+predicates:            40
+query attempts:        1
+observed answers:      ('Detroit',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 48.669s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.065s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.623s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.466s

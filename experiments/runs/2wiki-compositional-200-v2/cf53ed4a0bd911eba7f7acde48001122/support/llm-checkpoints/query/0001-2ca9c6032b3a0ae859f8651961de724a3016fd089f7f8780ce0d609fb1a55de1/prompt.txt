@@ -1,0 +1,123 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the composer of film Petulia born?
+
+Expected answer: York
+
+Benchmark evidence relations:
+1. Petulia | composer | John Barry
+2. John Barry | place of birth | York
+
+Frozen RDF graph:
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:arranged> <urn:graphragprov:entity:James%20Bond%20Theme> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:Eon%20Productions> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Awards> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:BAFTA%20Award%20for%20Best%20Film%20Music> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Best%20Original%20Score> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Fellow%20of%20the%20British%20Academy%20of%20Film%20and%20Television%20Arts> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Fellow%20of%20the%20British%20Academy%20of%20Songwriters%2C%20Composers%20and%20Authors> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Globe%20Award%20nominations> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Awards> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:OBE> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:York> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:bornOn> "1933-11-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:careerStart> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:childCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Don%20Black> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Born%20Free> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Brighton%20Rock> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Dances%20with%20Wolves> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Dr.%20No> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Enigma> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Out%20of%20Africa> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:The%20Lion%20in%20Winter> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:The%20Persuaders%21> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:diedOn> "2011-01-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:fatherOwned> <urn:graphragprov:entity:cinemas> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:formedBand> <urn:graphragprov:entity:The%20John%20Barry%20Seven> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:formedBandInYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:John%20Barry%20Prendergast> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:film%20music> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:trumpet> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:livedIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:militaryService> <urn:graphragprov:entity:British%20Army> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:conductor> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:performed> <urn:graphragprov:entity:James%20Bond%20Theme> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:recordedAlbum> <urn:graphragprov:entity:Eternal%20Echoes> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:servedIn> <urn:graphragprov:entity:Cyprus> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:spouseCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:John%20Barry%20%28composer%29> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:cinemas> .
+<urn:graphragprov:entity:Me%20and%20the%20Arch%20Kook%20Petulia> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Haase> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Me%20and%20the%20Arch%20Kook%20Petulia> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Barry> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Richard%20Lester> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:screenplayBy> <urn:graphragprov:entity:Lawrence%20B.%20Marcus> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20C.%20Scott> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Christie> .
+<urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Richard%20Chamberlain> .

@@ -1,0 +1,200 @@
+
+H0 one-case execution
+  case:          37f847440bdd11eba7f7acde48001122
+  hops:          2
+  question:      Who is the spouse of the director of film Two Weeks In Another Town?
+  expected:      Judy Garland
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/37f847440bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Two Weeks in Another Town'
+  source unit: u_8897d212df65aedb3e25d38fc6fdb4a69b8af0042c4111561651eccbb63786ef
+  text chars:  799
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.344s | model=deepseek-v4-flash
+      tokens:   in=2416 | out=2818 | total=5234 | cached=2048 | uncached=368
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 583 / 824 (70.8%)
+    characters text:     583 / 799 (73.0%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  53 chars
+      '. At the time of its release, the film was seen as a'
+    statement density:  23.06 / 1000 chars
+    title reliance:      0 / 19 (0.0%)
+
+[GRAPH 2/2] paragraph=3 title='Vincente Minnelli'
+  source unit: u_672f04f17c901c2d4855cb3a102031a1c0e84f4cbe386ed2f108a697d80038cd
+  text chars:  593
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.263s | model=deepseek-v4-flash
+      tokens:   in=2677 | out=2600 | total=5277 | cached=2048 | uncached=629
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 260 / 610 (42.6%)
+    characters text:     243 / 593 (41.0%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  139 chars
+      'for "Gigi". In addition to having directed some of the best known musicals of his day, Minnelli made many comedies and melodramas. He was'
+    statement density:  29.51 / 1000 chars
+    title reliance:      13 / 18 (72.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 37
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      36
+resource nodes:        25
+entity nodes:          25
+literal values:        7
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:An%20American%20in%20Paris> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Picture> .
+  <urn:graphragprov:entity:An%20American%20in%20Paris> <urn:graphragprov:predicate:publicationYear> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Gigi> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Picture> .
+  <urn:graphragprov:entity:Gigi> <urn:graphragprov:predicate:publicationYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Judy%20Garland> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Liza%20Minnelli> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Best%20Director> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:birthDate> "1903-02-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Liza%20Minnelli> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:deathDate> "1986-07-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:An%20American%20in%20Paris> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gigi> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Meet%20Me%20in%20St.%20Louis> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Band%20Wagon> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20director> .
+  <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Judy%20Garland> .
+  <urn:graphragprov:entity:The%20Bad%20and%20the%20Beautiful> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vincente%20Minnelli> .
+  <urn:graphragprov:entity:The%20Bad%20and%20the%20Beautiful> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kirk%20Douglas> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:a%20novel%20by%20Irwin%20Shaw> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:boxOfficeFailure> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:containsReferencesTo> <urn:graphragprov:entity:The%20Bad%20and%20the%20Beautiful> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:the%20shooting%20of%20a%20romantic%20costume%20drama%20in%20Rome%20by%20a%20team%20of%20decadent%20Hollywood%20stars> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vincente%20Minnelli> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:losses> "approximately three million dollars" .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:publicationYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:seenAs> <urn:graphragprov:entity:a%20reelaboration%20of%20the%20past%20relationship%20between%20actors%20Tyrone%20Power%20and%20Linda%20Christian%20and%20producer%20Darryl%20Zanuck> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Claire%20Trevor> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Cyd%20Charisse> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Daliah%20Lavi> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Edward%20G.%20Robinson> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20Hamilton> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kirk%20Douglas> .
+  <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Rosanna%20Schiaffino> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.657s | model=deepseek-v4-flash
+      tokens:   in=2469 | out=190 | total=2659 | cached=512 | uncached=1957
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vincente%20Minnelli> .
+  - <urn:graphragprov:entity:Vincente%20Minnelli> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Judy%20Garland> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_672f04f17c901c2d>
+  FROM <urn:graphragprov:unit:u_8897d212df65aedb>
+  WHERE { <urn:graphragprov:entity:Two%20Weeks%20in%20Another%20Town> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Judy Garland',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Two Weeks in Another Town', 'Vincente Minnelli']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  37f847440bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/37f847440bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7562
+output tokens:         5608
+total tokens:          13170
+cached input tokens:   4608
+uncached input tokens: 2954
+cumulative LLM seconds: 26.264
+
+statement occurrences: 37
+semantic triples:      36
+entity nodes:          25
+literal values:        7
+predicates:            17
+query attempts:        1
+observed answers:      ('Judy Garland',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.617s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.079s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.658s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.472s

@@ -1,0 +1,234 @@
+
+H0 one-case execution
+  case:          b67b491a0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the composer of song Evil Woman (Electric Light Orchestra Song)?
+  expected:      British
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b67b491a0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Jeff Lynne'
+  source unit: u_2a04580a673d2822065487b34e5fb0afdb2ab21ada71f9fa58dab37058cc7dd3
+  text chars:  1841
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 39.664s | model=deepseek-v4-flash
+      tokens:   in=2717 | out=9491 | total=12208 | cached=2048 | uncached=669
+  extraction: ACCEPTED
+  statements: 61
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    61
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     61
+  coverage:
+    characters combined: 965 / 1851 (52.1%)
+    characters text:     955 / 1841 (51.9%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           14 / 15 (93.3%)
+    longest uncovered:  83 chars
+      'virtually all of its subsequent records. Before, Lynne was also involved with the'
+    statement density:  32.96 / 1000 chars
+    title reliance:      34 / 61 (55.7%)
+
+[GRAPH 2/2] paragraph=5 title='Evil Woman (Electric Light Orchestra song)'
+  source unit: u_896a3859b1eeb096b7718a15535df5e419c3f3e8e39fb7b1b06f0e1ab0631285
+  text chars:  180
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.271s | model=deepseek-v4-flash
+      tokens:   in=2978 | out=1376 | total=4354 | cached=2048 | uncached=930
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 138 / 222 (62.2%)
+    characters text:     128 / 180 (71.1%)
+    characters title:    10 / 42 (23.8%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  15 chars
+      '(ELO). It was'
+    statement density:  40.54 / 1000 chars
+    title reliance:      5 / 9 (55.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 70
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      70
+resource nodes:        48
+entity nodes:          48
+literal values:        13
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:Anthology> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reunion%20singles> .
+  <urn:graphragprov:entity:Armchair%20Theatre> <urn:graphragprov:predicate:publicationYear> "1990"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Cloud%20Nine> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:George%20Harrison> .
+  <urn:graphragprov:entity:Cloud%20Nine> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jeff%20Lynne> .
+  <urn:graphragprov:entity:Cloud%20Nine> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Electric%20Light%20Orchestra> <urn:graphragprov:predicate:formedInYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Electric%20Light%20Orchestra> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rock%20band> .
+  <urn:graphragprov:entity:Electric%20Light%20Orchestra> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:the%20Move> .
+  <urn:graphragprov:entity:Flaming%20Pie> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Paul%20McCartney> .
+  <urn:graphragprov:entity:Flaming%20Pie> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jeff%20Lynne> .
+  <urn:graphragprov:entity:Flaming%20Pie> <urn:graphragprov:predicate:publicationYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Free%20as%20a%20Bird> <urn:graphragprov:predicate:publicationYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Full%20Moon%20Fever> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Tom%20Petty> .
+  <urn:graphragprov:entity:Full%20Moon%20Fever> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jeff%20Lynne> .
+  <urn:graphragprov:entity:Full%20Moon%20Fever> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Get%20Up%21> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Bryan%20Adams> .
+  <urn:graphragprov:entity:Get%20Up%21> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jeff%20Lynne> .
+  <urn:graphragprov:entity:Get%20Up%21> <urn:graphragprov:predicate:publicationYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Into%20the%20Great%20Wide%20Open> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Tom%20Petty> .
+  <urn:graphragprov:entity:Into%20the%20Great%20Wide%20Open> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jeff%20Lynne> .
+  <urn:graphragprov:entity:Into%20the%20Great%20Wide%20Open> <urn:graphragprov:predicate:publicationYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Birmingham%20Walk%20of%20Stars> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Hollywood%20Walk%20of%20Fame> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Ivor%20Novello%20Awards> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Outstanding%20Services%20to%20British%20Music> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:bornOn> "1947-12-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:coFounded> <urn:graphragprov:entity:Electric%20Light%20Orchestra> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:coFounded> <urn:graphragprov:entity:Traveling%20Wilburys> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:coProduced> <urn:graphragprov:entity:Anthology> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:former%20Beatles> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:foundingMemberOf> <urn:graphragprov:entity:Idle%20Race> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:inductedAsMemberOf> <urn:graphragprov:entity:ELO> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:multi-instrumentalist> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:record%20producer> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Electric%20Light%20Orchestra> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Electric%20Light%20Orchestra> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:the%20Move> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:performedUnder> <urn:graphragprov:entity:Jeff%20Lynne%27s%20ELO> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:principalSongwriterOf> <urn:graphragprov:entity:Idle%20Race> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:all%20fifteen%20ELO%20singles> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:pseudonym> <urn:graphragprov:entity:Clayton%20Wilbury> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:pseudonym> <urn:graphragprov:entity:Otis%20Wilbury> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:reformed> <urn:graphragprov:entity:ELO> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Armchair%20Theatre> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Long%20Wave> .
+  <urn:graphragprov:entity:Long%20Wave> <urn:graphragprov:predicate:publicationYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mystery%20Girl> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Roy%20Orbison> .
+  <urn:graphragprov:entity:Mystery%20Girl> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Jeff%20Lynne> .
+  <urn:graphragprov:entity:Mystery%20Girl> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Real%20Love> <urn:graphragprov:predicate:publicationYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Traveling%20Wilburys> <urn:graphragprov:predicate:foundedInYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Traveling%20Wilburys> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:supergroup> .
+  <urn:graphragprov:entity:Traveling%20Wilburys> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Bob%20Dylan> .
+  <urn:graphragprov:entity:Traveling%20Wilburys> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:George%20Harrison> .
+  <urn:graphragprov:entity:Traveling%20Wilburys> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Roy%20Orbison> .
+  <urn:graphragprov:entity:Traveling%20Wilburys> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Tom%20Petty> .
+  <urn:graphragprov:entity:all%20fifteen%20ELO%20singles> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:Top%2010> .
+  <urn:graphragprov:entity:Electric%20Light%20Orchestra> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:band> .
+  <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> .
+  <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:firstReleasedOn> <urn:graphragprov:entity:Face%20the%20Music> .
+  <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:publicationYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Electric%20Light%20Orchestra> .
+  <urn:graphragprov:entity:Face%20the%20Music> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Face%20the%20Music> <urn:graphragprov:predicate:publicationYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:lead%20vocalist> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.354s | model=deepseek-v4-flash
+      tokens:   in=3885 | out=195 | total=4080 | cached=512 | uncached=3373
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> .
+  - <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> . <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2a04580a673d2822>
+  FROM <urn:graphragprov:unit:u_896a3859b1eeb096>
+  WHERE { <urn:graphragprov:entity:Evil%20Woman> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> . <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('English',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Evil Woman (Electric Light Orchestra song)', 'Jeff Lynne']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b67b491a0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b67b491a0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9580
+output tokens:         11062
+total tokens:          20642
+cached input tokens:   4608
+uncached input tokens: 4972
+cumulative LLM seconds: 47.289
+
+statement occurrences: 70
+semantic triples:      70
+entity nodes:          48
+literal values:        13
+predicates:            29
+query attempts:        1
+observed answers:      ('English',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 45.952s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.068s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.354s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.557s

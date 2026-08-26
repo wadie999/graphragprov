@@ -1,0 +1,129 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When is Alexandru Darie's father's birthday?
+
+Expected answer: 14 March 1929
+
+Benchmark evidence relations:
+1. Alexandru Darie | father | Iurie Darie
+2. Iurie Darie | date of birth | 14 March 1929
+
+Frozen RDF graph:
+<urn:graphragprov:entity:1794> <urn:graphragprov:predicate:adaptedBy> <urn:graphragprov:entity:Alexandru%20Darie> .
+<urn:graphragprov:entity:1794> <urn:graphragprov:predicate:adaptedBy> <urn:graphragprov:entity:Oana%20Turbatu> .
+<urn:graphragprov:entity:1794> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Danton> .
+<urn:graphragprov:entity:A%20Midsummer%20Night%27s%20Dream> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:William%20Shakespeare> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Order%20of%20the%20Star%20of%20Italian%20Solidarity> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Ordre%20des%20Arts%20et%20des%20Lettres> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:UNITER%20Prize> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:cirrhosis> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Serghei> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:dateOfBirth> "1959-06-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:dateOfDeath> "2019-09-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Bucharest> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Institutul%20Clinic%20Fundeni> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:1794> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:A%20Midsummer%20Night%27s%20Dream> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:Coriolanus> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:Danton%27s%20Death> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:Macbeth> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:Marat%2FSade> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:The%20Good%20Person%20of%20Szechwan> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:The%20Sexton> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:The%20Winter%27s%20Tale> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directedWork> <urn:graphragprov:entity:Three%20Sisters> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directorOf> <urn:graphragprov:entity:Bulandra%20Theater> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directorOfFrom> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:directorOfUntil> "2019"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:divorcedFrom> <urn:graphragprov:entity:Maria%20Miu> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Caragiale%20Academy%20of%20Theatrical%20Arts%20and%20Cinematography> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:educatedIn> <urn:graphragprov:entity:Bucharest> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Iurie%20Darie> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:graduationYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Consuela%20Ro%C8%99u> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Romanian> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:theater%20director> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:presidentOf> <urn:graphragprov:entity:Union%20of%20European%20Theatres> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:presidentOfFrom> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:presidentOfUntil> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alexandru%20Darie> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Maria%20Miu> .
+<urn:graphragprov:entity:Coriolanus> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:William%20Shakespeare> .
+<urn:graphragprov:entity:Danton> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Camil%20Petrescu> .
+<urn:graphragprov:entity:Danton%27s%20Death> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Georg%20B%C3%BCchner> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:dateOfBirth> "1959-06-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Macbeth> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:William%20Shakespeare> .
+<urn:graphragprov:entity:Marat%2FSade> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Peter%20Weiss> .
+<urn:graphragprov:entity:The%20Good%20Person%20of%20Szechwan> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Bertold%20Brecht> .
+<urn:graphragprov:entity:The%20Sexton> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Marin%20Sorescu> .
+<urn:graphragprov:entity:The%20Winter%27s%20Tale> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:William%20Shakespeare> .
+<urn:graphragprov:entity:Three%20Sisters> <urn:graphragprov:predicate:publicationYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Three%20Sisters> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Anton%20Chekhov> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Vadul-Ra%C5%9Fcov> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:dateOfBirth> "1929-03-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:dateOfDeath> "2012-11-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:filmDebutIn> <urn:graphragprov:entity:The%20Bugler%27s%20Grandsons> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:filmDebutYear> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Romanian> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Iurie%20Darie> <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Miron> .
+<urn:graphragprov:entity:Soroca%20County> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Kingdom%20of%20Romania> .
+<urn:graphragprov:entity:Vadul-Ra%C5%9Fcov> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Soroca%20County> .

@@ -1,0 +1,319 @@
+
+H0 one-case execution
+  case:          8cc2e89c0bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where did Philip Ii, Count Of Nevers's father die?
+  expected:      Halle
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8cc2e89c0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Philip the Bold'
+  source unit: u_b3a874838ccc981108fb9327b32830ee4ae1fa2dc73bbbffbb705e91d4c3e0d1
+  text chars:  529
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.742s | model=deepseek-v4-flash
+      tokens:   in=2369 | out=1609 | total=3978 | cached=2048 | uncached=321
+    [LLM graph.reference #2] sending...
+      provider: 1.139s | model=deepseek-v4-flash
+      tokens:   in=849 | out=8 | total=857 | cached=0 | uncached=849
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 2
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'Count of Artois' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Artois",
+                "segment": "text"
+              }
+            ],
+            "value": "Count of Artois"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Count of Artois",
+                "segment": "text"
+              }
+            ],
+            "value": "title"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Philip the Bold",
+                "segment": "title"
+              }
+            ],
+            "value": "Philip the Bold"
+          }
+        }
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'Count of Burgundy' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Burgundy",
+                "segment": "text"
+              }
+            ],
+            "value": "Count of Burgundy"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Count of Burgundy",
+                "segment": "text"
+              }
+            ],
+            "value": "title"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Philip the Bold",
+                "segment": "title"
+              }
+            ],
+            "value": "Philip the Bold"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 229 / 544 (42.1%)
+    characters text:     214 / 529 (40.5%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  91 chars
+      'and made his successors formidable subjects, and sometimes rivals, of the kings of France.'
+    statement density:  16.54 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 2/2] paragraph=8 title='Philip II, Count of Nevers'
+  source unit: u_7230dfcbb780dc8e1ed3534e8f561f8a270d3926420713d602089c7360284859
+  text chars:  1011
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 11.545s | model=deepseek-v4-flash
+      tokens:   in=2617 | out=2710 | total=5327 | cached=2048 | uncached=569
+    [LLM graph.reference #4] sending...
+      provider: 1.018s | model=deepseek-v4-flash
+      tokens:   in=777 | out=8 | total=785 | cached=0 | uncached=777
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 1
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'Count of Rethel' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Count of Rethel",
+                "segment": "text"
+              }
+            ],
+            "value": "Count of Rethel"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Count of Rethel",
+                "segment": "text"
+              }
+            ],
+            "value": "title"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Philip II, Count of Nevers",
+                "segment": "title"
+              }
+            ],
+            "value": "Philip II, Count of Nevers"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 328 / 1037 (31.6%)
+    characters text:     302 / 1011 (29.9%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           7 / 8 (87.5%)
+    longest uncovered:  234 chars
+      "by various mistresses. In spite of his elder brother John's ambivalent position and ultimate refusal to come to the aid of the royal army in the face of the English invasion of He…"
+    statement density:  16.39 / 1000 chars
+    title reliance:      16 / 17 (94.1%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 26
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 3
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      26
+resource nodes:        22
+entity nodes:          22
+literal values:        4
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:birthDate> "1389-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Villaines-en-Duesmois> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:four%20illegitimate%20children> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:two%20children> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:two%20sons> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:deathDate> "1415-10-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Agincourt> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Philip%20the%20Bold> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Margaret%20III%20of%20Flanders> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Battle%20of%20Agincourt> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Anthony%2C%20Duke%20of%20Brabant> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:John%20the%20Fearless> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Bonne%20of%20Artois> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Isabelle%20de%20Coucy> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Charles> .
+  <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count%20of%20Nevers> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Agincourt> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:birthDate> "1342-01-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:King%20John%20II%20of%20France> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:deathDate> "1404-04-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Burgundian%20branch%20of%20the%20House%20of%20Valois> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Bonne%20of%20Luxembourg> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Halle> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:premier%20peer%20of%20the%20kingdom%20of%20France> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count%20of%20Flanders> .
+  <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Duke%20of%20Burgundy> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.482s | model=deepseek-v4-flash
+      tokens:   in=1998 | out=225 | total=2223 | cached=512 | uncached=1486
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Philip%20the%20Bold> .
+  - <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Halle> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Philip%20the%20Bold> . <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_7230dfcbb780dc8e>
+  FROM <urn:graphragprov:unit:u_b3a874838ccc9811>
+  WHERE { <urn:graphragprov:entity:Philip%20II%2C%20Count%20of%20Nevers> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Philip%20the%20Bold> . <urn:graphragprov:entity:Philip%20the%20Bold> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Halle', 'Agincourt')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Philip II, Count of Nevers', 'Philip the Bold']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8cc2e89c0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8cc2e89c0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8610
+output tokens:         4560
+total tokens:          13170
+cached input tokens:   4608
+uncached input tokens: 4002
+cumulative LLM seconds: 22.927
+
+statement occurrences: 26
+semantic triples:      26
+entity nodes:          22
+literal values:        4
+predicates:            15
+query attempts:        1
+observed answers:      ('Halle', 'Agincourt')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.456s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.483s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.513s

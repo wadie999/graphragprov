@@ -1,0 +1,143 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_25e801d5debcfc7d350da08973f1d41fbc409bb66075ce85601867c6eca825b6
+Title: Lily Allen
+Text:
+Lily Rose Beatrice Cooper (née Allen; born 2 May 1985) is an English singer and songwriter. She is the daughter of actor Keith Allen and film producer Alison Owen. Allen left school when she was 15 and concentrated on improving her performing and compositional skills. In 2005, she made some of her recordings public on Myspace and the publicity resulted in airplay on BBC Radio 1 and a contract with Regal Recordings. Her first mainstream single, "Smile", reached number one on the UK Singles Chart in July 2006. Her debut record, "Alright, Still", was well received, selling over 2.6 million copies worldwide and brought Allen a nomination at the Grammy Awards, the Brit Awards, and the MTV Video Music Awards. She began hosting her own talk show, "Lily Allen and Friends", on BBC Three. Her second studio album, " It's Not Me, It's You", saw a genre shift, having more of an electropop feel, rather than the ska and reggae influences of the first one. The album debuted at number one on the UK Albums Chart and the Australian ARIA Charts and was well received by critics, noting the singer's musical evolution and maturity. It spawned the hit singles "The Fear" and "Fuck You". This success saw her receive the Brit Award for British Female Solo Artist at the 2010 Brit Awards. Allen and Amy Winehouse were credited with starting a process that led to the "year of the women" media label in 2009 that saw five female artists making music of "experimentalism and fearlessness" nominated for the Mercury Prize. After announcing a hiatus from her music career in 2009, Allen launched her own record label, In the Name Of, in 2011. She has released two further albums: "Sheezus" (2014), which debuted at number one on the UK Albums Chart, and "No Shame" (2018). In September 2018, Allen released her debut book, "My Thoughts Exactly."
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Lily Allen",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Lily Allen",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "mother",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "daughter of ... film producer Alison Owen",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Alison Owen",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Alison Owen",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].predicate.evidence[0]: quote 'daughter of ... film producer Alison Owen' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 31,
+    "statement": {
+      "subject": {
+        "value": "It's Not Me, It's You",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "\" It's Not Me, It's You\"",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "chartPosition",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "number one on the Australian ARIA Charts",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "number one",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "number one",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[31].predicate.evidence[0]: quote 'number one on the Australian ARIA Charts' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 35,
+    "statement": {
+      "subject": {
+        "value": "Lily Allen",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Lily Allen",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "awardReceived",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "received the Brit Award for British Female Solo Artist",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Brit Award for British Female Solo Artist",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Brit Award for British Female Solo Artist",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[35].predicate.evidence[0]: quote 'received the Brit Award for British Female Solo Artist' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

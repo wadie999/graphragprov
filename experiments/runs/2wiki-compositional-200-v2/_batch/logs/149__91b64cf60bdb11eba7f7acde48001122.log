@@ -1,0 +1,231 @@
+
+H0 one-case execution
+  case:          91b64cf60bdb11eba7f7acde48001122
+  hops:          2
+  question:      When is the composer of film Arena (1989 Film) 's birthday?
+  expected:      December 28, 1953
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/91b64cf60bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Richard Band'
+  source unit: u_84a608f53e8f3f6ebbd2ebcc5289e934936089e3669e39a319de46b8543de4a8
+  text chars:  243
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.359s | model=deepseek-v4-flash
+      tokens:   in=2301 | out=1150 | total=3451 | cached=2048 | uncached=253
+    [LLM graph.reference #2] sending...
+      provider: 0.921s | model=deepseek-v4-flash
+      tokens:   in=587 | out=8 | total=595 | cached=0 | uncached=587
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'Sitges-Catalan International Film Festival' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sitges-Catalan International Film Festival",
+                "segment": "text"
+              }
+            ],
+            "value": "Sitges-Catalan International Film Festival"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sitges-Catalan International Film Festival",
+                "segment": "text"
+              }
+            ],
+            "value": "awardedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "From Beyond",
+                "segment": "text"
+              }
+            ],
+            "value": "From Beyond"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 132 / 255 (51.8%)
+    characters text:     120 / 243 (49.4%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  52 chars
+      'at the Sitges- Catalan International Film Festival.'
+    statement density:  27.45 / 1000 chars
+    title reliance:      6 / 7 (85.7%)
+
+[GRAPH 2/2] paragraph=2 title='Arena (1989 film)'
+  source unit: u_0fe912c007aea12d97f4e6492143ccab74c9856c2bf98b3b90982dc34fc3e47c
+  text chars:  358
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.406s | model=deepseek-v4-flash
+      tokens:   in=2399 | out=2028 | total=4427 | cached=2176 | uncached=223
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 283 / 375 (75.5%)
+    characters text:     266 / 358 (74.3%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  15 chars
+      'called simply'
+    statement density:  37.33 / 1000 chars
+    title reliance:      9 / 14 (64.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      21
+resource nodes:        16
+entity nodes:          16
+literal values:        5
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Peter%20Manoogian> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:science%20fiction%20film> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Irwin%20Yablans> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:setIn> "4038"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Claudia%20Christian> .
+  <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Paul%20Satterfield> .
+  <urn:graphragprov:entity:Paul%20Satterfield> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Steve%20Armstrong> .
+  <urn:graphragprov:entity:Steve%20Armstrong> <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:The%20Arena> .
+  <urn:graphragprov:entity:Steve%20Armstrong> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:human> .
+  <urn:graphragprov:entity:Steve%20Armstrong> <urn:graphragprov:predicate:isFirstHumanInYears> "50"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:The%20Arena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:intergalactic%20boxing%20sport> .
+  <urn:graphragprov:entity:From%20Beyond> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Best%20Original%20Soundtrack> .
+  <urn:graphragprov:entity:From%20Beyond> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> "1953-12-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:film%20music> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:numberOfFilmsScored> "more than 85" .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.823s | model=deepseek-v4-flash
+      tokens:   in=1518 | out=213 | total=1731 | cached=384 | uncached=1134
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> .
+  - <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> "1953-12-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> . <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0fe912c007aea12d>
+  FROM <urn:graphragprov:unit:u_84a608f53e8f3f6e>
+  WHERE { <urn:graphragprov:entity:Arena%20%281989%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> . <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1953-12-28',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Arena (1989 film)', 'Richard Band']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  91b64cf60bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/91b64cf60bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6805
+output tokens:         3399
+total tokens:          10204
+cached input tokens:   4608
+uncached input tokens: 2197
+cumulative LLM seconds: 17.510
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          16
+literal values:        5
+predicates:            16
+query attempts:        1
+observed answers:      ('1953-12-28',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.703s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.062s
+  graph.materialization [attempt=1]: 0.051s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.824s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.580s

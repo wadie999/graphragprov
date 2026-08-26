@@ -1,0 +1,233 @@
+
+H0 one-case execution
+  case:          78bc77dc0bdd11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Noon At Ngayon: Pagsasamang Kay Ganda die?
+  expected:      October 8, 2012
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/78bc77dc0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Noon at Ngayon: Pagsasamang Kay Ganda'
+  source unit: u_90bd1d7f119e97301cc726f7082dea264c318d5bb9cce7ce723618817a0e42fc
+  text chars:  196
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.732s | model=deepseek-v4-flash
+      tokens:   in=2352 | out=1339 | total=3691 | cached=2048 | uncached=304
+    [LLM graph.reference #2] sending...
+      provider: 1.540s | model=deepseek-v4-flash
+      tokens:   in=618 | out=216 | total=834 | cached=0 | uncached=618
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'released on' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "August 13, 2003",
+                "segment": "text"
+              }
+            ],
+            "value": "2003-08-13"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released on",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Noon at Ngayon: Pagsasamang Kay Ganda",
+                "segment": "title"
+              }
+            ],
+            "value": "Noon at Ngayon: Pagsasamang Kay Ganda"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 167 / 233 (71.7%)
+    characters text:     130 / 196 (66.3%)
+    characters title:    37 / 37 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  39 chars
+      'Noon at Ngayon: Pagsasamang Kay Ganda ('
+    statement density:  34.33 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/2] paragraph=1 title='Marilou Diaz-Abaya'
+  source unit: u_cbc60b253823865b55b9bb67fd09953f4eabc7495c7c7e3c061ac4d4bc23d650
+  text chars:  419
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 9.198s | model=deepseek-v4-flash
+      tokens:   in=2571 | out=2166 | total=4737 | cached=2048 | uncached=523
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 293 / 437 (67.0%)
+    characters text:     275 / 419 (65.6%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  30 chars
+      '. She was the director of the'
+    statement density:  32.04 / 1000 chars
+    title reliance:      8 / 14 (57.1%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 22
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      22
+resource nodes:        16
+entity nodes:          16
+literal values:        5
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> .
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Star%20Cinema> .
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Filipino> .
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:originalTitle> <urn:graphragprov:entity:Now%20and%20Then> .
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:publicationYear> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:releaseDate> "2003-08-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Ricky%20Lee> .
+  <urn:graphragprov:entity:Jos%C3%A9%20Rizal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:biographical%20film> .
+  <urn:graphragprov:entity:Jos%C3%A9%20Rizal> <urn:graphragprov:predicate:publicationYear> "1998"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jos%C3%A9%20Rizal> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:Philippines%27%20national%20hero> .
+  <urn:graphragprov:entity:Marilou%20D%C3%ADaz-Abaya%20Film%20Institute%20and%20Arts%20Center> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20school> .
+  <urn:graphragprov:entity:Marilou%20D%C3%ADaz-Abaya%20Film%20Institute%20and%20Arts%20Center> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Antipolo%20City> .
+  <urn:graphragprov:entity:Marilou%20D%C3%ADaz-Abaya%20Film%20Institute%20and%20Arts%20Center> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Philippines> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfBirth> "1955-03-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> "2012-10-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jos%C3%A9%20Rizal> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Marilou%20D%C3%ADaz-Abaya%20Film%20Institute%20and%20Arts%20Center> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Second%20Golden%20Age%20of%20Philippine%20Cinema> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Philippines> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:presidentOf> <urn:graphragprov:entity:Marilou%20D%C3%ADaz-Abaya%20Film%20Institute%20and%20Arts%20Center> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.312s | model=deepseek-v4-flash
+      tokens:   in=1933 | out=269 | total=2202 | cached=384 | uncached=1549
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> .
+  - <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> "2012-10-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> . <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_90bd1d7f119e9730>
+  FROM <urn:graphragprov:unit:u_cbc60b253823865b>
+  WHERE { <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> . <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2012-10-08',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Marilou Diaz-Abaya', 'Noon at Ngayon: Pagsasamang Kay Ganda']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  78bc77dc0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/78bc77dc0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7474
+output tokens:         3990
+total tokens:          11464
+cached input tokens:   4480
+uncached input tokens: 2994
+cumulative LLM seconds: 19.782
+
+statement occurrences: 22
+semantic triples:      22
+entity nodes:          16
+literal values:        5
+predicates:            16
+query attempts:        1
+observed answers:      ('2012-10-08',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 17.478s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.038s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.313s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.492s

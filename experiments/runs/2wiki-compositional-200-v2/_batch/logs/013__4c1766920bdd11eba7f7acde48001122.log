@@ -1,0 +1,337 @@
+
+H0 one-case execution
+  case:          4c1766920bdd11eba7f7acde48001122
+  hops:          2
+  question:      When is Hilary Cawthorne's husband's birthday?
+  expected:      22 July 1950
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4c1766920bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Hilary Cawthorne'
+  source unit: u_dc138d13b5686d206ac4929c6007c30adb532a641fac62821ba1c8a94ab86c15
+  text chars:  412
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.536s | model=deepseek-v4-flash
+      tokens:   in=2358 | out=1976 | total=4334 | cached=1792 | uncached=566
+    [LLM graph.reference #2] sending...
+      provider: 2.551s | model=deepseek-v4-flash
+      tokens:   in=889 | out=374 | total=1263 | cached=0 | uncached=889
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 2
+
+    initial rejection #3
+      validator:
+        response.statements[3].object.evidence[0]: quote "women's individual foil events at the 1976 Summer Olympics" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "women's individual foil events at the 1976 Summer Olympics",
+                "segment": "text"
+              }
+            ],
+            "value": "women's individual foil events at the 1976 Summer Olympics"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "competed in",
+                "segment": "text"
+              }
+            ],
+            "value": "competedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hilary Cawthorne",
+                "segment": "title"
+              }
+            ],
+            "value": "Hilary Cawthorne"
+          }
+        }
+
+    initial rejection #4
+      validator:
+        response.statements[4].object.evidence[0]: quote "women's individual foil events at the 1980 Summer Olympics" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "women's individual foil events at the 1980 Summer Olympics",
+                "segment": "text"
+              }
+            ],
+            "value": "women's individual foil events at the 1980 Summer Olympics"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "competed in",
+                "segment": "text"
+              }
+            ],
+            "value": "competedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hilary Cawthorne",
+                "segment": "title"
+              }
+            ],
+            "value": "Hilary Cawthorne"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote "women's individual foil events at the 1976 Summer Olympics" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "women's individual foil events at the 1976 Summer Olympics",
+                "segment": "text"
+              }
+            ],
+            "value": "women's individual foil events at the 1976 Summer Olympics"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "competed in",
+                "segment": "text"
+              }
+            ],
+            "value": "competedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hilary Cawthorne",
+                "segment": "title"
+              }
+            ],
+            "value": "Hilary Cawthorne"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].object.evidence[0]: quote "women's individual foil events at the 1980 Summer Olympics" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "women's individual foil events at the 1980 Summer Olympics",
+                "segment": "text"
+              }
+            ],
+            "value": "women's individual foil events at the 1980 Summer Olympics"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "competed in",
+                "segment": "text"
+              }
+            ],
+            "value": "competedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hilary Cawthorne",
+                "segment": "title"
+              }
+            ],
+            "value": "Hilary Cawthorne"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 252 / 428 (58.9%)
+    characters text:     236 / 412 (57.3%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  98 chars
+      ". She competed in the women's individual foil events at the 1976 and 1980 Summer Olympics. She is"
+    statement density:  25.70 / 1000 chars
+    title reliance:      6 / 11 (54.5%)
+
+[GRAPH 2/2] paragraph=3 title='Jim Philbin'
+  source unit: u_4ae9ca57940ebe7a291a3832cd45a19b712ab6bb791d12f88c5fe39dca17afdb
+  text chars:  117
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.021s | model=deepseek-v4-flash
+      tokens:   in=2436 | out=720 | total=3156 | cached=2048 | uncached=388
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 88 / 128 (68.8%)
+    characters text:     77 / 117 (65.8%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  13 chars
+      'Jim Philbin ('
+    statement density:  39.06 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 16
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        11
+entity nodes:          11
+literal values:        4
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:birthDate> "1950-07-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:competedAt> <urn:graphragprov:entity:1984%20Summer%20Olympics> .
+  <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:team%20sabre%20event> .
+  <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:fencer> .
+  <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:appointedInYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:appointedPresidentOf> <urn:graphragprov:entity:British%20Fencing> .
+  <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:birthDate> "1951-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:fencer> .
+  <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Jim%20Philbin> .
+  <urn:graphragprov:entity:Hilary%20Fredricke%20Cawthorne> <urn:graphragprov:predicate:appointedMemberOf> <urn:graphragprov:entity:Order%20of%20the%20British%20Empire> .
+  <urn:graphragprov:entity:Hilary%20Fredricke%20Cawthorne> <urn:graphragprov:predicate:awardReason> <urn:graphragprov:entity:services%20to%20fencing> .
+  <urn:graphragprov:entity:Hilary%20Fredricke%20Cawthorne> <urn:graphragprov:predicate:awardedInYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Sabre%20Champion> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.395s | model=deepseek-v4-flash
+      tokens:   in=1304 | out=207 | total=1511 | cached=384 | uncached=920
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Jim%20Philbin> .
+  - <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:birthDate> "1950-07-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Jim%20Philbin> . <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:birthDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4ae9ca57940ebe7a>
+  FROM <urn:graphragprov:unit:u_dc138d13b5686d20>
+  WHERE { <urn:graphragprov:entity:Hilary%20Cawthorne> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Jim%20Philbin> . <urn:graphragprov:entity:Jim%20Philbin> <urn:graphragprov:predicate:birthDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1950-07-22',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Hilary Cawthorne', 'Jim Philbin']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4c1766920bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4c1766920bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6987
+output tokens:         3277
+total tokens:          10264
+cached input tokens:   4224
+uncached input tokens: 2763
+cumulative LLM seconds: 17.503
+
+statement occurrences: 16
+semantic triples:      15
+entity nodes:          11
+literal values:        4
+predicates:            11
+query attempts:        1
+observed answers:      ('1950-07-22',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 16.118s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.396s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.499s

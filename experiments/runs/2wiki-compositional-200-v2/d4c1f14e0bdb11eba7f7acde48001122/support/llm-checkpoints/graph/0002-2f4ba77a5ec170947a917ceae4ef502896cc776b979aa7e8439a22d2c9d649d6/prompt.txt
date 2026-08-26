@@ -1,0 +1,143 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_e4ab01c7a8dd7efc7d4317ab80d1d1454950a87b8b459ac6bb79d4ff9e17ae7b
+Title: Harald Reinl
+Text:
+Harald Reinl( 8 July 1908 in Bad Ischl, Austria – 9 October 1986 in Santa Cruz de Tenerife, Spain) was an Austrian film director. He is known for the films he made based on Edgar Wallace and Karl May books( see Karl May movies and Edgar Wallace movies) and also made mountain films, Heimatfilms, German war films and entries in such popular German film series as" Dr. MabuseJerry Cotton" and" Kommissar X". Reinl began his career as an extra in the mountain films of Arnold Fanck. He worked as screenwriter on the film" Tiefland" directed by and starring Leni Riefenstahl. Reinl's first movie as director was the mountain film" Mountain Crystal"( 1949). He was Oscar nominated for his documentary feature" Chariots of the Gods"( 1970). By the 1970s, he had semi-retired to the Canary Islands. In 1986, in his Tenerife retirement home, he was stabbed to death by Daniela Maria Delis, his alcoholic wife and a former actress from Czechoslovakia.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 7,
+    "statement": {
+      "subject": {
+        "value": "Harald Reinl",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Harald Reinl",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "knownFor",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "known for",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "films based on Karl May books",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "films he made based on Karl May books",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[7].object.evidence[0]: quote 'films he made based on Karl May books' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "Harald Reinl",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Harald Reinl",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "workedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "worked in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "mountain films of Arnold Fanck",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "mountain films of Arnold Fanck",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].predicate.evidence[0]: quote 'worked in' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 15,
+    "statement": {
+      "subject": {
+        "value": "Harald Reinl",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Harald Reinl",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "workedOn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "worked on",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Tiefland",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Tiefland",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[15].predicate.evidence[0]: quote 'worked on' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,390 @@
+
+H0 one-case execution
+  case:          6a1760f00bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the director of film The City Gone Wild?
+  expected:      Ogden
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6a1760f00bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='The City Gone Wild'
+  source unit: u_64f544b49b19fd347dc0b21c843a55fd79e39d9d7abe7f02a30c5f18c5cf8509
+  text chars:  522
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.479s | model=deepseek-v4-flash
+      tokens:   in=2361 | out=2296 | total=4657 | cached=2048 | uncached=313
+    [LLM graph.reference #2] sending...
+      provider: 2.091s | model=deepseek-v4-flash
+      tokens:   in=634 | out=169 | total=803 | cached=0 | uncached=634
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 1
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'nearly saved by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "David Shepard",
+                "segment": "text"
+              }
+            ],
+            "value": "David Shepard"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "nearly saved by",
+                "segment": "text"
+              }
+            ],
+            "value": "nearlySavedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "last known copy",
+                "segment": "text"
+              }
+            ],
+            "value": "last known copy"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 16
+  coverage:
+    characters combined: 365 / 540 (67.6%)
+    characters text:     347 / 522 (66.5%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  21 chars
+      '. Paramount had also'
+    statement density:  29.63 / 1000 chars
+    title reliance:      8 / 16 (50.0%)
+
+[GRAPH 2/2] paragraph=8 title='James Cruze'
+  source unit: u_7b5b90bbc4b3b4e487a28718ce6cac1704f15fc65e602bdda8d5cbab6f0e1c5f
+  text chars:  157
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.130s | model=deepseek-v4-flash
+      tokens:   in=2478 | out=1028 | total=3506 | cached=2048 | uncached=430
+    [LLM graph.reference #4] sending...
+      provider: 2.220s | model=deepseek-v4-flash
+      tokens:   in=777 | out=337 | total=1114 | cached=0 | uncached=777
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 2
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "August 3, 1942",
+                "segment": "text"
+              }
+            ],
+            "value": "1942-08-03"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "diedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Cruze",
+                "segment": "title"
+              }
+            ],
+            "value": "James Cruze"
+          }
+        }
+
+    initial rejection #4
+      validator:
+        response.statements[4].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hollywood, California",
+                "segment": "text"
+              }
+            ],
+            "value": "Hollywood, California"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "diedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Cruze",
+                "segment": "title"
+              }
+            ],
+            "value": "James Cruze"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "August 3, 1942",
+                "segment": "text"
+              }
+            ],
+            "value": "1942-08-03"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "diedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Cruze",
+                "segment": "title"
+              }
+            ],
+            "value": "James Cruze"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hollywood, California",
+                "segment": "text"
+              }
+            ],
+            "value": "Hollywood, California"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "diedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Cruze",
+                "segment": "title"
+              }
+            ],
+            "value": "James Cruze"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 102 / 168 (60.7%)
+    characters text:     91 / 157 (58.0%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  44 chars
+      '– August 3, 1942 in Hollywood, California)'
+    statement density:  29.76 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 3
+  corrected valid: 1
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      21
+resource nodes:        21
+entity nodes:          21
+literal values:        3
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Paramount> <urn:graphragprov:predicate:contractedWith> <urn:graphragprov:entity:junk%20men> .
+  <urn:graphragprov:entity:Shepard> <urn:graphragprov:predicate:arrivedAt> <urn:graphragprov:entity:studio> .
+  <urn:graphragprov:entity:Shepard> <urn:graphragprov:predicate:arrivedJustAs> <urn:graphragprov:entity:junkmen%20carted%20the%20film%20off%20for%20disposal> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Paramount%20Pictures> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20gangster%20film> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:lastKnownCopy> <urn:graphragprov:entity:last%20known%20copy> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Famous%20Players-Lasky> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:publicationYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Louise%20Brooks> .
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:lost%20film> .
+  <urn:graphragprov:entity:junk%20men> <urn:graphragprov:predicate:haulOff> <urn:graphragprov:entity:old%20rusting%20reels> .
+  <urn:graphragprov:entity:last%20known%20copy> <urn:graphragprov:predicate:forDepositAt> <urn:graphragprov:entity:AFI> .
+  <urn:graphragprov:entity:last%20known%20copy> <urn:graphragprov:predicate:nearlySavedBy> <urn:graphragprov:entity:David%20Shepard> .
+  <urn:graphragprov:entity:last%20known%20copy> <urn:graphragprov:predicate:nearlySavedIn> "late 1960s" .
+  <urn:graphragprov:entity:old%20rusting%20reels> <urn:graphragprov:predicate:withFilmStillWound> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Jens%20Vera%20Cruz%20Bosen> .
+  <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Ogden%2C%20Utah> .
+  <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:bornOn> "1884-03-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:silent%20film%20actor> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.479s | model=deepseek-v4-flash
+      tokens:   in=1539 | out=207 | total=1746 | cached=512 | uncached=1027
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> .
+  - <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Ogden%2C%20Utah> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> . <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_64f544b49b19fd34>
+  FROM <urn:graphragprov:unit:u_7b5b90bbc4b3b4e4>
+  WHERE { <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> . <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Ogden, Utah',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['James Cruze', 'The City Gone Wild']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  6a1760f00bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6a1760f00bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7789
+output tokens:         4037
+total tokens:          11826
+cached input tokens:   4608
+uncached input tokens: 3181
+cumulative LLM seconds: 21.398
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          21
+literal values:        3
+predicates:            20
+query attempts:        1
+observed answers:      ('Ogden, Utah',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 19.932s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.480s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.526s

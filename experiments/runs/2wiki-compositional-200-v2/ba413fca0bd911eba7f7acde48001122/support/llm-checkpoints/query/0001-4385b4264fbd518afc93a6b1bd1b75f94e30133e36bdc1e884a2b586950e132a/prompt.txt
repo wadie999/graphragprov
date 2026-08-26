@@ -1,0 +1,110 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Which country the director of film Meesaya Murukku is from?
+
+Expected answer: India
+
+Benchmark evidence relations:
+1. Meesaya Murukku | director | Hiphop Tamizha
+2. Hiphop Tamizha | country of citizenship | India
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Club%20le%20Mabbu%20le> <urn:graphragprov:predicate:publicationYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:India%27s%20first%20Tamil%20hip%20hop%20album> .
+<urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+<urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:publicationYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:success> <urn:graphragprov:entity:major%20success> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:commercialSuccess> <urn:graphragprov:entity:Club%20le%20Mabbu%20le> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Tamil%20hip%20hop> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musical%20duo> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Chennai> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Tamil%20Nadu> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Adhithya%20%22Adhi%22%20Venkatapathy> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:R.%20Jeeva> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:officialBrandOf> <urn:graphragprov:entity:Remy%20Martin> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:Tamil%20hip%20hop%20in%20India> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Hip%20Hop%20Tamizhan> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:since> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:independent%20musicians> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:underground> .
+<urn:graphragprov:entity:Remy%20Martin> <urn:graphragprov:predicate:launched> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+<urn:graphragprov:entity:Aathmika> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+<urn:graphragprov:entity:Adhi> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+<urn:graphragprov:entity:Adhi> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+<urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:directorialDebut> <urn:graphragprov:entity:Meesaya%20Murukku> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Adhithya%20Venkatapathy> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:R.Jeeva> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:romantic%20comedy%20film> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:publicationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:releaseDate> "2017-07-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:remadeAs> <urn:graphragprov:entity:Padde%20Huli> .
+<urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+<urn:graphragprov:entity:Padde%20Huli> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Kannada> .
+<urn:graphragprov:entity:Padde%20Huli> <urn:graphragprov:predicate:publicationYear> "2019"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:RJ%20Vigneshkanth> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+<urn:graphragprov:entity:Vijayalakshmi> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+<urn:graphragprov:entity:Vivek> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .

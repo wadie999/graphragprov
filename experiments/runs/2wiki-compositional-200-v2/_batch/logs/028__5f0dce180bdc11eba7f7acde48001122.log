@@ -1,0 +1,185 @@
+
+H0 one-case execution
+  case:          5f0dce180bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Mangai Oru Gangai born?
+  expected:      Keralite
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/5f0dce180bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Mangai Oru Gangai'
+  source unit: u_6c622b00ac85155d869217903dafecc2fe1ca172b47d3344cd027b1b1c005625
+  text chars:  207
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.464s | model=deepseek-v4-flash
+      tokens:   in=2307 | out=1343 | total=3650 | cached=2048 | uncached=259
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 144 / 224 (64.3%)
+    characters text:     144 / 207 (69.6%)
+    characters title:    0 / 17 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  27 chars
+      'in the lead roles. It was'
+    statement density:  40.18 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Hariharan (director)'
+  source unit: u_c99e398c6d9ee020badf08ac18973f82e34b6d0a87914f1bf24bdf8ead9a8d77
+  text chars:  416
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.471s | model=deepseek-v4-flash
+      tokens:   in=2512 | out=2052 | total=4564 | cached=2048 | uncached=464
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 229 / 436 (52.5%)
+    characters text:     209 / 416 (50.2%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  84 chars
+      '. His movies mainly revolve around the cultural and relational aspects of a typical'
+    statement density:  27.52 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      21
+resource nodes:        20
+entity nodes:          20
+literal values:        2
+predicates:            12
+
+N-Triples:
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:T.%20Hariharan> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:legal%20drama%20film> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Kovaithambi> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:releaseDate> "1987-07-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Nadhiya> .
+  <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Saritha> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:over%2050%20Malayalam%20films> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Amrutham%20Gamaya> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Nakhakshathangal> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Oru%20Vadakkan%20Veeragatha> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Panchagni> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Parinayam> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Pazhassi%20Raja> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Sargam> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Keralite> .
+  <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:wide%20critical%20acclaim> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.522s | model=deepseek-v4-flash
+      tokens:   in=1497 | out=179 | total=1676 | cached=384 | uncached=1113
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:T.%20Hariharan> .
+  - <urn:graphragprov:entity:Hariharan> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Keralite> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6c622b00ac85155d>
+  FROM <urn:graphragprov:unit:u_c99e398c6d9ee020>
+  WHERE { <urn:graphragprov:entity:Mangai%20Oru%20Gangai> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  5f0dce180bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/5f0dce180bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6316
+output tokens:         3574
+total tokens:          9890
+cached input tokens:   4480
+uncached input tokens: 1836
+cumulative LLM seconds: 17.457
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          20
+literal values:        2
+predicates:            12
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.944s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.523s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.329s

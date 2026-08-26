@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_e6bd17de81fce70ff6bc81f010b68ccfbc39abe8af3b8f824448d90b8353d150
+Title: Too Much Water
+Text:
+"Too Much Water" is a song written by George Jones and Sonny James. Jones released it as a single on the short-lived Mercury-Starday label in 1957, and it became a hit, peaking at No. 13 on the charts. Like most of Jones's singles to this point, "Too Much Water" was an up tempo honky tonk number in the Ernest Tubb-Hank Williams tradition, although with a slight rockabilly edge. The song was included on the 1957 LP "14 Top Country Favorites".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 12,
+    "statement": {
+      "subject": {
+        "value": "George Jones",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "George Jones",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "countryOfCitizenship",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "American",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[12].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,229 @@
+
+H0 one-case execution
+  case:          1c85a0160bdc11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Listen Lester (Film) is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1c85a0160bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='William A. Seiter'
+  source unit: u_c5622196181eccf9597a12a11f36443f4d5e206ae277c7ab9c86f7626f6e7e36
+  text chars:  80
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.101s | model=deepseek-v4-flash
+      tokens:   in=2271 | out=611 | total=2882 | cached=2048 | uncached=223
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 64 / 97 (66.0%)
+    characters text:     47 / 80 (58.8%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  19 chars
+      'William A. Seiter('
+    statement density:  41.24 / 1000 chars
+    title reliance:      4 / 4 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='Listen Lester (film)'
+  source unit: u_b432d65e64fbb0d7ffeeb055fbdcd9d10bd420e8a1602ae0800e35ff4ba26e3f
+  text chars:  380
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.344s | model=deepseek-v4-flash
+      tokens:   in=2385 | out=2283 | total=4668 | cached=2176 | uncached=209
+    [LLM graph.reference #3] sending...
+      provider: 1.079s | model=deepseek-v4-flash
+      tokens:   in=597 | out=8 | total=605 | cached=0 | uncached=597
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 1
+
+    initial rejection #15
+      validator:
+        response.statements[15].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "nationality"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "William A. Seiter",
+                "segment": "text"
+              }
+            ],
+            "value": "William A. Seiter"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 306 / 400 (76.5%)
+    characters text:     306 / 380 (80.5%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  21 chars
+      '. Prints of the film'
+    statement density:  37.50 / 1000 chars
+    title reliance:      0 / 15 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 19
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      19
+resource nodes:        15
+entity nodes:          15
+literal values:        4
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:archivedIn> <urn:graphragprov:entity:Library%20of%20Congress%20film%20archive> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:the%201918%20stage%20play%20of%20the%20same%20name> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20A.%20Seiter> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:distributor> <urn:graphragprov:entity:Universal%20Pictures> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:black-and-white> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:silent%20film> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1924"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:releaseDate> "1924-05-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:screenwriter> <urn:graphragprov:entity:Lewis%20Milestone> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:screenwriter> <urn:graphragprov:entity:William%20A.%20Seiter> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Harry%20Myers> .
+  <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Louise%20Fazenda> .
+  <urn:graphragprov:entity:William%20A.%20Seiter> <urn:graphragprov:predicate:bornOn> "1890-06-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:William%20A.%20Seiter> <urn:graphragprov:predicate:diedOn> "1964-07-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:William%20A.%20Seiter> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:William%20A.%20Seiter> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.005s | model=deepseek-v4-flash
+      tokens:   in=1525 | out=215 | total=1740 | cached=384 | uncached=1141
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20A.%20Seiter> .
+  - <urn:graphragprov:entity:William%20A.%20Seiter> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20A.%20Seiter> . <urn:graphragprov:entity:William%20A.%20Seiter> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b432d65e64fbb0d7>
+  FROM <urn:graphragprov:unit:u_c5622196181eccf9>
+  WHERE { <urn:graphragprov:entity:Listen%20Lester%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20A.%20Seiter> . <urn:graphragprov:entity:William%20A.%20Seiter> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Listen Lester (film)', 'William A. Seiter']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1c85a0160bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1c85a0160bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6778
+output tokens:         3117
+total tokens:          9895
+cached input tokens:   4608
+uncached input tokens: 2170
+cumulative LLM seconds: 16.529
+
+statement occurrences: 19
+semantic triples:      19
+entity nodes:          15
+literal values:        4
+predicates:            14
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.535s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.005s
+  graphdb.semantic [attempt=1]: 0.002s
+  provenance.execution [attempt=1]: 0.282s

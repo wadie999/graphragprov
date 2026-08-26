@@ -1,0 +1,116 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the date of death of James Bradley (Author)'s father?
+
+Expected answer: January 11, 1994
+
+Benchmark evidence relations:
+1. James Bradley | father | John Bradley
+2. John Bradley | date of death | January 11, 1994
+
+Frozen RDF graph:
+<urn:graphragprov:entity:40-man%20combat%20patrol> <urn:graphragprov:predicate:actionDate> "1945-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:40-man%20combat%20patrol> <urn:graphragprov:predicate:captured> <urn:graphragprov:entity:Mount%20Suribachi> .
+<urn:graphragprov:entity:40-man%20combat%20patrol> <urn:graphragprov:predicate:climbed> <urn:graphragprov:entity:Mount%20Suribachi> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:assignedTo> <urn:graphragprov:entity:U.S.%20Marine%20Corps%20rifle%20company> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:awardDate> "1945-02-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:awardReason> <urn:graphragprov:entity:extraordinary%20heroism%20in%20combat> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:awarded> <urn:graphragprov:entity:Navy%20Cross> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:birthDate> "1923-07-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:dateOfDeath> "1994-01-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:didNotRaise> <urn:graphragprov:entity:that%20flag> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:John%20Henry%20%22JackDoc%22%20Bradley> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:helpedSecure> <urn:graphragprov:entity:that%20flagstaff> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:identifiedAs> <urn:graphragprov:entity:being%20at%20the%20first%20flag%20raising> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Hospital%20corpsman> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:knownAs> <urn:graphragprov:entity:one%20of%20the%20six%20men%20originally%20identified%20as%20those%20who%20raised%20the%20second%20of%20two%20U.S.%20flags%20atop%20Mount%20Suribachi> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:40-man%20combat%20patrol> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:militaryBranch> <urn:graphragprov:entity:United%20States%20Navy> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:notIn> <urn:graphragprov:entity:the%20second%20flag%20raising> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:Battle%20of%20Iwo%20Jima> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:World%20War%20II> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:presentAt> <urn:graphragprov:entity:replacement%20flag%20raising> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:wasThoughtToBe> <urn:graphragprov:entity:one%20of%20the%20six%20men%20who%20raised%20the%20second%20flag> .
+<urn:graphragprov:entity:Raising%20the%20Flag%20on%20Iwo%20Jima> <urn:graphragprov:predicate:award> <urn:graphragprov:entity:Pulitzer%20Prize> .
+<urn:graphragprov:entity:Raising%20the%20Flag%20on%20Iwo%20Jima> <urn:graphragprov:predicate:photographer> <urn:graphragprov:entity:Joe%20Rosenthal> .
+<urn:graphragprov:entity:Raising%20the%20Flag%20on%20Iwo%20Jima> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:world%20famous> .
+<urn:graphragprov:entity:second%20flag%20raising> <urn:graphragprov:predicate:capturedIn> <urn:graphragprov:entity:Raising%20the%20Flag%20on%20Iwo%20Jima> .
+<urn:graphragprov:entity:James%20Bradley> <urn:graphragprov:predicate:birthDate> "1954-05-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:James%20Bradley> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Antigo%2C%20Wisconsin> .
+<urn:graphragprov:entity:James%20Bradley> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:John%20Bradley> .
+<urn:graphragprov:entity:James%20Bradley> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:James%20Bradley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:author> .
+<urn:graphragprov:entity:James%20Bradley> <urn:graphragprov:predicate:specializesIn> <urn:graphragprov:entity:historical%20nonfiction> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:involvedIn> <urn:graphragprov:entity:first%20raising%20of%20a%20smaller%20flag> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:notIn> <urn:graphragprov:entity:Rosenthal%27s%20photograph> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:presentAt> <urn:graphragprov:entity:second%20flag%20raising> .
+<urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:wasThoughtToBe> <urn:graphragprov:entity:one%20of%20the%20six%20men%20in%20the%20photograph> .
+<urn:graphragprov:entity:Marine%20Corps> <urn:graphragprov:predicate:announcedOn> "2016-06-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Marine%20Corps> <urn:graphragprov:predicate:announcedThat> <urn:graphragprov:entity:John%20Bradley%20was%20not%20in%20Rosenthal%27s%20photograph> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:raising%20the%20American%20flag%20on%20Mt.%20Suribachi> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:six%20Marines%20raising%20the%20second%20%28and%20larger%29%20flag> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:hasStatus> <urn:graphragprov:entity:one%20of%20the%20most%20duplicated%20and%20reproduced%20photos%20ever%20taken> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:photographer> <urn:graphragprov:entity:Rosenthal> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:takenAt> <urn:graphragprov:entity:Mount%20Suribachi> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:takenDuring> <urn:graphragprov:entity:Battle%20of%20Iwo%20Jima> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:takenInYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:photograph> <urn:graphragprov:predicate:takenOn> "1945-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .

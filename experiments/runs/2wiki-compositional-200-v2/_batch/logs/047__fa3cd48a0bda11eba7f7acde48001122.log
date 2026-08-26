@@ -1,0 +1,230 @@
+
+H0 one-case execution
+  case:          fa3cd48a0bda11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the performer of song Crazy Rhythm?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/fa3cd48a0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Crazy Rhythm'
+  source unit: u_4d14c87f69a12f87063379013fce5fd19ad2910a4323b395f15dc510d479ee9f
+  text chars:  171
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.516s | model=deepseek-v4-flash
+      tokens:   in=2273 | out=1135 | total=3408 | cached=2048 | uncached=225
+    [LLM graph.reference #2] sending...
+      provider: 1.432s | model=deepseek-v4-flash
+      tokens:   in=549 | out=168 | total=717 | cached=0 | uncached=549
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'written by Irving Caesar' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Irving Caesar",
+                "segment": "text"
+              }
+            ],
+            "value": "Irving Caesar"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "written by Irving Caesar",
+                "segment": "text"
+              }
+            ],
+            "value": "lyricist"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Crazy Rhythm",
+                "segment": "title"
+              }
+            ],
+            "value": "Crazy Rhythm"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 131 / 183 (71.6%)
+    characters text:     119 / 171 (69.6%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  35 chars
+      '"Crazy Rhythm" is a thirty-two-bar'
+    statement density:  43.72 / 1000 chars
+    title reliance:      7 / 8 (87.5%)
+
+[GRAPH 2/2] paragraph=5 title='Roger Wolfe Kahn'
+  source unit: u_af50653ec22cd854391e0b2973792d5ed8745d45163ddee3351b1e2e405b0e1c
+  text chars:  169
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.605s | model=deepseek-v4-flash
+      tokens:   in=2355 | out=1692 | total=4047 | cached=2176 | uncached=179
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 131 / 185 (70.8%)
+    characters text:     115 / 169 (68.0%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  19 chars
+      'Roger Wolfe Kahn ('
+    statement density:  64.86 / 1000 chars
+    title reliance:      11 / 12 (91.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        16
+entity nodes:          16
+literal values:        3
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Joseph%20Meyer> .
+  <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> .
+  <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:swing> .
+  <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:show%20tune> .
+  <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:lyricist> <urn:graphragprov:entity:Irving%20Caesar> .
+  <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Here%27s%20Howe> .
+  <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:writtenInYear> "1928"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Here%27s%20Howe> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Broadway%20musical> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:birthDate> "1907-10-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:deathDate> "1962-07-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:popular> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Roger%20Wolfe%20Kahn%20and%20His%20Orchestra> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:aviator> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:bandleader> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Roger%20Wolfe%20Kahn%20and%20His%20Orchestra> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bandleader> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.010s | model=deepseek-v4-flash
+      tokens:   in=1486 | out=211 | total=1697 | cached=384 | uncached=1102
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> .
+  - <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> . <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4d14c87f69a12f87>
+  FROM <urn:graphragprov:unit:u_af50653ec22cd854>
+  WHERE { <urn:graphragprov:entity:Crazy%20Rhythm> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> . <urn:graphragprov:entity:Roger%20Wolfe%20Kahn> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Crazy Rhythm', 'Roger Wolfe Kahn']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  fa3cd48a0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/fa3cd48a0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6663
+output tokens:         3206
+total tokens:          9869
+cached input tokens:   4608
+uncached input tokens: 2055
+cumulative LLM seconds: 16.563
+
+statement occurrences: 20
+semantic triples:      20
+entity nodes:          16
+literal values:        3
+predicates:            11
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.562s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.011s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.477s

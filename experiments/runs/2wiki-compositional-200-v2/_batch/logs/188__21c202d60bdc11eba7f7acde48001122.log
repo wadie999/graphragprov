@@ -1,0 +1,184 @@
+
+H0 one-case execution
+  case:          21c202d60bdc11eba7f7acde48001122
+  hops:          2
+  question:      Who is the child of the director of film Demasiado Jóvenes?
+  expected:      Leopoldo Torre Nilsson
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/21c202d60bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Demasiado jóvenes'
+  source unit: u_5f1858dd95565a1e40a06e79d0a06bb97e4d8aed726be556082cafd16473ced4
+  text chars:  76
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.349s | model=deepseek-v4-flash
+      tokens:   in=2271 | out=577 | total=2848 | cached=2048 | uncached=223
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 65 / 93 (69.9%)
+    characters text:     65 / 76 (85.5%)
+    characters title:    0 / 17 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  43.01 / 1000 chars
+    title reliance:      0 / 4 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Leopoldo Torres Ríos'
+  source unit: u_ecd75f3cf783719df9583e173c8263933c367c6b06fe705be9f5e1d8405cd835
+  text chars:  569
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.329s | model=deepseek-v4-flash
+      tokens:   in=2436 | out=2532 | total=4968 | cached=2176 | uncached=260
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 304 / 589 (51.6%)
+    characters text:     284 / 569 (49.9%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  61 chars
+      'between the early 1920s and 1959 when he was taken ill with'
+    statement density:  28.86 / 1000 chars
+    title reliance:      13 / 17 (76.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        12
+entity nodes:          12
+literal values:        6
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Demasiado%20j%C3%B3venes> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> .
+  <urn:graphragprov:entity:Demasiado%20j%C3%B3venes> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Demasiado%20j%C3%B3venes> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+  <urn:graphragprov:entity:Demasiado%20j%C3%B3venes> <urn:graphragprov:predicate:publicationYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Carlos%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cinematographer> .
+  <urn:graphragprov:entity:Leopoldo%20Torre%20Nilsson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Leopoldo%20Torre%20Nilsson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:birthDate> "1899-12-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:lung%20cancer> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Leopoldo%20Torre%20Nilsson> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:deathDate> "1960-04-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Buenos%20Aires> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:numberOfFilms> "over 40" .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Carlos%20Torres%20R%C3%ADos> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:startedDirectingIn> "1923"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:work> <urn:graphragprov:entity:Palomas%20rubias> .
+  <urn:graphragprov:entity:Palomas%20rubias> <urn:graphragprov:predicate:publicationYear> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.246s | model=deepseek-v4-flash
+      tokens:   in=1612 | out=205 | total=1817 | cached=384 | uncached=1228
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Demasiado%20j%C3%B3venes> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> .
+  - <urn:graphragprov:entity:Leopoldo%20Torres%20R%C3%ADos> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Leopoldo%20Torre%20Nilsson> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Demasiado%20j%C3%B3venes> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:child> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5f1858dd95565a1e>
+  FROM <urn:graphragprov:unit:u_ecd75f3cf783719d>
+  WHERE { <urn:graphragprov:entity:Demasiado%20j%C3%B3venes> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:child> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Leopoldo Torre Nilsson',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Demasiado jóvenes', 'Leopoldo Torres Ríos']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  21c202d60bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/21c202d60bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6319
+output tokens:         3314
+total tokens:          9633
+cached input tokens:   4608
+uncached input tokens: 1711
+cumulative LLM seconds: 15.925
+
+statement occurrences: 21
+semantic triples:      20
+entity nodes:          12
+literal values:        6
+predicates:            14
+query attempts:        1
+observed answers:      ('Leopoldo Torre Nilsson',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.689s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.094s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.247s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.627s

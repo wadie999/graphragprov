@@ -1,0 +1,501 @@
+
+H0 one-case execution
+  case:          9af676fa0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where did the director of film The Violent Men die?
+  expected:      Hollywood
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9af676fa0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='The Violent Men'
+  source unit: u_d3f1c4e35eb1350a2a941606627dc458cda2be9526082d08a17b856c2569d457
+  text chars:  456
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.517s | model=deepseek-v4-flash
+      tokens:   in=2336 | out=2628 | total=4964 | cached=2048 | uncached=288
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 405 / 471 (86.0%)
+    characters text:     405 / 456 (88.8%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  8 chars
+      'novel"'
+    statement density:  38.22 / 1000 chars
+    title reliance:      0 / 18 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Rudolph Maté'
+  source unit: u_53833e05ef015d5510cb92f359ccfcdda43736555051f9144236353c4aa94149
+  text chars:  301
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.415s | model=deepseek-v4-flash
+      tokens:   in=2532 | out=2586 | total=5118 | cached=2048 | uncached=484
+    [LLM graph.reference #3] sending...
+      provider: 3.048s | model=deepseek-v4-flash
+      tokens:   in=1200 | out=640 | total=1840 | cached=0 | uncached=1200
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 4
+
+    initial rejection #12
+      validator:
+        response.statements[12].predicate.evidence[0]: quote 'in Austria' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Austria",
+                "segment": "text"
+              }
+            ],
+            "value": "Austria"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in Austria",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+    initial rejection #13
+      validator:
+        response.statements[13].predicate.evidence[0]: quote 'in Germany' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Germany",
+                "segment": "text"
+              }
+            ],
+            "value": "Germany"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in Germany",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+    initial rejection #14
+      validator:
+        response.statements[14].predicate.evidence[0]: quote 'in France' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "France",
+                "segment": "text"
+              }
+            ],
+            "value": "France"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in France",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+    initial rejection #15
+      validator:
+        response.statements[15].predicate.evidence[0]: quote 'in the United Kingdom' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "United Kingdom",
+                "segment": "text"
+              }
+            ],
+            "value": "United Kingdom"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in the United Kingdom",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     4
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'in Austria' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Austria",
+                "segment": "text"
+              }
+            ],
+            "value": "Austria"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in Austria",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'in Germany' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Germany",
+                "segment": "text"
+              }
+            ],
+            "value": "Germany"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in Germany",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'in France' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "France",
+                "segment": "text"
+              }
+            ],
+            "value": "France"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in France",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+    remaining rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'in the United Kingdom' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "United Kingdom",
+                "segment": "text"
+              }
+            ],
+            "value": "United Kingdom"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in the United Kingdom",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rudolph Maté",
+                "segment": "title"
+              }
+            ],
+            "value": "Rudolph Maté"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 14
+  coverage:
+    characters combined: 195 / 313 (62.3%)
+    characters text:     183 / 301 (60.8%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  58 chars
+      ', Austria, Germany, France and the United Kingdom, before'
+    statement density:  44.73 / 1000 chars
+    title reliance:      14 / 14 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 32
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 0
+  remaining rejections: 4
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      32
+resource nodes:        25
+entity nodes:          25
+literal values:        4
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:birthDate> "1898-01-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Rudolf%20Mayer> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:deathDate> "1964-10-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Hungarian> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Polish> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cinematographer> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20producer> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:cameraman> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:cinematographer> .
+  <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Hungary> .
+  <urn:graphragprov:entity:Smoky%20Valley> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Donald%20Hamilton> .
+  <urn:graphragprov:entity:Smoky%20Valley> <urn:graphragprov:predicate:publicationYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Smoky%20Valley> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:cinematographicProcess> <urn:graphragprov:entity:CinemaScope> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:colorProcess> <urn:graphragprov:entity:Technicolor> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:hasGenre> <urn:graphragprov:entity:drama> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:hasGenre> <urn:graphragprov:entity:western> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:western%20drama%20film> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:publicationYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Barbara%20Stanwyck> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Brian%20Keith> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Dianne%20Foster> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Edward%20G.%20Robinson> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Glenn%20Ford> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:May%20Wynn> .
+  <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:storyline> "a ranch owner who comes into conflict with the land grabbing tactics of the big local family but whose own tense marriage threatens their stranglehold over the region" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.311s | model=deepseek-v4-flash
+      tokens:   in=2031 | out=180 | total=2211 | cached=512 | uncached=1519
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> .
+  - <urn:graphragprov:entity:Rudolph%20Mat%C3%A9> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_53833e05ef015d55>
+  FROM <urn:graphragprov:unit:u_d3f1c4e35eb1350a>
+  WHERE { <urn:graphragprov:entity:The%20Violent%20Men> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Hollywood',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Rudolph Maté', 'The Violent Men']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9af676fa0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9af676fa0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8099
+output tokens:         6034
+total tokens:          14133
+cached input tokens:   4608
+uncached input tokens: 3491
+cumulative LLM seconds: 27.292
+
+statement occurrences: 32
+semantic triples:      32
+entity nodes:          25
+literal values:        4
+predicates:            19
+query attempts:        1
+observed answers:      ('Hollywood',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.999s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.090s
+  graph.materialization [attempt=1]: 0.140s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.312s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.543s

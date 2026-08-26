@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_29d292785c3bc56a4c7cca5738b006f0fabd197e0b8c483a3a29843eb54b8d00
+Title: Thomas Barnwall Martin
+Text:
+Thomas Barnwall Martin (1784 – April 1847) was an Irish landowner and politician. Martin was the eldest surviving son of Richard Martin, humanitarian and Member of Parliament for Galway County, by his first wife. Following an unhappy conclusion to a love affair with the daughter of a local chandler, Thomas left home to join the army. He served at the Siege of Badajoz (1812), Spain in 1812, where he was wounded severely. Despite a personal commendation by the Duke of Wellington himself, Martin returned to Ireland where he later married, inherited the family estate centered at Ballynahinch Castle in Connemara, and successfully campaigned for his father's former seat in Parliament in 1832 and served in this position until his death. Martin died as a result of famine fever, contracted while trying to save his tenants from the effects of the famine. His final words were "My God! What will become of my people?" He was married to Julia Kirwan, daughter of Patrick Kirwan of Dalgan Park. She had a dowry of £15,000. They had one daughter, Mary Letitia Martin (d. 30 October 1850), an author who married Arthur G. Bell.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 29,
+    "statement": {
+      "subject": {
+        "value": "Richard Martin",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Richard Martin",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "dateOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "6 January 1834",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1834-01-06",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "6 January 1834",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[29].predicate.evidence[0]: quote '6 January 1834' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

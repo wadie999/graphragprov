@@ -1,0 +1,244 @@
+
+H0 one-case execution
+  case:          907477b00bda11eba7f7acde48001122
+  hops:          2
+  question:      Where did the director of film The Man Who Sold Himself (1959 Film) die?
+  expected:      Munich
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/907477b00bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Josef von Báky'
+  source unit: u_82a95d68324b282e5792f78320c00387b2c398eb62d75380eb4acd92d50629e9
+  text chars:  716
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 15.340s | model=deepseek-v4-flash
+      tokens:   in=2447 | out=3596 | total=6043 | cached=2048 | uncached=399
+    [LLM graph.reference #2] sending...
+      provider: 0.671s | model=deepseek-v4-flash
+      tokens:   in=709 | out=8 | total=717 | cached=0 | uncached=709
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 1
+
+    initial rejection #19
+      validator:
+        response.statements[19].predicate.evidence[0]: quote 'fantasy-comedy' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "fantasy-comedy",
+                "segment": "text"
+              }
+            ],
+            "value": "fantasy-comedy"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "fantasy-comedy",
+                "segment": "text"
+              }
+            ],
+            "value": "genre"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Münchhausen",
+                "segment": "text"
+              }
+            ],
+            "value": "Münchhausen"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 23
+  coverage:
+    characters combined: 397 / 730 (54.4%)
+    characters text:     383 / 716 (53.5%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           10 / 10 (100.0%)
+    longest uncovered:  45 chars
+      '( now in Vojvodina, Serbia). He worked as an'
+    statement density:  31.51 / 1000 chars
+    title reliance:      17 / 23 (73.9%)
+
+[GRAPH 2/2] paragraph=4 title='The Man Who Sold Himself (1959 film)'
+  source unit: u_a4f3de608ee812adf27ac10fc5ac6d6bf8ec732b8a9fd53ae6218a18b2b289ae
+  text chars:  283
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.250s | model=deepseek-v4-flash
+      tokens:   in=2633 | out=1891 | total=4524 | cached=2048 | uncached=585
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 220 / 319 (69.0%)
+    characters text:     220 / 283 (77.7%)
+    characters title:    0 / 36 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  13 chars
+      ". The film's"
+    statement density:  40.75 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 36
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      34
+resource nodes:        29
+entity nodes:          29
+literal values:        5
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:J%C3%B3zsef%20Baky> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Josef%20v.%20Baky> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:assistantTo> <urn:graphragprov:entity:G%C3%A9za%20von%20Bolv%C3%A1ry> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:birthDate> "1902-03-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Kingdom%20of%20Hungary> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Zombor> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:deathDate> "1966-07-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Hungarian> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:numberOfFilms> "48"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Bavaria> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Munich> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> .
+  <urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:notedFor> <urn:graphragprov:entity:how%20it%20avoids%20politics%20of%20its%20time> .
+  <urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:orderedBy> <urn:graphragprov:entity:Goebbels> .
+  <urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:celebrate%20the%2025th%20anniversary%20of%20UFA> .
+  <urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:compete%20with%20Hollywood%20productions> .
+  <urn:graphragprov:entity:Erich%20Kettelhut> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:art%20director> .
+  <urn:graphragprov:entity:Johannes%20Ott> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:art%20director> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:West%20German> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:setsDesignedBy> <urn:graphragprov:entity:Erich%20Kettelhut> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:setsDesignedBy> <urn:graphragprov:entity:Johannes%20Ott> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:shotAt> <urn:graphragprov:entity:Wandsbek%20Studios> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Antje%20Weisgerber> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Hansj%C3%B6rg%20Felmy> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Hildegard%20Knef> .
+  <urn:graphragprov:entity:Wandsbek%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hamburg> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.069s | model=deepseek-v4-flash
+      tokens:   in=2380 | out=246 | total=2626 | cached=384 | uncached=1996
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> .
+  - <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Munich> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> . <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_82a95d68324b282e>
+  FROM <urn:graphragprov:unit:u_a4f3de608ee812ad>
+  WHERE { <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> . <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Germany', 'Munich', 'Bavaria')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 4
+  provenance sources: ['Josef von Báky', 'The Man Who Sold Himself (1959 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  907477b00bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/907477b00bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8169
+output tokens:         5741
+total tokens:          13910
+cached input tokens:   4480
+uncached input tokens: 3689
+cumulative LLM seconds: 26.329
+
+statement occurrences: 36
+semantic triples:      34
+entity nodes:          29
+literal values:        5
+predicates:            20
+query attempts:        1
+observed answers:      ('Germany', 'Munich', 'Bavaria')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.273s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.068s
+  graph.materialization [attempt=1]: 0.081s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.070s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.774s

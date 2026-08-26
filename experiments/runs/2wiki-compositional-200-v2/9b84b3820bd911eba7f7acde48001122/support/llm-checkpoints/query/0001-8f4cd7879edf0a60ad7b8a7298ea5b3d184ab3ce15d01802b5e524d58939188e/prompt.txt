@@ -1,0 +1,97 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the place of birth of the director of film Swan Song (1945 Film)?
+
+Expected answer: Santiago del Estero
+
+Benchmark evidence relations:
+1. Swan Song | director | Carlos Hugo Christensen
+2. Carlos Hugo Christensen | place of birth | Santiago del Estero
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:activeYearsStart> "1946"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:birthDate> "1914-12-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:heart%20attack> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:deathDate> "1999-11-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:descent> <urn:graphragprov:entity:Danish> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:directedFilmsCount> "54"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Carlos%20Hugo%20Christensen%20Produ%C3%A7%C3%B5es%20Cinematogr%C3%A1ficas> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20producer> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Santiago%20del%20Estero> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Rio%20de%20Janeiro> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:relocatedTo> <urn:graphragprov:entity:Brazil> .
+<urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:retiredFromFilm> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mecha%20Ortiz> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Silver%20Condor%20prize%20for%20Best%20Actress> .
+<urn:graphragprov:entity:Mecha%20Ortiz> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:Argentine%20Film%20Academy> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:romantic%20drama%20film> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Spanish> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:originalTitle> <urn:graphragprov:entity:El%20canto%20del%20cisne> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:portrays> <urn:graphragprov:entity:the%20ultimately%20tragic%20relationship%20between%20a%20young%20composer%20and%20a%20more%20mature%20woman> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:publicationYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mecha%20Ortiz> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Miguel%20G%C3%B3mez%20Bao> .
+<urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Roberto%20Escalada> .

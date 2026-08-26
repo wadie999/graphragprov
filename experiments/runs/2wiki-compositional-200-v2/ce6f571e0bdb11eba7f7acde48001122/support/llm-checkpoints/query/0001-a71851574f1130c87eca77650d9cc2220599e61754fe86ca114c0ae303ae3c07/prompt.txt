@@ -1,0 +1,117 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When is Gevherhan Sultan (Daughter Of Selim Ii)'s father's birthday?
+
+Expected answer: 28 May 1524
+
+Benchmark evidence relations:
+1. Gevherhan Sultan | father | Selim II
+2. Selim II | date of birth | 28 May 1524
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Bayezid> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:killed> .
+<urn:graphragprov:entity:Cihangir> <urn:graphragprov:predicate:diedOf> <urn:graphragprov:entity:grief> .
+<urn:graphragprov:entity:Mehmed> <urn:graphragprov:predicate:diedOf> <urn:graphragprov:entity:smallpox> .
+<urn:graphragprov:entity:Mimar%20Sinan> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:Selimiye%20Mosque> .
+<urn:graphragprov:entity:Mustafa> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:strangled%20to%20death> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:brother> <urn:graphragprov:entity:Bayezid> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:brother> <urn:graphragprov:entity:Cihangir> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:brother> <urn:graphragprov:entity:Mehmed> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:brother> <urn:graphragprov:entity:Mustafa> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:dateOfBirth> "1524-05-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:dateOfDeath> "1574-12-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:diedOn> "1574-12-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Suleiman%20the%20Magnificent> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:hasAlias> <urn:graphragprov:entity:Sar%C4%B1%20Selim> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:hasAlias> <urn:graphragprov:entity:Sarho%C5%9F%20Selim> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:hasAlias> <urn:graphragprov:entity:Selim%20the%20Blond> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:hasAlias> <urn:graphragprov:entity:Selim%20the%20Drunk> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:inheritedArea> "14892000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Sultan> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:leftArea> "15192000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:H%C3%BCrrem%20Sultan> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Hagia%20Sophia> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:reign> <urn:graphragprov:entity:Ottoman%20Empire> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:reignEnd> "1574"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:reignStart> "1566"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:startedTradition> <urn:graphragprov:entity:not%20going%20on%20a%20campaign> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:his%20death> .
+<urn:graphragprov:entity:Selimiye%20Mosque> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Edirne> .
+<urn:graphragprov:entity:Sokollu%20Mehmed%20Pasha> <urn:graphragprov:predicate:wasVizier> <urn:graphragprov:entity:powerful%20vizier> .
+<urn:graphragprov:entity:Turgut%20Reis> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:his%20time> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:auntOf> <urn:graphragprov:entity:Mehmed%20III> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:birthYear> "1544"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:deathYear> "1622"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Selim%20II> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:grandfather> <urn:graphragprov:entity:Suleiman%20the%20Magnificent> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:grandmother> <urn:graphragprov:entity:H%C3%BCrrem%20Sultan> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Ottoman%20princess> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Nurbanu%20Sultan> .
+<urn:graphragprov:entity:Gevherhan%20Sultan> <urn:graphragprov:predicate:sisterOf> <urn:graphragprov:entity:Murad%20III> .
+<urn:graphragprov:entity:Mehmed%20III> <urn:graphragprov:predicate:reignEnd> "1603"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mehmed%20III> <urn:graphragprov:predicate:reignStart> "1595"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Murad%20III> <urn:graphragprov:predicate:reignEnd> "1595"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Murad%20III> <urn:graphragprov:predicate:reignStart> "1574"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:reignEnd> "1574"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Selim%20II> <urn:graphragprov:predicate:reignStart> "1566"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Suleiman%20the%20Magnificent> <urn:graphragprov:predicate:reignEnd> "1566"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Suleiman%20the%20Magnificent> <urn:graphragprov:predicate:reignStart> "1520"^^<http://www.w3.org/2001/XMLSchema#gYear> .

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_4c8483cbe21e924d0159f102e0ab254dc8ef61801a236017c6ef271f69d0a12b
+Title: George I of Greece
+Text:
+George I (Greek: Γεώργιος Α΄, Geórgios I; 24 December 1845 – 18 March 1913) was King of Greece from 1863 until his assassination in 1913. Originally a Danish prince, he was born in Copenhagen, and seemed destined for a career in the Royal Danish Navy. He was only 17 years old when he was elected king by the Greek National Assembly, which had deposed the unpopular former king Otto. His nomination was both suggested and supported by the Great Powers: the United Kingdom of Great Britain and Ireland, the Second French Empire and the Russian Empire. He married the Russian grand duchess Olga Constantinovna of Russia in 1867, and became the first monarch of a new Greek dynasty. Two of his sisters, Alexandra and Dagmar, married into the British and Russian royal families. King Edward VII and Tsar Alexander III were his brothers-in-law, and King George V, Tsar Nicholas II, King Christian X of Denmark and King Haakon VII of Norway were his nephews. George's reign of almost 50 years (the longest in modern Greek history) was characterized by territorial gains as Greece established its place in pre-World War I Europe. Britain ceded the Ionian Islands peacefully in 1864, while Thessaly was annexed from the Ottoman Empire after the Russo-Turkish War (1877–1878). Greece was not always successful in its territorial ambitions; it was defeated in the Greco-Turkish War (1897). During the First Balkan War, after Greek troops had captured much of Greek Macedonia, George was assassinated in Thessaloniki. Compared with his own long tenure, the reigns of his successors Constantine, Alexander, and George II proved short and insecure.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 28,
+    "statement": {
+      "subject": {
+        "value": "Ionian Islands",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ionian Islands",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "cededTo",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "to Greece",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Greece",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Greece",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[28].predicate.evidence[0]: quote 'to Greece' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,107 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Which country the performer of song The Wallflower (Dance With Me, Henry) is from?
+
+Expected answer: American
+
+Benchmark evidence relations:
+1. The Wallflower | performer | Etta James
+2. Etta James | country of citizenship | American
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:album> <urn:graphragprov:entity:Seven%20Year%20Itch> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Blues%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Blues%20Music%20Awards> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Awards> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Jamesetta%20Hawkins> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:bornOn> "1938-01-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:careerStart> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:diedOn> "2012-01-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:facedProblem> <urn:graphragprov:entity:heroin%20addiction> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:facedProblem> <urn:graphragprov:entity:incarceration> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:facedProblem> <urn:graphragprov:entity:severe%20physical%20abuse> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:R%26B> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:blues> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:gospel> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rock%20and%20roll> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:soul> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:musicalComeback> "late 1980s" .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:At%20Last> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:I%27d%20Rather%20Go%20Blind> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Something%27s%20Got%20a%20Hold%20on%20Me> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Tell%20Mama> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:The%20Wallflower> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:rank> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:rank> "62"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Rolling%20Stone> .
+<urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:voiceCharacteristic> <urn:graphragprov:entity:powerful%2C%20deep%2C%20earthy%20voice> .
+<urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Dance%20with%20Me%2C%20Henry> .
+<urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roll%20with%20Me%2C%20Henry> .
+<urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:answerSongTo> <urn:graphragprov:entity:Work%20with%20Me%2C%20Annie> .
+<urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Etta%20James> .
+<urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:publicationYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .

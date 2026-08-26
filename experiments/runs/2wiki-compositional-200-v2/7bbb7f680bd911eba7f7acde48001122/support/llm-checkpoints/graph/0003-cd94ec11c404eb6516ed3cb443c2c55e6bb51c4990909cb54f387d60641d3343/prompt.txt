@@ -1,0 +1,76 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_548b33d3e1e2a2968021bb818286cf74661c61d1ef6f0cd3137df984e0b3460d
+Title: Reginald Le Borg
+Text:
+Reginald Le Borg( 11 December 1902 – 25 March 1989) was an Austrian film director. He was born in Vienna, Austria as Reginald Grobel and directed 68 films between 1936 and 1974. Although he worked in a variety of genres, he is perhaps best remembered today for the series of low- budget horror films he made at Universal Studios in the 1940s. His most expensive and also most successful film was" San Diego, I Love You"( 1944) featuring Buster Keaton in a supporting role. Le Borg died in Los Angeles, California from a heart attack.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "San Diego, I Love You",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "San Diego, I Love You",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "his most expensive and also most successful film",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Reginald Le Borg",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Reginald Le Borg",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "Reginald Le Borg",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].predicate.evidence[0]: quote 'his most expensive and also most successful film' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

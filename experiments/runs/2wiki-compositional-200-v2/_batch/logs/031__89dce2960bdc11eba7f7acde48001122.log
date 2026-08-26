@@ -1,0 +1,211 @@
+
+H0 one-case execution
+  case:          89dce2960bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where did the director of film A Peep Behind The Scenes (1918 Film) die?
+  expected:      London
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/89dce2960bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Kenelm Foss'
+  source unit: u_c421616961021672e018ca12b7098cade426f89f41e27c8c0cb027ab6323865c
+  text chars:  1956
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 22.202s | model=deepseek-v4-flash
+      tokens:   in=2694 | out=5192 | total=7886 | cached=2048 | uncached=646
+  extraction: ACCEPTED
+  statements: 36
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    36
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     36
+  coverage:
+    characters combined: 890 / 1967 (45.2%)
+    characters text:     879 / 1956 (44.9%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           18 / 18 (100.0%)
+    longest uncovered:  140 chars
+      '. Following a relapse of his illness, he was able to return to the theatre and in the early 1920s spent some time in New York City where he'
+    statement density:  18.30 / 1000 chars
+    title reliance:      30 / 36 (83.3%)
+
+[GRAPH 2/2] paragraph=1 title='A Peep Behind the Scenes (1918 film)'
+  source unit: u_cbfdef32cc035d4e01c8521a6c2c8fb4b72dc35903d9d23d241596b59c021b6d
+  text chars:  247
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.782s | model=deepseek-v4-flash
+      tokens:   in=2754 | out=1741 | total=4495 | cached=2048 | uncached=706
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 217 / 283 (76.7%)
+    characters text:     181 / 247 (73.3%)
+    characters title:    36 / 36 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  30 chars
+      'A Peep Behind the Scenes is a'
+    statement density:  38.87 / 1000 chars
+    title reliance:      9 / 11 (81.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 47
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      47
+resource nodes:        39
+entity nodes:          39
+literal values:        6
+predicates:            31
+
+N-Triples:
+  <urn:graphragprov:entity:Fanny%20Burney%20Woolnough> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:Stage%2C%20Screen%20and%20Sandwiches%3A%20the%20Remarkable%20Life%20of%20Kenelm%20Foss> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Croydon%2C%20Surrey> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:bornOn> "1885-12-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Fanny%20Burney%20Woolnough> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:contracted> <urn:graphragprov:entity:tuberculosis> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:diedIn> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:diedOn> "1963-11-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Magic> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:firstAppearanceOnStage> <urn:graphragprov:entity:Royal%20Court%20Theatre> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:author> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theatre%20director> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:Lyric%20Theatre%20in%20the%20Strand> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:numberOfChildren> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:sandwich%20bar> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:London> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:The%20Cherry%20Orchard> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:producedPlay> <urn:graphragprov:entity:Broadway> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:Practical%20Course%20in%20Cinema%20Acting%20in%20Ten%20Complete%20Lessons> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:biographical%20studies%20of%20Richard%20Brinsley%20Sheridan%20and%20J.%20M.%20W.%20Turner> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:several%20novels> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:works%20of%20poetry> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Elisabeth%20Gilson> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:startedCareer> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:studiedAt> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:studiedAt> <urn:graphragprov:entity:Wellesley%20School%20of%20Art> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:Glasgow%20Repertory%20Theatre> .
+  <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:workedFor> <urn:graphragprov:entity:Astra%20Films> .
+  <urn:graphragprov:entity:Magic> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:G.K.%20Chesterton> .
+  <urn:graphragprov:entity:Practical%20Course%20in%20Cinema%20Acting%20in%20Ten%20Complete%20Lessons> <urn:graphragprov:predicate:coAuthor> <urn:graphragprov:entity:Charlie%20Chaplin> .
+  <urn:graphragprov:entity:Practical%20Course%20in%20Cinema%20Acting%20in%20Ten%20Complete%20Lessons> <urn:graphragprov:predicate:coAuthor> <urn:graphragprov:entity:Mary%20Pickford> .
+  <urn:graphragprov:entity:Stage%2C%20Screen%20and%20Sandwiches%3A%20the%20Remarkable%20Life%20of%20Kenelm%20Foss> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Fanny%20Burney> .
+  <urn:graphragprov:entity:sandwich%20bar> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:London> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281877%20novel%29> <urn:graphragprov:predicate:publicationYear> "1877"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281877%20novel%29> <urn:graphragprov:predicate:setting> <urn:graphragprov:entity:travelling%20fair> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281877%20novel%29> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Geoffrey%20H.%20Malins> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenelm%20Foss> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20drama%20film> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:publicationYear> "1918"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gerald%20Ames> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gertrude%20Bain> .
+  <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ivy%20Close> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.627s | model=deepseek-v4-flash
+      tokens:   in=3086 | out=233 | total=3319 | cached=384 | uncached=2702
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenelm%20Foss> .
+  - <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:London> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenelm%20Foss> . <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_c421616961021672>
+  FROM <urn:graphragprov:unit:u_cbfdef32cc035d4e>
+  WHERE { <urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenelm%20Foss> . <urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('London',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['A Peep Behind the Scenes (1918 film)', 'Kenelm Foss']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  89dce2960bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/89dce2960bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8534
+output tokens:         7166
+total tokens:          15700
+cached input tokens:   4480
+uncached input tokens: 4054
+cumulative LLM seconds: 31.611
+
+statement occurrences: 47
+semantic triples:      47
+entity nodes:          39
+literal values:        6
+predicates:            31
+query attempts:        1
+observed answers:      ('London',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 29.999s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.048s
+  graph.materialization [attempt=1]: 0.057s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.628s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.464s

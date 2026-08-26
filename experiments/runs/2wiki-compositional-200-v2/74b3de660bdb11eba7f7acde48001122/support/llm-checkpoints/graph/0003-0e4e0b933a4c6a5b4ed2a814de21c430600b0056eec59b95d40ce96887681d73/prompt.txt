@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_7f6deafee3f146ddea05e4c0ad0ac6c4905f2b715dd52a63ba9630b5a1dbd060
+Title: The Argyle Case (1929 film)
+Text:
+The Argyle Case( 1929) is an all- talking pre-code murder horror film directed by Howard Bretherton and starring Thomas Meighan, H.B. Warner, Lila Lee, John Darrow and Zasu Pitts. The film was based on a play by Harriet Ford and Harvey J. O' Higgins. It was produced and released by Warner Bros. The play was previously filmed as a silent in 1917," The Argyle Case".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 2,
+    "statement": {
+      "subject": {
+        "value": "The Argyle Case (1929 film)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "The Argyle Case (1929 film)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "format",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "all-talking",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "all-talking",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "all-talking",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[2].predicate.evidence[0]: quote 'all-talking' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

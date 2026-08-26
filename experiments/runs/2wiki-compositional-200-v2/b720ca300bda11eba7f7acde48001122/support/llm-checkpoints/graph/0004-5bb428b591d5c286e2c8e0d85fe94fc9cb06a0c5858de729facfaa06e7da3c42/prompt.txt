@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_210308968a838466524b72a107310ca6ead8dce0507f29494f7bc892c84cb2ea
+Title: John Bradley (United States Navy)
+Text:
+John Henry "JackDoc" Bradley (July 10, 1923 – January 11, 1994) was a United States Navy Hospital corpsman who was awarded the Navy Cross for extraordinary heroism in combat on February 21, 1945, while assigned to a U.S. Marine Corps rifle company during the Battle of Iwo Jima in World War II. Bradley is best known as one of the six men originally identified as those who raised the second of two U.S. flags atop Mount Suribachi, until it was determined in 2016 that he did not. Bradley was one of the members of the 40-man combat patrol that climbed and captured Mount Suribachi on the morning of February 23, 1945. In June 2016, Bradley was identified as being at the first flag raising and helping to secure that flagstaff after the flag was raised. It also was determined that he was at the replacement flag raising about 90 minutes later, but did not actually raise that flag either. It was the second flag raising by six Marines that was captured in the world famous Pulitzer Prize-winning photo "Raising the Flag on Iwo Jima" taken by Associated Press photographer Joe Rosenthal.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 26,
+    "statement": {
+      "subject": {
+        "value": "John Bradley",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "John Bradley",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "father",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "John Bradley",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "John Bradley",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "John Bradley",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[26].predicate.evidence[0]: quote 'John Bradley' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

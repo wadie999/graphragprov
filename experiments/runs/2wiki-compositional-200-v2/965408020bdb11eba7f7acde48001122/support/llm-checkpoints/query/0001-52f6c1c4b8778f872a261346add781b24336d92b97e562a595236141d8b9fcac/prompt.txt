@@ -1,0 +1,104 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When did the director of film The Kid From Left Field (1953 Film) die?
+
+Expected answer: July 10, 1972
+
+Benchmark evidence relations:
+1. The Kid from Left Field | director | Harmon Jones
+2. Harmon Jones | date of death | July 10, 1972
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:activeYearsEnd> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:activeYearsStart> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:birthDate> "1911-06-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:careerTransition> <urn:graphragprov:entity:film%20and%20television%20director> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:creditedAs> <urn:graphragprov:entity:editor> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:dateOfDeath> "1972-07-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:directedFeatureFilms> <urn:graphragprov:entity:about%20fifteen%20feature%20films> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:directedTelevisionEpisodes> <urn:graphragprov:entity:dozens%20of%20episodes> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:directedTelevisionSeries> <urn:graphragprov:entity:popular%20television%20series%20of%20the%201950s%20and%201960s> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:20th%20Century-Fox%20studio> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:numberOfFilmsEdited> "about 20" .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20editor> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:Southern%20California> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:workPeriod> "through 1950" .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:20th%20Century%20Fox> .
+<urn:graphragprov:entity:Harmon%20Jones> <urn:graphragprov:predicate:workedOn> <urn:graphragprov:entity:The%20Pride%20of%20St.%20Louis> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harmon%20Jones> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:baseball%20comedy%20film> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:publicationYear> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:remadeAs> <urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281979%20film%29> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:reunionOf> <urn:graphragprov:entity:Dan%20Dailey> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:reunionOf> <urn:graphragprov:entity:Harmon%20Jones> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Anne%20Bancroft> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Billy%20Chapin> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Dan%20Dailey> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281953%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lloyd%20Bridges> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281979%20film%29> <urn:graphragprov:predicate:publicationYear> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281979%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gary%20Coleman> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281979%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gary%20Collins> .
+<urn:graphragprov:entity:The%20Kid%20from%20Left%20Field%20%281979%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Robert%20Guillaume> .
+<urn:graphragprov:entity:The%20Pride%20of%20St.%20Louis> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:biographical> .
+<urn:graphragprov:entity:The%20Pride%20of%20St.%20Louis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:baseball%20film> .

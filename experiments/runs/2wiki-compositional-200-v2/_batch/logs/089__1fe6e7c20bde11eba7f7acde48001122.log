@@ -1,0 +1,228 @@
+
+H0 one-case execution
+  case:          1fe6e7c20bde11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the composer of film Honeymoon (1974 Film)?
+  expected:      Kerala
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1fe6e7c20bde11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='M. K. Arjunan'
+  source unit: u_e7212c4d583a93961a1323990d56b824724e9c6d7f0736133bff0998471a6b16
+  text chars:  188
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.311s | model=deepseek-v4-flash
+      tokens:   in=2301 | out=1188 | total=3489 | cached=2048 | uncached=253
+    [LLM graph.reference #2] sending...
+      provider: 0.856s | model=deepseek-v4-flash
+      tokens:   in=558 | out=8 | total=566 | cached=0 | uncached=558
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'Indian' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "India",
+                "segment": "text"
+              }
+            ],
+            "value": "India"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Indian",
+                "segment": "text"
+              }
+            ],
+            "value": "nationality"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "M. K. Arjunan",
+                "segment": "title"
+              }
+            ],
+            "value": "M. K. Arjunan"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 129 / 201 (64.2%)
+    characters text:     116 / 188 (61.7%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  33 chars
+      'M. K. Arjunan (fondly called as'
+    statement density:  34.83 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/2] paragraph=9 title='Honeymoon (1974 film)'
+  source unit: u_fa5233dc2d57538c69eda77ce58867abf1f7314df50ad551e5a02cedfee45b82
+  text chars:  230
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 6.640s | model=deepseek-v4-flash
+      tokens:   in=2424 | out=1553 | total=3977 | cached=2176 | uncached=248
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 156 / 251 (62.2%)
+    characters text:     156 / 230 (67.8%)
+    characters title:    0 / 21 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  33 chars
+      'in the lead roles. The film had'
+    statement density:  43.82 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 18
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      18
+resource nodes:        17
+entity nodes:          17
+literal values:        1
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Kerala%20State%20Award> .
+  <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:fieldOfWork> <urn:graphragprov:entity:Malayalam%20cinema> .
+  <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Malayalam> .
+  <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:music%20composer> .
+  <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:composing%20many%20melodies> .
+  <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Arjunan%20Master> .
+  <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Kerala> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:M.%20K.%20Arjunan> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:A.%20B.%20Raj> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Malayalam> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:K.%20P.%20Kottarakkara> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:publicationYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Alummoodan> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jose%20Prakash> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Prem%20Nazir> .
+  <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sankaradi> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.574s | model=deepseek-v4-flash
+      tokens:   in=1312 | out=167 | total=1479 | cached=384 | uncached=928
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:M.%20K.%20Arjunan> .
+  - <urn:graphragprov:entity:M.%20K.%20Arjunan> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Kerala> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_e7212c4d583a9396>
+  FROM <urn:graphragprov:unit:u_fa5233dc2d57538c>
+  WHERE { <urn:graphragprov:entity:Honeymoon> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Kerala',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Honeymoon (1974 film)', 'M. K. Arjunan']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1fe6e7c20bde11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1fe6e7c20bde11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6595
+output tokens:         2916
+total tokens:          9511
+cached input tokens:   4608
+uncached input tokens: 1987
+cumulative LLM seconds: 15.380
+
+statement occurrences: 18
+semantic triples:      18
+entity nodes:          17
+literal values:        1
+predicates:            14
+query attempts:        1
+observed answers:      ('Kerala',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.814s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.029s
+  graph.materialization [attempt=1]: 0.069s
+  graph.observation [attempt=1]: 0.003s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.575s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.495s

@@ -1,0 +1,123 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Who is the spouse of the director of film War And Love (1985 Film)?
+
+Expected answer: Michal Bat-Adam
+
+Benchmark evidence relations:
+1. War and Love | director | Moshé Mizrahi
+2. Moshé Mizrahi | spouse | Michal Bat-Adam
+
+Frozen RDF graph:
+<urn:graphragprov:entity:I%20Love%20You%20Rosa> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+<urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> .
+<urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie> <urn:graphragprov:predicate:hasSoundtrack> <urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> .
+<urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie> <urn:graphragprov:predicate:reReleaseYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+<urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> <urn:graphragprov:predicate:profiledBy> <urn:graphragprov:entity:Alexander%20Geoffrey%20Frank> .
+<urn:graphragprov:entity:Les%20Stances%20%C3%A0%20Sophie%20%28soundtrack%29> <urn:graphragprov:predicate:profiledIn> <urn:graphragprov:entity:The%20FADER> .
+<urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:awardCountry> <urn:graphragprov:entity:France> .
+<urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+<urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+<urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Simone%20Signoret> .
+<urn:graphragprov:entity:Madame%20Rosa> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:a%20former%20prostitute%20in%20Paris%20who%20survived%20Auschwitz> .
+<urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:playedLeadRolesIn> <urn:graphragprov:entity:Mizrahi%27s%20films> .
+<urn:graphragprov:entity:Michal%20Bat-Adam> <urn:graphragprov:predicate:teachesAt> <urn:graphragprov:entity:Tel%20Aviv%20University> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:birthDate> "1931-09-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Egypt> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:deathAge> "86"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:deathDate> "2018-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:directedFilmsCount> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Madame%20Rosa> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:filmNominations> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:honorDate> "1994-09"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:honorReason> <urn:graphragprov:entity:his%20lifetime%20contribution%20to%20Israel%20cinema> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:honoredBy> <urn:graphragprov:entity:Haifa%20Film%20Festival> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:pre-state%20Israel> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:immigrationYear> "1946"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:Tel%20Aviv> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:residenceStartDate> "2009-03"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Michal%20Bat-Adam> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:studiedIn> <urn:graphragprov:entity:France> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:studyStartYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:France> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Israel> .
+<urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> <urn:graphragprov:predicate:worksAt> <urn:graphragprov:entity:Tel%20Aviv%20University%27s%20film%20school> .
+<urn:graphragprov:entity:The%20House%20on%20Chelouche%20Street> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mosh%C3%A9%20Mizrahi> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:The%20Cannon%20Group%2C%20Inc.> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:publicationYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:releaseDate> "1985-09-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Brita%20Youngblood> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Cheryl%20Gianini> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Spielberg> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Eda%20Reiss%20Merin> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kyra%20Sedgwick> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sebastian%20Keneas> .
+<urn:graphragprov:entity:War%20and%20Love%20%281985%20film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Abby%20Mann> .

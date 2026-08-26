@@ -1,0 +1,188 @@
+
+H0 one-case execution
+  case:          6173ad000bda11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film You Can'T Beat The Law born?
+  expected:      Malbork
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6173ad000bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title="You Can't Beat the Law"
+  source unit: u_9643b77ee37dd4b297dac08c82a8c99421cd9e16159cc94a69c09d93e1fabf60
+  text chars:  137
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.696s | model=deepseek-v4-flash
+      tokens:   in=2280 | out=875 | total=3155 | cached=0 | uncached=2280
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 108 / 159 (67.9%)
+    characters text:     108 / 137 (78.8%)
+    characters title:    0 / 22 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  14 chars
+      '. The film is'
+    statement density:  37.74 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=6 title='Phil Rosen'
+  source unit: u_b6ebfe21ce031960963ed10718abfc9eeff8556fd4f63f76cdc3c91f84ef5ddc
+  text chars:  417
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.782s | model=deepseek-v4-flash
+      tokens:   in=2425 | out=2540 | total=4965 | cached=2176 | uncached=249
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 286 / 427 (67.0%)
+    characters text:     276 / 417 (66.2%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  22 chars
+      ', German Empire( now,'
+    statement density:  42.15 / 1000 chars
+    title reliance:      16 / 18 (88.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 24
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        19
+entity nodes:          19
+literal values:        5
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Prison%20Mutiny> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20TV%20title> .
+  <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Prison%20Mutiny> .
+  <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Phil%20Rosen> .
+  <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Joyzelle%20Joyner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Joyzelle%20Joyner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:model> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:activeYearsEndYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:activeYearsStartYear> "1915"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Philip%20E.%20Rosen> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:birthDate> "1888-05-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:heart%20attack> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:deathDate> "1951-10-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Hollywood%2C%20California> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:142%20films> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:American%20Society%20of%20Cinematographers> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:grewUpIn> <urn:graphragprov:entity:Machias%2C%20Maine> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cinematographer> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Malbork> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Marienburg> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Joyzelle%20Joyner> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.116s | model=deepseek-v4-flash
+      tokens:   in=1680 | out=215 | total=1895 | cached=384 | uncached=1296
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Phil%20Rosen> .
+  - <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Malbork> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Phil%20Rosen> . <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9643b77ee37dd4b2>
+  FROM <urn:graphragprov:unit:u_b6ebfe21ce031960>
+  WHERE { <urn:graphragprov:entity:You%20Can%27t%20Beat%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Phil%20Rosen> . <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Marienburg', 'Malbork')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Phil Rosen', "You Can't Beat the Law"]
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  6173ad000bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6173ad000bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6385
+output tokens:         3630
+total tokens:          10015
+cached input tokens:   2560
+uncached input tokens: 3825
+cumulative LLM seconds: 18.594
+
+statement occurrences: 24
+semantic triples:      24
+entity nodes:          19
+literal values:        5
+predicates:            17
+query attempts:        1
+observed answers:      ('Marienburg', 'Malbork')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 16.485s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.075s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.118s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.474s

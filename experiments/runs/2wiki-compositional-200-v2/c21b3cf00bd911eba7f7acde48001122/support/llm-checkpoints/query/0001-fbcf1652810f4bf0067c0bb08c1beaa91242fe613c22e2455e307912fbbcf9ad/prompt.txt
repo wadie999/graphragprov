@@ -1,0 +1,103 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where did the director of film Hariyali Aur Rasta die?
+
+Expected answer: Mumbai
+
+Benchmark evidence relations:
+1. Hariyali Aur Rasta | director | Vijay Bhatt
+2. Vijay Bhatt | place of death | Mumbai
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:boxOfficeLocation> <urn:graphragprov:entity:Indian%20Box%20Office> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:boxOfficeRanking> "fourth highest grosser of the year" .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:boxOfficeStatus> <urn:graphragprov:entity:Hit> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vijay%20Bhatt> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:musicComposer> <urn:graphragprov:entity:Shankar%20Jaikishan> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Vijay%20Bhatt> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:publicationYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mala%20Sinha> .
+<urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Manoj%20Kumar> .
+<urn:graphragprov:entity:Baiju%20Bawra> <urn:graphragprov:predicate:publicationYear> "1952"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Goonj%20Uthi%20Shehnai> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Himalaya%20Ki%20God%20Mein> <urn:graphragprov:predicate:publicationYear> "1965"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Prakash%20Pictures> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20production%20company> .
+<urn:graphragprov:entity:Prakash%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Andheri%20East%2C%20Mumbai> .
+<urn:graphragprov:entity:Prakash%20Studios> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:64%20feature%20films> .
+<urn:graphragprov:entity:Prakash%20Studios> <urn:graphragprov:predicate:producedCount> "64"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Ram%20Rajya> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Vrajlal%20Jagneshwar%20Bhatt> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:bornOn> "1907-05-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:diedOn> "1993-10-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Baiju%20Bawra> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Goonj%20Uthi%20Shehnai> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Himalaya%20Ki%20God%20Mein> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ram%20Rajya> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:founder> <urn:graphragprov:entity:Prakash%20Pictures> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:founder> <urn:graphragprov:entity:Prakash%20Studios> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:foundingMemberOf> <urn:graphragprov:entity:Film%20and%20Television%20Producers%20Guild%20of%20India> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Hindi%20cinema> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:notedFor> <urn:graphragprov:entity:producer-director-screenwriter%20of%20Hindi%20cinema> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer-director-screenwriter> .
+<urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Mumbai> .

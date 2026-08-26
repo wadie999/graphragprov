@@ -1,0 +1,107 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Which country the composer of song En Spännande Dag För Josefine is from?
+
+Expected answer: Swedish
+
+Benchmark evidence relations:
+1. En spännande dag för Josefine | composer | Benny Borg
+2. Benny Borg | country of citizenship | Swedish
+
+Frozen RDF graph:
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:a%20girl%20being%20teased%20at%20school%20for%20coming%20from%20another%20country> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Den%20r%C3%B6da%20stugan> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:bSideOf> <urn:graphragprov:entity:Hasta%20la%20vista> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:chartDate> "1974-10-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:chartPosition> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:chartedAt> <urn:graphragprov:entity:Svensktoppen> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Benny%20Borg> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:lyricsBy> <urn:graphragprov:entity:Arne%20Riis> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:publicationYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:publicationYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:publicationYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:publicationYear> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Curt%20Haagers> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:G%C3%B6ran%20Lindbergs%20orkester> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Inger%20Lise%20Rypdal> .
+<urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Schytts> .
+<urn:graphragprov:entity:En%20spennende%20dag%20for%20Josefine> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:En%20spennende%20dag%20for%20Josefine> <urn:graphragprov:predicate:chartYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:En%20spennende%20dag%20for%20Josefine> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Norwegian> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Herman%20Wildenvey%20Poetry%20Award> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Spellemannprisen%20award> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:awardYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:awardYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:birthDate> "1945-11-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Gothenburg> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Dizzie%20Tunes> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Grethe%20Kausland> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Norway> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Swedish> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201972> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Norway> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Kirsti%20Sparboe> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:spouseEndDate> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:spouseStartDate> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .

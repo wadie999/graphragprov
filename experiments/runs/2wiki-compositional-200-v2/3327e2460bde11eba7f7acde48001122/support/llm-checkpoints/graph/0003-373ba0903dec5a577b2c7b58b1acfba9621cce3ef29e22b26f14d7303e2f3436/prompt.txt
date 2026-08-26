@@ -1,0 +1,362 @@
+Convert one source unit into a rich grounded RDF-style knowledge graph.
+
+The source has two immutable segments: `title` and `text`.
+
+Goals:
+1. extract as many useful explicit atomic facts as possible;
+2. represent them as reusable subject-predicate-object statements;
+3. ground every subject, predicate, and object to exact source substrings.
+
+Do not stop after finding only the facts needed for one downstream question.
+
+Return ONLY:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "...",
+        "datatype": "... optional ...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+RULES
+
+1. ATOMIC FACTS
+Each statement expresses one relation.
+Subjects and entity objects must be reusable entities/concepts, not sentences,
+clauses, explanations, or lists.
+
+Split dimensions:
+"American jazz guitarist" ->
+  nationality -> American
+  occupation -> guitarist
+  genre -> jazz
+
+Split lists:
+"CD and vinyl" -> two statements.
+
+2. ENTITIES VS LITERALS
+Subjects are always entities.
+Objects without `datatype` are entities.
+
+Use literals only for scalar values.
+
+Allowed datatypes:
+string, integer, decimal, boolean, year, yearMonth, date, dateTime
+
+Normalize when the source provides enough precision:
+
+"68,202,492" -> value "68202492", datatype "integer"
+"6 March 2018" -> value "2018-03-06", datatype "date"
+"March 2018" -> value "2018-03", datatype "yearMonth"
+"2018" -> value "2018", datatype "year"
+
+Keep imprecise scalars as strings:
+"the 1950s"
+"around 2018"
+"35 to 40 hours per week"
+
+Never invent missing precision.
+Every `value` is a JSON string.
+
+3. PREDICATES
+Use concise lowerCamelCase relations, normally 1-4 words, e.g.:
+
+instanceOf, nationality, occupation, genre, bornIn, bornOn,
+director, writtenBy, producedBy, starring, locatedIn,
+foundedBy, foundedInYear, publicationYear, headquarteredIn
+
+Predicate evidence should be the shortest exact phrase expressing the relation.
+
+4. LOCAL SUPPORT
+A statement must be supported by one local assertion, normally one clause or
+sentence.
+
+Cross-sentence resolution is allowed only for local identity/coreference:
+pronouns, aliases, abbreviations, omitted subjects, or the title.
+
+Do not combine unrelated fragments to manufacture a relation.
+
+5. EXACT GROUNDING
+Every subject, predicate, and object requires evidence.
+
+Each `quote` must be an exact non-empty substring of its declared segment.
+Preserve capitalization, spelling, punctuation, whitespace, Unicode, etc.
+
+Occurrences are counted independently per segment from left to right.
+Use occurrence 1 unless the same quote appears multiple times.
+
+Evidence roles must be meaningful:
+- subject evidence identifies the subject;
+- predicate evidence expresses the relation;
+- object evidence identifies/expresses the object.
+
+6. TITLE
+Use the title when needed to resolve a local subject/object.
+
+Example:
+Title: "Maria Torres"
+Text: "She founded Lumen Works."
+
+"Maria Torres" may use title evidence "Maria Torres" plus text evidence "She".
+
+Do not automatically make the title entity the subject of every statement.
+
+7. SOURCE BOUNDARY
+Use only explicit information in the supplied title and text.
+
+Do not automatically add inverse, symmetric, transitive, ontology-derived,
+cross-source, or external-world facts.
+
+8. BROAD COVERAGE
+Continue through the whole source.
+
+Extract useful explicit facts about identity, type, nationality, occupation,
+location, people, works, organizations, authorship, direction, production,
+membership, leadership, dates, quantities, genres, formats, and other grounded
+relations.
+
+Do not manufacture facts merely to increase graph size.
+
+Return {"statements": []} only when no useful fully grounded atomic fact exists.
+
+
+EXAMPLE
+
+Title:
+"Example Film"
+
+Text:
+"Example Film is a 2018 French drama film directed by Maria Torres and starring
+John Lee and Anna Smith."
+
+Output:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {"segment": "text", "quote": "film", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "drama film",
+        "evidence": [
+          {"segment": "text", "quote": "drama film", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "publicationYear",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "2018",
+        "datatype": "year",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "French",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {"segment": "text", "quote": "directed by", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Maria Torres",
+        "evidence": [
+          {"segment": "text", "quote": "Maria Torres", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "John Lee",
+        "evidence": [
+          {"segment": "text", "quote": "John Lee", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Anna Smith",
+        "evidence": [
+          {"segment": "text", "quote": "Anna Smith", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+EXPERIMENT TASK — CONSTRUCT 2WIKI QUESTION GRAPH
+
+We are constructing a rich grounded RDF graph for one 2WikiMultiHopQA question.
+
+The CURRENT SOURCE is the extraction target.
+
+The question, expected answer, and benchmark evidence relations are coordination
+context. They identify relations that the final graph must not miss, but they
+do not define the complete graph and they are not textual evidence.
+
+For the CURRENT SOURCE:
+
+1. MANDATORY BENCHMARK COVERAGE
+
+Represent every benchmark evidence relation that is explicitly supported by
+CURRENT SOURCE.
+
+These relations are a required minimum. They must not be omitted.
+
+2. BROAD SOURCE EXTRACTION
+
+After ensuring the mandatory benchmark relations are represented, continue
+through the entire CURRENT SOURCE and extract all other useful explicit atomic
+facts that can be grounded correctly.
+
+Do not stop after extracting the benchmark relation.
+
+Do not restrict extraction to facts needed for the question or expected answer.
+
+Treat each sentence or local clause independently: when it contains a useful
+explicit factual relation, represent that relation unless doing so would violate
+the grounding or graph-quality rules.
+
+The benchmark evidence tells you what must not be missed.
+It is not the extraction target and is not a reason to stop.
+
+Reuse semantic names already present in the accepted graph when they denote the
+same thing.
+
+Every returned subject, predicate, and object must cite exact evidence from the
+CURRENT SOURCE.
+
+Do not use the question, expected answer, benchmark evidence relations, accepted
+graph, or another source as textual evidence.
+
+Python owns source identity; never return source IDs.
+
+Question: Where was the place of death of Princess Alexandra Of Greece And Denmark's father?
+
+Expected answer: Thessaloniki
+
+Benchmark evidence relations:
+1. Grand Duchess Alexandra Georgievna of Russia | father | George I
+2. George I | place of death | Thessaloniki
+
+Accepted semantic graph so far:
+Constantine I of Greece | child | queens of Romania and Croatia
+Constantine I of Greece | child | three kings of Greece
+Constantine I of Greece | child | three sons
+Constantine I of Greece | child | two of his daughters
+Grand Duchess Alexandra Georgievna of Russia | aunt | Prince Philip, Duke of Edinburgh
+Grand Duchess Alexandra Georgievna of Russia | birthDate | 1870-08-30
+Grand Duchess Alexandra Georgievna of Russia | childRank | firstborn daughter
+Grand Duchess Alexandra Georgievna of Russia | childRank | third child
+Grand Duchess Alexandra Georgievna of Russia | cousin | King Christian X of Denmark
+Grand Duchess Alexandra Georgievna of Russia | cousin | King George V of the United Kingdom
+Grand Duchess Alexandra Georgievna of Russia | cousin | King Haakon VII of Norway
+Grand Duchess Alexandra Georgievna of Russia | cousin | Queen Maud of Norway
+Grand Duchess Alexandra Georgievna of Russia | cousin | Tsar Nicholas II of Russia
+Grand Duchess Alexandra Georgievna of Russia | deathDate | 1891-09-24
+Grand Duchess Alexandra Georgievna of Russia | father | King George I
+Grand Duchess Alexandra Georgievna of Russia | grandfather | King Christian IX
+Grand Duchess Alexandra Georgievna of Russia | grandmother | Queen Louise
+Grand Duchess Alexandra Georgievna of Russia | instanceOf | Princess Alexandra of Greece and Denmark
+Grand Duchess Alexandra Georgievna of Russia | mother | Queen Olga of Greece
+Grand Duchess Alexandra Georgievna of Russia | sibling | Constantine I of Greece
+Queen Olga of Greece | father | a Russian grand duke
+
+CURRENT SOURCE — 2Wiki paragraph 2
+
+{
+  "title": "George I of Greece",
+  "text": "George I (Greek: Γεώργιος Α΄, Geórgios I; 24 December 1845 – 18 March 1913) was King of Greece from 1863 until his assassination in 1913. Originally a Danish prince, he was born in Copenhagen, and seemed destined for a career in the Royal Danish Navy. He was only 17 years old when he was elected king by the Greek National Assembly, which had deposed the unpopular former king Otto. His nomination was both suggested and supported by the Great Powers: the United Kingdom of Great Britain and Ireland, the Second French Empire and the Russian Empire. He married the Russian grand duchess Olga Constantinovna of Russia in 1867, and became the first monarch of a new Greek dynasty. Two of his sisters, Alexandra and Dagmar, married into the British and Russian royal families. King Edward VII and Tsar Alexander III were his brothers-in-law, and King George V, Tsar Nicholas II, King Christian X of Denmark and King Haakon VII of Norway were his nephews. George's reign of almost 50 years (the longest in modern Greek history) was characterized by territorial gains as Greece established its place in pre-World War I Europe. Britain ceded the Ionian Islands peacefully in 1864, while Thessaly was annexed from the Ottoman Empire after the Russo-Turkish War (1877–1878). Greece was not always successful in its territorial ambitions; it was defeated in the Greco-Turkish War (1897). During the First Balkan War, after Greek troops had captured much of Greek Macedonia, George was assassinated in Thessaloniki. Compared with his own long tenure, the reigns of his successors Constantine, Alexander, and George II proved short and insecure."
+}

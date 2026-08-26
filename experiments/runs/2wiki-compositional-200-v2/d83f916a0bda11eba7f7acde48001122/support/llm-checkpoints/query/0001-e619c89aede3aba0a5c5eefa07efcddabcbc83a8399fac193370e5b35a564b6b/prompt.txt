@@ -1,0 +1,130 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the date of birth of the director of film Berlin: Symphony Of A Metropolis?
+
+Expected answer: 28 December 1887
+
+Benchmark evidence relations:
+1. Berlin: Symphony of a Metropolis | director | Walter Ruttmann
+2. Walter Ruttmann | date of birth | 28 December 1887
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Anhalter%20Bahnhof> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:central%20Berlin> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:coWrittenBy> <urn:graphragprov:entity:Carl%20Mayer> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:coWrittenBy> <urn:graphragprov:entity:Karl%20Freund> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Edmund%20Meisel> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:life%20of%20a%20city> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Walter%20Ruttmann> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:displaysKnowledgeOf> <urn:graphragprov:entity:Soviet%20montage%20theory> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:exampleOf> <urn:graphragprov:entity:city%20symphony%20film%20genre> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Anhalter%20Bahnhof> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Hotel%20Excelsior> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:city%20symphony> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasAlternativeTitle> <urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Great%20City> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasAspectRatio> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasBoxOffice> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasBudget> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasCinematographer> <urn:graphragprov:entity:Karl%20Freund> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasCinematography> <urn:graphragprov:entity:Karl%20Freund> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasColor> <urn:graphragprov:entity:silent> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasCountry> <urn:graphragprov:entity:German> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasDistributor> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasEditor> <urn:graphragprov:entity:Karl%20Freund> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasFeaturedBuilding> <urn:graphragprov:entity:Anhalter%20Bahnhof> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasFeaturedBuilding> <urn:graphragprov:entity:Hotel%20Excelsior> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasFormat> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasGenre> <urn:graphragprov:entity:city%20symphony> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasLanguage> <urn:graphragprov:entity:silent> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasMusic> <urn:graphragprov:entity:Edmund%20Meisel> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasMusicComposer> <urn:graphragprov:entity:Edmund%20Meisel> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasProducer> <urn:graphragprov:entity:Karl%20Freund> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasReleaseDate> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasReleaseYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasRuntime> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasScreenwriter> <urn:graphragprov:entity:Carl%20Mayer> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasScreenwriter> <urn:graphragprov:entity:Karl%20Freund> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasSetting> <urn:graphragprov:entity:Berlin%2C%20Germany> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasSound> <urn:graphragprov:entity:silent> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasStyle> <urn:graphragprov:entity:semi-documentary%20style> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:hasSubject> <urn:graphragprov:entity:life%20of%20a%20city> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Man%20With%20a%20Movie%20Camera> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Vertov%27s%20earlier%20films> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20film> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:portrays> <urn:graphragprov:entity:life%20of%20a%20city> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:publicationYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Berlin%2C%20Germany> .
+<urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:style> <urn:graphragprov:entity:semi-documentary%20style> .
+<urn:graphragprov:entity:Edmund%20Meisel> <urn:graphragprov:predicate:commissionedToWrite> <urn:graphragprov:entity:orchestral%20score> .
+<urn:graphragprov:entity:Hotel%20Excelsior> <urn:graphragprov:predicate:connectedTo> <urn:graphragprov:entity:Anhalter%20Bahnhof> .
+<urn:graphragprov:entity:Hotel%20Excelsior> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:across%20the%20street%20from%20the%20station> .
+<urn:graphragprov:entity:Hotel%20Excelsior> <urn:graphragprov:predicate:wasOnce> <urn:graphragprov:entity:largest%20hotel%20in%20Europe> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:dateOfBirth> "1887-12-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:dateOfDeath> "1941-07-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:practitionerOf> <urn:graphragprov:entity:experimental%20film> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Hans%20Richter> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Oskar%20Fischinger> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Viking%20Eggeling> .
+<urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedWithSoundAlone> <urn:graphragprov:entity:Wochenende> .
+<urn:graphragprov:entity:Wochenende> <urn:graphragprov:predicate:publicationYear> "1930"^^<http://www.w3.org/2001/XMLSchema#gYear> .

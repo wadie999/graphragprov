@@ -1,0 +1,435 @@
+
+H0 one-case execution
+  case:          d4c1f14e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Almenrausch And Edelweiss (1957 Film) die?
+  expected:      9 October 1986
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/d4c1f14e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Harald Reinl'
+  source unit: u_e4ab01c7a8dd7efc7d4317ab80d1d1454950a87b8b459ac6bb79d4ff9e17ae7b
+  text chars:  943
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 19.090s | model=deepseek-v4-flash
+      tokens:   in=2505 | out=4501 | total=7006 | cached=2048 | uncached=457
+    [LLM graph.reference #2] sending...
+      provider: 2.951s | model=deepseek-v4-flash
+      tokens:   in=1191 | out=502 | total=1693 | cached=0 | uncached=1191
+  extraction: ACCEPTED
+  statements: 28
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    28
+    initially rejected: 3
+
+    initial rejection #7
+      validator:
+        response.statements[7].object.evidence[0]: quote 'films he made based on Karl May books' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "films he made based on Karl May books",
+                "segment": "text"
+              }
+            ],
+            "value": "films based on Karl May books"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "known for",
+                "segment": "text"
+              }
+            ],
+            "value": "knownFor"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harald Reinl",
+                "segment": "title"
+              }
+            ],
+            "value": "Harald Reinl"
+          }
+        }
+
+    initial rejection #13
+      validator:
+        response.statements[13].predicate.evidence[0]: quote 'worked in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "mountain films of Arnold Fanck",
+                "segment": "text"
+              }
+            ],
+            "value": "mountain films of Arnold Fanck"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "worked in",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harald Reinl",
+                "segment": "title"
+              }
+            ],
+            "value": "Harald Reinl"
+          }
+        }
+
+    initial rejection #15
+      validator:
+        response.statements[15].predicate.evidence[0]: quote 'worked on' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Tiefland",
+                "segment": "text"
+              }
+            ],
+            "value": "Tiefland"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "worked on",
+                "segment": "text"
+              }
+            ],
+            "value": "workedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harald Reinl",
+                "segment": "title"
+              }
+            ],
+            "value": "Harald Reinl"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     3
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote 'films he made based on Karl May books' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "films he made based on Karl May books",
+                "segment": "text"
+              }
+            ],
+            "value": "films based on Karl May books"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "known for",
+                "segment": "text"
+              }
+            ],
+            "value": "knownFor"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harald Reinl",
+                "segment": "title"
+              }
+            ],
+            "value": "Harald Reinl"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'worked in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "mountain films of Arnold Fanck",
+                "segment": "text"
+              }
+            ],
+            "value": "mountain films of Arnold Fanck"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "worked in",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harald Reinl",
+                "segment": "title"
+              }
+            ],
+            "value": "Harald Reinl"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'worked on' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Tiefland",
+                "segment": "text"
+              }
+            ],
+            "value": "Tiefland"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "worked on",
+                "segment": "text"
+              }
+            ],
+            "value": "workedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harald Reinl",
+                "segment": "title"
+              }
+            ],
+            "value": "Harald Reinl"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 28
+  coverage:
+    characters combined: 582 / 955 (60.9%)
+    characters text:     570 / 943 (60.4%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           8 / 9 (88.9%)
+    longest uncovered:  81 chars
+      'and Karl May books( see Karl May movies and Edgar Wallace movies) and also made'
+    statement density:  29.32 / 1000 chars
+    title reliance:      21 / 28 (75.0%)
+
+[GRAPH 2/2] paragraph=4 title='Almenrausch and Edelweiss (1957 film)'
+  source unit: u_8a9a513afc3fab1d12b8a9321c057dfa9ce089c58ed84720e8d6c32218034cdb
+  text chars:  338
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.212s | model=deepseek-v4-flash
+      tokens:   in=2705 | out=1844 | total=4549 | cached=2048 | uncached=657
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 222 / 375 (59.2%)
+    characters text:     222 / 338 (65.7%)
+    characters title:    0 / 37 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  41 chars
+      '. It is part of the postwar tradition of'
+    statement density:  32.00 / 1000 chars
+    title reliance:      0 / 12 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 40
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 3
+  corrected valid: 0
+  remaining rejections: 3
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      40
+resource nodes:        35
+entity nodes:          35
+literal values:        5
+predicates:            22
+
+N-Triples:
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:artDirector> <urn:graphragprov:entity:Felix%20Smetana> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Bavaria> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Switzerland> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Upper%20Austria> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Heimatfilm> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Austrian-West%20German> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Elma%20Karlowa> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Harald%20Juhnke> .
+  <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Karin%20Dor> .
+  <urn:graphragprov:entity:Chariots%20of%20the%20Gods> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20feature> .
+  <urn:graphragprov:entity:Chariots%20of%20the%20Gods> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovakia> .
+  <urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Harald%20Reinl> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:beganCareerAs> <urn:graphragprov:entity:extra> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Bad%20Ischl> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:bornOn> "1908-07-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:stabbed%20to%20death> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Santa%20Cruz%20de%20Tenerife> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Tenerife%20retirement%20home> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedOn> "1986-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:firstMovieAsDirector> <urn:graphragprov:entity:Mountain%20Crystal> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:killedBy> <urn:graphragprov:entity:Daniela%20Maria%20Delis> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:films%20based%20on%20Edgar%20Wallace%20books> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:German%20war%20films> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:Heimatfilms> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:entries%20in%20popular%20German%20film%20series> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:mountain%20films> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Austrian> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Chariots%20of%20the%20Gods> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Oscar> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:retiredTo> <urn:graphragprov:entity:Canary%20Islands> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Mountain%20Crystal> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Tiefland> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Leni%20Riefenstahl> .
+  <urn:graphragprov:entity:Tiefland> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Leni%20Riefenstahl> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.984s | model=deepseek-v4-flash
+      tokens:   in=2544 | out=227 | total=2771 | cached=384 | uncached=2160
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> .
+  - <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedOn> "1986-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> . <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedOn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_8a9a513afc3fab1d>
+  FROM <urn:graphragprov:unit:u_e4ab01c7a8dd7efc>
+  WHERE { <urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> . <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedOn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1986-10-09',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Almenrausch and Edelweiss (1957 film)', 'Harald Reinl']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  d4c1f14e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/d4c1f14e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8945
+output tokens:         7074
+total tokens:          16019
+cached input tokens:   4480
+uncached input tokens: 4465
+cumulative LLM seconds: 32.236
+
+statement occurrences: 40
+semantic triples:      40
+entity nodes:          35
+literal values:        5
+predicates:            22
+query attempts:        1
+observed answers:      ('1986-10-09',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 30.268s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.069s
+  graph.materialization [attempt=1]: 0.095s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.985s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.478s

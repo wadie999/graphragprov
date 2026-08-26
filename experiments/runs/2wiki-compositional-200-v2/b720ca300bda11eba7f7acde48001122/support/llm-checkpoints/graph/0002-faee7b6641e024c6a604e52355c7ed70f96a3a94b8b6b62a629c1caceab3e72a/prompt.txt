@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_fd8d7c2e74fa3d865c4d017ae2acae1e530213e1ddae6abd7906e7ea78fb95eb
+Title: James Bradley (author)
+Text:
+James Bradley (born May 4, 1954) is an American author from Antigo, Wisconsin, specializing in historical nonfiction chronicling the Pacific theatre of World War II. His father, John Bradley, was long thought to be one of the six men who was in the photograph raising the American flag on Mt. Suribachi during the Battle of Iwo Jima in 1945. That photograph has gone on to be one of the most duplicated and reproduced photos ever taken. On June 23, 2016, the Marine Corps announced after an investigation, that John Bradley was not in Rosenthal's photograph of six Marines raising the second (and larger) flag on Mount Suribachi on February 23, 1945, although he had been involved in the first raising of a smaller flag two hours earlier, and was still on the mountaintop during the second flag raising.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "John Bradley",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "John Bradley",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "dateOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "January 11, 1994",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1994-01-11",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "January 11, 1994",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].predicate.evidence[0]: quote 'January 11, 1994' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

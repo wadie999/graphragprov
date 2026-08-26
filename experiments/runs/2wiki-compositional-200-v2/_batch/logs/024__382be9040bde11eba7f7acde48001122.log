@@ -1,0 +1,193 @@
+
+H0 one-case execution
+  case:          382be9040bde11eba7f7acde48001122
+  hops:          2
+  question:      Where was the father of Eugénie De Beauharnais born?
+  expected:      Paris
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/382be9040bde11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Eugénie de Beauharnais'
+  source unit: u_a2240b218479e363a12d02c9954dff7c69943a7dd0da0345503b96909ae21805
+  text chars:  356
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.685s | model=deepseek-v4-flash
+      tokens:   in=2358 | out=1847 | total=4205 | cached=2048 | uncached=310
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 244 / 378 (64.6%)
+    characters text:     222 / 356 (62.4%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  45 chars
+      'Eugénie Hortense Auguste Napoléone, known as'
+    statement density:  26.46 / 1000 chars
+    title reliance:      9 / 10 (90.0%)
+
+[GRAPH 2/2] paragraph=9 title='Eugène de Beauharnais'
+  source unit: u_4eb9240bba5d56fa93975f479530976bce4fdc7f01fdcccd07ec6598ac31edf3
+  text chars:  560
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 12.590s | model=deepseek-v4-flash
+      tokens:   in=2577 | out=2983 | total=5560 | cached=2048 | uncached=529
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 425 / 581 (73.1%)
+    characters text:     404 / 560 (72.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  26 chars
+      '. Historians consider him'
+    statement density:  32.70 / 1000 chars
+    title reliance:      19 / 19 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 29
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      28
+resource nodes:        21
+entity nodes:          21
+literal values:        6
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:adoptedChildOf> <urn:graphragprov:entity:Napoleon%20I> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:birthDate> "1781-09-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:childRank> <urn:graphragprov:entity:first%20child> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:commanderOf> <urn:graphragprov:entity:Army%20of%20Italy> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:countryOfBirth> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:deathDate> "1824-02-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Alexandre%20de%20Beauharnais> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:fatherExecution> <urn:graphragprov:entity:executed> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:fatherExecutionContext> <urn:graphragprov:entity:revolutionary%20Reign%20of%20Terror> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Eug%C3%A8ne%20Rose%20de%20Beauharnais> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:gender> <urn:graphragprov:entity:male> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:heirToImperialThrone> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:historicalReputation> <urn:graphragprov:entity:one%20of%20the%20ablest%20of%20Napoleon%27s%20relatives> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Jos%C3%A9phine%20Tascher%20de%20la%20Pagerie> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:stepsonOf> <urn:graphragprov:entity:Napoleon%20I> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Duke%20of%20Leuchtenberg> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:viceroyOf> <urn:graphragprov:entity:Italy> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:viceroyUnder> <urn:graphragprov:entity:Napoleon%20I> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:birthDate> "1808-12-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:deathDate> "1847-09-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:princess> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:marriageDate> "1826"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:House%20of%20Beauharnais> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Princess%20Augusta%20of%20Bavaria> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Franco-German> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Constantine%2C%20Prince%20of%20Hohenzollern-Hechingen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.025s | model=deepseek-v4-flash
+      tokens:   in=2242 | out=203 | total=2445 | cached=384 | uncached=1858
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> .
+  - <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4eb9240bba5d56fa>
+  FROM <urn:graphragprov:unit:u_a2240b218479e363>
+  WHERE { <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Paris',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Eugène de Beauharnais', 'Eugénie de Beauharnais']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  382be9040bde11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/382be9040bde11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7177
+output tokens:         5033
+total tokens:          12210
+cached input tokens:   4480
+uncached input tokens: 2697
+cumulative LLM seconds: 23.300
+
+statement occurrences: 29
+semantic triples:      28
+entity nodes:          21
+literal values:        6
+predicates:            24
+query attempts:        1
+observed answers:      ('Paris',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.283s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.051s
+  graph.materialization [attempt=1]: 0.072s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.026s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.468s

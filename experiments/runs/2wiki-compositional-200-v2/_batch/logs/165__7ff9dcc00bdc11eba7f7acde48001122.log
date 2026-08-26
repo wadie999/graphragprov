@@ -1,0 +1,190 @@
+
+H0 one-case execution
+  case:          7ff9dcc00bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film The Bloody Hands Of The Law born?
+  expected:      Biella
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/7ff9dcc00bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='The Bloody Hands of the Law'
+  source unit: u_9ace445e0c1adb2806710f5513225d9098992a582af24268c071b753f5f2809e
+  text chars:  110
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.462s | model=deepseek-v4-flash
+      tokens:   in=2278 | out=746 | total=3024 | cached=2048 | uncached=230
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 93 / 137 (67.9%)
+    characters text:     93 / 110 (84.5%)
+    characters title:    0 / 27 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  36.50 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Mario Gariazzo'
+  source unit: u_bec829f032129d09d591b596fb0a427a0565ba16d8ef58b10a2ff7a76b5075e0
+  text chars:  561
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.972s | model=deepseek-v4-flash
+      tokens:   in=2474 | out=3032 | total=5506 | cached=2176 | uncached=298
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 284 / 575 (49.4%)
+    characters text:     270 / 561 (48.1%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           6 / 7 (85.7%)
+    longest uncovered:  55 chars
+      '. He wrote for 21 films between 1969 and 1992. He also'
+    statement density:  36.52 / 1000 chars
+    title reliance:      16 / 21 (76.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 26
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      26
+resource nodes:        17
+entity nodes:          17
+literal values:        7
+predicates:            12
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Gariazzo> .
+  <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:publicationYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Klaus%20Kinski> .
+  <urn:graphragprov:entity:Eyes%20Behind%20The%20Stars> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:science%20fiction> .
+  <urn:graphragprov:entity:Eyes%20Behind%20The%20Stars> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:Eyes%20Behind%20The%20Stars> <urn:graphragprov:predicate:publicationYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:ageAtDeath> "71"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Biella> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:bornOn> "1930-06-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Rome> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:diedOn> "2002-03"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Eyes%20Behind%20The%20Stars> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Eerie%20Midnight%20Horror%20Show> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:White%20Slave> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Ivan%20Rassimov> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Klaus%20Kinski> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Martin%20Balsam> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Ray%20Lovelock> .
+  <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Richard%20Harrison> .
+  <urn:graphragprov:entity:The%20Eerie%20Midnight%20Horror%20Show> <urn:graphragprov:predicate:publicationYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:White%20Slave> <urn:graphragprov:predicate:publicationYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.545s | model=deepseek-v4-flash
+      tokens:   in=1818 | out=218 | total=2036 | cached=384 | uncached=1434
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Gariazzo> .
+  - <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Biella> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Gariazzo> . <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9ace445e0c1adb28>
+  FROM <urn:graphragprov:unit:u_bec829f032129d09>
+  WHERE { <urn:graphragprov:entity:The%20Bloody%20Hands%20of%20the%20Law> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Gariazzo> . <urn:graphragprov:entity:Mario%20Gariazzo> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Biella',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Mario Gariazzo', 'The Bloody Hands of the Law']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  7ff9dcc00bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/7ff9dcc00bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6570
+output tokens:         3996
+total tokens:          10566
+cached input tokens:   4608
+uncached input tokens: 1962
+cumulative LLM seconds: 17.979
+
+statement occurrences: 26
+semantic triples:      26
+entity nodes:          17
+literal values:        7
+predicates:            12
+query attempts:        1
+observed answers:      ('Biella',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 16.446s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.049s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.546s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.554s

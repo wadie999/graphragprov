@@ -1,0 +1,96 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the director of film Los Ojos Más Lindos Del Mundo born?
+
+Expected answer: Rosario
+
+Benchmark evidence relations:
+1. Los ojos más lindos del mundo | director | Luis Saslavsky
+2. Luis Saslavsky | place of birth | Rosario
+
+Frozen RDF graph:
+<urn:graphragprov:entity:All%C3%A1%20en%20el%20Norte> <urn:graphragprov:predicate:publicationYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Crimen%20a%20las%20tres> <urn:graphragprov:predicate:publicationYear> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:ageAtDeath> "91"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:bornOn> "1903-04-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Buenos%20Aires> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:diedOn> "1995-03-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Crimen%20a%20las%20tres> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:over%2040%20films> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20producer> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Argentina> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Rosario> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Santa%20Fe> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:Jewish> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:retired> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:All%C3%A1%20en%20el%20Norte> .
+<urn:graphragprov:entity:Luis%20Saslavsky> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:over%2040%20films> .
+<urn:graphragprov:entity:Los%20ojos%20m%C3%A1s%20lindos%20del%20mundo> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Luis%20Saslavsky> .
+<urn:graphragprov:entity:Los%20ojos%20m%C3%A1s%20lindos%20del%20mundo> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+<urn:graphragprov:entity:Los%20ojos%20m%C3%A1s%20lindos%20del%20mundo> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+<urn:graphragprov:entity:Los%20ojos%20m%C3%A1s%20lindos%20del%20mundo> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Los%20ojos%20m%C3%A1s%20lindos%20del%20mundo> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Amelia%20Bence> .
+<urn:graphragprov:entity:Los%20ojos%20m%C3%A1s%20lindos%20del%20mundo> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Pedro%20L%C3%B3pez%20Lagar> .
+<urn:graphragprov:entity:Los%20ojos%20m%C3%A1s%20lindos%20del%20mundo> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Roberto%20Airaldi> .

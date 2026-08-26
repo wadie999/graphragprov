@@ -1,0 +1,179 @@
+
+H0 one-case execution
+  case:          8d74f9d00bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the father of Joseph Flüggen born?
+  expected:      Cologne
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8d74f9d00bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Gisbert Flüggen'
+  source unit: u_7a7da2c3c3cbe9006df63f2956b79050b54e5bdf09fe0175b622431f32538325
+  text chars:  165
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.180s | model=deepseek-v4-flash
+      tokens:   in=2293 | out=1040 | total=3333 | cached=2048 | uncached=245
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 91 / 180 (50.6%)
+    characters text:     76 / 165 (46.1%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  39 chars
+      '. He was sometimes referred to as the "'
+    statement density:  38.89 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/2] paragraph=1 title='Joseph Flüggen'
+  source unit: u_9c0c774e894655386b6131f484069d86c1e4bd69e57577f2eb973315faef4a89
+  text chars:  194
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.989s | model=deepseek-v4-flash
+      tokens:   in=2386 | out=1159 | total=3545 | cached=2176 | uncached=210
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 142 / 208 (68.3%)
+    characters text:     142 / 194 (73.2%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  15 chars
+      ', Joseph first'
+    statement density:  38.46 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 15
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        9
+entity nodes:          9
+literal values:        3
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Cologne> .
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornOn> "1811-02-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Munich> .
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:diedOn> "1859-09-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:genre%20painter> .
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:German%20Wilkie> .
+  <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Munich> .
+  <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Munich> .
+  <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornOn> "1842"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> .
+  <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:artist> .
+  <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:studiedAt> <urn:graphragprov:entity:Munich%20Academy> .
+  <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:studiedUnder> <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.536s | model=deepseek-v4-flash
+      tokens:   in=1293 | out=225 | total=1518 | cached=384 | uncached=909
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> .
+  - <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Cologne> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> . <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_7a7da2c3c3cbe900>
+  FROM <urn:graphragprov:unit:u_9c0c774e89465538>
+  WHERE { <urn:graphragprov:entity:Joseph%20Eduard%20Fl%C3%BCggen> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> . <urn:graphragprov:entity:Gisbert%20Fl%C3%BCggen> <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Munich', 'Cologne')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Gisbert Flüggen', 'Joseph Flüggen']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8d74f9d00bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8d74f9d00bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5972
+output tokens:         2424
+total tokens:          8396
+cached input tokens:   4608
+uncached input tokens: 1364
+cumulative LLM seconds: 11.705
+
+statement occurrences: 15
+semantic triples:      15
+entity nodes:          9
+literal values:        3
+predicates:            10
+query attempts:        1
+observed answers:      ('Munich', 'Cologne')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.179s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.048s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.537s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.584s

@@ -1,0 +1,289 @@
+
+H0 one-case execution
+  case:          7bbb7f680bd911eba7f7acde48001122
+  hops:          2
+  question:      What is the cause of death of director of film Susie Steps Out?
+  expected:      heart attack
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/7bbb7f680bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Susie Steps Out'
+  source unit: u_cb8c582ca802ef69d40cf46e4ba670efa61e404c7d4f5c12e5a9ba43da49e3e1
+  text chars:  286
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.658s | model=deepseek-v4-flash
+      tokens:   in=2319 | out=1992 | total=4311 | cached=2048 | uncached=271
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 235 / 301 (78.1%)
+    characters text:     235 / 286 (82.2%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  9 chars
+      '. It was'
+    statement density:  46.51 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Reginald Le Borg'
+  source unit: u_548b33d3e1e2a2968021bb818286cf74661c61d1ef6f0cd3137df984e0b3460d
+  text chars:  533
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 13.909s | model=deepseek-v4-flash
+      tokens:   in=2541 | out=3233 | total=5774 | cached=2048 | uncached=493
+    [LLM graph.reference #3] sending...
+      provider: 1.606s | model=deepseek-v4-flash
+      tokens:   in=695 | out=212 | total=907 | cached=0 | uncached=695
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 1
+
+    initial rejection #13
+      validator:
+        response.statements[13].predicate.evidence[0]: quote 'his most expensive and also most successful film' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Reginald Le Borg",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Reginald Le Borg",
+                "segment": "text"
+              }
+            ],
+            "value": "Reginald Le Borg"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "his most expensive and also most successful film",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "San Diego, I Love You",
+                "segment": "text"
+              }
+            ],
+            "value": "San Diego, I Love You"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'his most expensive and also most successful film' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Reginald Le Borg",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Reginald Le Borg",
+                "segment": "text"
+              }
+            ],
+            "value": "Reginald Le Borg"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "his most expensive and also most successful film",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "San Diego, I Love You",
+                "segment": "text"
+              }
+            ],
+            "value": "San Diego, I Love You"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 18
+  coverage:
+    characters combined: 381 / 549 (69.4%)
+    characters text:     365 / 533 (68.5%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  56 chars
+      '. His most expensive and also most successful film was"'
+    statement density:  32.79 / 1000 chars
+    title reliance:      15 / 18 (83.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 32
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      32
+resource nodes:        26
+entity nodes:          26
+literal values:        8
+predicates:            23
+
+N-Triples:
+  <urn:graphragprov:entity:Buster%20Keaton> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:supporting%20role> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:activeYearsEnd> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:activeYearsInDecade> <urn:graphragprov:entity:1940s> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:activeYearsStart> "1936"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:birthDate> "1902-12-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Reginald%20Grobel> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Vienna%2C%20Austria> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:heart%20attack> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:deathDate> "1989-03-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Los%20Angeles%2C%20California> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:directedFilmsCount> "68"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:series%20of%20low-%20budget%20horror%20films> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Austrian> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:Universal%20Studios> .
+  <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:workedInGenre> <urn:graphragprov:entity:variety%20of%20genres> .
+  <urn:graphragprov:entity:San%20Diego%2C%20I%20Love%20You> <urn:graphragprov:predicate:publicationYear> "1944"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:San%20Diego%2C%20I%20Love%20You> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Buster%20Keaton> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Reginald%20Le%20Borg> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:United%20Artists> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:publicationYear> "1946"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:releaseDate> "1946-12-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Cleatus%20Caldwell> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bruce> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Grady%20Sutton> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Howard%20Freeman> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Margaret%20Dumont> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Nita%20Hunter> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Elwood%20Ullman> .
+  <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Fred%20Freiberger> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.878s | model=deepseek-v4-flash
+      tokens:   in=2169 | out=186 | total=2355 | cached=384 | uncached=1785
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Reginald%20Le%20Borg> .
+  - <urn:graphragprov:entity:Reginald%20Le%20Borg> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:heart%20attack> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:causeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_548b33d3e1e2a296>
+  FROM <urn:graphragprov:unit:u_cb8c582ca802ef69>
+  WHERE { <urn:graphragprov:entity:Susie%20Steps%20Out> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:causeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('heart attack',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Reginald Le Borg', 'Susie Steps Out']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  7bbb7f680bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/7bbb7f680bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7724
+output tokens:         5623
+total tokens:          13347
+cached input tokens:   4480
+uncached input tokens: 3244
+cumulative LLM seconds: 27.050
+
+statement occurrences: 32
+semantic triples:      32
+entity nodes:          26
+literal values:        8
+predicates:            23
+query attempts:        1
+observed answers:      ('heart attack',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.187s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.879s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.595s

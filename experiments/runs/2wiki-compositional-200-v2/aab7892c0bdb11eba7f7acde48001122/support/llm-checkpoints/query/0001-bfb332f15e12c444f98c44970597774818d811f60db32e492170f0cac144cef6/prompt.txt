@@ -1,0 +1,144 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the place of birth of the performer of song Beautiful Loser (Song)?
+
+Expected answer: Detroit
+
+Benchmark evidence relations:
+1. Beautiful Loser | performer | Bob Seger
+2. Bob Seger | place of birth | Detroit
+
+Frozen RDF graph:
+<urn:graphragprov:entity:%27Live%27%20Bullet> <urn:graphragprov:predicate:breakoutAlbumOf> <urn:graphragprov:entity:Bob%20Seger> .
+<urn:graphragprov:entity:%27Live%27%20Bullet> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+<urn:graphragprov:entity:%27Live%27%20Bullet> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Beautiful%20Loser> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+<urn:graphragprov:entity:Beautiful%20Loser> <urn:graphragprov:predicate:publicationYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:chartPerformance> "just missed inclusion on the US Top 100" .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:%27Live%27%20Bullet> .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:pairedWith> <urn:graphragprov:entity:Travelin%27%20Man> .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Bob%20Seger> .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:titleTrackOf> <urn:graphragprov:entity:Beautiful%20Loser> .
+<urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Bob%20Seger> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:rock%20artist> .
+<urn:graphragprov:entity:Beverly%20Hills%20Cop%20II> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:activeYearsStart> "1960s" .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:announcedFarewellTour> <urn:graphragprov:entity:farewell%20tour> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:announcementDate> "2018-09"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Legend%20of%20Live> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Songwriters%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:awardYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:birthDate> "1945-05-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Robert%20Clark%20Seger> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:careerSpan> "six decades" .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:coWriter> <urn:graphragprov:entity:Heartache%20Tonight> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:firstAlbum> <urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:formedBand> <urn:graphragprov:entity:Silver%20Bullet%20Band> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:heartland%20rock> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:roots%20rock> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Against%20the%20Wind> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Hollywood%20Nights> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Like%20a%20Rock> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Night%20Moves> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Shakedown> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Shame%20on%20the%20Moon> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Still%20the%20Same> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:Turn%20the%20Page> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:We%27ve%20Got%20Tonite> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:hasHitSong> <urn:graphragprov:entity:You%27ll%20Accomp%27ny%20Me> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:musician> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger%20System> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger%20and%20the%20Last%20Heard> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Silver%20Bullet%20Band> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Detroit> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:recordSales> "75000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:songTheme> <urn:graphragprov:entity:love%2C%20women%2C%20and%20blue-collar%20themes> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:voiceType> <urn:graphragprov:entity:raspy%2C%20powerful%20voice> .
+<urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Muscle%20Shoals%20Rhythm%20Section> .
+<urn:graphragprov:entity:Cobo%20Hall> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Detroit%2C%20Michigan> .
+<urn:graphragprov:entity:Heartache%20Tonight> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Heartache%20Tonight> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Eagles> .
+<urn:graphragprov:entity:Live%20Bullet> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Live%20Bullet> <urn:graphragprov:predicate:recordedInYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Live%20Bullet> <urn:graphragprov:predicate:recordedLiveAt> <urn:graphragprov:entity:Cobo%20Hall> .
+<urn:graphragprov:entity:Muscle%20Shoals%20Rhythm%20Section> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Alabama> .
+<urn:graphragprov:entity:Night%20Moves> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+<urn:graphragprov:entity:Night%20Moves> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Old%20Time%20Rock%20and%20Roll> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Songs%20of%20the%20Century> .
+<urn:graphragprov:entity:Old%20Time%20Rock%20and%20Roll> <urn:graphragprov:predicate:awardYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Old%20Time%20Rock%20and%20Roll> <urn:graphragprov:predicate:recordingOf> <urn:graphragprov:entity:Bob%20Seger> .
+<urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> .
+<urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:national%20hit> .
+<urn:graphragprov:entity:Ramblin%27%20Gamblin%27%20Man> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Shakedown> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Shakedown> <urn:graphragprov:predicate:writtenFor> <urn:graphragprov:entity:Beverly%20Hills%20Cop%20II> .
+<urn:graphragprov:entity:Silver%20Bullet%20Band> <urn:graphragprov:predicate:formedInYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Silver%20Bullet%20Band> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Detroit-area%20musicians> .

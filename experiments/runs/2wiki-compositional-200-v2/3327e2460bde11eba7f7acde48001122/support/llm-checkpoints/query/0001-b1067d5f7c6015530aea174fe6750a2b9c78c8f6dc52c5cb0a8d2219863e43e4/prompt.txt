@@ -1,0 +1,133 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of Princess Alexandra Of Greece And Denmark's father?
+
+Expected answer: Thessaloniki
+
+Benchmark evidence relations:
+1. Grand Duchess Alexandra Georgievna of Russia | father | George I
+2. George I | place of death | Thessaloniki
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Alexander> <urn:graphragprov:predicate:reignLength> "short and insecure" .
+<urn:graphragprov:entity:Alexandra> <urn:graphragprov:predicate:marriedInto> <urn:graphragprov:entity:British%20royal%20family> .
+<urn:graphragprov:entity:Britain> <urn:graphragprov:predicate:ceded> <urn:graphragprov:entity:Ionian%20Islands> .
+<urn:graphragprov:entity:Constantine> <urn:graphragprov:predicate:reignLength> "short and insecure" .
+<urn:graphragprov:entity:Dagmar> <urn:graphragprov:predicate:marriedInto> <urn:graphragprov:entity:Russian%20royal%20family> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:ageAtElection> "17"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:assassinatedDuring> <urn:graphragprov:entity:First%20Balkan%20War> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:assassinatedIn> <urn:graphragprov:entity:Thessaloniki> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:birthDate> "1845-12-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Copenhagen> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:brotherInLaw> <urn:graphragprov:entity:King%20Edward%20VII> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:brotherInLaw> <urn:graphragprov:entity:Tsar%20Alexander%20III> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:deathDate> "1913-03-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:electedKingBy> <urn:graphragprov:entity:Greek%20National%20Assembly> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:founderOfDynasty> <urn:graphragprov:entity:new%20Greek%20dynasty> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:King%20of%20Greece> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:marriageYear> "1867"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Danish> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:nephew> <urn:graphragprov:entity:King%20Christian%20X%20of%20Denmark> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:nephew> <urn:graphragprov:entity:King%20George%20V> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:nephew> <urn:graphragprov:entity:King%20Haakon%20VII%20of%20Norway> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:nephew> <urn:graphragprov:entity:Tsar%20Nicholas%20II> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:predecessor> <urn:graphragprov:entity:Otto> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:reignEnd> "1913"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:reignLength> "almost 50 years" .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:reignRank> <urn:graphragprov:entity:longest%20in%20modern%20Greek%20history> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:reignStart> "1863"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Alexandra> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Dagmar> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Olga%20Constantinovna%20of%20Russia> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:successor> <urn:graphragprov:entity:Alexander> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:successor> <urn:graphragprov:entity:Constantine> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:successor> <urn:graphragprov:entity:George%20II> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:supportedBy> <urn:graphragprov:entity:Great%20Powers> .
+<urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:territorialGains> <urn:graphragprov:entity:territorial%20gains> .
+<urn:graphragprov:entity:George%20II> <urn:graphragprov:predicate:reignLength> "short and insecure" .
+<urn:graphragprov:entity:Greece> <urn:graphragprov:predicate:defeatedIn> <urn:graphragprov:entity:Greco-Turkish%20War%20%281897%29> .
+<urn:graphragprov:entity:Ionian%20Islands> <urn:graphragprov:predicate:cededTo> <urn:graphragprov:entity:Greece> .
+<urn:graphragprov:entity:Ionian%20Islands> <urn:graphragprov:predicate:cessionYear> "1864"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Thessaly> <urn:graphragprov:predicate:annexationYear> "1877-1878" .
+<urn:graphragprov:entity:Thessaly> <urn:graphragprov:predicate:annexedBy> <urn:graphragprov:entity:Greece> .
+<urn:graphragprov:entity:Thessaly> <urn:graphragprov:predicate:annexedFrom> <urn:graphragprov:entity:Ottoman%20Empire> .
+<urn:graphragprov:entity:Constantine%20I%20of%20Greece> <urn:graphragprov:predicate:child> "three sons" .
+<urn:graphragprov:entity:Constantine%20I%20of%20Greece> <urn:graphragprov:predicate:child> "two of his daughters" .
+<urn:graphragprov:entity:Constantine%20I%20of%20Greece> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:queens%20of%20Romania%20and%20Croatia> .
+<urn:graphragprov:entity:Constantine%20I%20of%20Greece> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:three%20kings%20of%20Greece> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:aunt> <urn:graphragprov:entity:Prince%20Philip%2C%20Duke%20of%20Edinburgh> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:birthDate> "1870-08-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:childRank> "firstborn daughter" .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:childRank> "third child" .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:cousin> <urn:graphragprov:entity:King%20Christian%20X%20of%20Denmark> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:cousin> <urn:graphragprov:entity:King%20George%20V%20of%20the%20United%20Kingdom> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:cousin> <urn:graphragprov:entity:King%20Haakon%20VII%20of%20Norway> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:cousin> <urn:graphragprov:entity:Queen%20Maud%20of%20Norway> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:cousin> <urn:graphragprov:entity:Tsar%20Nicholas%20II%20of%20Russia> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:deathDate> "1891-09-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:King%20George%20I> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:grandfather> <urn:graphragprov:entity:King%20Christian%20IX> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:grandmother> <urn:graphragprov:entity:Queen%20Louise> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Princess%20Alexandra%20of%20Greece%20and%20Denmark> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Queen%20Olga%20of%20Greece> .
+<urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Constantine%20I%20of%20Greece> .
+<urn:graphragprov:entity:Queen%20Olga%20of%20Greece> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:a%20Russian%20grand%20duke> .

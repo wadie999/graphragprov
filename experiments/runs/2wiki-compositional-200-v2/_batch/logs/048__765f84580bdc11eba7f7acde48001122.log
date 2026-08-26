@@ -1,0 +1,184 @@
+
+H0 one-case execution
+  case:          765f84580bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Jeff Gordon, Secret Agent born?
+  expected:      Rabat
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/765f84580bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Raoul André'
+  source unit: u_ea9afa90db0c39c5cf3fbbda106ca56ac3d8142d373715d818d6b404fdd22048
+  text chars:  203
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.101s | model=deepseek-v4-flash
+      tokens:   in=2298 | out=1777 | total=4075 | cached=2048 | uncached=250
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 160 / 214 (74.8%)
+    characters text:     149 / 203 (73.4%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  17 chars
+      '), and he is the'
+    statement density:  51.40 / 1000 chars
+    title reliance:      9 / 11 (81.8%)
+
+[GRAPH 2/2] paragraph=6 title='Jeff Gordon, Secret Agent'
+  source unit: u_4b95a3eef4a76f092f97d7d7532533d7a4e3b17b5967dac266260980e3027a31
+  text chars:  238
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.291s | model=deepseek-v4-flash
+      tokens:   in=2412 | out=1325 | total=3737 | cached=2176 | uncached=236
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 192 / 263 (73.0%)
+    characters text:     167 / 238 (70.2%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  35 chars
+      'Jeff Gordon, Secret Agent( French:'
+    statement density:  34.22 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        17
+entity nodes:          17
+literal values:        4
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Raoul%20Andr%C3%A9> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20spy%20film> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French-%20Italian> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:originalTitle> <urn:graphragprov:entity:Des%20frissons%20partout> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:originalTitle> <urn:graphragprov:entity:Jeff%20Gordon%2C%20il%20diabolico%20detective> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:publicationYear> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Daniel%20Emilfork> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Eddie%20Constantine> .
+  <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Perrette%20Pradier> .
+  <urn:graphragprov:entity:Louise%20Carletti> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Rabat> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Morocco> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:birthDate> "1916-05-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Rabat> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Ariane%20Carletti> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:deathDate> "1992-11-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:marriageDate> "1955-12"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Louise%20Carletti> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.687s | model=deepseek-v4-flash
+      tokens:   in=1557 | out=225 | total=1782 | cached=384 | uncached=1173
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Raoul%20Andr%C3%A9> .
+  - <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Rabat> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Raoul%20Andr%C3%A9> . <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:birthPlace> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4b95a3eef4a76f09>
+  FROM <urn:graphragprov:unit:u_ea9afa90db0c39c5>
+  WHERE { <urn:graphragprov:entity:Jeff%20Gordon%2C%20Secret%20Agent> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Raoul%20Andr%C3%A9> . <urn:graphragprov:entity:Raoul%20Andr%C3%A9> <urn:graphragprov:predicate:birthPlace> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Rabat',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Jeff Gordon, Secret Agent', 'Raoul André']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  765f84580bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/765f84580bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6267
+output tokens:         3327
+total tokens:          9594
+cached input tokens:   4608
+uncached input tokens: 1659
+cumulative LLM seconds: 16.079
+
+statement occurrences: 20
+semantic triples:      20
+entity nodes:          17
+literal values:        4
+predicates:            14
+query attempts:        1
+observed answers:      ('Rabat',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.400s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.688s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.306s

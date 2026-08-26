@@ -1,0 +1,99 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the father of Eugénie De Beauharnais born?
+
+Expected answer: Paris
+
+Benchmark evidence relations:
+1. Eugénie de Beauharnais | father | Eugène de Beauharnais
+2. Eugène de Beauharnais | place of birth | Paris
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:adoptedChildOf> <urn:graphragprov:entity:Napoleon%20I> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:birthDate> "1781-09-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:childRank> <urn:graphragprov:entity:first%20child> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:commanderOf> <urn:graphragprov:entity:Army%20of%20Italy> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:countryOfBirth> <urn:graphragprov:entity:France> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:deathDate> "1824-02-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Alexandre%20de%20Beauharnais> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:fatherExecution> <urn:graphragprov:entity:executed> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:fatherExecutionContext> <urn:graphragprov:entity:revolutionary%20Reign%20of%20Terror> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Eug%C3%A8ne%20Rose%20de%20Beauharnais> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:gender> <urn:graphragprov:entity:male> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:heirToImperialThrone> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:historicalReputation> <urn:graphragprov:entity:one%20of%20the%20ablest%20of%20Napoleon%27s%20relatives> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Jos%C3%A9phine%20Tascher%20de%20la%20Pagerie> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:stepsonOf> <urn:graphragprov:entity:Napoleon%20I> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Duke%20of%20Leuchtenberg> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:viceroyOf> <urn:graphragprov:entity:Italy> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:viceroyUnder> <urn:graphragprov:entity:Napoleon%20I> .
+<urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:birthDate> "1808-12-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:deathDate> "1847-09-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:princess> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:marriageDate> "1826"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:House%20of%20Beauharnais> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Princess%20Augusta%20of%20Bavaria> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Franco-German> .
+<urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Constantine%2C%20Prince%20of%20Hohenzollern-Hechingen> .

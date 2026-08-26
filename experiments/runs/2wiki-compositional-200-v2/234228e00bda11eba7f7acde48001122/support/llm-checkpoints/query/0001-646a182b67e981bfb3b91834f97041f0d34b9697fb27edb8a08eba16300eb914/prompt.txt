@@ -1,0 +1,122 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the award that the composer of film Journey Beyond Three Seas received?
+
+Expected answer: Sangeet Natak Akademi Award
+
+Benchmark evidence relations:
+1. Journey Beyond Three Seas | composer | Anil Biswas
+2. Anil Biswas | award received | Sangeet Natak Akademi Award
+
+Frozen RDF graph:
+<urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Afanasy%20Nikitin> .
+<urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Russian%20literary%20monument> .
+<urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:travelogues> .
+<urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:colorPrint> <urn:graphragprov:entity:no%20colour%20print> .
+<urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:colorProcess> <urn:graphragprov:entity:SovColor> .
+<urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:black%20and%20white%20copy> .
+<urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:survivesIn> <urn:graphragprov:entity:India> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:colorProcess> <urn:graphragprov:entity:SovColor> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Anil%20Biswas> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Khwaja%20Ahmad%20Abbas> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vasili%20Pronin> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Hindi%20version> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Russian> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian-Soviet> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Mosfilm%20Studio> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Naya%20Sansar%20International> .
+<urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Na%20Dir%20Dim> <urn:graphragprov:predicate:dancedBy> <urn:graphragprov:entity:Padmini> .
+<urn:graphragprov:entity:Na%20Dir%20Dim> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lata%20Mangeshkar> .
+<urn:graphragprov:entity:Rasiya%20Re%20Man%20Basiya%20Re> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Meena%20Kapoor> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:activeYears> "1935-1965" .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Sangeet%20Natak%20Akademi%20Award> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:awardReceivedInYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:bornOn> "1914-07-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:creditedFor> <urn:graphragprov:entity:first%20Indian%20orchestra%20of%20twelve%20pieces> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:creditedFor> <urn:graphragprov:entity:orchestral%20music%20and%20full-blooded%20choral%20effects> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:diedOn> "2003-05-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Anil%20Krishna%20Biswas> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:composer> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:western%20orchestration> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Baul> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Bhatiyali> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Indian%20classical%20or%20folk%20elements> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:numberOfFilms> "90"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20music%20director> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playback%20singer> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:Ragmala> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:counter%20melody> .
+<urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:playback%20singing> .
+<urn:graphragprov:entity:Anokha%20Pyaar> <urn:graphragprov:predicate:publicationYear> "1948"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Char%20Dil%20Char%20Rahen> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Kismet> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Pardesi> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Roti> <urn:graphragprov:predicate:publicationYear> "1942"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sangeet%20Natak%20Akademi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:India%27s%20National%20Academy%20of%20Music%2C%20Dance%20%26%20Drama> .
+<urn:graphragprov:entity:Sangeet%20Natak%20Akademi%20Award> <urn:graphragprov:predicate:givenBy> <urn:graphragprov:entity:Sangeet%20Natak%20Akademi> .
+<urn:graphragprov:entity:Taraana> <urn:graphragprov:predicate:publicationYear> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Waaris> <urn:graphragprov:predicate:publicationYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .

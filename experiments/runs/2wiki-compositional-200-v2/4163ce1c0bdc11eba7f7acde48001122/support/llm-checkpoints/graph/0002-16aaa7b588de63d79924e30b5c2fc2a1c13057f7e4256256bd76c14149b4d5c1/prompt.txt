@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_2f0abc97a35446acae9b0ddd00406977ec9f88711f0b6c37e4d2476c32a17ea7
+Title: ... nur ein Komödiant
+Text:
+... nur ein Komödiant( also" König der Maske"; in English," … just a Comedian", or" King of the Mask") is the title of an Austrian film of 1935. The director was Erich Engel, temporarily in Vienna as a political emigrant from Germany, who with this film made a statement against fascism and authoritarian government. That it passed the strict censors not only of the Third Reich but of Austria can only have been because all political references were veiled by their setting in a royal court of the 18th century. The premiere took place on 20 September 1935 in the" Ufa- Palast" in Hamburg. The film went on general release in Germany on 9 October 1935, opening in the" Capitol" in Berlin, and in Austria on 10 January 1936, opening in Vienna.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "... nur ein Komödiant",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "... nur ein Komödiant",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "openingVenue",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "opening in the \" Capitol\" in Berlin",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Capitol",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Capitol",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].predicate.evidence[0]: quote 'opening in the \" Capitol\" in Berlin' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

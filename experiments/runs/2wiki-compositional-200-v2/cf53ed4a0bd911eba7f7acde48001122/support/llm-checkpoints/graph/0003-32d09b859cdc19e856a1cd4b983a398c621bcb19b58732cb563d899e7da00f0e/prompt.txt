@@ -1,0 +1,143 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_9fb37d7d4acd89ece88bdc3b5501270b2150804e7b5b9ca63e6a496421bdcd22
+Title: John Barry (composer)
+Text:
+John Barry Prendergast, (3 November 1933 – 30 January 2011) was an English composer and conductor of film music. He composed the scores for 11 of the "James Bond" films between 1963 and 1987, and also arranged and performed the "James Bond Theme" to the first film in the series, 1962's "Dr. No". He wrote the Grammy- and Academy Award-winning scores to the films "Dances with Wolves" and "Out of Africa", as well as the theme for the British television cult series "The Persuaders!", in a career spanning over 50 years. In 1999, he was appointed OBE for services to music. Born in York, Barry spent his early years working in cinemas owned by his father. During his national service with the British Army in Cyprus, Barry began performing as a musician after learning to play the trumpet. Upon completing his national service, he formed his own band in 1957, The John Barry Seven. He later developed an interest in composing and arranging music, making his début for television in 1958. He came to the notice of the makers of the first James Bond film "Dr. No", who were dissatisfied with a theme for James Bond given to them by Monty Norman. This started a successful association between Barry and Eon Productions that lasted for 25 years. He received many awards for his work, including five Academy Awards; two for "Born Free", and one each for "The Lion in Winter" (for which he also won the first BAFTA Award for Best Film Music), "Dances with Wolves" and "Out of Africa" (both of which also won him Grammy Awards). He also received ten Golden Globe Award nominations, winning once for Best Original Score for "Out of Africa" in 1986. Barry completed his last film score, "Enigma", in 2001 and recorded the successful album "Eternal Echoes" the same year. He then concentrated chiefly on live performances and co-wrote the music to the musical "Brighton Rock" in 2004 alongside Don Black. In 2001, Barry became a Fellow of the British Academy of Songwriters, Composers and Authors, and, in 2005, he was made a Fellow of the British Academy of Film and Television Arts. Barry was married four times and had four children. He moved to the United States in 1975 and lived there until his death in 2011.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 7,
+    "statement": {
+      "subject": {
+        "value": "John Barry (composer)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "John Barry (composer)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "composer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "composed the scores",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "James Bond films",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "James Bond films",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[7].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 43,
+    "statement": {
+      "subject": {
+        "value": "John Barry (composer)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "John Barry (composer)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "composer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "composed the scores",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "James Bond films",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "James Bond films",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[43].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 52,
+    "statement": {
+      "subject": {
+        "value": "John Barry (composer)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "John Barry (composer)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "composer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "composed the scores",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "James Bond films",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "James Bond films",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[52].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

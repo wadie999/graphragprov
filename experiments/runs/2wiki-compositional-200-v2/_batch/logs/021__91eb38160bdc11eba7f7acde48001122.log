@@ -1,0 +1,299 @@
+
+H0 one-case execution
+  case:          91eb38160bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the director of film Chuck (Film)?
+  expected:      Hull
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/91eb38160bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Philippe Falardeau'
+  source unit: u_5d3e081bf2d8d4e544eaa12f7b6b59d1510e0ed2040600ce384af1c45f516b40
+  text chars:  112
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.064s | model=deepseek-v4-flash
+      tokens:   in=2271 | out=983 | total=3254 | cached=2048 | uncached=223
+    [LLM graph.reference #2] sending...
+      provider: 1.302s | model=deepseek-v4-flash
+      tokens:   in=578 | out=8 | total=586 | cached=0 | uncached=578
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'French-Canadian' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French-Canadian",
+                "segment": "text"
+              }
+            ],
+            "value": "French-Canadian"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French-Canadian",
+                "segment": "text"
+              }
+            ],
+            "value": "nationality"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Philippe Falardeau",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Philippe Falardeau",
+                "segment": "text"
+              }
+            ],
+            "value": "Philippe Falardeau"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 91 / 130 (70.0%)
+    characters text:     73 / 112 (65.2%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  24 chars
+      ') is a French- Canadian'
+    statement density:  38.46 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 2/2] paragraph=4 title='Chuck (film)'
+  source unit: u_2e894ddd91131ee08b945baca749ae907fa7d3246b14e18aaa54f4d9dad4fe0c
+  text chars:  798
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 20.752s | model=deepseek-v4-flash
+      tokens:   in=2493 | out=4969 | total=7462 | cached=2176 | uncached=317
+    [LLM graph.reference #4] sending...
+      provider: 0.619s | model=deepseek-v4-flash
+      tokens:   in=753 | out=8 | total=761 | cached=0 | uncached=753
+  extraction: ACCEPTED
+  statements: 33
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    33
+    initially rejected: 1
+
+    initial rejection #19
+      validator:
+        response.statements[19].object.evidence[0]: quote 'Sylvester Stallone\'s character and screenplay for the 1976 film "Rocky"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sylvester Stallone's character and screenplay for the 1976 film \"Rocky\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Sylvester Stallone's character and screenplay for the 1976 film \"Rocky\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "inspired",
+                "segment": "text"
+              }
+            ],
+            "value": "inspired"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Chuck (film)",
+                "segment": "title"
+              }
+            ],
+            "value": "Chuck (film)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 33
+  coverage:
+    characters combined: 604 / 810 (74.6%)
+    characters text:     592 / 798 (74.2%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  24 chars
+      'in the title role. The'
+    statement density:  40.74 / 1000 chars
+    title reliance:      27 / 33 (81.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 38
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      37
+resource nodes:        33
+entity nodes:          33
+literal values:        6
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:alternativeTitle> <urn:graphragprov:entity:The%20Bleeder> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:alternativeTitle> <urn:graphragprov:entity:The%20Bleeder%20in%20the%20UK%20and%20Ireland> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:1975%20title%20fight%20with%20the%20heavyweight%20champion%2C%20Muhammad%20Ali> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:life%20of%20heavyweight%20boxer%20Chuck%20Wepner> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Philippe%20Falardeau> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:IFC%20Films> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:biographical%20sports%20drama%20film> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:premiereDate> "2016-09-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:premiereLocation> <urn:graphragprov:entity:2016%20Venice%20Film%20Festival> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:principalPhotographyLocation> <urn:graphragprov:entity:Suffern%2C%20New%20York> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:principalPhotographyStartDate> "2015-10-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:publicationYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:releaseDate> "2017-05-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Elisabeth%20Moss> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jason%20Jones> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jim%20Gaffigan> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Liev%20Schreiber> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Michael%20Rapaport> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Morgan%20Spector> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Naomi%20Watts> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Pooch%20Hall> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ron%20Perlman> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Jeff%20Feuerzeig> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Jerry%20Stahl> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Liev%20Schreiber> .
+  <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Michael%20Cristofer> .
+  <urn:graphragprov:entity:Chuck%20Wepner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:heavyweight%20boxer> .
+  <urn:graphragprov:entity:Muhammad%20Ali> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:heavyweight%20champion> .
+  <urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hull> .
+  <urn:graphragprov:entity:Rocky> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sylvester%20Stallone> <urn:graphragprov:predicate:character> <urn:graphragprov:entity:Rocky> .
+  <urn:graphragprov:entity:Sylvester%20Stallone> <urn:graphragprov:predicate:screenplay> <urn:graphragprov:entity:Rocky> .
+  <urn:graphragprov:entity:Hull> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Quebec> .
+  <urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:bornOn> "1968-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hull> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.632s | model=deepseek-v4-flash
+      tokens:   in=2448 | out=181 | total=2629 | cached=384 | uncached=2064
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Philippe%20Falardeau> .
+  - <urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hull> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2e894ddd91131ee0>
+  FROM <urn:graphragprov:unit:u_5d3e081bf2d8d4e5>
+  WHERE { <urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Hull',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Chuck (film)', 'Philippe Falardeau']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  91eb38160bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/91eb38160bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8543
+output tokens:         6149
+total tokens:          14692
+cached input tokens:   4608
+uncached input tokens: 3935
+cumulative LLM seconds: 29.369
+
+statement occurrences: 38
+semantic triples:      37
+entity nodes:          33
+literal values:        6
+predicates:            20
+query attempts:        1
+observed answers:      ('Hull',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 27.751s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.158s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.633s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.443s

@@ -1,0 +1,184 @@
+
+H0 one-case execution
+  case:          b97aa98c0bd911eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of Constance Of Toulouse's father?
+  expected:      August 2, 1222
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b97aa98c0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Constance of Toulouse'
+  source unit: u_ee3ae66059ead062cc1716e64d85086889d496a913dd5362f4a3de8618e1c5de
+  text chars:  320
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.768s | model=deepseek-v4-flash
+      tokens:   in=2335 | out=1351 | total=3686 | cached=2048 | uncached=287
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 226 / 341 (66.3%)
+    characters text:     205 / 320 (64.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  37 chars
+      '. With her second husband, Constance'
+    statement density:  23.46 / 1000 chars
+    title reliance:      7 / 8 (87.5%)
+
+[GRAPH 2/2] paragraph=1 title='Raymond VI, Count of Toulouse'
+  source unit: u_432e3bf16c60e21664b246f19a8b79011c09d8bdea26289a103ba38d9e2ae4b5
+  text chars:  176
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.218s | model=deepseek-v4-flash
+      tokens:   in=2428 | out=1846 | total=4274 | cached=2048 | uncached=380
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 154 / 205 (75.1%)
+    characters text:     125 / 176 (71.0%)
+    characters title:    29 / 29 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  18 chars
+      '. He was also( as'
+    statement density:  58.54 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        12
+entity nodes:          12
+literal values:        8
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Raymond%20IV> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:birthDate> "1156-10-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:dateOfDeath> "1222-08-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Count> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Marquis> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:reignEnd> "1190"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:reignEnd> "1222"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:reignStart> "1173"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:reignStart> "1194"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count%20of%20Melgueil> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count%20of%20Toulouse> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Marquis%20of%20Provence> .
+  <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:children%20of%20Constance%20of%20Toulouse> .
+  <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:divorceDate> "1200"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> .
+  <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:marriageDate> "1195"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Beatrice%20of%20B%C3%A9ziers> .
+  <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Peter%20Bermond%20II%20of%20Sauve> .
+  <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Sancho%20VII%20of%20Navarre> .
+  <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Beatrice%20of%20B%C3%A9ziers> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.023s | model=deepseek-v4-flash
+      tokens:   in=1757 | out=269 | total=2026 | cached=384 | uncached=1373
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> .
+  - <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:dateOfDeath> "1222-08-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> . <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_432e3bf16c60e216>
+  FROM <urn:graphragprov:unit:u_ee3ae66059ead062>
+  WHERE { <urn:graphragprov:entity:Constance%20of%20Toulouse> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> . <urn:graphragprov:entity:Raymond%20VI%2C%20Count%20of%20Toulouse> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1222-08-02',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Constance of Toulouse', 'Raymond VI, Count of Toulouse']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b97aa98c0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b97aa98c0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6520
+output tokens:         3466
+total tokens:          9986
+cached input tokens:   4480
+uncached input tokens: 2040
+cumulative LLM seconds: 17.009
+
+statement occurrences: 20
+semantic triples:      20
+entity nodes:          12
+literal values:        8
+predicates:            13
+query attempts:        1
+observed answers:      ('1222-08-02',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.995s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.142s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.024s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.457s

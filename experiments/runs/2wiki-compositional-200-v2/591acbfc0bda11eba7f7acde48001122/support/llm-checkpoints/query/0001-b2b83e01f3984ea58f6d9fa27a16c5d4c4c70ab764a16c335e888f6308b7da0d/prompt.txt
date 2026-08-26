@@ -1,0 +1,118 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of burial of the performer of song Baby Let'S Play House?
+
+Expected answer: Graceland
+
+Benchmark evidence relations:
+1. Baby Let's Play House | performer | Elvis
+2. Elvis | place of burial | Graceland
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:accompaniedBy> <urn:graphragprov:entity:Bill%20Black> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:accompaniedBy> <urn:graphragprov:entity:Scotty%20Moore> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:ageAtDeath> "42"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Elvis> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bestSellingSoloArtist> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tupelo%2C%20Mississippi> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bornOn> "1935-01-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:careerRestartYear> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:concertBroadcast> <urn:graphragprov:entity:Aloha%20from%20Hawaii> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:concertResidency> <urn:graphragprov:entity:Las%20Vegas%20concert%20residency> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:diedAt> <urn:graphragprov:entity:Graceland%20estate> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:diedOn> "1977-08-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:filmDebut> <urn:graphragprov:entity:Love%20Me%20Tender> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:firstSingle> <urn:graphragprov:entity:Heartbreak%20Hotel> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:blues> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:gospel> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rockabilly> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:grammyAwards> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:multiple%20music%20halls%20of%20fame> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:rhythm%20acoustic%20guitar> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:manager> <urn:graphragprov:entity:Colonel%20Tom%20Parker> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Presley%27s%20classic%20quartet> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:militaryServiceStartYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:musicCareerStartYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Hollywood%20films%20and%20soundtrack%20albums> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Graceland> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Sam%20Phillips> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:RCA%20Victor> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sun%20Records> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:Memphis%2C%20Tennessee> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:returnedToStageYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:televisionSpecial> <urn:graphragprov:entity:Elvis> .
+<urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number-one%20hit%20in%20the%20United%20States> .
+<urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:releaseDate> "1956-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:coveredBy> <urn:graphragprov:entity:Elvis%20Presley> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:coveredInYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Excello%20Records> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sun%20Records> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Arthur%20Gunter> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordedInYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Arthur%20Gunter> .

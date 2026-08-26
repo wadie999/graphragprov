@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_86f6acbb91f0b7fdf69b56ea84f98df072b07332790acb390651ce280fca05fb
+Title: You Know Better Than I
+Text:
+"You Know Better Than I" (aka "Better Than I") is the signature song from the 2000 direct-to-video film . It is performed by Joseph (David Campbell), and was written by John Bucchino. The song is performed when Joseph is at his lowest point, almost giving up on his faith. He decides to trust fully in God and acknowledge that he is the master of the universe who has an ultimate plan, even if things seem bad at present and he doesn't fully understand why.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 7,
+    "statement": {
+      "subject": {
+        "value": "John Bucchino",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "John Bucchino",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "countryOfCitizenship",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "American",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[7].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

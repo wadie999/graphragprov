@@ -1,0 +1,115 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When was Hjalmar Krag's father born?
+
+Expected answer: 9 August 1829
+
+Benchmark evidence relations:
+1. Hjalmar Krag | father | Hans Hagerup Krag
+2. Hans Hagerup Krag | date of birth | 9 August 1829
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director%20of%20the%20Norwegian%20Directorate%20of%20Public%20Roads> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Knight%2C%20First%20Class%20of%20the%20Order%20of%20St.%20Olav> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:awardYear> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:birthDate> "1867-07-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Vestre%20Aker> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:chairEndYear> "1925"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:chairOf> <urn:graphragprov:entity:Norges%20Landsforbund%20for%20Idr%C3%A6t> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:chairStartYear> "1919"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:deathDate> "1954-04-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Hans%20Hagerup%20Krag> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:graduatedFrom> <urn:graphragprov:entity:Norwegian%20Military%20College> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:graduatedFrom> <urn:graphragprov:entity:military%20officer> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:graduationYear> "1889"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:graduationYear> "1893"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:lectureEndYear> "1912"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:lectureStartYear> "1909"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:lecturedAt> <urn:graphragprov:entity:Norwegian%20Military%20Academy> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:marriageDate> "1896"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Anna%20Marie%20Pedersen> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:businessman> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:military%20officer> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:sports%20official> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:adjutant> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:servedUnder> <urn:graphragprov:entity:Haakon%20VII%20of%20Norway> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:serviceEndYear> "1908"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:serviceStartYear> "1905"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Claudine%20Emilie%20Heiberg> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:birthDate> "1829-08-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:chairmanOf> <urn:graphragprov:entity:Norwegian%20Polytechnic%20Society> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:chairmanshipEndYear> "1883"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:chairmanshipEndYear> "1895"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:chairmanshipStartYear> "1879"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:chairmanshipStartYear> "1893"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:coFounderOf> <urn:graphragprov:entity:Norwegian%20Mountain%20Touring%20Association> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:deathDate> "1907-05-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:directorOf> <urn:graphragprov:entity:Norwegian%20Directorate%20of%20Public%20Roads> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:directorshipEndYear> "1903"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:directorshipStartYear> "1874"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Norwegian%20Public%20Roads%20Administration> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:employmentStartYear> "1852"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+<urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:engineer> .
+<urn:graphragprov:entity:Norwegian%20Mountain%20Touring%20Association> <urn:graphragprov:predicate:foundingYear> "1868"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Thomas%20Heftye> <urn:graphragprov:predicate:coFounderOf> <urn:graphragprov:entity:Norwegian%20Mountain%20Touring%20Association> .

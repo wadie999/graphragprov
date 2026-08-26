@@ -1,0 +1,179 @@
+
+H0 one-case execution
+  case:          1ae708640bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of the director of film The Bordello?
+  expected:      10 May 1916
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1ae708640bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='The Bordello'
+  source unit: u_ae382d3c6538e930d175a3a0c770ca636d73083005b62640ae66df818fae0020
+  text chars:  144
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.737s | model=deepseek-v4-flash
+      tokens:   in=2288 | out=997 | total=3285 | cached=2048 | uncached=240
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 120 / 156 (76.9%)
+    characters text:     120 / 144 (83.3%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  44.87 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Alfred Weidenmann'
+  source unit: u_69de605cb930d03268573227f468e47379bcaa0d6bd748b069927aa43c3d61aa
+  text chars:  134
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.112s | model=deepseek-v4-flash
+      tokens:   in=2369 | out=1207 | total=3576 | cached=2176 | uncached=193
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 108 / 151 (71.5%)
+    characters text:     91 / 134 (67.9%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  19 chars
+      'Alfred Weidenmann('
+    statement density:  52.98 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 15
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        10
+entity nodes:          10
+literal values:        6
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:activeYearsEnd> "1984"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:activeYearsStart> "1942"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:dateOfBirth> "1916-05-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:dateOfDeath> "2000-06-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:directedFilmsCount> "36"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Alfred%20Weidenmann> .
+  <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:West%20German> .
+  <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:publicationYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gisela%20Peltzer> .
+  <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Herbert%20Fleischmann> .
+  <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Karin%20Jacobsen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.731s | model=deepseek-v4-flash
+      tokens:   in=1251 | out=185 | total=1436 | cached=384 | uncached=867
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Alfred%20Weidenmann> .
+  - <urn:graphragprov:entity:Alfred%20Weidenmann> <urn:graphragprov:predicate:dateOfBirth> "1916-05-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_69de605cb930d032>
+  FROM <urn:graphragprov:unit:u_ae382d3c6538e930>
+  WHERE { <urn:graphragprov:entity:The%20Bordello> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1916-05-10',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Alfred Weidenmann', 'The Bordello']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1ae708640bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1ae708640bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5908
+output tokens:         2389
+total tokens:          8297
+cached input tokens:   4608
+uncached input tokens: 1300
+cumulative LLM seconds: 11.580
+
+statement occurrences: 15
+semantic triples:      15
+entity nodes:          10
+literal values:        6
+predicates:            11
+query attempts:        1
+observed answers:      ('1916-05-10',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.857s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.049s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.732s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.500s

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_5ba0f14c9a3ed0be7205bf7a2a88634f3f5bf432b31e99e1aeabd244dc761494
+Title: Hiphop Tamizha
+Text:
+Hiphop Tamizha  is an Indian musical duo based in Chennai, Tamil Nadu. The duo consists of Adhithya "Adhi" Venkatapathy and R. Jeeva. Hiphop Tamizha are credited with being the pioneers of Tamil hip hop in India. The group remained underground until the commercial success of their track, "Club le Mabbu le" in 2011. The international brand Remy Martin launched Hiphop Tamizha as an official brand after hearing the song. In 2012, Hiphop Tamizha released their debut album " Hip Hop Tamizhan", which is India's first Tamil hip hop album. It was a major success with both the general public and critics. While the duo were originally independent musicians, since 2013 they have contributed primarily to composing for films.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 20,
+    "statement": {
+      "subject": {
+        "value": "Hiphop Tamizha",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Hiphop Tamizha",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "contributedTo",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "contributing primarily to composing for films",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "composing for films",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "composing for films",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[20].predicate.evidence[0]: quote 'contributing primarily to composing for films' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

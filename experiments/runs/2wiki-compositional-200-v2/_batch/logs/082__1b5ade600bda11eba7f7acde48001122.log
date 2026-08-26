@@ -1,0 +1,265 @@
+
+H0 one-case execution
+  case:          1b5ade600bda11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the director of film Al Hilal (Film)?
+  expected:      Mumbai
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1b5ade600bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Mehboob Khan'
+  source unit: u_acb20a0b3e8ae37fff82d0cfd12c1a45134b8db6b4fae035aa6f3a5cf3af1132
+  text chars:  713
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 19.679s | model=deepseek-v4-flash
+      tokens:   in=2435 | out=4637 | total=7072 | cached=2048 | uncached=387
+  extraction: ACCEPTED
+  statements: 32
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    32
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     32
+  coverage:
+    characters combined: 493 / 725 (68.0%)
+    characters text:     481 / 713 (67.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  77 chars
+      ') and "Mother India", and is also known for other blockbusters including the'
+    statement density:  44.14 / 1000 chars
+    title reliance:      15 / 32 (46.9%)
+
+[GRAPH 2/2] paragraph=5 title='Al Hilal (film)'
+  source unit: u_44a929f2263a12a7a53d2fb2c102071bca75be4e685315bf8947b46e96b14f96
+  text chars:  688
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 15.351s | model=deepseek-v4-flash
+      tokens:   in=2785 | out=3651 | total=6436 | cached=2048 | uncached=737
+    [LLM graph.reference #3] sending...
+      provider: 0.974s | model=deepseek-v4-flash
+      tokens:   in=687 | out=8 | total=695 | cached=0 | uncached=687
+  extraction: ACCEPTED
+  statements: 24
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    24
+    initially rejected: 1
+
+    initial rejection #24
+      validator:
+        response.statements[24].object.evidence[0]: quote 'Mumbai' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Mumbai",
+                "segment": "text"
+              }
+            ],
+            "value": "Mumbai"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Mehboob Khan",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Mehboob Khan",
+                "segment": "text"
+              }
+            ],
+            "value": "Mehboob Khan"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 24
+  coverage:
+    characters combined: 418 / 703 (59.5%)
+    characters text:     403 / 688 (58.6%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           10 / 10 (100.0%)
+    longest uncovered:  56 chars
+      '. He went on to become "one of the pioneer directors of'
+    statement density:  34.14 / 1000 chars
+    title reliance:      22 / 24 (91.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 56
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      55
+resource nodes:        43
+entity nodes:          43
+literal values:        8
+predicates:            25
+
+N-Triples:
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:The%20Sign%20of%20the%20Cross> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:cinematographer> <urn:graphragprov:entity:Faredoon%20Irani> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:Roman-Arab%20conflict> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:capture%20of%20the%20son%20of%20the%20Ottoman%20Empire%20by%20the%20Roman%20army> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:escape%20of%20the%20son%20of%20the%20Ottoman%20Empire%20from%20the%20Roman%20army> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:fictionalised%20history> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:son%20of%20the%20Ottoman%20Empire> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mehboob%20Khan> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:costume%20drama%20film> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Urdu> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:lyricsBy> <urn:graphragprov:entity:Munshi%20Ehsan%20Lucknavi> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:musicComposer> <urn:graphragprov:entity:Pransukh%20Nayak> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Sagar%20Movietone> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Indira> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kayam%20Ali> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kumar> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mehboob%20Khan> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sitara%20Devi> .
+  <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Yakub> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Al%20Hilal%20%28film%29> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:fieldOfWork> <urn:graphragprov:entity:Indian%20Cinema> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Aan> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:swashbuckling%20musical> .
+  <urn:graphragprov:entity:Aan> <urn:graphragprov:predicate:publicationYear> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Amar> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:melodrama> .
+  <urn:graphragprov:entity:Amar> <urn:graphragprov:predicate:publicationYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Andaz> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:romantic%20drama> .
+  <urn:graphragprov:entity:Andaz> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Aurat> <urn:graphragprov:predicate:publicationYear> "1940"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Mehboob%20Khan%20Ramzan%20Khan> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:bornOn> "1907-09-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:creatorOfGenre> <urn:graphragprov:entity:dacoit%20film> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:diedOn> "1964-05-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Aan> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Amar> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Andaz> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Aurat> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mother%20India> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:fieldOfWork> <urn:graphragprov:entity:Indian%20cinema> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Mehboob%20Productions> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Mehboob%20Studios> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Mother%20India> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer-director> .
+  <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Mumbai> .
+  <urn:graphragprov:entity:Mehboob%20Studios> <urn:graphragprov:predicate:foundedInYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mehboob%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bandra> .
+  <urn:graphragprov:entity:Mehboob%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mumbai> .
+  <urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Award%20for%20Best%20Director> .
+  <urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Award%20for%20Best%20Film> .
+  <urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award> .
+  <urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:social%20epic> .
+  <urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:nomineeFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.883s | model=deepseek-v4-flash
+      tokens:   in=3343 | out=189 | total=3532 | cached=384 | uncached=2959
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mehboob%20Khan> .
+  - <urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Mumbai> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_44a929f2263a12a7>
+  FROM <urn:graphragprov:unit:u_acb20a0b3e8ae37f>
+  WHERE { <urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Mumbai',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Al Hilal (film)', 'Mehboob Khan']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1b5ade600bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1b5ade600bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9250
+output tokens:         8485
+total tokens:          17735
+cached input tokens:   4480
+uncached input tokens: 4770
+cumulative LLM seconds: 37.888
+
+statement occurrences: 56
+semantic triples:      55
+entity nodes:          43
+literal values:        8
+predicates:            25
+query attempts:        1
+observed answers:      ('Mumbai',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 36.016s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.074s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.884s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.499s

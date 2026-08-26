@@ -1,0 +1,179 @@
+
+H0 one-case execution
+  case:          749241fe0bd911eba7f7acde48001122
+  hops:          2
+  question:      When was the director of film His Name Was Holy Ghost born?
+  expected:      4 July 1932
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/749241fe0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='His Name Was Holy Ghost'
+  source unit: u_114bf55294f67a5783f36b4dec3e2a626bd7643469e1257626a21a55abdc13df
+  text chars:  252
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.387s | model=deepseek-v4-flash
+      tokens:   in=2324 | out=1329 | total=3653 | cached=2048 | uncached=276
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 207 / 275 (75.3%)
+    characters text:     207 / 252 (82.1%)
+    characters title:    0 / 23 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  12 chars
+      '. It is the'
+    statement density:  32.73 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='Giuliano Carnimeo'
+  source unit: u_77c429206ac8e3ea96a5f3f9300f32e2384c984614692fce38970d18deab5b2b
+  text chars:  131
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.029s | model=deepseek-v4-flash
+      tokens:   in=2414 | out=901 | total=3315 | cached=2048 | uncached=366
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 107 / 148 (72.3%)
+    characters text:     90 / 131 (68.7%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  19 chars
+      'Giuliano Carnimeo ('
+    statement density:  40.54 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 15
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        12
+entity nodes:          12
+literal values:        3
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:El%20halc%C3%B3n%20de%20Sierra%20Madre> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:They%20Call%20Him%20Holy%20Ghost> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Giuliano%20Carnimeo> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Spaghetti%20Western%20film> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Spanish> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:publicationYear> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:sequelOf> <urn:graphragprov:entity:They%20Call%20Me%20Hallelujah> .
+  <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gianni%20Garko> .
+  <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Anthony%20Ascott> .
+  <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:dateOfBirth> "1932-07-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:dateOfDeath> "2016-09-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.907s | model=deepseek-v4-flash
+      tokens:   in=1338 | out=237 | total=1575 | cached=384 | uncached=954
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Giuliano%20Carnimeo> .
+  - <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:dateOfBirth> "1932-07-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Giuliano%20Carnimeo> . <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_114bf55294f67a57>
+  FROM <urn:graphragprov:unit:u_77c429206ac8e3ea>
+  WHERE { <urn:graphragprov:entity:His%20Name%20Was%20Holy%20Ghost> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Giuliano%20Carnimeo> . <urn:graphragprov:entity:Giuliano%20Carnimeo> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1932-07-04',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Giuliano Carnimeo', 'His Name Was Holy Ghost']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  749241fe0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/749241fe0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6076
+output tokens:         2467
+total tokens:          8543
+cached input tokens:   4480
+uncached input tokens: 1596
+cumulative LLM seconds: 12.323
+
+statement occurrences: 15
+semantic triples:      15
+entity nodes:          12
+literal values:        3
+predicates:            10
+query attempts:        1
+observed answers:      ('1932-07-04',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.422s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.053s
+  graph.materialization [attempt=1]: 0.048s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.908s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.463s

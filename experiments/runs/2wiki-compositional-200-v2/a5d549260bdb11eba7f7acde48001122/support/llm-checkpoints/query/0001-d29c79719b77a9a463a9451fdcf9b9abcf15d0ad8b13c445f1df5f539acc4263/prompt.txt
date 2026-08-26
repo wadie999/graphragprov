@@ -1,0 +1,107 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Who is the father of the director of film Shanti Kranti (1991 Telugu Film)?
+
+Expected answer: N. Veeraswamy
+
+Benchmark evidence relations:
+1. Shanti Kranti | director | V. Ravichandran
+2. V. Ravichandran | father | N. Veeraswamy
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Chakravyuha> <urn:graphragprov:predicate:publicationYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Khadeema%20Kallaru> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:N.%20Veeraswamy> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20producer> .
+<urn:graphragprov:entity:Premaloka> <urn:graphragprov:predicate:boxOfficeStatus> <urn:graphragprov:entity:highest%20grossing%20blockbuster%20film> .
+<urn:graphragprov:entity:Premaloka> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:actingDebut> <urn:graphragprov:entity:Khadeema%20Kallaru> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:directorialDebut> <urn:graphragprov:entity:Premaloka> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:N.%20Veeraswamy> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:followedUpWith> <urn:graphragprov:entity:Chakravyuha> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:filmmaker> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:multi-faceted%20works%20in%20his%20associated%20films> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:antagonist> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:runs> <urn:graphragprov:entity:Sri%20Eswari%20Productions> .
+<urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:starredIn> <urn:graphragprov:entity:multi-starrers> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:boxOfficeStatus> <urn:graphragprov:entity:flop> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:V.%20Ravichandran> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:dubbedInTeluguAs> <urn:graphragprov:entity:Police%20Bullet> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:multilingual%20film> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Kannada> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Telugu> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:leadActor> <urn:graphragprov:entity:Akkineni%20Nagarjuna> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:leadActor> <urn:graphragprov:entity:Rajinikanth> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:leadActor> <urn:graphragprov:entity:V.%20Ravichandran> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:musicComposer> <urn:graphragprov:entity:Hamsalekha> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:V.%20Ravichandran> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Eshwari%20Productions> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:publicationYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Akkineni%20Nagarjuna> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Juhi%20Chawla> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kushboo> .
+<urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:V.%20Ravichandran> .

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_64f544b49b19fd347dc0b21c843a55fd79e39d9d7abe7f02a30c5f18c5cf8509
+Title: The City Gone Wild
+Text:
+The City Gone Wild (1927) is a silent gangster film produced by Famous Players-Lasky and distributed by Paramount Pictures. The film starred Louise Brooks and was directed by James Cruze, and is now a lost film. The last known copy of this film was nearly saved in the late 1960s by preservationist David Shepard for deposit at AFI. Paramount had also contracted with junk men to haul off their old rusting reels with the film still wound on. Shepard arrived at the studio just as junkmen carted the film off for disposal.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 9,
+    "statement": {
+      "subject": {
+        "value": "last known copy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "last known copy",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "nearlySavedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "nearly saved by",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "David Shepard",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "David Shepard",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[9].predicate.evidence[0]: quote 'nearly saved by' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

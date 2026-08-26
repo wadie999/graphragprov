@@ -1,0 +1,89 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the date of birth of Catherine Of Pfalz-Zweibrücken (1661–1720)'s father?
+
+Expected answer: 11 October 1629
+
+Benchmark evidence relations:
+1. Catherine of Pfalz-Zweibrücken | father | Adolph John I, Count Palatine of Kleeburg
+2. Adolph John I, Count Palatine of Kleeburg | date of birth | 11 October 1629
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:birthDate> "1629-10-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:birthDate> "1661-12-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:conflictPeriod> "1686-88" .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:cousinOf> <urn:graphragprov:entity:Charles%20XI%20of%20Sweden> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:deathDate> "1720-05-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:escapedFromAuthorityOf> <urn:graphragprov:entity:her%20parents> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:the%20scandal%20involving%20herself%20and%20her%20siblings> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Countess%20Elsa%20Elisabeth%20Brahe%20of%20Wisingsborg> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:siblingOf> <urn:graphragprov:entity:Adolph%20John%20II%2C%20Count%20Palatine%20of%20Kleeburg> .
+<urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:siblingOf> <urn:graphragprov:entity:Gustav%2C%20Duke%20of%20Zweibr%C3%BCcken> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:birthDate> "1629-10-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:consideredPrinceOfSwedenUntil> "1660"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:deathDate> "1689-10-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Count%20Palatine> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:reignEndYear> "1689"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:reignStartYear> "1654"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count%20Palatine%20of%20Kleeburg> .
+<urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:youngerBrotherOf> <urn:graphragprov:entity:King%20Charles%20X%20Gustav%20of%20Sweden> .

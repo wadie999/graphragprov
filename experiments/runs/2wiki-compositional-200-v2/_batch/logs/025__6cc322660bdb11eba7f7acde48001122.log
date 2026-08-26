@@ -1,0 +1,189 @@
+
+H0 one-case execution
+  case:          6cc322660bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film The Winning Of Sally Temple?
+  expected:      April 25, 1961
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6cc322660bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='The Winning of Sally Temple'
+  source unit: u_808ed23c618c0544d3be4dfb92795449c6478ab2ccf53365126acc0a8bede56d
+  text chars:  330
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.016s | model=deepseek-v4-flash
+      tokens:   in=2338 | out=2163 | total=4501 | cached=2048 | uncached=290
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 251 / 357 (70.3%)
+    characters text:     251 / 330 (76.1%)
+    characters title:    0 / 27 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  16 chars
+      'is a surviving'
+    statement density:  42.02 / 1000 chars
+    title reliance:      0 / 15 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='George Melford'
+  source unit: u_d8148d501619c307af5b26aaab9555251cc33db571b25651014c677f78b6fa91
+  text chars:  332
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.936s | model=deepseek-v4-flash
+      tokens:   in=2534 | out=1692 | total=4226 | cached=2048 | uncached=486
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 142 / 346 (41.0%)
+    characters text:     128 / 332 (38.6%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 4 (50.0%)
+    longest uncovered:  177 chars
+      ". Often taken for granted as a director today, the stalwart Melford's name by the 1920s was, like Cecil B. DeMille's, appearing in big bold letters above the title of his films."
+    statement density:  28.90 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 25
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      25
+resource nodes:        20
+entity nodes:          20
+literal values:        4
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:George%20Melford> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Paramount%20Pictures> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:drama> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20film> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:publicationYear> "1917"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:releaseDate> "1917-02-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Fannie%20Ward> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Horace%20B.%20Carpenter> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jack%20Dean> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Paul%20Weigel> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Walter%20Long> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:William%20Elmer> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Harvey%20F.%20Thew> .
+  <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Rupert%20Sargent%20Holland> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:George%20Henry%20Knauff> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:bornOn> "1877-02-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:dateOfDeath> "1961-04-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20actor> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20actor> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.496s | model=deepseek-v4-flash
+      tokens:   in=1820 | out=229 | total=2049 | cached=512 | uncached=1308
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:George%20Melford> .
+  - <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:dateOfDeath> "1961-04-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:George%20Melford> . <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_808ed23c618c0544>
+  FROM <urn:graphragprov:unit:u_d8148d501619c307>
+  WHERE { <urn:graphragprov:entity:The%20Winning%20of%20Sally%20Temple> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:George%20Melford> . <urn:graphragprov:entity:George%20Melford> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1961-04-25',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['George Melford', 'The Winning of Sally Temple']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  6cc322660bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/6cc322660bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6692
+output tokens:         4084
+total tokens:          10776
+cached input tokens:   4608
+uncached input tokens: 2084
+cumulative LLM seconds: 19.448
+
+statement occurrences: 25
+semantic triples:      25
+entity nodes:          20
+literal values:        4
+predicates:            13
+query attempts:        1
+observed answers:      ('1961-04-25',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 17.958s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.034s
+  graph.materialization [attempt=1]: 0.049s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.497s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.469s

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_b5eedc89310b0d46b513a44f7edb723a1e76152f633e57dbc7d14651892f36c4
+Title: Kwesi Amissah-Arthur
+Text:
+Paa Kwesi Bekoe Amissah-Arthur born William Edmund Davidson Amissah-Arthur (29 April 1951 – 29 June 2018) was a Ghanaian economist, academic and politician who was the fifth Vice-President of Ghana's 4th Republic, in office from 6 August 2012 until 7 January 2017, under President John Dramani Mahama. Previously he was Governor of the Bank of Ghana from 2009 to 2012. He was sworn in as Vice-President on 6 August 2012, following vetting by the Parliament of Ghana. He was nominated by President John Dramani Mahama to be the vice-president a week after Mahama himself was sworn in. This followed the sudden death of John Atta Mills on 24 July 2012.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 19,
+    "statement": {
+      "subject": {
+        "value": "Kwesi Amissah-Arthur",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Kwesi Amissah-Arthur",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "precededBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "following the sudden death of John Atta Mills",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "John Atta Mills",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "John Atta Mills",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[19].predicate.evidence[0]: quote 'following the sudden death of John Atta Mills' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

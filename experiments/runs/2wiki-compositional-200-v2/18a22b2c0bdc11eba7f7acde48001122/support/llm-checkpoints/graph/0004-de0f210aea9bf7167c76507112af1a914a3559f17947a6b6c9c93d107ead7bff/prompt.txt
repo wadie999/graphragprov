@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_fc1dd1f27dcb3302bc17c15c3dd2b1b9dc5c33a8387e0178009c1a74fa25f61c
+Title: Prince (musician)
+Text:
+Prince Rogers Nelson (June 7, 1958 – April 21, 2016) was an American singer, songwriter, musician, record producer, dancer, actor, and filmmaker. A guitar virtuoso known for his genre-crossing work, falsetto singing voice and flamboyant stage appearances, Prince is regarded as one of the greatest musicians of all time. His innovative music integrated a wide variety of styles, including funk, rock, R&B, new wave, soul, psychedelia, and pop. Prince pioneered the late 1970s Minneapolis sound, a funk rock subgenre drawing from synth-pop and new wave. Born and raised in Minneapolis, Minnesota, Prince developed an interest in music as a young child and wrote his first song, "Funk Machine", at the age of seven. He signed a recording contract with Warner Bros. Records at the age of 19, and released his debut album " For You" in 1978. Followed with his next four albums — "Prince" (1979), "Dirty Mind" (1980), "Controversy" (1981), and "1999" (1982)—Prince gained critical success, prominently showcasing his explicit lyrics as well as blending of funk, dance, and rock music. In 1984, he began referring to his backup band as The Revolution and released "Purple Rain", the soundtrack album to his successful film debut of the same name. It quickly became his most critically and commercially successful record, spending 24 consecutive weeks atop the "Billboard" 200. The film also won the Academy Award for Best Original Song Score, the last to receive the award. Following the disbandment of The Revolution, Prince released the critically acclaimed double album "Sign o' the Times" (1987). He released three more solo albums before debuting The New Power Generation band in 1991. In 1993, in the midst of a contractual dispute with Warner Bros., Prince changed his stage name to an unpronounceable symbol , also known as the "Love Symbol", and began releasing new albums at a faster rate in order to quickly meet a contractually required quota and therefore release himself from further obligations to the record label. He released five records between 1994 and 1996 before he signed with Arista Records in 1998. In 2000, he began referring to himself as "Prince" again. He subsequently released 16 albums, including "Musicology" (2004), which was his most successful album of the 2000s. His final album, "Hit n Run Phase Two", was first released on the Tidal streaming service in 2015. In April 2016, at the age of 57, Prince died of an accidental fentanyl overdose at his Paisley Park home and recording studio in Chanhassen, Minnesota. Prince sold over 130 million records worldwide, making him one of the best-selling music artists of all time. He won seven Grammy Awards, seven Brit Awards, six American Music Awards, four MTV Video Music Awards, an Academy Award, and a Golden Globe Award. He was also honored with special awards including the Grammy President's Merit Award, the American Music Award for Achievement and of Merit, and the "Billboard" Icon Award. He was inducted into the Rock and Roll Hall of Fame in 2004 and the Rhythm and Blues Music Hall of Fame in 2016. " Rolling Stone" ranked Prince at No. 27 on its list of the 100 Greatest Artists of All Time.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 42,
+    "statement": {
+      "subject": {
+        "value": "Prince (musician)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Prince (musician)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "bandMember",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "debuted The New Power Generation band",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "The New Power Generation",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "The New Power Generation",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[42].predicate.evidence[0]: quote 'debuted The New Power Generation band' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

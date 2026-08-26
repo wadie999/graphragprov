@@ -1,0 +1,309 @@
+
+H0 one-case execution
+  case:          8dae43ba0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where did Leopold William Jerome Fane De Salis's father study?
+  expected:      Eton College
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8dae43ba0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Leopold William Jerome Fane De Salis'
+  source unit: u_dffc7097fbf4b3a6058a253a17d74e74d6a9915b0ad16eda059589ba137f05ee
+  text chars:  533
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.951s | model=deepseek-v4-flash
+      tokens:   in=2388 | out=3175 | total=5563 | cached=2048 | uncached=340
+    [LLM graph.reference #2] sending...
+      provider: 1.133s | model=deepseek-v4-flash
+      tokens:   in=880 | out=8 | total=888 | cached=0 | uncached=880
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 2
+
+    initial rejection #16
+      validator:
+        response.statements[16].predicate.evidence[0]: quote 'in 1895' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1895",
+                "segment": "text"
+              }
+            ],
+            "value": "1895"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "in 1895",
+                "segment": "text"
+              }
+            ],
+            "value": "marriedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Leopold William Jerome Fane De Salis",
+                "segment": "title"
+              }
+            ],
+            "value": "Leopold William Jerome Fane De Salis"
+          }
+        }
+
+    initial rejection #20
+      validator:
+        response.statements[20].predicate.evidence[0]: quote 'Eton College' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Eton College",
+                "segment": "text"
+              }
+            ],
+            "value": "Eton College"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Eton College",
+                "segment": "text"
+              }
+            ],
+            "value": "educatedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Leopold Fane De Salis",
+                "segment": "text"
+              }
+            ],
+            "value": "Leopold Fane De Salis"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 19
+  coverage:
+    characters combined: 398 / 569 (69.9%)
+    characters text:     362 / 533 (67.9%)
+    characters title:    36 / 36 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  38 chars
+      'Leopold William Jerome Fane De Salis('
+    statement density:  33.39 / 1000 chars
+    title reliance:      16 / 19 (84.2%)
+
+[GRAPH 2/2] paragraph=5 title='Leopold Fane De Salis'
+  source unit: u_c5033480185a928caecc381e11189764f603121739023dcb2ee678ed6e4e86b3
+  text chars:  1304
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 25.314s | model=deepseek-v4-flash
+      tokens:   in=2853 | out=6202 | total=9055 | cached=2048 | uncached=805
+  extraction: ACCEPTED
+  statements: 42
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    42
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     42
+  coverage:
+    characters combined: 725 / 1325 (54.7%)
+    characters text:     704 / 1304 (54.0%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           12 / 13 (92.3%)
+    longest uncovered:  127 chars
+      'and 1848, his highly capable next elder brother William also sailed to Australia. They did much business together. In 1844 he'
+    statement density:  31.70 / 1000 chars
+    title reliance:      36 / 42 (85.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 61
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      61
+resource nodes:        39
+entity nodes:          39
+literal values:        14
+predicates:            43
+
+N-Triples:
+  <urn:graphragprov:entity:Cuppacumbalong%20station> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Tharwa> .
+  <urn:graphragprov:entity:Lambrigg> <urn:graphragprov:predicate:givenBy> <urn:graphragprov:entity:De%20Salis> .
+  <urn:graphragprov:entity:Lambrigg> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Tharwa> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:acquiredProperty> <urn:graphragprov:entity:property%20in%20Queensland> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:appointedIn> "1872"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:New%20South%20Wales%20Legislative%20Council> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:bankrupt> <urn:graphragprov:entity:bankrupt> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Florence> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:bornOn> "1816-04-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:bought> <urn:graphragprov:entity:Cuppacumbalong%20station> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:daughter> <urn:graphragprov:entity:Nina> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:didNotRecontestIn> "1869"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Tharwa> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:diedInYear> "1898"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:diedOn> "1898-11-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Eton%20College> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:electedIn> "1864"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:electedTo> <urn:graphragprov:entity:New%20South%20Wales%20Legislative%20Assembly> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Jerome%2C%204th%20Count%20de%20Salis-Soglio> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:formedPartnership> <urn:graphragprov:entity:partnership> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:hadChildren> <urn:graphragprov:entity:four%20children> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:pastoralist> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:leftCouncil> <urn:graphragprov:entity:Council> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:leftIn> "1898"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:lostIn> <urn:graphragprov:entity:1890s%20depression> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:lostProperty> <urn:graphragprov:entity:property%20in%20Queensland> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:married> <urn:graphragprov:entity:Charlotte%20Macdonald> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:marriedIn> "1844"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:migratedIn> "1840"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:migratedTo> <urn:graphragprov:entity:Sydney> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Henrietta%20Foster> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Tuscan> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:purchasedProperty> <urn:graphragprov:entity:property%20on%20the%20Murrumbidgee%20River> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:ranStation> <urn:graphragprov:entity:station%20at%20Junee> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Queanbeyan> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:soldOut> <urn:graphragprov:entity:sold%20out> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:studied> <urn:graphragprov:entity:sheep%20farming> .
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:studiedIn> <urn:graphragprov:entity:Jedburgh> .
+  <urn:graphragprov:entity:Nina> <urn:graphragprov:predicate:livedAt> <urn:graphragprov:entity:Lambrigg> .
+  <urn:graphragprov:entity:Nina> <urn:graphragprov:predicate:married> <urn:graphragprov:entity:William%20Farrer> .
+  <urn:graphragprov:entity:Nina> <urn:graphragprov:predicate:marriedIn> "1882"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:George%20De%20Salis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:bornOn> "1845-06-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:didNotRecontestIn> "1874"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Laleham> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:diedOn> "1930-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:electedIn> "1872"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:electedTo> <urn:graphragprov:entity:New%20South%20Wales%20Legislative%20Assembly> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Australian%20politician> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:family%20estates> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:managedUntil> "1892"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:married> <urn:graphragprov:entity:Jeanette%20Armstrong> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Charlotte%20Macdonald> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:movedIn> "1910"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Queanbeyan> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:George%20De%20Salis> .
+  <urn:graphragprov:entity:family%20estates> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Queensland> .
+  <urn:graphragprov:entity:family%20estates> <urn:graphragprov:predicate:lostIn> <urn:graphragprov:entity:economic%20crash> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.719s | model=deepseek-v4-flash
+      tokens:   in=3884 | out=210 | total=4094 | cached=512 | uncached=3372
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> .
+  - <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Eton%20College> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_c5033480185a928c>
+  FROM <urn:graphragprov:unit:u_dffc7097fbf4b3a6>
+  WHERE { <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Eton College',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Leopold Fane De Salis', 'Leopold William Jerome Fane De Salis']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8dae43ba0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8dae43ba0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10005
+output tokens:         9595
+total tokens:          19600
+cached input tokens:   4608
+uncached input tokens: 5397
+cumulative LLM seconds: 42.117
+
+statement occurrences: 61
+semantic triples:      61
+entity nodes:          39
+literal values:        14
+predicates:            43
+query attempts:        1
+observed answers:      ('Eton College',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 40.415s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.076s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.008s
+  query.reference.generation [attempt=1]: 1.720s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.449s

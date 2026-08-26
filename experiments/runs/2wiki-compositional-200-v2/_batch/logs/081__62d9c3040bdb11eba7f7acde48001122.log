@@ -1,0 +1,217 @@
+
+H0 one-case execution
+  case:          62d9c3040bdb11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the composer of film Netaji Subhas Chandra Bose: The Forgotten Hero?
+  expected:      India
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/62d9c3040bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Netaji Subhas Chandra Bose: The Forgotten Hero'
+  source unit: u_3c309bc30ab9e10d226ddb7845fea35b11330d68889cdb4d52ab3be0d07c79c8
+  text chars:  1049
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.357s | model=deepseek-v4-flash
+      tokens:   in=2504 | out=3069 | total=5573 | cached=2048 | uncached=456
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 583 / 1095 (53.2%)
+    characters text:     583 / 1049 (55.6%)
+    characters title:    0 / 46 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  133 chars
+      'in Nazi Germany: 1941–1943, and In Japanese-occupied Asia 1943–1945, and the events leading to the formation of Azad Hind Fauj. The'
+    statement density:  17.35 / 1000 chars
+    title reliance:      0 / 19 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='A. R. Rahman'
+  source unit: u_e0f0de020fe83c027b3be11bc1cb13b5a077c63e5d01e61c1c525322a8e5b802
+  text chars:  1404
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 21.283s | model=deepseek-v4-flash
+      tokens:   in=2967 | out=5063 | total=8030 | cached=2048 | uncached=919
+  extraction: ACCEPTED
+  statements: 34
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    34
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     34
+  coverage:
+    characters combined: 689 / 1416 (48.7%)
+    characters text:     689 / 1404 (49.1%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           12 / 13 (92.3%)
+    longest uncovered:  154 chars
+      '. His works are noted for integrating Indian classical music with electronic music, world music and traditional orchestral arrangements. He is nicknamed"'
+    statement density:  24.01 / 1000 chars
+    title reliance:      0 / 34 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 53
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      53
+resource nodes:        40
+entity nodes:          40
+literal values:        10
+predicates:            34
+
+N-Triples:
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award%20for%20Best%20Feature%20Film%20on%20National%20Integration> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award%20for%20Best%20Production%20Design> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:A.%20R.%20Rahman> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:life%20of%20the%20Indian%20independence%20leader%20Subhas%20Chandra%20Bose> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Shyam%20Benegal> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:epic%20biographical%20war%20film> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:productionDesigner> <urn:graphragprov:entity:Samir%20Chanda> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:publicationYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:receivedCriticalAcclaimAt> <urn:graphragprov:entity:BFI%20London%20Film%20Festival> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:screenedAt> <urn:graphragprov:entity:Independence%20Day%20Film%20Festival> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:screenedOn> "2016-08-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Arif%20Zakaria> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Divya%20Dutta> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kulbhushan%20Kharbanda> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Rajit%20Kapur> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sachin%20Khedekar> .
+  <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Shyam%20Benegal> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:BAFTA%20Award> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Award> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Awards%20South> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Globe%20Award> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Award> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Padma%20Bhushan> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:awardReceivedInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:A.%20S.%20Dileep%20Kumar> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:bornOn> "1967-01-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:debutFilm> <urn:graphragprov:entity:Roja> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Le%20Musk> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:filmScoringCareerStart> "early 1990s" .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:humanitarian> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:includedIn> <urn:graphragprov:entity:Time%20100> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:includedInYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:namedAs> <urn:graphragprov:entity:Tomorrow%27s%20World%20Music%20Icons> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:namedBy> <urn:graphragprov:entity:Songlines> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:namedInYear> "2011-08"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Isai%20Puyalthe%20Musical%20Storm> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Mozart%20of%20Madras> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20director> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20producer> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:philanthropist> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:recordSales> "150000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:studio> <urn:graphragprov:entity:Panchathan%20Record%20Inn> .
+  <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:writer> <urn:graphragprov:entity:Le%20Musk> .
+  <urn:graphragprov:entity:Le%20Musk> <urn:graphragprov:predicate:publicationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Padma%20Bhushan> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:Government%20of%20India> .
+  <urn:graphragprov:entity:Panchathan%20Record%20Inn> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Chennai> .
+  <urn:graphragprov:entity:Roja> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.138s | model=deepseek-v4-flash
+      tokens:   in=3566 | out=251 | total=3817 | cached=384 | uncached=3182
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:A.%20R.%20Rahman> .
+  - <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:A.%20R.%20Rahman> . <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3c309bc30ab9e10d>
+  FROM <urn:graphragprov:unit:u_e0f0de020fe83c02>
+  WHERE { <urn:graphragprov:entity:Netaji%20Subhas%20Chandra%20Bose%3A%20The%20Forgotten%20Hero> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:A.%20R.%20Rahman> . <urn:graphragprov:entity:A.%20R.%20Rahman> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('India',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Netaji Subhas Chandra Bose: The Forgotten Hero']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  62d9c3040bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/62d9c3040bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9037
+output tokens:         8383
+total tokens:          17420
+cached input tokens:   4480
+uncached input tokens: 4557
+cumulative LLM seconds: 36.777
+
+statement occurrences: 53
+semantic triples:      53
+entity nodes:          40
+literal values:        10
+predicates:            34
+query attempts:        1
+observed answers:      ('India',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 34.650s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.054s
+  graph.materialization [attempt=1]: 0.099s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.139s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.462s

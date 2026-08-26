@@ -1,0 +1,93 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the husband of Princess Agnes Of Anhalt-Dessau born?
+
+Expected answer: Hildburghausen
+
+Benchmark evidence relations:
+1. Princess Agnes of Anhalt-Dessau | spouse | Ernst I, Duke of Saxe-Altenburg
+2. Ernst I, Duke of Saxe-Altenburg | place of birth | Hildburghausen
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Ernst%20I.%20Friedrich%20Paul%20Georg%20Nikolaus%20von%20Sachsen-%20Altenburg> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:bornOn> "1826-09-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:diedOn> "1908-02-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:diedWithoutLivingDirectMaleHeir> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%2C%20Duke%20of%20Saxe-Altenburg> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:duke> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Marie%20Luise%20of%20Mecklenburg-Schwerin> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hildburghausen> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Altenburg> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:Duke%20of%20Saxe-Altenburg> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:reignLength> "fifty five years" .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:succeeded> <urn:graphragprov:entity:Georg%2C%20Duke%20of%20Saxe-Altenburg> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Ernst> .
+<urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:succeededInYear> "1853"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Frederica%20Amalia%20Agnes> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:bornOn> "1824-06-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:diedOn> "1897-10-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Leopold%20IV%2C%20Duke%20of%20Anhalt> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:daughter> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:House%20of%20Ascania> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Princess%20Frederica%20of%20Prussia> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:Duchess%20consort%20of%20Saxe-Altenburg> .
+<urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> .

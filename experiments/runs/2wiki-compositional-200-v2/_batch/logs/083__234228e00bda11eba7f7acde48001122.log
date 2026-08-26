@@ -1,0 +1,262 @@
+
+H0 one-case execution
+  case:          234228e00bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the award that the composer of film Journey Beyond Three Seas received?
+  expected:      Sangeet Natak Akademi Award
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/234228e00bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Journey Beyond Three Seas'
+  source unit: u_d62957c2df14d8cf9e97d01e2243f15c36c02fbcfa9350222b8fe1d29f0bcaa6
+  text chars:  870
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 14.883s | model=deepseek-v4-flash
+      tokens:   in=2474 | out=3452 | total=5926 | cached=2048 | uncached=426
+    [LLM graph.reference #2] sending...
+      provider: 1.093s | model=deepseek-v4-flash
+      tokens:   in=731 | out=8 | total=739 | cached=0 | uncached=731
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 1
+
+    initial rejection #16
+      validator:
+        response.statements[16].predicate.evidence[0]: quote 'Russian version' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Russian version",
+                "segment": "text"
+              }
+            ],
+            "value": "Russian version"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Russian version",
+                "segment": "text"
+              }
+            ],
+            "value": "hasPart"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Journey Beyond Three Seas",
+                "segment": "text"
+              }
+            ],
+            "value": "Journey Beyond Three Seas"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 23
+  coverage:
+    characters combined: 419 / 895 (46.8%)
+    characters text:     419 / 870 (48.2%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  121 chars
+      '. Made during the high time of Indo-Russian amity, Pardesi is an Indo-Soviet film co-production between the state-owned "'
+    statement density:  25.70 / 1000 chars
+    title reliance:      0 / 23 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='Anil Biswas (composer)'
+  source unit: u_f92799a009055a43ff88d2f17e1ee468f1af389f07db7ec2b4bae9bd787e525c
+  text chars:  1357
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 18.851s | model=deepseek-v4-flash
+      tokens:   in=2892 | out=4367 | total=7259 | cached=2048 | uncached=844
+  extraction: ACCEPTED
+  statements: 29
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    29
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     29
+  coverage:
+    characters combined: 680 / 1379 (49.3%)
+    characters text:     658 / 1357 (48.5%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  181 chars
+      'in film scores, employing technique of western music, ‘cantala’, where one line overlaps the other in contra-melody, recitative prose songs as in "Roti" (1942), besides he was the'
+    statement density:  21.03 / 1000 chars
+    title reliance:      1 / 29 (3.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 52
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      52
+resource nodes:        48
+entity nodes:          48
+literal values:        12
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Afanasy%20Nikitin> .
+  <urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Russian%20literary%20monument> .
+  <urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:travelogues> .
+  <urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:colorPrint> <urn:graphragprov:entity:no%20colour%20print> .
+  <urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:colorProcess> <urn:graphragprov:entity:SovColor> .
+  <urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:black%20and%20white%20copy> .
+  <urn:graphragprov:entity:Hindi%20version> <urn:graphragprov:predicate:survivesIn> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:A%20Journey%20Beyond%20the%20Three%20Seas> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:colorProcess> <urn:graphragprov:entity:SovColor> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Anil%20Biswas> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Khwaja%20Ahmad%20Abbas> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vasili%20Pronin> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Hindi%20version> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Russian> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian-Soviet> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Mosfilm%20Studio> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Naya%20Sansar%20International> .
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Na%20Dir%20Dim> <urn:graphragprov:predicate:dancedBy> <urn:graphragprov:entity:Padmini> .
+  <urn:graphragprov:entity:Na%20Dir%20Dim> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lata%20Mangeshkar> .
+  <urn:graphragprov:entity:Rasiya%20Re%20Man%20Basiya%20Re> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Meena%20Kapoor> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:activeYears> "1935-1965" .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Sangeet%20Natak%20Akademi%20Award> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:awardReceivedInYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:bornOn> "1914-07-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:creditedFor> <urn:graphragprov:entity:first%20Indian%20orchestra%20of%20twelve%20pieces> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:creditedFor> <urn:graphragprov:entity:orchestral%20music%20and%20full-blooded%20choral%20effects> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:diedOn> "2003-05-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Anil%20Krishna%20Biswas> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:western%20orchestration> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Baul> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Bhatiyali> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Indian%20classical%20or%20folk%20elements> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:numberOfFilms> "90"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20music%20director> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playback%20singer> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:Ragmala> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:counter%20melody> .
+  <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:playback%20singing> .
+  <urn:graphragprov:entity:Anokha%20Pyaar> <urn:graphragprov:predicate:publicationYear> "1948"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Char%20Dil%20Char%20Rahen> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kismet> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Pardesi> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Roti> <urn:graphragprov:predicate:publicationYear> "1942"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sangeet%20Natak%20Akademi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:India%27s%20National%20Academy%20of%20Music%2C%20Dance%20%26%20Drama> .
+  <urn:graphragprov:entity:Sangeet%20Natak%20Akademi%20Award> <urn:graphragprov:predicate:givenBy> <urn:graphragprov:entity:Sangeet%20Natak%20Akademi> .
+  <urn:graphragprov:entity:Taraana> <urn:graphragprov:predicate:publicationYear> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Waaris> <urn:graphragprov:predicate:publicationYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.606s | model=deepseek-v4-flash
+      tokens:   in=3189 | out=225 | total=3414 | cached=384 | uncached=2805
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Anil%20Biswas> .
+  - <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Sangeet%20Natak%20Akademi%20Award> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Anil%20Biswas> . <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:awardReceived> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_d62957c2df14d8cf>
+  FROM <urn:graphragprov:unit:u_f92799a009055a43>
+  WHERE { <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Anil%20Biswas> . <urn:graphragprov:entity:Anil%20Biswas> <urn:graphragprov:predicate:awardReceived> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Sangeet Natak Akademi Award',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Anil Biswas (composer)', 'Journey Beyond Three Seas']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  234228e00bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/234228e00bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9286
+output tokens:         8052
+total tokens:          17338
+cached input tokens:   4480
+uncached input tokens: 4806
+cumulative LLM seconds: 36.433
+
+statement occurrences: 52
+semantic triples:      52
+entity nodes:          48
+literal values:        12
+predicates:            29
+query attempts:        1
+observed answers:      ('Sangeet Natak Akademi Award',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 34.840s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.085s
+  graph.materialization [attempt=1]: 0.062s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.607s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.516s

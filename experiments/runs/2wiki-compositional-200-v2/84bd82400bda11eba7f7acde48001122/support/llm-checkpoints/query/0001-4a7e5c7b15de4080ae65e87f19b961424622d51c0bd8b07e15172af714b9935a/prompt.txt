@@ -1,0 +1,132 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Why did Alexis Minotis's wife die?
+
+Expected answer: cancer
+
+Benchmark evidence relations:
+1. Alexis Minotis | spouse | Katina Paxinou
+2. Katina Paxinou | cause of death | cancer
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Boy%20on%20a%20Dolphin> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Electra> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Ghosts> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Land%20of%20the%20Pharaohs> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Notorious> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Oedipus%20Tyrannus> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Oedipus%20at%20Colonus> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Peer%20Gynt> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Siren%20of%20Atlantis> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:The%20Chase> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:The%20Merchant%20of%20VeniceKing%20LearMacbeth> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Cary%20Grant> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Claude%20Rains> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Ingrid%20Bergman> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Joan%20Collins> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Maria%20Montez> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Mich%C3%A8le%20Morgan> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Robert%20Cummings> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:appearedWith> <urn:graphragprov:entity:Sophia%20Loren> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:birthDate> "1900-08-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Alexandros%20Minotakis> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:deathDate> "1990-11-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Greek%20National%20Opera> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Hecuba> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:HecubaAntigoneThe%20PhoenissaePrometheus%20BoundOedipus%20at%20Colonus> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Juno%20and%20the%20Paycock> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Maria%20Callas> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Medea> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Mother%20Courage> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Norma> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20Father> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Greek> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Hamlet> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Katina%20Paxinou> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:starredIn> <urn:graphragprov:entity:Oedipus%20Rex> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:National%20Theatre%20of%20Greece> .
+<urn:graphragprov:entity:Alexis%20Minotis> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Marika%20Kotopouli> .
+<urn:graphragprov:entity:National%20Theatre%20of%20Greece> <urn:graphragprov:predicate:foundedInYear> "1930"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:For%20Whom%20the%20Bell%20Tolls> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:European%20films> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Hollywood%20films> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Supporting%20Actress> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Globe%20Award%20for%20Best%20Supporting%20Actress> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:birthDate> "1899-12-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:birthDate> "1900"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:cancer> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:deathDate> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:deathDate> "1973-02-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:filmDebut> <urn:graphragprov:entity:For%20Whom%20the%20Bell%20Tolls> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:focusedOn> <urn:graphragprov:entity:stage%20career> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:foundingMemberOf> <urn:graphragprov:entity:National%20Theatre%20of%20Greece> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20Kingdom> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Greek> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20actress> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:returnedTo> <urn:graphragprov:entity:Greece> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Alexis%20Minotis> .
+<urn:graphragprov:entity:Katina%20Paxinou> <urn:graphragprov:predicate:startedCareer> "1928"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:National%20Theatre%20of%20Greece> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_5caed2f28088d508378f6f2f350c82d04d7215a98af8cf3038128e28297c43aa
+Title: Metamorphoses (1978 film)
+Text:
+The movie was the between American golden age of Disney-influenced anime and Sanrio's second animated release in the US (following their adaptation of "The Mouse and His Child" the previous year). Over 170 animators, all employed in Hollywood, worked on it for three years. "Metamorphoses" tried to be the rock era's answer to "Fantasia", but its original run was critically reviled and closed as soon as it opened. According to many of its crew, many problems with the production, music and plotting were to blame. On May 3, 1979, it was reissued under a new title, Winds of Change, with seven minutes trimmed from the first cut of 89 minutes. This time, the music was composed by Alec R. Costandinos, the disco songs were sung by Arthur Simms and Pattie Brooks and narration by Peter Ustinov was added. The five parts—"ActaeonOrpheus and EurydiceThe House of EnvyPerseus" and "Phaëton", in the original order—were re-arranged and slightly renamed for the new version; the third and last parts remained unmoved. In the "Winds" cut, the first two were now "Perseus" and "Actaeon", and the fourth "Orpheus". In addition, the boy was now called Wondermaker, and the girl played different characters in every segment. Greek gods Hermes, Artemis and Hades were given their Roman names (Mercury, Diana and Pluto respectively).
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 36,
+    "statement": {
+      "subject": {
+        "value": "Alec R. Costandinos",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Alec R. Costandinos",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "placeOfBirth",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "composed by Alec R. Costandinos",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Cairo",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Cairo",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[36].object.evidence[0]: quote 'Cairo' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

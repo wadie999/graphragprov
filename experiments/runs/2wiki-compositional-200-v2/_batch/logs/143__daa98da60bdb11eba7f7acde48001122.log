@@ -1,0 +1,331 @@
+
+H0 one-case execution
+  case:          daa98da60bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the husband of Maimu Berg born?
+  expected:      Aravu
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/daa98da60bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Maimu Berg'
+  source unit: u_978352ffa0d8c98f4bc78f061679f96543efad62716e0528cc5967cf80f0be1f
+  text chars:  909
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 23.422s | model=deepseek-v4-flash
+      tokens:   in=2478 | out=5593 | total=8071 | cached=2048 | uncached=430
+    [LLM graph.reference #2] sending...
+      provider: 2.535s | model=deepseek-v4-flash
+      tokens:   in=977 | out=334 | total=1311 | cached=0 | uncached=977
+  extraction: ACCEPTED
+  statements: 36
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    36
+    initially rejected: 2
+
+    initial rejection #29
+      validator:
+        response.statements[29].predicate.evidence[0]: quote 'nominated to stand for Parliament' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Parliament",
+                "segment": "text"
+              }
+            ],
+            "value": "Parliament"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "nominated to stand for Parliament",
+                "segment": "text"
+              }
+            ],
+            "value": "candidateFor"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Maimu Berg",
+                "segment": "title"
+              }
+            ],
+            "value": "Maimu Berg"
+          }
+        }
+
+    initial rejection #31
+      validator:
+        response.statements[31].predicate.evidence[0]: quote 'nominated to stand for the European Parliament' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "European Parliament",
+                "segment": "text"
+              }
+            ],
+            "value": "European Parliament"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "nominated to stand for the European Parliament",
+                "segment": "text"
+              }
+            ],
+            "value": "candidateFor"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Maimu Berg",
+                "segment": "title"
+              }
+            ],
+            "value": "Maimu Berg"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     1
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'nominated to stand for the European Parliament' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "European Parliament",
+                "segment": "text"
+              }
+            ],
+            "value": "European Parliament"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "nominated to stand for the European Parliament",
+                "segment": "text"
+              }
+            ],
+            "value": "candidateFor"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Maimu Berg",
+                "segment": "title"
+              }
+            ],
+            "value": "Maimu Berg"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 36
+  coverage:
+    characters combined: 665 / 919 (72.4%)
+    characters text:     655 / 909 (72.1%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           10 / 10 (100.0%)
+    longest uncovered:  43 chars
+      'and 2007, and for the European Parliament'
+    statement density:  39.17 / 1000 chars
+    title reliance:      34 / 36 (94.4%)
+
+[GRAPH 2/2] paragraph=4 title='Vaino Vahing'
+  source unit: u_d1673749d28df354a270661f92d554ebbbb90e63266c6c83e3c71bc30a041a9c
+  text chars:  206
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.734s | model=deepseek-v4-flash
+      tokens:   in=2732 | out=1775 | total=4507 | cached=2048 | uncached=684
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 164 / 218 (75.2%)
+    characters text:     152 / 206 (73.8%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  14 chars
+      'Vaino Vahing ('
+    statement density:  55.05 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 48
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      46
+resource nodes:        28
+entity nodes:          28
+literal values:        15
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:Julia%20Laffranque> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:judge> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:novels%20and%20short%20stories> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:birthDate> "1945-08-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Tallinn> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidacyYear> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidacyYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidacyYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:candidateFor> <urn:graphragprov:entity:Parliament> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Julia%20Laffranque> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:editorOf> <urn:graphragprov:entity:Siluett> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:editorialEndYear> "1990"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:editorialStartYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Tartu> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:secondary%20school%20in%20Tallinn> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:electedInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:employmentEndYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:employmentStartYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:fieldOfStudy> <urn:graphragprov:entity:Estonian%20language%20and%20literature> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:graduationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:People%27s%20Union%20of%20Estonia> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Riigikogu> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Social%20Democratic%20Party> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:membershipEndYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:membershipStartYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Estonian> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:critic> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:journalist> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:translator> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:servedOn> <urn:graphragprov:entity:Tallinn%20City%20Council> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:serviceEndYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:serviceStartYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Vaino%20Vahing> .
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:university%20library> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthDate> "1940-02-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Aravu> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:P%C3%B5lva%20County> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:deathDate> "2008-03-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Tartu> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Estonian%20Writers%20Union> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:membershipStartYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Estonian> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playwright> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:prosaist> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:psychiatrist> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.787s | model=deepseek-v4-flash
+      tokens:   in=2758 | out=170 | total=2928 | cached=384 | uncached=2374
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Vaino%20Vahing> .
+  - <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Aravu> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:birthPlace> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_978352ffa0d8c98f>
+  FROM <urn:graphragprov:unit:u_d1673749d28df354>
+  WHERE { <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:birthPlace> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Aravu', 'Põlva County')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Maimu Berg', 'Vaino Vahing']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  daa98da60bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/daa98da60bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8945
+output tokens:         7872
+total tokens:          16817
+cached input tokens:   4480
+uncached input tokens: 4465
+cumulative LLM seconds: 35.477
+
+statement occurrences: 48
+semantic triples:      46
+entity nodes:          28
+literal values:        15
+predicates:            27
+query attempts:        1
+observed answers:      ('Aravu', 'Põlva County')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.705s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.060s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.787s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.454s

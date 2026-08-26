@@ -1,0 +1,344 @@
+
+H0 one-case execution
+  case:          af1ce4520bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the performer of song Echoes (1950 Song)?
+  expected:      Los Angeles
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/af1ce4520bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Jo Stafford'
+  source unit: u_333a500454252f100cc67b104c92b31ad9f84b156efc21b90e5f35dac95b1432
+  text chars:  3087
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 67.544s | model=deepseek-v4-flash
+      tokens:   in=2927 | out=16384 | total=19311 | cached=2048 | uncached=879
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #2] sending...
+      provider: 11.084s | model=deepseek-v4-flash
+      tokens:   in=2972 | out=2554 | total=5526 | cached=2816 | uncached=156
+    [LLM graph.reference #3] sending...
+      provider: 0.602s | model=deepseek-v4-flash
+      tokens:   in=1200 | out=8 | total=1208 | cached=0 | uncached=1200
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 1
+
+    initial rejection #17
+      validator:
+        response.statements[17].object.evidence[0]: quote 'Echoes (1950 Song)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Echoes (1950 Song)",
+                "segment": "text"
+              }
+            ],
+            "value": "Echoes (1950 Song)"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "performer",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jo Stafford",
+                "segment": "title"
+              }
+            ],
+            "value": "Jo Stafford"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 428 / 3098 (13.8%)
+    characters text:     417 / 3087 (13.5%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           9 / 24 (37.5%)
+    longest uncovered:  496 chars
+      ', whose career spanned five decades from the late 1930s to the early 1980s. Admired for the purity of her voice, she originally underwent classical training to become an opera sin…'
+    statement density:  5.49 / 1000 chars
+    title reliance:      17 / 17 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='Echoes (1950 song)'
+  source unit: u_55c84102e3aa44036709b3677e4120ee93f1d7a59ea410bc2d3bbff01df6af11
+  text chars:  736
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 14.965s | model=deepseek-v4-flash
+      tokens:   in=2593 | out=3654 | total=6247 | cached=2048 | uncached=545
+    [LLM graph.reference #5] sending...
+      provider: 2.194s | model=deepseek-v4-flash
+      tokens:   in=951 | out=349 | total=1300 | cached=0 | uncached=951
+  extraction: ACCEPTED
+  statements: 22
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    22
+    initially rejected: 2
+
+    initial rejection #14
+      validator:
+        response.statements[14].predicate.evidence[0]: quote 'reached #13 on the Cash Box charts' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "#13",
+                "segment": "text"
+              }
+            ],
+            "value": "13"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "reached #13 on the Cash Box charts",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Stafford/MacRae recording",
+                "segment": "text"
+              }
+            ],
+            "value": "Stafford/MacRae recording"
+          }
+        }
+
+    initial rejection #21
+      validator:
+        response.statements[21].predicate.evidence[0]: quote "released by EMI on the His Master's Voice label" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "EMI",
+                "segment": "text"
+              }
+            ],
+            "value": "EMI"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released by EMI on the His Master's Voice label",
+                "segment": "text"
+              }
+            ],
+            "value": "recordLabel"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Sammy Kaye",
+                "segment": "text"
+              }
+            ],
+            "value": "Sammy Kaye recording"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 22
+  coverage:
+    characters combined: 544 / 754 (72.1%)
+    characters text:     526 / 736 (71.5%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           10 / 10 (100.0%)
+    longest uncovered:  33 chars
+      'and #13 on the Cash Box charts.'
+    statement density:  29.18 / 1000 chars
+    title reliance:      9 / 22 (40.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 39
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 2
+  initial rejections: 3
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      39
+resource nodes:        29
+entity nodes:          29
+literal values:        9
+predicates:            26
+
+N-Triples:
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Award> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:birthDate> "1917-11-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Coalinga%2C%20California> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:deathDate> "2008-07-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:traditional%20pop%20music> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Pied%20Pipers> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Stafford%20Sisters> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Capitol%20Records> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Columbia%20Records> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:John%20Huddleston> .
+  <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Paul%20Weston> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:firstRecordedBy> <urn:graphragprov:entity:The%20Ink%20Spots> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:firstRecordingYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:popular%20song> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Gordon%20MacRae> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jo%20Stafford> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:publicationYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:recordingYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Bennie%20Benjamin> .
+  <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:George%20David%20Weiss> .
+  <urn:graphragprov:entity:Sammy%20Kaye> <urn:graphragprov:predicate:vocalRefrainBy> <urn:graphragprov:entity:The%20Kaydets> .
+  <urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:catalogNumber> "20-3595" .
+  <urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:catalogNumber> "JO 170" .
+  <urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:His%20Master%27s%20Voice> .
+  <urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:RCA%20Victor%20Records> .
+  <urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordingDate> "1949-10-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:USA> .
+  <urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:bSide> <urn:graphragprov:entity:Bibbidi-Bobbidi-Boo%20%28The%20Magic%20Song%29> .
+  <urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:catalogNumber> "782" .
+  <urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:chartPosition> "18"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Capitol%20Records> .
+  <urn:graphragprov:entity:The%20Ink%20Spots> <urn:graphragprov:predicate:recordingChartPosition> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.566s | model=deepseek-v4-flash
+      tokens:   in=2417 | out=209 | total=2626 | cached=512 | uncached=1905
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jo%20Stafford> .
+  - <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jo%20Stafford> . <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_333a500454252f10>
+  FROM <urn:graphragprov:unit:u_55c84102e3aa4403>
+  WHERE { <urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jo%20Stafford> . <urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Los Angeles',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Echoes (1950 song)', 'Jo Stafford']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  af1ce4520bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/af1ce4520bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13060
+output tokens:         23158
+total tokens:          36218
+cached input tokens:   7424
+uncached input tokens: 5636
+cumulative LLM seconds: 97.955
+
+statement occurrences: 39
+semantic triples:      39
+entity nodes:          29
+literal values:        9
+predicates:            26
+query attempts:        1
+observed answers:      ('Los Angeles',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 96.411s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.566s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.485s

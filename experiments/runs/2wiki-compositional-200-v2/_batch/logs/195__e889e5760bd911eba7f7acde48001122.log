@@ -1,0 +1,176 @@
+
+H0 one-case execution
+  case:          e889e5760bd911eba7f7acde48001122
+  hops:          2
+  question:      When is the director of film The Mysterious Miss X 's birthday?
+  expected:      March 6, 1893
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/e889e5760bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='The Mysterious Miss X'
+  source unit: u_6854b257eefa71bec5aaaef5e647d15856d56bb1c9e563726120e707ecd7e53e
+  text chars:  117
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.829s | model=deepseek-v4-flash
+      tokens:   in=2283 | out=865 | total=3148 | cached=2048 | uncached=235
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 94 / 138 (68.1%)
+    characters text:     94 / 117 (80.3%)
+    characters title:    0 / 21 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  43.48 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=6 title='Gus Meins'
+  source unit: u_b6bdbdff79db737150bb01dc1ccfbff24cc6766db15cc64535d679be0ab4a297
+  text chars:  148
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.430s | model=deepseek-v4-flash
+      tokens:   in=2366 | out=906 | total=3272 | cached=2176 | uncached=190
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 120 / 157 (76.4%)
+    characters text:     111 / 148 (75.0%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  11 chars
+      'Gus Meins ('
+    statement density:  38.22 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 12
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      12
+resource nodes:        10
+entity nodes:          10
+literal values:        3
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gus%20Meins> .
+  <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:publicationYear> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Chick%20Chandler> .
+  <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mary%20Hart> .
+  <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Michael%20Whalen> .
+  <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Gustave%20Peter%20Ludwig%20Luley> .
+  <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Frankfurt%2C%20Germany> .
+  <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:dateOfBirth> "1893-03-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:dateOfDeath> "1940-08-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German-American> .
+  <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.971s | model=deepseek-v4-flash
+      tokens:   in=1125 | out=217 | total=1342 | cached=384 | uncached=741
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gus%20Meins> .
+  - <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:dateOfBirth> "1893-03-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gus%20Meins> . <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6854b257eefa71be>
+  FROM <urn:graphragprov:unit:u_b6bdbdff79db7371>
+  WHERE { <urn:graphragprov:entity:The%20Mysterious%20Miss%20X> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gus%20Meins> . <urn:graphragprov:entity:Gus%20Meins> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1893-03-06',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Gus Meins', 'The Mysterious Miss X']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  e889e5760bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/e889e5760bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5774
+output tokens:         1988
+total tokens:          7762
+cached input tokens:   4608
+uncached input tokens: 1166
+cumulative LLM seconds: 11.231
+
+statement occurrences: 12
+semantic triples:      12
+entity nodes:          10
+literal values:        3
+predicates:            10
+query attempts:        1
+observed answers:      ('1893-03-06',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.266s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.059s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.972s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.445s

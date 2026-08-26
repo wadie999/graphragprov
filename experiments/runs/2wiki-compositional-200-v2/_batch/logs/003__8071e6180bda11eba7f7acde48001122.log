@@ -1,0 +1,222 @@
+
+H0 one-case execution
+  case:          8071e6180bda11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the director of film Kafr Kasem?
+  expected:      Lebanese
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8071e6180bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Kafr kasem'
+  source unit: u_47de810fd4132faf0078dc885725dacd9682b29325b6f317618dd9049fcb0b7f
+  text chars:  238
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.024s | model=deepseek-v4-flash
+      tokens:   in=2309 | out=1466 | total=3775 | cached=0 | uncached=2309
+    [LLM graph.reference #2] sending...
+      provider: 1.004s | model=deepseek-v4-flash
+      tokens:   in=576 | out=8 | total=584 | cached=0 | uncached=576
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 1
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'Lebanese' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lebanese",
+                "segment": "text"
+              }
+            ],
+            "value": "Lebanese"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lebanese",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Borhane Alaouié",
+                "segment": "text"
+              }
+            ],
+            "value": "Borhane Alaouié"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 163 / 248 (65.7%)
+    characters text:     163 / 238 (68.5%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  20 chars
+      'of the film is the'
+    statement density:  36.29 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Borhane Alaouié'
+  source unit: u_b359611cead8e45efe594d72b1e2d5001b5aef244e7909d0d3e67bd3f50111a2
+  text chars:  64
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 2.734s | model=deepseek-v4-flash
+      tokens:   in=2387 | out=450 | total=2837 | cached=1792 | uncached=595
+  extraction: ACCEPTED
+  statements: 3
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     3
+  coverage:
+    characters combined: 52 / 79 (65.8%)
+    characters text:     37 / 64 (57.8%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  17 chars
+      'Borhane Alaouié('
+    statement density:  37.97 / 1000 chars
+    title reliance:      3 / 3 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 12
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      12
+resource nodes:        10
+entity nodes:          10
+literal values:        3
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Kafr%20Qasim%20massacre> <urn:graphragprov:predicate:occurredIn> <urn:graphragprov:entity:Israel> .
+  <urn:graphragprov:entity:Kafr%20Qasim%20massacre> <urn:graphragprov:predicate:occurredInYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> .
+  <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:enteredInto> <urn:graphragprov:entity:9th%20Moscow%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Syrian> .
+  <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:publicationYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:Kafr%20Qasim%20massacre> .
+  <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Diploma> .
+  <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> <urn:graphragprov:predicate:bornOn> "1941-04-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Lebanese> .
+  <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.957s | model=deepseek-v4-flash
+      tokens:   in=1118 | out=216 | total=1334 | cached=384 | uncached=734
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> .
+  - <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Lebanese> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> . <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_47de810fd4132faf>
+  FROM <urn:graphragprov:unit:u_b359611cead8e45e>
+  WHERE { <urn:graphragprov:entity:Kafr%20kasem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> . <urn:graphragprov:entity:Borhane%20Alaoui%C3%A9> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Lebanese',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Borhane Alaouié', 'Kafr kasem']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8071e6180bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8071e6180bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6390
+output tokens:         2140
+total tokens:          8530
+cached input tokens:   2176
+uncached input tokens: 4214
+cumulative LLM seconds: 13.719
+
+statement occurrences: 12
+semantic triples:      12
+entity nodes:          10
+literal values:        3
+predicates:            11
+query attempts:        1
+observed answers:      ('Lebanese',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 11.770s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.958s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.510s

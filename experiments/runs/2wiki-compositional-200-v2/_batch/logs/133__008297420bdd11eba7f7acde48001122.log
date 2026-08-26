@@ -1,0 +1,241 @@
+
+H0 one-case execution
+  case:          008297420bdd11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Roads To The South is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/008297420bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Roads to the South'
+  source unit: u_e86514f3fb81cb3155e7913195fc9235ad888b27625a99226cae7d0ede335d77
+  text chars:  191
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.472s | model=deepseek-v4-flash
+      tokens:   in=2297 | out=1437 | total=3734 | cached=2048 | uncached=249
+    [LLM graph.reference #2] sending...
+      provider: 0.658s | model=deepseek-v4-flash
+      tokens:   in=556 | out=8 | total=564 | cached=0 | uncached=556
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 1
+
+    initial rejection #9
+      validator:
+        response.statements[9].object.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Joseph Losey",
+                "segment": "text"
+              }
+            ],
+            "value": "Joseph Losey"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 123 / 209 (58.9%)
+    characters text:     123 / 191 (64.4%)
+    characters title:    0 / 18 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  25 chars
+      '), which was directed by'
+    statement density:  43.06 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Joseph Losey'
+  source unit: u_2f4e1870ae54d06e91a5bb9e2764dc4146b9f60f6461709853c3d02e8465075f
+  text chars:  506
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 13.633s | model=deepseek-v4-flash
+      tokens:   in=2474 | out=3157 | total=5631 | cached=2176 | uncached=298
+  extraction: ACCEPTED
+  statements: 22
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    22
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     22
+  coverage:
+    characters combined: 348 / 518 (67.2%)
+    characters text:     336 / 506 (66.4%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  61 chars
+      '. Among the most critically and commercially successful were'
+    statement density:  42.47 / 1000 chars
+    title reliance:      16 / 22 (72.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 31
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      31
+resource nodes:        23
+entity nodes:          23
+literal values:        7
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Accident> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Joseph%20Losey> .
+  <urn:graphragprov:entity:Accident> <urn:graphragprov:predicate:publicationYear> "1967"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Accident> <urn:graphragprov:predicate:screenplayBy> <urn:graphragprov:entity:Harold%20Pinter> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:birthDate> "1909-01-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:blacklistedBy> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Wisconsin> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:deathDate> "1984-06-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:theatre%20director> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:returnedTo> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:studiedIn> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:studiedWith> <urn:graphragprov:entity:Bertolt%20Brecht> .
+  <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:United%20Kingdom> .
+  <urn:graphragprov:entity:The%20Go-Between> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Joseph%20Losey> .
+  <urn:graphragprov:entity:The%20Go-Between> <urn:graphragprov:predicate:publicationYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Go-Between> <urn:graphragprov:predicate:screenplayBy> <urn:graphragprov:entity:Harold%20Pinter> .
+  <urn:graphragprov:entity:The%20Servant> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Joseph%20Losey> .
+  <urn:graphragprov:entity:The%20Servant> <urn:graphragprov:predicate:publicationYear> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Servant> <urn:graphragprov:predicate:screenplayBy> <urn:graphragprov:entity:Harold%20Pinter> .
+  <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Joseph%20Losey> .
+  <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:publicationYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:sequelTo> <urn:graphragprov:entity:The%20War%20is%20Over> .
+  <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Miou-Miou> .
+  <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Yves%20Montand> .
+  <urn:graphragprov:entity:The%20War%20is%20Over> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Alain%20Resnais> .
+  <urn:graphragprov:entity:The%20War%20is%20Over> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.660s | model=deepseek-v4-flash
+      tokens:   in=1977 | out=179 | total=2156 | cached=512 | uncached=1465
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Joseph%20Losey> .
+  - <urn:graphragprov:entity:Joseph%20Losey> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2f4e1870ae54d06e>
+  FROM <urn:graphragprov:unit:u_e86514f3fb81cb31>
+  WHERE { <urn:graphragprov:entity:Roads%20to%20the%20South> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Joseph Losey', 'Roads to the South']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  008297420bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/008297420bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7304
+output tokens:         4781
+total tokens:          12085
+cached input tokens:   4736
+uncached input tokens: 2568
+cumulative LLM seconds: 23.423
+
+statement occurrences: 31
+semantic triples:      31
+entity nodes:          23
+literal values:        7
+predicates:            17
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.776s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.661s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.530s

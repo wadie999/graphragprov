@@ -1,0 +1,224 @@
+
+H0 one-case execution
+  case:          cbbe6e660bda11eba7f7acde48001122
+  hops:          2
+  question:      When did Louisa Lane Drew's husband die?
+  expected:      May 21, 1862
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/cbbe6e660bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Louisa Lane Drew'
+  source unit: u_6471feaeab4762f3e812a521bb95a434fca78b3e8a4250703485cd9af40afec2
+  text chars:  210
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.810s | model=deepseek-v4-flash
+      tokens:   in=2296 | out=1331 | total=3627 | cached=2048 | uncached=248
+    [LLM graph.reference #2] sending...
+      provider: 0.648s | model=deepseek-v4-flash
+      tokens:   in=582 | out=8 | total=590 | cached=0 | uncached=582
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 1
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'May 21, 1862' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "May 21, 1862",
+                "segment": "text"
+              }
+            ],
+            "value": "1862-05-21"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "May 21, 1862",
+                "segment": "text"
+              }
+            ],
+            "value": "dateOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Drew",
+                "segment": "text"
+              }
+            ],
+            "value": "John Drew"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 141 / 226 (62.4%)
+    characters text:     125 / 210 (59.5%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  40 chars
+      '. Professionally she was often known as'
+    statement density:  35.40 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='John Drew (actor)'
+  source unit: u_d28c53ba57c32163dd3db80763dd01b7fd102b154f3577858d30fc0b47d75297
+  text chars:  99
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 3.643s | model=deepseek-v4-flash
+      tokens:   in=2365 | out=746 | total=3111 | cached=2176 | uncached=189
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 86 / 116 (74.1%)
+    characters text:     69 / 99 (69.7%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  11 chars
+      'John Drew ('
+    statement density:  43.10 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 13
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      13
+resource nodes:        11
+entity nodes:          11
+literal values:        4
+predicates:            7
+
+N-Triples:
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:ancestorOf> <urn:graphragprov:entity:Barrymore%20acting%20family> .
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:birthDate> "1820-01-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:deathDate> "1897-08-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theatre%20owner> .
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:John%20Drew> .
+  <urn:graphragprov:entity:John%20Drew%20%28actor%29> <urn:graphragprov:predicate:birthDate> "1827-09-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Drew%20%28actor%29> <urn:graphragprov:predicate:deathDate> "1862-05-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Drew%20%28actor%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:stage%20actor> .
+  <urn:graphragprov:entity:John%20Drew%20%28actor%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theatre%20manager> .
+  <urn:graphragprov:entity:John%20Drew%20%28actor%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Irish-American> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.806s | model=deepseek-v4-flash
+      tokens:   in=1192 | out=196 | total=1388 | cached=512 | uncached=680
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:John%20Drew> .
+  - <urn:graphragprov:entity:John%20Drew%20%28actor%29> <urn:graphragprov:predicate:deathDate> "1862-05-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:deathDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6471feaeab4762f3>
+  FROM <urn:graphragprov:unit:u_d28c53ba57c32163>
+  WHERE { <urn:graphragprov:entity:Louisa%20Lane%20Drew> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:deathDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  cbbe6e660bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/cbbe6e660bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6435
+output tokens:         2281
+total tokens:          8716
+cached input tokens:   4736
+uncached input tokens: 1699
+cumulative LLM seconds: 12.907
+
+statement occurrences: 13
+semantic triples:      13
+entity nodes:          11
+literal values:        4
+predicates:            7
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 11.110s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.057s
+  graph.materialization [attempt=1]: 0.072s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.009s
+  query.reference.generation [attempt=1]: 1.807s
+  graphdb.semantic [attempt=1]: 0.012s
+  provenance.execution [attempt=1]: 0.743s

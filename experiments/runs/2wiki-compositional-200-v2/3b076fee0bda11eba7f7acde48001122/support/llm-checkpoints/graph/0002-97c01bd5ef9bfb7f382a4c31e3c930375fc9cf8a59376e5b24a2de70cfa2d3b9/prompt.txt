@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_85bd5d8985b16e737737316afb3940a199a181dc82b538a01dc45f01786bf8dd
+Title: The Trollenberg Terror
+Text:
+The Trollenberg Terror( a.k.a. The Crawling Eye in the United States) is a 1958 independently made British black- and- white science fiction monster film drama, produced by Robert S. Baker and Monty Berman, directed by Quentin Lawrence, that stars Forrest Tucker, Laurence Payne, Jennifer Jayne, and Janet Munro. The special effects were handled by Les Bowie. The story was based on a 1956 British ITV" Saturday Serial" television programme. The film was distributed in the U.K. by Eros Films Ltd. in October, 1958 as" The Trollenberg Terror", and in the U.S. by Distributors Corporation of America as" The Crawling Eye". It was released in the U.S. on July 7, 1958 as a double feature with the British science fiction film" Cosmic Monsters"( a.k.a." The Strange World of Planet X"). " The Trollenberg Terror" s storyline concerns United Nations troubleshooter Alan Brooks, later joined by journalist Philip Truscott, investigating unusual accidents occurring in the area of a resort hotel on( the fictional) Mount Trollenberg in Switzerland. Brooks suspects these deaths are related to a series of similar incidents that occurred three years earlier in the Andes mountains, which involved an unexplained radioactive mist and odd cloud formation believed by locals to be inhabited.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 14,
+    "statement": {
+      "subject": {
+        "value": "The Trollenberg Terror",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "The Trollenberg Terror",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "distributedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "distributed in the U.S. by",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Distributors Corporation of America",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Distributors Corporation of America",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[14].predicate.evidence[0]: quote 'distributed in the U.S. by' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

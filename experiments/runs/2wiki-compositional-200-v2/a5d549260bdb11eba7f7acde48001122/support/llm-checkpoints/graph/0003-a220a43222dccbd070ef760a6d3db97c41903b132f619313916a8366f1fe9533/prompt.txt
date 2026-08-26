@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_6ba8fe5d686436875e4648e40aeaa2ad0af7e1d0aeb6ecd97a6423c41bea1e6c
+Title: Shanti Kranti (1991 Telugu film)
+Text:
+Shanti Kranti (English: "Peace-Revolution") is a 1991 Telugu, crime film produced and directed by V. Ravichandran under his Eshwari Productions banner. It stars Akkineni Nagarjuna, V. Ravichandran, Juhi Chawla, Kushboo in the lead roles and music composed by Hamsalekha. The film is a multilingual film simultaneously shot in Telugu, Kannada, Tamil and Hindi, in which Akkineni Nagarjuna was the lead in the Telugu version, Rajinikanth in the Tamil and Hindi versions, while V. Ravichandran was in the Kannada version, most of the scenes and artists are the same in all versions. Despite this Telugu version, Rajinikanth's Tamil version was also dubbed in Telugu as "Police Bullet". The film was recorded as a "flop" at the box office.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 21,
+    "statement": {
+      "subject": {
+        "value": "V. Ravichandran",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "V. Ravichandran",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "father",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "V. Ravichandran",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "N. Veeraswamy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "N. Veeraswamy",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[21].object.evidence[0]: quote 'N. Veeraswamy' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

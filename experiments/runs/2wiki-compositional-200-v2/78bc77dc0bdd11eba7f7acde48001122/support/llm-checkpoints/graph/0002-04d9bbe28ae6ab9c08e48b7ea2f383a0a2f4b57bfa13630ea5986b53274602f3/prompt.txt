@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_90bd1d7f119e97301cc726f7082dea264c318d5bb9cce7ce723618817a0e42fc
+Title: Noon at Ngayon: Pagsasamang Kay Ganda
+Text:
+Noon at Ngayon: Pagsasamang Kay Ganda (English: " Now and Then") is a 2003 Filipino film directed by Marilou Diaz-Abaya and written by Ricky Lee. It was released by Star Cinema on August 13, 2003.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Noon at Ngayon: Pagsasamang Kay Ganda",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Noon at Ngayon: Pagsasamang Kay Ganda",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "releaseDate",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "released on",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "2003-08-13",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "August 13, 2003",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].predicate.evidence[0]: quote 'released on' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

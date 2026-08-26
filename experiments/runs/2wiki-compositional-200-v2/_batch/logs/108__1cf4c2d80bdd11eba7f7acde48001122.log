@@ -1,0 +1,259 @@
+
+H0 one-case execution
+  case:          1cf4c2d80bdd11eba7f7acde48001122
+  hops:          2
+  question:      When did Johannes Winding Harbitz's father die?
+  expected:      22 November 1889
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1cf4c2d80bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Johannes Winding Harbitz'
+  source unit: u_2f019b1dec28d3398c27dacf389169faae37c16d6151891f24a6894bf519c089
+  text chars:  1191
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 27.237s | model=deepseek-v4-flash
+      tokens:   in=2567 | out=6391 | total=8958 | cached=2048 | uncached=519
+    [LLM graph.reference #2] sending...
+      provider: 0.863s | model=deepseek-v4-flash
+      tokens:   in=844 | out=8 | total=852 | cached=0 | uncached=844
+  extraction: ACCEPTED
+  statements: 41
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    41
+    initially rejected: 1
+
+    initial rejection #41
+      validator:
+        response.statements[41].predicate.evidence[0]: quote '22 November 1889' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "22 November 1889",
+                "segment": "text"
+              }
+            ],
+            "value": "1889-11-22"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "22 November 1889",
+                "segment": "text"
+              }
+            ],
+            "value": "dateOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Georg Prahl Harbitz",
+                "segment": "text"
+              }
+            ],
+            "value": "Georg Prahl Harbitz"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 41
+  coverage:
+    characters combined: 771 / 1215 (63.5%)
+    characters text:     747 / 1191 (62.7%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           14 / 14 (100.0%)
+    longest uncovered:  44 chars
+      'there was a reshuffle and he was appointed'
+    statement density:  33.74 / 1000 chars
+    title reliance:      37 / 41 (90.2%)
+
+[GRAPH 2/2] paragraph=3 title='Georg Prahl Harbitz'
+  source unit: u_ab13c81a53ffc47fbcdeab3f940a4f22d3f53fc9797de93f4b5f6b299159254d
+  text chars:  182
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.947s | model=deepseek-v4-flash
+      tokens:   in=2888 | out=1032 | total=3920 | cached=2048 | uncached=840
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 126 / 201 (62.7%)
+    characters text:     107 / 182 (58.8%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  24 chars
+      'for multiple terms and'
+    statement density:  34.83 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 48
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      47
+resource nodes:        26
+entity nodes:          26
+literal values:        17
+predicates:            32
+
+N-Triples:
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:vicar> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:Minister%20of%20Auditing> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:Minister%20of%20Defence> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointedTo> <urn:graphragprov:entity:second%20cabinet%20Stang> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointmentDate> "1 April the next year" .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:appointmentDate> "1893-05-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:birthDate> "1831-12-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Askvold> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:constituency> <urn:graphragprov:entity:T%C3%B8nsberg> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:deathDate> "1917-09-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:education> <urn:graphragprov:entity:student> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:educationStartYear> "1850"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:electedTo> <urn:graphragprov:entity:Norwegian%20Parliament> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:electionYear> "1880"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:heldPositionUntil> "1895-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:leftPositionDate> "1894-07-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:mayorOf> <urn:graphragprov:entity:T%C3%B8nsberg> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:mayorTenure> "twelve years" .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Maren%20Mariken%20Hof> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:moveYear> "1897"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Vestre%20Aker> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:seaman> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:ship-owner> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:shipmaster> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:vice%20consul> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupationPeriod> "1859-1869" .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:occupationStartYear> "mid-1880s" .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Conservative%20Party> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:member%20of%20the%20Council%20of%20State%20Division%20in%20Stockholm> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:qualification> <urn:graphragprov:entity:mate%27s%20examination> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:qualificationYear> "1852"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:reElected> "four occasions" .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:T%C3%B8nsberg> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Louise%20Henriette%20Betty%20Lunnevig> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:termsServed> "five terms" .
+  <urn:graphragprov:entity:Louise%20Henriette%20Betty%20Lunnevig> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Ole%20Lunnevig> .
+  <urn:graphragprov:entity:Ole%20Lunnevig> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:T%C3%B8nsberg> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:birthDate> "1802-06-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:deathDate> "1889-11-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Parliament> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:priest> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:President%20of%20the%20Storting> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.217s | model=deepseek-v4-flash
+      tokens:   in=3001 | out=233 | total=3234 | cached=384 | uncached=2617
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> .
+  - <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:deathDate> "1889-11-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> . <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:deathDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2f019b1dec28d339>
+  FROM <urn:graphragprov:unit:u_ab13c81a53ffc47f>
+  WHERE { <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> . <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:deathDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1889-11-22',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Georg Prahl Harbitz', 'Johannes Winding Harbitz']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1cf4c2d80bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/1cf4c2d80bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9300
+output tokens:         7664
+total tokens:          16964
+cached input tokens:   4480
+uncached input tokens: 4820
+cumulative LLM seconds: 35.264
+
+statement occurrences: 48
+semantic triples:      47
+entity nodes:          26
+literal values:        17
+predicates:            32
+query attempts:        1
+observed answers:      ('1889-11-22',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.062s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.059s
+  graph.materialization [attempt=1]: 0.061s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.218s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.295s

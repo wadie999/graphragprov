@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_dc138d13b5686d206ac4929c6007c30adb532a641fac62821ba1c8a94ab86c15
+Title: Hilary Cawthorne
+Text:
+Hilary Cawthorne (born 31 December 1951) is a British fencer. She competed in the women's individual foil events at the 1976 and 1980 Summer Olympics. She is married to British Sabre Champion Jim Philbin. In 2013, she was appointed president of British Fencing. As Hilary Fredricke Cawthorne, she was appointed Member of the Order of the British Empire (MBE) in the 2017 New Year Honours for services to fencing.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "Hilary Cawthorne",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Hilary Cawthorne",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "competedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "competed in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "women's individual foil events at the 1976 Summer Olympics",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "women's individual foil events at the 1976 Summer Olympics",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].object.evidence[0]: quote \"women's individual foil events at the 1976 Summer Olympics\" does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 4,
+    "statement": {
+      "subject": {
+        "value": "Hilary Cawthorne",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Hilary Cawthorne",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "competedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "competed in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "women's individual foil events at the 1980 Summer Olympics",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "women's individual foil events at the 1980 Summer Olympics",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[4].object.evidence[0]: quote \"women's individual foil events at the 1980 Summer Olympics\" does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

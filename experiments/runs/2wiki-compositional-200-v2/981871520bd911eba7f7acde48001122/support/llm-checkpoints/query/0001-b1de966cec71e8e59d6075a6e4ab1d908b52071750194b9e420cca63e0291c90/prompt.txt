@@ -1,0 +1,153 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the place of birth of the performer of song Sunday (Jessica Mauboy Song)?
+
+Expected answer: Darwin
+
+Benchmark evidence relations:
+1. Sunday | performer | Jessica Mauboy
+2. Jessica Mauboy | place of birth | Darwin
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:albumSequence> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:albumType> <urn:graphragprov:entity:studio%20album> .
+<urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Jessica%20Mauboy> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Australian> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:recording%20artist> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Australia> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:discussedOn> <urn:graphragprov:entity:Nova%2096.9> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:fromAlbum> <urn:graphragprov:entity:Hilda> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:inspiredBy> <urn:graphragprov:entity:heated%20argument%20with%20her%20boyfriend> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsQuote> "I forgive you then you forget, you're sleeping even if you didn't make that bed" .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:deep%20lyrics> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:irritating%20and%20annoying%20little%20things> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:sass> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:lyricsTheme> <urn:graphragprov:entity:unspoken%20grievances%20escalating> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jessica%20Mauboy> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:releaseDate> "2019-04-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:releaseType> <urn:graphragprov:entity:digital> .
+<urn:graphragprov:entity:Sunday%20%28Jessica%20Mauboy%20song%29> <urn:graphragprov:predicate:singleType> <urn:graphragprov:entity:lead%20single> .
+<urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:containsSingle> <urn:graphragprov:entity:Can%20I%20Get%20a%20Moment%3F> .
+<urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:containsSingle> <urn:graphragprov:entity:Pop%20a%20Bottle%20%28Fill%20Me%20Up%29Never%20Be%20the%20Same> .
+<urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:dance-oriented%20tracks%20with%20R%26B%20and%20pop> .
+<urn:graphragprov:entity:Beautiful> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:certification> <urn:graphragprov:entity:double%20platinum> .
+<urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:certifiedBy> <urn:graphragprov:entity:Australian%20Recording%20Industry%20Association> .
+<urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:containsSingle> <urn:graphragprov:entity:Burn> .
+<urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:publicationYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Been%20Waiting> <urn:graphragprov:predicate:salesRanking> <urn:graphragprov:entity:second%20highest-selling%20Australian%20album%20of%202009> .
+<urn:graphragprov:entity:Bran%20Nue%20Dae> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Burn> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Get%20%27Em%20Girls> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:hard-edged%20R%26B> .
+<urn:graphragprov:entity:Get%20%27Em%20Girls> <urn:graphragprov:predicate:producedSingles> <urn:graphragprov:entity:four%20platinum%20singles> .
+<urn:graphragprov:entity:Get%20%27Em%20Girls> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Hilda> <urn:graphragprov:predicate:publicationYear> "2019-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:16%20top-twenty%20singles> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:20th%20place> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:9%20top-ten%20hits> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:one%20of%20Australia%27s%20most%20successful%20female%20artists> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:runner-up> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:six%20top-ten%20albums> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:two%20number-ones> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:Bran%20Nue%20Dae> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:The%20Sapphires> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:The%20Secret%20Daughter> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:awardNominations> "25"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:ARIA%20Music%20Awards> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:bornOn> "1989-08-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Flo%20Rida> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Jay%20Sean> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Ludacris> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Pitbull> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Snoop%20Dogg> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:competedIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%202018> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:R%26B> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:songwriter> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Young%20Divas> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Australian> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Australian%20Idol> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:fourth%20season> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:performedAt> <urn:graphragprov:entity:Australian%20visits%20for%20Oprah%20Winfrey> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:performedAt> <urn:graphragprov:entity:Eurovision%20Song%20Contest%202014%20second%20semi-final> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Darwin> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Northern%20Territory> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:rankedIn> <urn:graphragprov:entity:100%20Greatest%20Australian%20Singers%20of%20All%20Time> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Beautiful> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Been%20Waiting> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Get%20%27Em%20Girls> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Hilda> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:The%20Secret%20Daughter%20soundtrack%20albums> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:signedWith> <urn:graphragprov:entity:Sony%20Music%20Australia> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:touredWith> <urn:graphragprov:entity:Beyonc%C3%A9> .
+<urn:graphragprov:entity:Jessica%20Mauboy> <urn:graphragprov:predicate:touredWith> <urn:graphragprov:entity:Chris%20Brown> .
+<urn:graphragprov:entity:The%20Sapphires> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:AACTA%20Award%20for%20Best%20Actress%20in%20a%20Supporting%20Role> .
+<urn:graphragprov:entity:The%20Sapphires> <urn:graphragprov:predicate:publicationYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Secret%20Daughter> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20drama%20series> .
+<urn:graphragprov:entity:The%20Secret%20Daughter> <urn:graphragprov:predicate:numberOfSeasons> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:The%20Secret%20Daughter> <urn:graphragprov:predicate:writtenFor> <urn:graphragprov:entity:Jessica%20Mauboy> .
+<urn:graphragprov:entity:The%20Secret%20Daughter%20soundtrack%20albums> <urn:graphragprov:predicate:achievement> <urn:graphragprov:entity:first%20Indigenous%20artist%20to%20achieve%20a%20number-one%20album%20on%20the%20ARIA%20Albums%20Chart> .
+<urn:graphragprov:entity:The%20Secret%20Daughter%20soundtrack%20albums> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:The%20Secret%20Daughter> .

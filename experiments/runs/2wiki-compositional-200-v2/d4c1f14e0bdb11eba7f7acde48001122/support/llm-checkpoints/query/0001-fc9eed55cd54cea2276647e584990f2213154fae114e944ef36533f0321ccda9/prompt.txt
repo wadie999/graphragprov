@@ -1,0 +1,110 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When did the director of film Almenrausch And Edelweiss (1957 Film) die?
+
+Expected answer: 9 October 1986
+
+Benchmark evidence relations:
+1. Almenrausch and Edelweiss | director | Harald Reinl
+2. Harald Reinl | date of death | 9 October 1986
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:artDirector> <urn:graphragprov:entity:Felix%20Smetana> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Bavaria> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Switzerland> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Upper%20Austria> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Heimatfilm> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Austrian-West%20German> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Elma%20Karlowa> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Harald%20Juhnke> .
+<urn:graphragprov:entity:Almenrausch%20and%20Edelweiss> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Karin%20Dor> .
+<urn:graphragprov:entity:Chariots%20of%20the%20Gods> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20feature> .
+<urn:graphragprov:entity:Chariots%20of%20the%20Gods> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Daniela%20Maria%20Delis> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Harald%20Reinl> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:beganCareerAs> <urn:graphragprov:entity:extra> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Bad%20Ischl> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:bornOn> "1908-07-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:stabbed%20to%20death> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Santa%20Cruz%20de%20Tenerife> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Tenerife%20retirement%20home> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:diedOn> "1986-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:firstMovieAsDirector> <urn:graphragprov:entity:Mountain%20Crystal> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:killedBy> <urn:graphragprov:entity:Daniela%20Maria%20Delis> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:films%20based%20on%20Edgar%20Wallace%20books> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:German%20war%20films> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:Heimatfilms> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:entries%20in%20popular%20German%20film%20series> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:made> <urn:graphragprov:entity:mountain%20films> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Austrian> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Chariots%20of%20the%20Gods> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Oscar> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:retiredTo> <urn:graphragprov:entity:Canary%20Islands> .
+<urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Mountain%20Crystal> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tiefland> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Leni%20Riefenstahl> .
+<urn:graphragprov:entity:Tiefland> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Leni%20Riefenstahl> .

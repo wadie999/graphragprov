@@ -1,0 +1,104 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the director of film Second To None (Film) born?
+
+Expected answer: Wimborne
+
+Benchmark evidence relations:
+1. Second to None | director | Jack Raymond
+2. Jack Raymond | place of birth | Wimborne
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:war%20film> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:screenplayConcerns> <urn:graphragprov:entity:a%20Naval%20family%20who%20come%20under%20strain%20when%20their%20son%20goes%20absent%20without%20leave%20to%20settle%20a%20domestic%20problem%20with%20his%20wife> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Benita%20Hume> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ian%20Fleming> .
+<urn:graphragprov:entity:Second%20to%20None%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Moore%20Marriott> .
+<urn:graphragprov:entity:Hepworth%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Walton%20on%20Thames> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:actedIn> <urn:graphragprov:entity:A%20Detective%20for%20a%20Day> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:ageAtPostcard> <urn:graphragprov:entity:early%20twenties> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:a%20studio%20publicity%20postcard> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:Hepworth%20Studios> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Dorset> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:birthYear> "1886"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:concentratedOn> <urn:graphragprov:entity:directing> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:deathYear> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:his%20first%20film> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:directedFilms> <urn:graphragprov:entity:more%20than%20forty%20films> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:directedFirstFilmIn> "1921"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:graduallyReducedActing> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:hadMajorSuccessIn> "1930"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Wimborne> .
+<urn:graphragprov:entity:Jack%20Raymond> <urn:graphragprov:predicate:startedActing> <urn:graphragprov:entity:before%20the%20First%20World%20War> .
+<urn:graphragprov:entity:The%20Great%20Game> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> .
+<urn:graphragprov:entity:The%20Great%20Game> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:The%20Great%20Game> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:football> .
+<urn:graphragprov:entity:Up%20for%20the%20Cup> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jack%20Raymond> .
+<urn:graphragprov:entity:Up%20for%20the%20Cup> <urn:graphragprov:predicate:publicationYear> "1931"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Up%20for%20the%20Cup> <urn:graphragprov:predicate:remadeIn> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .

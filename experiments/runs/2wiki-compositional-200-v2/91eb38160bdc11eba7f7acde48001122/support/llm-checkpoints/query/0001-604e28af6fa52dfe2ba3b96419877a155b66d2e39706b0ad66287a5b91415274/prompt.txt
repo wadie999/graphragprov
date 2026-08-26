@@ -1,0 +1,108 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the place of birth of the director of film Chuck (Film)?
+
+Expected answer: Hull
+
+Benchmark evidence relations:
+1. Chuck | director | Philippe Falardeau
+2. Philippe Falardeau | place of birth | Hull
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:alternativeTitle> <urn:graphragprov:entity:The%20Bleeder> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:alternativeTitle> <urn:graphragprov:entity:The%20Bleeder%20in%20the%20UK%20and%20Ireland> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:1975%20title%20fight%20with%20the%20heavyweight%20champion%2C%20Muhammad%20Ali> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:life%20of%20heavyweight%20boxer%20Chuck%20Wepner> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Philippe%20Falardeau> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:IFC%20Films> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:biographical%20sports%20drama%20film> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:premiereDate> "2016-09-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:premiereLocation> <urn:graphragprov:entity:2016%20Venice%20Film%20Festival> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:principalPhotographyLocation> <urn:graphragprov:entity:Suffern%2C%20New%20York> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:principalPhotographyStartDate> "2015-10-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:publicationYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:releaseDate> "2017-05-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Elisabeth%20Moss> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jason%20Jones> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jim%20Gaffigan> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Liev%20Schreiber> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Michael%20Rapaport> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Morgan%20Spector> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Naomi%20Watts> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Pooch%20Hall> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ron%20Perlman> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Jeff%20Feuerzeig> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Jerry%20Stahl> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Liev%20Schreiber> .
+<urn:graphragprov:entity:Chuck%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Michael%20Cristofer> .
+<urn:graphragprov:entity:Chuck%20Wepner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:heavyweight%20boxer> .
+<urn:graphragprov:entity:Muhammad%20Ali> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:heavyweight%20champion> .
+<urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hull> .
+<urn:graphragprov:entity:Rocky> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sylvester%20Stallone> <urn:graphragprov:predicate:character> <urn:graphragprov:entity:Rocky> .
+<urn:graphragprov:entity:Sylvester%20Stallone> <urn:graphragprov:predicate:screenplay> <urn:graphragprov:entity:Rocky> .
+<urn:graphragprov:entity:Hull> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Quebec> .
+<urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:bornOn> "1968-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Philippe%20Falardeau> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hull> .

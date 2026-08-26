@@ -1,0 +1,423 @@
+
+H0 one-case execution
+  case:          361ffcec0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Who is the mother of the performer of song L8 Cmmr?
+  expected:      Alison Owen
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/361ffcec0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='L8 CMMR'
+  source unit: u_8285e366206fc7e3f9b628cd5003507a61531882f0e588cd94ffe193b7c25e84
+  text chars:  525
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.424s | model=deepseek-v4-flash
+      tokens:   in=2382 | out=2221 | total=4603 | cached=0 | uncached=2382
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 283 / 532 (53.2%)
+    characters text:     276 / 525 (52.6%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  96 chars
+      ', the same day as the release of the music video for Allen\'s previous single "Air Balloon". The'
+    statement density:  28.20 / 1000 chars
+    title reliance:      9 / 15 (60.0%)
+
+[GRAPH 2/2] paragraph=7 title='Lily Allen'
+  source unit: u_25e801d5debcfc7d350da08973f1d41fbc409bb66075ce85601867c6eca825b6
+  text chars:  1833
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 30.572s | model=deepseek-v4-flash
+      tokens:   in=2868 | out=7598 | total=10466 | cached=1792 | uncached=1076
+    [LLM graph.reference #3] sending...
+      provider: 2.563s | model=deepseek-v4-flash
+      tokens:   in=1391 | out=515 | total=1906 | cached=0 | uncached=1391
+  extraction: ACCEPTED
+  statements: 50
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    49
+    initially rejected: 3
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'daughter of ... film producer Alison Owen' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Alison Owen",
+                "segment": "text"
+              }
+            ],
+            "value": "Alison Owen"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "daughter of ... film producer Alison Owen",
+                "segment": "text"
+              }
+            ],
+            "value": "mother"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lily Allen",
+                "segment": "title"
+              }
+            ],
+            "value": "Lily Allen"
+          }
+        }
+
+    initial rejection #31
+      validator:
+        response.statements[31].predicate.evidence[0]: quote 'number one on the Australian ARIA Charts' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "number one",
+                "segment": "text"
+              }
+            ],
+            "value": "number one"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "number one on the Australian ARIA Charts",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\" It's Not Me, It's You\"",
+                "segment": "text"
+              }
+            ],
+            "value": "It's Not Me, It's You"
+          }
+        }
+
+    initial rejection #35
+      validator:
+        response.statements[35].predicate.evidence[0]: quote 'received the Brit Award for British Female Solo Artist' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Brit Award for British Female Solo Artist",
+                "segment": "text"
+              }
+            ],
+            "value": "Brit Award for British Female Solo Artist"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "received the Brit Award for British Female Solo Artist",
+                "segment": "text"
+              }
+            ],
+            "value": "awardReceived"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lily Allen",
+                "segment": "title"
+              }
+            ],
+            "value": "Lily Allen"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     2
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'number one on the Australian ARIA Charts' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "number one",
+                "segment": "text"
+              }
+            ],
+            "value": "number one"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "number one on the Australian ARIA Charts",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "It's Not Me, It's You",
+                "segment": "text"
+              }
+            ],
+            "value": "It's Not Me, It's You"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'received the Brit Award for British Female Solo Artist' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Brit Award for British Female Solo Artist",
+                "segment": "text"
+              }
+            ],
+            "value": "Brit Award for British Female Solo Artist"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "received the Brit Award for British Female Solo Artist",
+                "segment": "text"
+              }
+            ],
+            "value": "awardReceived"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lily Allen",
+                "segment": "title"
+              }
+            ],
+            "value": "Lily Allen"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 50
+  coverage:
+    characters combined: 1005 / 1843 (54.5%)
+    characters text:     995 / 1833 (54.3%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           15 / 15 (100.0%)
+    longest uncovered:  233 chars
+      'that led to the "year of the women" media label in 2009 that saw five female artists making music of "experimentalism and fearlessness" nominated for the Mercury Prize. After anno…'
+    statement density:  27.13 / 1000 chars
+    title reliance:      20 / 50 (40.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 65
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 3
+  corrected valid: 1
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      63
+resource nodes:        47
+entity nodes:          47
+literal values:        11
+predicates:            36
+
+N-Triples:
+  <urn:graphragprov:entity:Alison%20Owen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20producer> .
+  <urn:graphragprov:entity:Alright%2C%20Still> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:record> .
+  <urn:graphragprov:entity:Alright%2C%20Still> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Brit%20Awards> .
+  <urn:graphragprov:entity:Alright%2C%20Still> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Grammy%20Awards> .
+  <urn:graphragprov:entity:Alright%2C%20Still> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:MTV%20Video%20Music%20Awards> .
+  <urn:graphragprov:entity:Alright%2C%20Still> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:Alright%2C%20Still> <urn:graphragprov:predicate:sales> "2.6 million" .
+  <urn:graphragprov:entity:Amy%20Winehouse> <urn:graphragprov:predicate:creditedWith> <urn:graphragprov:entity:starting%20a%20process> .
+  <urn:graphragprov:entity:In%20the%20Name%20Of> <urn:graphragprov:predicate:foundedInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Australian%20ARIA%20Charts> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:UK%20Albums%20Chart> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:containsTrack> <urn:graphragprov:entity:Fuck%20You> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:containsTrack> <urn:graphragprov:entity:The%20Fear> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:electropop> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:reggae> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:ska> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:It%27s%20Not%20Me%2C%20It%27s%20You> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:Keith%20Allen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:awardYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Lily%20Rose%20Beatrice%20Cooper> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:bornOn> "1985-05-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:creditedWith> <urn:graphragprov:entity:starting%20a%20process> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Keith%20Allen> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:In%20the%20Name%20Of> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:Lily%20Allen%20and%20Friends> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:leftSchoolAtAge> "15"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Alison%20Owen> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:publishedOn> <urn:graphragprov:entity:Myspace> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:signedWith> <urn:graphragprov:entity:Regal%20Recordings> .
+  <urn:graphragprov:entity:Lily%20Allen%20and%20Friends> <urn:graphragprov:predicate:broadcastOn> <urn:graphragprov:entity:BBC%20Three> .
+  <urn:graphragprov:entity:My%20Thoughts%20Exactly> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:My%20Thoughts%20Exactly> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:book> .
+  <urn:graphragprov:entity:My%20Thoughts%20Exactly> <urn:graphragprov:predicate:publicationDate> "2018-09"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:No%20Shame> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:No%20Shame> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:No%20Shame> <urn:graphragprov:predicate:publicationYear> "2018"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sheezus> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:UK%20Albums%20Chart> .
+  <urn:graphragprov:entity:Sheezus> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Sheezus> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Sheezus> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:Sheezus> <urn:graphragprov:predicate:publicationYear> "2014"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Smile> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:UK%20Singles%20Chart> .
+  <urn:graphragprov:entity:Smile> <urn:graphragprov:predicate:chartDate> "2006-07"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Smile> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:Smile> <urn:graphragprov:predicate:reachedChartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Girls> <urn:graphragprov:predicate:network> <urn:graphragprov:entity:HBO> .
+  <urn:graphragprov:entity:Girls%20Volume%202%3A%20All%20Adventurous%20Women%20Do> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:soundtrack%20album> .
+  <urn:graphragprov:entity:Girls%20Volume%202%3A%20All%20Adventurous%20Women%20Do> <urn:graphragprov:predicate:releaseDate> "2014-02-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Girls%20Volume%202%3A%20All%20Adventurous%20Women%20Do> <urn:graphragprov:predicate:soundtrackOf> <urn:graphragprov:entity:Girls> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:dedicatedTo> <urn:graphragprov:entity:Allen%27s%20husband> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:featuredIn> <urn:graphragprov:entity:Quantico> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:fromAlbum> <urn:graphragprov:entity:Sheezus> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:bubblegum%20pop> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:electropop> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:Girls%20Volume%202%3A%20All%20Adventurous%20Women%20Do> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:premieredOn> "2014-02-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Sheezus> <urn:graphragprov:predicate:publicationYear> "2014"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.915s | model=deepseek-v4-flash
+      tokens:   in=3665 | out=168 | total=3833 | cached=384 | uncached=3281
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  - <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Alison%20Owen> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:mother> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_25e801d5debcfc7d>
+  FROM <urn:graphragprov:unit:u_8285e366206fc7e3>
+  WHERE { <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:mother> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Alison Owen',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['L8 CMMR', 'Lily Allen']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  361ffcec0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/361ffcec0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10306
+output tokens:         10502
+total tokens:          20808
+cached input tokens:   2176
+uncached input tokens: 8130
+cumulative LLM seconds: 45.474
+
+statement occurrences: 65
+semantic triples:      63
+entity nodes:          47
+literal values:        11
+predicates:            36
+query attempts:        1
+observed answers:      ('Alison Owen',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 43.583s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.081s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.916s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.471s

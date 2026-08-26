@@ -1,0 +1,125 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of the director of film Al Hilal (Film)?
+
+Expected answer: Mumbai
+
+Benchmark evidence relations:
+1. Al Hilal | director | Mehboob Khan
+2. Mehboob Khan | place of death | Mumbai
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:The%20Sign%20of%20the%20Cross> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:cinematographer> <urn:graphragprov:entity:Faredoon%20Irani> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:Roman-Arab%20conflict> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:capture%20of%20the%20son%20of%20the%20Ottoman%20Empire%20by%20the%20Roman%20army> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:escape%20of%20the%20son%20of%20the%20Ottoman%20Empire%20from%20the%20Roman%20army> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:fictionalised%20history> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:son%20of%20the%20Ottoman%20Empire> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mehboob%20Khan> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:costume%20drama%20film> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Urdu> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:lyricsBy> <urn:graphragprov:entity:Munshi%20Ehsan%20Lucknavi> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:musicComposer> <urn:graphragprov:entity:Pransukh%20Nayak> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Sagar%20Movietone> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Indira> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kayam%20Ali> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kumar> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mehboob%20Khan> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sitara%20Devi> .
+<urn:graphragprov:entity:Al%20Hilal%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Yakub> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Al%20Hilal%20%28film%29> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:fieldOfWork> <urn:graphragprov:entity:Indian%20Cinema> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Aan> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:swashbuckling%20musical> .
+<urn:graphragprov:entity:Aan> <urn:graphragprov:predicate:publicationYear> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Amar> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:melodrama> .
+<urn:graphragprov:entity:Amar> <urn:graphragprov:predicate:publicationYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Andaz> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:romantic%20drama> .
+<urn:graphragprov:entity:Andaz> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Aurat> <urn:graphragprov:predicate:publicationYear> "1940"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Mehboob%20Khan%20Ramzan%20Khan> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:bornOn> "1907-09-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:creatorOfGenre> <urn:graphragprov:entity:dacoit%20film> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:diedOn> "1964-05-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Aan> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Amar> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Andaz> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Aurat> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mother%20India> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:fieldOfWork> <urn:graphragprov:entity:Indian%20cinema> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Mehboob%20Productions> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Mehboob%20Studios> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Mother%20India> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer-director> .
+<urn:graphragprov:entity:Mehboob%20Khan> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Mumbai> .
+<urn:graphragprov:entity:Mehboob%20Studios> <urn:graphragprov:predicate:foundedInYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mehboob%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bandra> .
+<urn:graphragprov:entity:Mehboob%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mumbai> .
+<urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Award%20for%20Best%20Director> .
+<urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Filmfare%20Award%20for%20Best%20Film> .
+<urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:National%20Film%20Award> .
+<urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:social%20epic> .
+<urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:nomineeFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+<urn:graphragprov:entity:Mother%20India> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .

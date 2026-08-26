@@ -1,0 +1,108 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_55c84102e3aa44036709b3677e4120ee93f1d7a59ea410bc2d3bbff01df6af11
+Title: Echoes (1950 song)
+Text:
+"Echoes" is a popular song. It was written by Bennie Benjamin and George David Weiss and published in 1950. It was first recorded in 1950 by The Ink Spots whose recording reached #24 on the US. Pop charts. In 1950, Jo Stafford and Gordon MacRae also recorded the composition. The Stafford/MacRae recording, released by Capitol Records as catalog number 782, was backed with "Bibbidi-Bobbidi-Boo (The Magic Song)" on the flip side. The song reached #18 on the Billboard charts and #13 on the Cash Box charts. Sammy Kaye Vocal refrain by The Kaydets. Recorded in New York City on October 7, 1949. It was released by RCA Victor Records as catalog number 20-3595 (in USA) and by EMI on the His Master's Voice label as catalog number JO 170.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 14,
+    "statement": {
+      "subject": {
+        "value": "Stafford/MacRae recording",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "The Stafford/MacRae recording",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "chartPosition",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "reached #13 on the Cash Box charts",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "13",
+        "datatype": "integer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "#13",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[14].predicate.evidence[0]: quote 'reached #13 on the Cash Box charts' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 21,
+    "statement": {
+      "subject": {
+        "value": "Sammy Kaye recording",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Sammy Kaye",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "recordLabel",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "released by EMI on the His Master's Voice label",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "EMI",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "EMI",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[21].predicate.evidence[0]: quote \"released by EMI on the His Master's Voice label\" does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

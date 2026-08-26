@@ -1,0 +1,238 @@
+
+H0 one-case execution
+  case:          9acebdb60bd911eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the director of film La Malavita Attacca... La Polizia Risponde!?
+  expected:      Rome
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9acebdb60bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='La malavita attacca... la polizia risponde!'
+  source unit: u_e631b15e168db5b54d570564b623e5e20870b1bee812ba48c12cc21cf2fd9ea5
+  text chars:  153
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.629s | model=deepseek-v4-flash
+      tokens:   in=2313 | out=646 | total=2959 | cached=2048 | uncached=265
+    [LLM graph.reference #2] sending...
+      provider: 1.225s | model=deepseek-v4-flash
+      tokens:   in=581 | out=181 | total=762 | cached=0 | uncached=581
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote 'poliziottesco film' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "poliziottesco film",
+                "segment": "text"
+              }
+            ],
+            "value": "poliziottesco film"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "film",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "La malavita attacca... la polizia risponde!",
+                "segment": "title"
+              }
+            ],
+            "value": "La malavita attacca... la polizia risponde!"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 4
+  coverage:
+    characters combined: 81 / 196 (41.3%)
+    characters text:     38 / 153 (24.8%)
+    characters title:    43 / 43 (100.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  94 chars
+      'La malavita attacca... la polizia risponde! ("The Criminals Attack, The Police Respond") is a'
+    statement density:  20.41 / 1000 chars
+    title reliance:      4 / 4 (100.0%)
+
+[GRAPH 2/2] paragraph=5 title='Mario Caiano'
+  source unit: u_1b4f31694046f5b5c088ae7fb0ead126e33047b5ee8a2b5cd09d8c701ccfc2b8
+  text chars:  592
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 13.885s | model=deepseek-v4-flash
+      tokens:   in=2493 | out=3506 | total=5999 | cached=2048 | uncached=445
+  extraction: ACCEPTED
+  statements: 24
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    24
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     24
+  coverage:
+    characters combined: 385 / 604 (63.7%)
+    characters text:     373 / 592 (63.0%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  36 chars
+      'and to a slightly lesser degree on'
+    statement density:  39.74 / 1000 chars
+    title reliance:      21 / 24 (87.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 28
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      28
+resource nodes:        17
+entity nodes:          17
+literal values:        10
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Eye%20in%20the%20Labyrinth> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Caiano> .
+  <urn:graphragprov:entity:Eye%20in%20the%20Labyrinth> <urn:graphragprov:predicate:publicationYear> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:activeYearsEnd> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:activeYearsStart> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:birthDate> "1933-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:deathDate> "2015-09-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Nightmare%20Castle> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:directedAs> <urn:graphragprov:entity:Allen%20Gr%C3%BCnewald> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:directedFilmsCount> "nearly 50" .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Euro%20Crime> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Peplums> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Spaghetti%20Westerns> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:horror%20films> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:second%20unit%20director> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Rome> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:writingCareerStart> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Nightmare%20Castle> .
+  <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:wroteFilmsCount> "some 27" .
+  <urn:graphragprov:entity:Nightmare%20Castle> <urn:graphragprov:predicate:publicationYear> "1965"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Nightmare%20Castle> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Barbara%20Steele> .
+  <urn:graphragprov:entity:La%20malavita%20attacca...%20la%20polizia%20risponde%21> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Caiano> .
+  <urn:graphragprov:entity:La%20malavita%20attacca...%20la%20polizia%20risponde%21> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:La%20malavita%20attacca...%20la%20polizia%20risponde%21> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:La%20malavita%20attacca...%20la%20polizia%20risponde%21> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.476s | model=deepseek-v4-flash
+      tokens:   in=1900 | out=205 | total=2105 | cached=384 | uncached=1516
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:La%20malavita%20attacca...%20la%20polizia%20risponde%21> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Caiano> .
+  - <urn:graphragprov:entity:Mario%20Caiano> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Rome> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:La%20malavita%20attacca...%20la%20polizia%20risponde%21> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1b4f31694046f5b5>
+  FROM <urn:graphragprov:unit:u_e631b15e168db5b5>
+  WHERE { <urn:graphragprov:entity:La%20malavita%20attacca...%20la%20polizia%20risponde%21> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Rome',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['La malavita attacca... la polizia risponde!', 'Mario Caiano']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9acebdb60bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9acebdb60bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7287
+output tokens:         4538
+total tokens:          11825
+cached input tokens:   4480
+uncached input tokens: 2807
+cumulative LLM seconds: 20.214
+
+statement occurrences: 28
+semantic triples:      28
+entity nodes:          17
+literal values:        10
+predicates:            18
+query attempts:        1
+observed answers:      ('Rome',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.750s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.477s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.557s

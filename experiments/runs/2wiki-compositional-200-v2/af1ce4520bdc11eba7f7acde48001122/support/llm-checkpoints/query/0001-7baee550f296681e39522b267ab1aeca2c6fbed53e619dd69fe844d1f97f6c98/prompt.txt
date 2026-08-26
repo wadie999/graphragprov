@@ -1,0 +1,109 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of the performer of song Echoes (1950 Song)?
+
+Expected answer: Los Angeles
+
+Benchmark evidence relations:
+1. Echoes | performer | Jo Stafford
+2. Jo Stafford | place of death | Los Angeles
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Award> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:birthDate> "1917-11-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Coalinga%2C%20California> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:deathDate> "2008-07-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:traditional%20pop%20music> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Pied%20Pipers> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Stafford%20Sisters> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Capitol%20Records> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Columbia%20Records> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:John%20Huddleston> .
+<urn:graphragprov:entity:Jo%20Stafford> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Paul%20Weston> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:firstRecordedBy> <urn:graphragprov:entity:The%20Ink%20Spots> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:firstRecordingYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:popular%20song> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Gordon%20MacRae> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jo%20Stafford> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:publicationYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:recordingYear> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Bennie%20Benjamin> .
+<urn:graphragprov:entity:Echoes%20%281950%20song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:George%20David%20Weiss> .
+<urn:graphragprov:entity:Sammy%20Kaye> <urn:graphragprov:predicate:vocalRefrainBy> <urn:graphragprov:entity:The%20Kaydets> .
+<urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:catalogNumber> "20-3595" .
+<urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:catalogNumber> "JO 170" .
+<urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:His%20Master%27s%20Voice> .
+<urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:RCA%20Victor%20Records> .
+<urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordedIn> <urn:graphragprov:entity:New%20York%20City> .
+<urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:recordingDate> "1949-10-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Sammy%20Kaye%20recording> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:USA> .
+<urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:bSide> <urn:graphragprov:entity:Bibbidi-Bobbidi-Boo%20%28The%20Magic%20Song%29> .
+<urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:catalogNumber> "782" .
+<urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:chartPosition> "18"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Stafford%2FMacRae%20recording> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Capitol%20Records> .
+<urn:graphragprov:entity:The%20Ink%20Spots> <urn:graphragprov:predicate:recordingChartPosition> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .

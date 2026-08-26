@@ -1,0 +1,180 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_adb2fd0ef6536b72428241d5ed4504e6d0a5952fe1781a65d64dff30cd99b1bc
+Title: Bob Seger
+Text:
+Robert Clark Seger (born May 6, 1945) is an American singer, songwriter and musician. As a locally successful Detroit-area artist, he performed and recorded as Bob Seger and the Last Heard and Bob Seger System throughout the 1960s, breaking through with his first album, "Ramblin' Gamblin' Man" (which contained his first national hit of the same name) in 1968. By the early 1970s, he had dropped the 'System' from his recordings and continued to strive for broader success with various other bands. In 1973, he put together the Silver Bullet Band, with a group of Detroit-area musicians, with whom he became most successful on the national level with the album "Live Bullet" (1976), recorded live with the Silver Bullet Band in 1975 at Cobo Hall in Detroit, Michigan. In 1976, he achieved a national breakout with the studio album "Night Moves". On his studio albums, he also worked extensively with the Alabama-based Muscle Shoals Rhythm Section, which appeared on several of Seger's best-selling singles and albums. A roots rocker with a classic raspy, powerful voice, Seger wrote and recorded songs that deal with love, women, and blue-collar themes and is an example of a heartland rock artist. Seger has recorded many hits, including "Night MovesTurn the PageStill the SameWe've Got ToniteAgainst the WindYou'll Accomp'ny MeHollywood NightsShame on the MoonLike a Rock", and "Shakedown", the latter of which was written for the 1987 film "Beverly Hills Cop II" and topped the "Billboard" Hot 100 chart. Seger also co-wrote the Eagles' number-one hit "Heartache Tonight", and his recording of "Old Time Rock and Roll" was named one of the Songs of the Century in 2001. With a career spanning six decades, Seger has sold more than 75 million records worldwide, making him one of the world's best-selling artists of all time. Seger was inducted into the Rock and Roll Hall of Fame in 2004 and the Songwriters Hall of Fame in 2012. Seger was named "Billboard"'s 2015 Legend of Live honoree at the 12th annual "Billboard" Touring Conference & Awards, held November 18–19 at the Roosevelt Hotel in New York. He announced his farewell tour in September 2018.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 12,
+    "statement": {
+      "subject": {
+        "value": "Ramblin' Gamblin' Man",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ramblin' Gamblin' Man",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "contains",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "contained",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Ramblin' Gamblin' Man",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ramblin' Gamblin' Man",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[12].object.evidence[0]: quote \"Ramblin' Gamblin' Man\" occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  },
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "Ramblin' Gamblin' Man",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ramblin' Gamblin' Man",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "national hit",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "national hit",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "national hit",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].subject.evidence[0]: quote \"Ramblin' Gamblin' Man\" occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  },
+  {
+    "statement_index": 17,
+    "statement": {
+      "subject": {
+        "value": "Bob Seger",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Bob Seger",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "performer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "performed",
+            "occurrence": 2
+          }
+        ]
+      },
+      "object": {
+        "value": "Silver Bullet Band",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Silver Bullet Band",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[17].predicate.evidence[0]: quote 'performed' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  },
+  {
+    "statement_index": 42,
+    "statement": {
+      "subject": {
+        "value": "Shakedown",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Shakedown",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "chartPosition",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "topped the Billboard Hot 100 chart",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1",
+        "datatype": "integer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "topped",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[42].predicate.evidence[0]: quote 'topped the Billboard Hot 100 chart' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

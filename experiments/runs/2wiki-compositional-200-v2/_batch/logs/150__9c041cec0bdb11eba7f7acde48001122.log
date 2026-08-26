@@ -1,0 +1,183 @@
+
+H0 one-case execution
+  case:          9c041cec0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film That Luzmela Girl (Film) born?
+  expected:      Barcelona
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9c041cec0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Ricardo Gascón'
+  source unit: u_986574a7c10c3fbb4a75b7d07fef63efdce23a74250b2cbee9382659c45973b4
+  text chars:  189
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.077s | model=deepseek-v4-flash
+      tokens:   in=2293 | out=1650 | total=3943 | cached=2048 | uncached=245
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 133 / 203 (65.5%)
+    characters text:     119 / 189 (63.0%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      ', Gascón generally'
+    statement density:  49.26 / 1000 chars
+    title reliance:      9 / 10 (90.0%)
+
+[GRAPH 2/2] paragraph=0 title='That Luzmela Girl (film)'
+  source unit: u_8981586a0a1830d132a349a2cb5aa6a551b3752bd4833bb8f95c1dbaa347ffdc
+  text chars:  223
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.004s | model=deepseek-v4-flash
+      tokens:   in=2425 | out=1359 | total=3784 | cached=2176 | uncached=249
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 160 / 247 (64.8%)
+    characters text:     136 / 223 (61.0%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  27 chars
+      ': La niña de Luzmela) is a'
+    statement density:  36.44 / 1000 chars
+    title reliance:      7 / 9 (77.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 19
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      19
+resource nodes:        13
+entity nodes:          13
+literal values:        5
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28novel%29> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Spanish> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Irene%20Caba%20Alba> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Modesto%20Cid> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28novel%29> <urn:graphragprov:predicate:publicationYear> "1909"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28novel%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Concha%20Espina> .
+  <urn:graphragprov:entity:Orphea%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Barcelona> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:birthYear> "1910"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:deathYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:directedFilmCount> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:ethnicity> <urn:graphragprov:entity:Catalan> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Spanish> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Barcelona> .
+  <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:Orphea%20Studios> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.588s | model=deepseek-v4-flash
+      tokens:   in=1559 | out=239 | total=1798 | cached=384 | uncached=1175
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> .
+  - <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Barcelona> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> . <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_8981586a0a1830d1>
+  FROM <urn:graphragprov:unit:u_986574a7c10c3fbb>
+  WHERE { <urn:graphragprov:entity:That%20Luzmela%20Girl%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> . <urn:graphragprov:entity:Ricardo%20Gasc%C3%B3n> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Barcelona',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Ricardo Gascón', 'That Luzmela Girl (film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9c041cec0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9c041cec0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6277
+output tokens:         3248
+total tokens:          9525
+cached input tokens:   4608
+uncached input tokens: 1669
+cumulative LLM seconds: 15.669
+
+statement occurrences: 19
+semantic triples:      19
+entity nodes:          13
+literal values:        5
+predicates:            15
+query attempts:        1
+observed answers:      ('Barcelona',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.088s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.046s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.589s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.495s

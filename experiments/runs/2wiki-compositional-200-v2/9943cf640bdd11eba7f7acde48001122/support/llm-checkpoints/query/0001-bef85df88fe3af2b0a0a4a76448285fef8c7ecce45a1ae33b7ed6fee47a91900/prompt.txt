@@ -1,0 +1,102 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the director of film Pharaoh'S Curse (Film) born?
+
+Expected answer: Paris
+
+Benchmark evidence relations:
+1. Pharaoh's Curse | director | Lee Sholem
+2. Lee Sholem | place of birth | Paris
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lee%20Sholem> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:doubleFeatureWith> <urn:graphragprov:entity:Voodoo%20Island> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:horror%20film> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:releaseDate> "1957-02"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Alvaro%20Guillot> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ben%20Wright> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Diane%20Brewster> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20N.%20Neise> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mark%20Dana> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ziva%20Rodann> .
+<urn:graphragprov:entity:Pharaoh%27s%20Curse%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Richard%20H.%20Landau> .
+<urn:graphragprov:entity:Doomsday%20Machine> <urn:graphragprov:predicate:publicationYear> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Lee%20Tabor%20Sholem> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Paris%2C%20Illinois> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:bornOn> "1913-05-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:careerDuration> <urn:graphragprov:entity:40%20years> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Los%20Angeles%2C%20California> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:diedOn> "2000-08-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:TV%20episodes> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:features> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:more%20than%201300%20shows> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:firstFilm> <urn:graphragprov:entity:Tarzan%27s%20Magic%20Fountain> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:speed%20and%20efficiency> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:lastFilm> <urn:graphragprov:entity:Doomsday%20Machine> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Roll%27%20Em%22%20Sholem%22> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:television%20director> .
+<urn:graphragprov:entity:Tarzan%27s%20Magic%20Fountain> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .

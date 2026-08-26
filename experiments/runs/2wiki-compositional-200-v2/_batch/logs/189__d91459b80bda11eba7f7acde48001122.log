@@ -1,0 +1,185 @@
+
+H0 one-case execution
+  case:          d91459b80bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of Mohd Nazifuddin Najib's father?
+  expected:      23 July 1953
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/d91459b80bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Najib Razak'
+  source unit: u_947adfe242b0212d2a26038c391bb4d8683093fdf1ef67467372b70ad36c05dc
+  text chars:  801
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.356s | model=deepseek-v4-flash
+      tokens:   in=2470 | out=2520 | total=4990 | cached=2048 | uncached=422
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 426 / 812 (52.5%)
+    characters text:     415 / 801 (51.8%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  230 chars
+      ", the leading party in Malaysia's Barisan Nasional (BN) coalition, which maintained control of Malaysia's government as a parliamentary majority for more than sixty years until th…"
+    statement density:  19.70 / 1000 chars
+    title reliance:      13 / 16 (81.2%)
+
+[GRAPH 2/2] paragraph=5 title='Mohd Nazifuddin Najib'
+  source unit: u_de722b75e340f8250a366c638e5a6a4c0eae60587c99afd031b085175dde124b
+  text chars:  139
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.207s | model=deepseek-v4-flash
+      tokens:   in=2549 | out=748 | total=3297 | cached=2048 | uncached=501
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 100 / 160 (62.5%)
+    characters text:     79 / 139 (56.8%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  38 chars
+      "Dato' Mohd Nazifuddin Bin Mohd Najib ("
+    statement density:  31.25 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        11
+entity nodes:          11
+literal values:        9
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:arrestedBy> <urn:graphragprov:entity:Malaysian%20Anti-Corruption%20Commission> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:arrestedOn> "2018-07-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:dateOfBirth> "1953-07-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:hasBankAccount> <urn:graphragprov:entity:Najib%27s%20bank%20account> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:United%20Malays%20National%20Organisation> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Malaysian> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:positionEnd> "2018"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:President%20of%20the%20United%20Malays%20National%20Organisation> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:Prime%20Minister%20of%20Malaysia> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:positionStart> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:seizedItems> "1,400 necklaces, 567 handbags, 423 watches, 2,200 rings, 1,600 brooches and 14 tiaras" .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:seizedItemsValue> "$273 million" .
+  <urn:graphragprov:entity:SRC%20International> <urn:graphragprov:predicate:transferredAmount> "RM42 million" .
+  <urn:graphragprov:entity:SRC%20International> <urn:graphragprov:predicate:transferredAmountUSD> "US$10.6 million" .
+  <urn:graphragprov:entity:SRC%20International> <urn:graphragprov:predicate:transferredTo> <urn:graphragprov:entity:Najib%27s%20bank%20account> .
+  <urn:graphragprov:entity:Mohd%20Nazifuddin%20Najib> <urn:graphragprov:predicate:birthYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mohd%20Nazifuddin%20Najib> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Najib%20Razak> .
+  <urn:graphragprov:entity:Mohd%20Nazifuddin%20Najib> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:businessman> .
+  <urn:graphragprov:entity:Mohd%20Nazifuddin%20Najib> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Malaysian> .
+  <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:Prime%20Minister%20of%20Malaysia> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.788s | model=deepseek-v4-flash
+      tokens:   in=1612 | out=225 | total=1837 | cached=384 | uncached=1228
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Mohd%20Nazifuddin%20Najib> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Najib%20Razak> .
+  - <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:dateOfBirth> "1953-07-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Mohd%20Nazifuddin%20Najib> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Najib%20Razak> . <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_947adfe242b0212d>
+  FROM <urn:graphragprov:unit:u_de722b75e340f825>
+  WHERE { <urn:graphragprov:entity:Mohd%20Nazifuddin%20Najib> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Najib%20Razak> . <urn:graphragprov:entity:Najib%20Razak> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1953-07-23',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Mohd Nazifuddin Najib', 'Najib Razak']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  d91459b80bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/d91459b80bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6631
+output tokens:         3493
+total tokens:          10124
+cached input tokens:   4480
+uncached input tokens: 2151
+cumulative LLM seconds: 17.350
+
+statement occurrences: 21
+semantic triples:      20
+entity nodes:          11
+literal values:        9
+predicates:            17
+query attempts:        1
+observed answers:      ('1953-07-23',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.569s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.051s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.789s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.512s

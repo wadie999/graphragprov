@@ -1,0 +1,199 @@
+
+H0 one-case execution
+  case:          461d231c0bdd11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Andy Warhol'S Bad is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/461d231c0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title="Andy Warhol's Bad"
+  source unit: u_f67e79f700d42c014ee176b68c270efc81c8a0ea43b826f69a7ca7ba34bcf4ce
+  text chars:  459
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.664s | model=deepseek-v4-flash
+      tokens:   in=2346 | out=2595 | total=4941 | cached=2048 | uncached=298
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 314 / 476 (66.0%)
+    characters text:     314 / 459 (68.4%)
+    characters title:    0 / 17 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  24 chars
+      'Andy Warhol before his'
+    statement density:  37.82 / 1000 chars
+    title reliance:      0 / 18 (0.0%)
+
+[GRAPH 2/2] paragraph=9 title='Jed Johnson (designer)'
+  source unit: u_3efc89c71429e2e62ff69506f2e8a93ab9a394728a59a794600c18263d6ca79e
+  text chars:  356
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.738s | model=deepseek-v4-flash
+      tokens:   in=2545 | out=2732 | total=5277 | cached=2048 | uncached=497
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 260 / 378 (68.8%)
+    characters text:     249 / 356 (69.9%)
+    characters title:    11 / 22 (50.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  24 chars
+      '. As a passenger in the'
+    statement density:  44.97 / 1000 chars
+    title reliance:      14 / 17 (82.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 35
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      35
+resource nodes:        24
+entity nodes:          24
+literal values:        9
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:birthDate> "1948-12-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathCause> <urn:graphragprov:entity:TWA%20Flight%20800%20explosion> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathDate> "1996-07-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathLocation> <urn:graphragprov:entity:first%20class%20cabin> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:Andy%20Warhol> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:jobFunction> <urn:graphragprov:entity:sweep%20floors> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:loverOf> <urn:graphragprov:entity:Andy%20Warhol> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:movedInWith> <urn:graphragprov:entity:Andy%20Warhol> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:interior%20designer> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:relationshipDuration> "12"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:workplace> <urn:graphragprov:entity:Warhol%27s%20Factory> .
+  <urn:graphragprov:entity:TWA%20Flight%20800> <urn:graphragprov:predicate:exploded> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:TWA%20Flight%20800> <urn:graphragprov:predicate:explosionTime> <urn:graphragprov:entity:shortly%20after%20takeoff> .
+  <urn:graphragprov:entity:TWA%20Flight%20800> <urn:graphragprov:predicate:explosionYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Andy%20Warhol> <urn:graphragprov:predicate:deathYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jed%20Johnson> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:lastFilmProducedBy> <urn:graphragprov:entity:Andy%20Warhol> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:openingScreeningDate> "1977-05"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Andy%20Warhol> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Carroll%20Baker> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Perry%20King> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Susan%20Tyrrell> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:George%20Abagnalo> .
+  <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Pat%20Hackett> .
+  <urn:graphragprov:entity:Susan%20Tyrrell> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Saturn%20Award%20for%20Best%20Supporting%20Actress> .
+  <urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:George%20Cukor> .
+  <urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:Jack%20Nicholson> .
+  <urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:Julie%20Christie> .
+  <urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:Warren%20Beatty> .
+  <urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attracted> "750"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.647s | model=deepseek-v4-flash
+      tokens:   in=2238 | out=175 | total=2413 | cached=384 | uncached=1854
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jed%20Johnson> .
+  - <urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3efc89c71429e2e6>
+  FROM <urn:graphragprov:unit:u_f67e79f700d42c01>
+  WHERE { <urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ["Andy Warhol's Bad", 'Jed Johnson (designer)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  461d231c0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/461d231c0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7129
+output tokens:         5502
+total tokens:          12631
+cached input tokens:   4480
+uncached input tokens: 2649
+cumulative LLM seconds: 25.049
+
+statement occurrences: 35
+semantic triples:      35
+entity nodes:          24
+literal values:        9
+predicates:            27
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 23.422s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.062s
+  graph.materialization [attempt=1]: 0.075s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.648s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.516s

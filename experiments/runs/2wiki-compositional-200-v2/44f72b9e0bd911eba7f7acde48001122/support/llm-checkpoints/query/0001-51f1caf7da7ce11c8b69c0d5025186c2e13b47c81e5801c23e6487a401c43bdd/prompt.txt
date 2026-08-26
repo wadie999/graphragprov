@@ -1,0 +1,154 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of the director of film Something To Think About?
+
+Expected answer: Hollywood
+
+Benchmark evidence relations:
+1. Something to Think About | director | Cecil B. DeMille
+2. Cecil B. DeMille | place of death | Hollywood
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:acknowledgedAs> <urn:graphragprov:entity:founding%20father%20of%20the%20American%20cinema> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:acknowledgedAs> <urn:graphragprov:entity:most%20commercially%20successful%20producer-%20director%20in%20film%20history> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:activeYearsEndYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:activeYearsStartYear> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Honorary%20Award> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:DGA%20Award%20for%20Lifetime%20Achievement> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Irving%20G.%20Thalberg%20Memorial%20Award> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Palme%20d%27%20Or> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:birthDate> "1881-08-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:careerStartYear> "1900"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Jesse%20Lasky> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:deathDate> "1959-01-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:filmFormat> <urn:graphragprov:entity:silent%20film> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:filmFormat> <urn:graphragprov:entity:sound%20film> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:filmStyle> <urn:graphragprov:entity:cinematic%20showmanship> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:filmStyle> <urn:graphragprov:entity:epic%20scale> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:firstRecipientOf> <urn:graphragprov:entity:Golden%20Globe%20Cecil%20B.%20DeMille%20Award> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:many%20other%20films%20and%20directors> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:numberOfFilms> "70"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer-%20director> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20actor> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20director> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20writer> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:silentFilmGenre> <urn:graphragprov:entity:Western> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:silentFilmGenre> <urn:graphragprov:entity:comedy> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:silentFilmGenre> <urn:graphragprov:entity:farce> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:silentFilmGenre> <urn:graphragprov:entity:historical%20pageant> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:silentFilmGenre> <urn:graphragprov:entity:morality%20play> .
+<urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:silentFilmGenre> <urn:graphragprov:entity:social%20drama> .
+<urn:graphragprov:entity:Cleopatra> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:Cleopatra> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Picture> .
+<urn:graphragprov:entity:Cleopatra> <urn:graphragprov:predicate:publicationYear> "1934"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Golden%20Globe%20Cecil%20B.%20DeMille%20Award> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:Jesse%20Lasky> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:vaudeville%20producer> .
+<urn:graphragprov:entity:Paramount%20Pictures> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Adolph%20Zukor> .
+<urn:graphragprov:entity:Paramount%20Pictures> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:Paramount%20Pictures> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Jesse%20Lasky> .
+<urn:graphragprov:entity:Samson%20and%20Delilah> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:Samson%20and%20Delilah> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:biblical%20epic> .
+<urn:graphragprov:entity:Samson%20and%20Delilah> <urn:graphragprov:predicate:highestGrossingFilmOf> "1950"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Samson%20and%20Delilah> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Greatest%20Show%20on%20Earth> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:The%20Greatest%20Show%20on%20Earth> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:circus%20drama> .
+<urn:graphragprov:entity:The%20Greatest%20Show%20on%20Earth> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Director> .
+<urn:graphragprov:entity:The%20Greatest%20Show%20on%20Earth> <urn:graphragprov:predicate:publicationYear> "1952"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Greatest%20Show%20on%20Earth> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Picture> .
+<urn:graphragprov:entity:The%20Greatest%20Show%20on%20Earth> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Golden%20Globe%20Award%20for%20Best%20Motion%20Picture%20%E2%80%93%20Drama> .
+<urn:graphragprov:entity:The%20King%20of%20Kings> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:The%20King%20of%20Kings> <urn:graphragprov:predicate:publicationYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20King%20of%20Kings> <urn:graphragprov:predicate:receivedApproval> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:The%20King%20of%20Kings> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:Jesus> .
+<urn:graphragprov:entity:The%20King%20of%20Kings> <urn:graphragprov:predicate:viewership> "more than 800 million" .
+<urn:graphragprov:entity:The%20Sign%20of%20the%20Cross> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:The%20Sign%20of%20the%20Cross> <urn:graphragprov:predicate:firstSoundFilmToIntegrateAllAspectsOfCinematicTechnique> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:The%20Sign%20of%20the%20Cross> <urn:graphragprov:predicate:publicationYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Squaw%20Man> <urn:graphragprov:predicate:commercialSuccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:The%20Squaw%20Man> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:The%20Squaw%20Man> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Hollywood> .
+<urn:graphragprov:entity:The%20Squaw%20Man> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:feature%20film> .
+<urn:graphragprov:entity:The%20Squaw%20Man> <urn:graphragprov:predicate:publicationYear> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Squaw%20Man> <urn:graphragprov:predicate:publicized> <urn:graphragprov:entity:Hollywood%20as%20the%20home%20of%20the%20U.S.%20film%20industry> .
+<urn:graphragprov:entity:The%20Squaw%20Man> <urn:graphragprov:predicate:theme> <urn:graphragprov:entity:interracial%20love%20story> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:boxOfficeRanking> <urn:graphragprov:entity:eighth-%20highest-%20grossing%20film%20of%20all%20time> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:commercialSuccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:criticalSuccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:biblical%20epic> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:heldRevenueRecord> <urn:graphragprov:entity:Paramount%20revenue%20record%20for%20twenty-%20five%20years> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Picture> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:publicationYear> "1923"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Ten%20Commandments> <urn:graphragprov:predicate:publicationYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Filmmuseum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Amsterdam> .
+<urn:graphragprov:entity:George%20Eastman%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rochester%2C%20New%20York> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20drama%20film> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:preservedIn> <urn:graphragprov:entity:Filmmuseum> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:preservedIn> <urn:graphragprov:entity:George%20Eastman%20Museum> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:publicationYear> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Elliott%20Dexter> .
+<urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gloria%20Swanson> .

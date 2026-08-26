@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_d3cca08fb3c4c7808d8619bfd09279c6094cd3e82980cc009d198cf27e763690
+Title: Life on Mars (song)
+Text:
+"Life on Mars?", also known as "(Is There) Life on Mars?", is a song by David Bowie, first released in 1971 on his album "Hunky Dory" and also released as a single. The song has cryptic lyrics by Bowie and prominent piano by Rick Wakeman. When released as a single in 1973, "Life on Mars?" reached number three in the UK Singles Chart and stayed on the chart for thirteen weeks. A music video was filmed by Mick Rock to promote the single release. In 2015 Neil McCormick, chief rock music critic of "The Daily Telegraph", ranked the song as number one in his "100 Greatest Songs of All Time" list. In 2016, Pitchfork named it the best song of the 1970s. A 2016 mix of "Life on Mars?" appeared on the compilation album "Legacy (The Very Best of David Bowie)" and was released as a single. The mix, by its original producer Ken Scott, is 'stripped down' and has only strings, piano and Bowie's vocals. A special music video to promote the compilation was also released, the original director Mick Rock re-cutting his 1973 video, using out-takes and other documentary sources to create a new version.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 21,
+    "statement": {
+      "subject": {
+        "value": "David Bowie",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "David Bowie",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "dateOfBirth",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "David Bowie",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "8 January 1947",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "David Bowie",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[21].object.value must use YYYY-MM-DD notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

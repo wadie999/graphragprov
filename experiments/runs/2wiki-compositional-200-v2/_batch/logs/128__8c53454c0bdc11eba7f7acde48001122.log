@@ -1,0 +1,220 @@
+
+H0 one-case execution
+  case:          8c53454c0bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film Barabbas (1953 Film)?
+  expected:      17 April 1980
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8c53454c0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Alf Sjöberg'
+  source unit: u_5044ed729a2940ea285609c256c7b66391d265f901c1a3dfcc0edf7939ef9e12
+  text chars:  1011
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 68.071s | model=deepseek-v4-flash
+      tokens:   in=2521 | out=16384 | total=18905 | cached=2432 | uncached=89
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #2] sending...
+      provider: 15.573s | model=deepseek-v4-flash
+      tokens:   in=2566 | out=3549 | total=6115 | cached=2560 | uncached=6
+  extraction: ACCEPTED
+  statements: 24
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    24
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     24
+  coverage:
+    characters combined: 418 / 1022 (40.9%)
+    characters text:     407 / 1011 (40.3%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  100 chars
+      '"). Despite his success with films" Torment"( 1944) and" Miss Julie"( 1951), Sjöberg was foremost a'
+    statement density:  23.48 / 1000 chars
+    title reliance:      22 / 24 (91.7%)
+
+[GRAPH 2/2] paragraph=8 title='Barabbas (1953 film)'
+  source unit: u_e7662f9a938f2935e617cf1209c290a54b50f699c3f90236130062f0d8c62a98
+  text chars:  398
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      call failed: RuntimeError: LLM checkpoint sequence diverged at call 3: the stored prompt does not match the prompt produced by this execution
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  RuntimeError: LLM checkpoint sequence diverged at call 3: the stored prompt does not match the prompt produced by this execution
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: RuntimeError: LLM checkpoint sequence diverged at call 3: the stored prompt does not match the prompt produced by this execution
+    [LLM graph.reference #4] sending...
+      provider: 9.724s | model=deepseek-v4-flash
+      tokens:   in=2716 | out=2054 | total=4770 | cached=2048 | uncached=668
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 240 / 418 (57.4%)
+    characters text:     220 / 398 (55.3%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  78 chars
+      'about the biblical character who was released instead of Jesus. The film was'
+    statement density:  33.49 / 1000 chars
+    title reliance:      10 / 14 (71.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 38
+  whole-source attempts: 4
+  whole-source retries: 2
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      37
+resource nodes:        26
+entity nodes:          26
+literal values:        9
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:activeYearsEnd> "1980"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:activeYearsStart> "1930"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:awardWonFor> <urn:graphragprov:entity:%C3%96n> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:awardWonFor> <urn:graphragprov:entity:Miss%20Julie> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:awardWonFor> <urn:graphragprov:entity:Torment> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:awardYear> "1946"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:awardYear> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:bornOn> "1903-06-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:dateOfDeath> "1980-04-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:diedAt> <urn:graphragprov:entity:Royal%20Dramatic%20Theatre> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:car%20accident> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Hamlet> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theatre%20and%20film%20director> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Swedish> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20director> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:pioneerDirectorOf> <urn:graphragprov:entity:early%20Swedish%20TV> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:First%20Director> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Best%20Director> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Grand%20Prix%20du%20Festival> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:Dramaten> .
+  <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:Sweden%27s%20Royal%20Dramatic%20Theatre> .
+  <urn:graphragprov:entity:Miss%20Julie> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:August%20Strindberg%27s%20play> .
+  <urn:graphragprov:entity:Miss%20Julie> <urn:graphragprov:predicate:tiedWith> <urn:graphragprov:entity:Miracle%20in%20Milan> .
+  <urn:graphragprov:entity:American%20adaptation> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Barabbas> .
+  <urn:graphragprov:entity:American%20adaptation> <urn:graphragprov:predicate:leadRole> <urn:graphragprov:entity:Anthony%20Quinn> .
+  <urn:graphragprov:entity:American%20adaptation> <urn:graphragprov:predicate:releaseYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:American%20adaptation> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Anthony%20Quinn> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Barabbas> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:P%C3%A4r%20Lagerkvist> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:enteredIn> <urn:graphragprov:entity:1953%20Cannes%20Film%20Festival> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:hasAdaptation> <urn:graphragprov:entity:American%20adaptation> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Swedish> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:oneOfBiggestSwedishProductions> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:publicationYear> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:timePeriod> <urn:graphragprov:entity:its%20time> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.718s | model=deepseek-v4-flash
+      tokens:   in=2468 | out=241 | total=2709 | cached=384 | uncached=2084
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> .
+  - <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:dateOfDeath> "1980-04-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> . <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5044ed729a2940ea>
+  FROM <urn:graphragprov:unit:u_e7662f9a938f2935>
+  WHERE { <urn:graphragprov:entity:Barabbas%20%281953%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> . <urn:graphragprov:entity:Alf%20Sj%C3%B6berg> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1980-04-17',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Alf Sjöberg', 'Barabbas (1953 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8c53454c0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8c53454c0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10271
+output tokens:         22228
+total tokens:          32499
+cached input tokens:   7424
+uncached input tokens: 2847
+cumulative LLM seconds: 95.086
+
+statement occurrences: 38
+semantic triples:      37
+entity nodes:          26
+literal values:        9
+predicates:            27
+query attempts:        1
+observed answers:      ('1980-04-17',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 93.384s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.048s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.719s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.637s

@@ -1,0 +1,109 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Which country Anna Iii, Abbess Of Quedlinburg's father is from?
+
+Expected answer: German
+
+Benchmark evidence relations:
+1. Anna III, Abbess of Quedlinburg | father | Henry of Stolberg
+2. Henry of Stolberg | country of citizenship | German
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:ageAtDeath> "36"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Anna%20of%20Stolberg> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:appealedTo> <urn:graphragprov:entity:Emperor> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:bornOn> "1565-04-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:stroke> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:confronted> <urn:graphragprov:entity:Christian%20I%2C%20Elector%20of%20Saxony> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:confronted> <urn:graphragprov:entity:Quedlinburg%20city%20council> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:diedOn> "1601-05-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:diedSuddenly> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:electionConfirmedBy> <urn:graphragprov:entity:Rudolf%20II> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:endTime> "1601-05-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Henry%20of%20Stolberg> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Princess-Abbess> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Elisabeth%20of%20Gleichen> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:Princess-Abbess%20of%20Quedlinburg> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:predecessor> <urn:graphragprov:entity:Elisabeth%20II%2C%20Abbess%20of%20Quedlinburg> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:selected> <urn:graphragprov:entity:Anne%20Margaret%20of%20Brunswick-Harburg> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:startTime> "1584"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Anna%20III%2C%20Abbess%20of%20Quedlinburg> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:her%20enemy%27s%20sister> .
+<urn:graphragprov:entity:Anne%20Margaret%20of%20Brunswick-Harburg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:coadjutrix> .
+<urn:graphragprov:entity:Christian%20I%2C%20Elector%20of%20Saxony> <urn:graphragprov:predicate:diedOn> "1591"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Christian%20I%2C%20Elector%20of%20Saxony> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Elector%20of%20Saxony> .
+<urn:graphragprov:entity:Christian%20I%2C%20Elector%20of%20Saxony> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Christian%20II> .
+<urn:graphragprov:entity:Christian%20II> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Elector> .
+<urn:graphragprov:entity:Christian%20II> <urn:graphragprov:predicate:underRegencyOf> <urn:graphragprov:entity:Frederick%20William%20I%2C%20Duke%20of%20Saxe-Weimar> .
+<urn:graphragprov:entity:Elisabeth%20of%20Gleichen> <urn:graphragprov:predicate:diedOn> "1578"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Frederick%20William%20I%2C%20Duke%20of%20Saxe-Weimar> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Duke%20of%20Saxe-Weimar> .
+<urn:graphragprov:entity:Frederick%20William%20I%2C%20Duke%20of%20Saxe-Weimar> <urn:graphragprov:predicate:refusedConsent> <urn:graphragprov:entity:Anne%20Margaret%20of%20Brunswick-Harburg> .
+<urn:graphragprov:entity:Frederick%20William%20I%2C%20Duke%20of%20Saxe-Weimar> <urn:graphragprov:predicate:wanted> <urn:graphragprov:entity:Maria> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:bornOn> "1509"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:diedOn> "1572"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Maria> <urn:graphragprov:predicate:siblingOf> <urn:graphragprov:entity:Frederick%20William%20I%2C%20Duke%20of%20Saxe-Weimar> .
+<urn:graphragprov:entity:Rudolf%20II> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Holy%20Roman%20Emperor> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:bornOn> "1509-01-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Stolberg%20Castle> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:diedOn> "1572-11-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:nobleman> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+<urn:graphragprov:entity:Henry%20of%20Stolberg> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Count> .

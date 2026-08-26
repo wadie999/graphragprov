@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_5504e76e112312257378137613b6619b4a99f0d1f68f6f7f148b8db21f2a21fb
+Title: Jim Henson
+Text:
+James Maury Henson (September 24, 1936 – May 16, 1990) was an American puppeteer, animator, cartoonist, actor, inventor, filmmaker, and screenwriter who achieved worldwide notice as the creator of The Muppets (1955–present) and "Fraggle Rock" (1983–1987); and as the director of "The Dark Crystal" (1982) and "Labyrinth" (1986). He was born in Greenville, Mississippi, and raised in Leland, Mississippi, and University Park, Maryland.
+Henson began developing puppets in high school. He created "Sam and Friends", a short-form comedy television program, while he was a freshman at the University of Maryland, College Park. He graduated from the University of Maryland with a degree in home economics, after which he produced coffee advertisements and developed experimental films. In 1958, he co-founded Muppets, Inc., which became The Jim Henson Company. In 1969, Henson joined the children's educational television program "Sesame Street" where he helped to develop characters for the series. He and his creative team also appeared on the sketch comedy show "Saturday Night Live". He produced "The Muppet Show" during this period, premiering the series in 1976. He won fame for his characters, particularly Kermit the Frog, Rowlf the Dog, and Ernie. During the later years of his life, he founded the Jim Henson Foundation and Jim Henson's Creature Shop. He won the Emmy Award twice for his involvement in "The Storyteller" and "The Jim Henson Hour". On May 16, 1990, Henson died from toxic shock syndrome in New York City at the age of 53. His remains were cremated and the ashes were scattered near Taos, New Mexico. In the weeks following his death, he was celebrated with a wave of tributes. He was posthumously inducted into the Hollywood Walk of Fame in 1991 and was selected to be one of the Disney Legends in 2011.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 21,
+    "statement": {
+      "subject": {
+        "value": "Jim Henson",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Jim Henson",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "raisedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "raised in University Park, Maryland",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "University Park, Maryland",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "University Park, Maryland",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[21].predicate.evidence[0]: quote 'raised in University Park, Maryland' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

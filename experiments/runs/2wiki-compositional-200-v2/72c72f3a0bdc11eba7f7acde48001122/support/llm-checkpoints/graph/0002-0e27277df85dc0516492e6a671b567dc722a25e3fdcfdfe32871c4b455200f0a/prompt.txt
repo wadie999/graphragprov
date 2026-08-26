@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_b87a91076f3fc304a3a49ba081ae40f7e195ca3e20b378adcdee397ef7337081
+Title: Anna III, Abbess of Quedlinburg
+Text:
+Anna III, also known as Anna of Stolberg (3 April 1565 – 12 May 1601) was Princess-Abbess of Quedlinburg from 1584 until her death. Anna was the daughter of Count Henry of Stolberg (1509–1572) and his wife, Elisabeth of Gleichen (died 1578). Anna III was elected to succeed Elisabeth II, Abbess of Quedlinburg. The election of the new princess-abbess was confirmed by Holy Roman Emperor Rudolf II. She frequently confronted Quedlinburg city council and the city patron, Christian I, Elector of Saxony, and appealed to the Emperor for support. Elector Christian I died in 1591 and was succeeded by Elector Christian II under the regency of Frederick William I, Duke of Saxe-Weimar. The Princess-Abbess selected Anne Margaret of Brunswick-Harburg as her coadjutrix but the Duke of Saxe-Weimar refused to consent as he wanted his own sister, Maria, to succeed Anna III. Anna III died suddenly aged 36 after a walk. The official cause of her death was stroke. She was succeeded by her enemy's sister.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 8,
+    "statement": {
+      "subject": {
+        "value": "Henry of Stolberg",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Count Henry of Stolberg",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "countryOfCitizenship",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "German",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "German",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "German",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[8].predicate.evidence[0]: quote 'German' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,116 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of the director of film Shatranj (1969 Film)?
+
+Expected answer: Madras
+
+Benchmark evidence relations:
+1. Shatranj | director | S. S. Vasan
+2. S. S. Vasan | place of death | Madras
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:S.%20S.%20Vasan> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:finalDirectorialVentureOf> <urn:graphragprov:entity:S.%20S.%20Vasan> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:spy%20thriller%20film> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:S.%20S.%20Vasan> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:publicationYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Achala%20Sachdev> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Agha> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Helen> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mehmood> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Rajendra%20Kumar> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Shashikala> .
+<urn:graphragprov:entity:Shatranj%20%281969%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Waheeda%20Rehman> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:advocatedFor> <urn:graphragprov:entity:granting%20of%20industry%20status%20to%20the%20film%20trade> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:ageAtDeath> "65"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Padma%20Bhushan> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:awardYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Subramaniam%20Srinivasan> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Thiruthuraipoondi> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:bornOn> "1904-01-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:centenaryYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:diedOn> "1969-08-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:directorOf> <urn:graphragprov:entity:Chandralekha> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Ananda%20Vikatan> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Film%20Federation%20India> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Gemini%20Film%20Laboratories> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Gemini%20Picture%20Circuit> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Gemini%20Studios> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Producer%27s%20Guild%20of%20India> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:South%20Indian%20Film%20Chamber%20of%20Commerce> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:honorDate> "2004-08-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:honoredBy> <urn:graphragprov:entity:Government%20of%20India> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:honoredBy> <urn:graphragprov:entity:Postal%20department> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:grandiose%20sets> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:innovative%20techniques> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Rajya%20Sabha> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Cecil%20B.%20De%20Mille%20of%20India> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:advertiser> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:business%20tycoon> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20producer> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:journalist> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+<urn:graphragprov:entity:S.%20S.%20Vasan> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Madras> .

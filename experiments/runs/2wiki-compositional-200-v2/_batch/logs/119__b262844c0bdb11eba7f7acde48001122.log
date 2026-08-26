@@ -1,0 +1,187 @@
+
+H0 one-case execution
+  case:          b262844c0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of Frederika Charlotte Riedesel's husband?
+  expected:      Lauterbach
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b262844c0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Frederika Charlotte Riedesel'
+  source unit: u_464367fb7a51ee8a33d7a8334ac825d9b8ef3a0234a69b34de855df34eadb3f9
+  text chars:  262
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.101s | model=deepseek-v4-flash
+      tokens:   in=2320 | out=1368 | total=3688 | cached=2048 | uncached=272
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 229 / 290 (79.0%)
+    characters text:     201 / 262 (76.7%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  42 chars
+      '(Freifrau) Riedesel zu Eisenbach was the'
+    statement density:  31.03 / 1000 chars
+    title reliance:      6 / 9 (66.7%)
+
+[GRAPH 2/2] paragraph=7 title='Friedrich Adolf Riedesel'
+  source unit: u_b24c5f013f64c9478e96ce8f5a4ac7eec364379df6815ae464a498b4b574e2b2
+  text chars:  484
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.811s | model=deepseek-v4-flash
+      tokens:   in=2515 | out=2153 | total=4668 | cached=2048 | uncached=467
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 302 / 508 (59.4%)
+    characters text:     278 / 484 (57.4%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  50 chars
+      'during the American War of Independence. He then'
+    statement density:  27.56 / 1000 chars
+    title reliance:      11 / 14 (78.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 23
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      23
+resource nodes:        20
+entity nodes:          20
+literal values:        2
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:accompanied> <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> .
+  <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:journal%20of%20the%20campaign> .
+  <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Frederika%20Charlotte%20Louise%20von%20Massow> .
+  <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Baroness> .
+  <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:Saratoga%20Campaign> .
+  <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:General> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:militaryAffiliation> <urn:graphragprov:entity:Brunswick> .
+  <urn:graphragprov:entity:Saratoga%20Campaign> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:American%20Revolutionary%20War> .
+  <urn:graphragprov:entity:Braunschweiger%20J%C3%A4ger> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Braunschweiger%20J%C3%A4ger> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:regiment> .
+  <urn:graphragprov:entity:Braunschweiger%20J%C3%A4ger> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Principality%20of%20Brunswick-Wolfenb%C3%BCttel> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:bornOn> "1738-06-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:commanded> <urn:graphragprov:entity:all%20German%20soldiers> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:commanderOf> <urn:graphragprov:entity:Braunschweiger%20J%C3%A4ger> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:diedOn> "1800-01-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:officer> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:American%20War%20of%20Independence> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:Saratoga%20Campaign> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:Seven%20Years%27%20War> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Lauterbach%2FHesse> .
+  <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Braunschweig> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.734s | model=deepseek-v4-flash
+      tokens:   in=1779 | out=201 | total=1980 | cached=384 | uncached=1395
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> .
+  - <urn:graphragprov:entity:Friedrich%20Adolf%20Riedesel> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Lauterbach%2FHesse> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_464367fb7a51ee8a>
+  FROM <urn:graphragprov:unit:u_b24c5f013f64c947>
+  WHERE { <urn:graphragprov:entity:Frederika%20Charlotte%20Riedesel> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Lauterbach/Hesse',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Frederika Charlotte Riedesel', 'Friedrich Adolf Riedesel']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b262844c0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b262844c0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6614
+output tokens:         3722
+total tokens:          10336
+cached input tokens:   4480
+uncached input tokens: 2134
+cumulative LLM seconds: 18.646
+
+statement occurrences: 23
+semantic triples:      23
+entity nodes:          20
+literal values:        2
+predicates:            17
+query attempts:        1
+observed answers:      ('Lauterbach/Hesse',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 16.918s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.058s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.735s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.572s

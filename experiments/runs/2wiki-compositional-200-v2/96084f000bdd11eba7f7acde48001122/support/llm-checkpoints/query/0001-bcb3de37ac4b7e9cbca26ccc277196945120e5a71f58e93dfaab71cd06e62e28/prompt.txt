@@ -1,0 +1,102 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where did Lucy Beall Candler Owens Heinz Leide's father die?
+
+Expected answer: Atlanta, Georgia
+
+Benchmark evidence relations:
+1. Lucy Beall Candler Owens Heinz Leide | father | Asa Griggs Candler
+2. Asa Griggs Candler | place of death | Atlanta, Georgia
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:birthDate> "1851-12-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:Candler%20Building> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:Candler%20Building%20%28New%20York%20City%29> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:Candler%20Building%20at%20Inner%20Harbor> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:Candler%20Building%20in%20Kansas%20City> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:civicLeaderOf> <urn:graphragprov:entity:Atlanta> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:deathDate> "1929-03-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:Coca-Cola%20Company> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:electedAs> <urn:graphragprov:entity:41st%20Mayor%20of%20Atlanta> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:headOf> <urn:graphragprov:entity:Coca-Cola> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:mayorTermEnd> "1919"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:mayorTermStart> "1916"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:business%20tycoon> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Atlanta%2C%20Georgia> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:purchaseLocation> <urn:graphragprov:entity:Atlanta%2C%20Georgia> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:purchasePrice> "1750"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:purchaseYear> "1892"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:Coca-Cola%20Company> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:purchasedFrom> <urn:graphragprov:entity:John%20Stith%20Pemberton> .
+<urn:graphragprov:entity:Candler%20Building> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Atlanta> .
+<urn:graphragprov:entity:Candler%20Building%20at%20Inner%20Harbor> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Baltimore%2C%20Maryland> .
+<urn:graphragprov:entity:Candler%20Building%20in%20Kansas%20City> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Western%20Auto%20Building> .
+<urn:graphragprov:entity:Candler%20Field> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:Asa%20Griggs%20Candler> .
+<urn:graphragprov:entity:Candler%20Field> <urn:graphragprov:predicate:siteOf> <urn:graphragprov:entity:Hartsfield-Jackson%20Atlanta%20International%20Airport> .
+<urn:graphragprov:entity:Candler%20Park> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Atlanta> .
+<urn:graphragprov:entity:Candler%20Park> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:Asa%20Griggs%20Candler> .
+<urn:graphragprov:entity:Asa%20Griggs%20Candler> <urn:graphragprov:predicate:coFounderOf> <urn:graphragprov:entity:The%20Coca-Cola%20Company> .
+<urn:graphragprov:entity:Lucy%20Beall%20Candler%20Owens%20Heinz%20Leide> <urn:graphragprov:predicate:birthDate> "1883-04-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Lucy%20Beall%20Candler%20Owens%20Heinz%20Leide> <urn:graphragprov:predicate:deathDate> "1962-09-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Lucy%20Beall%20Candler%20Owens%20Heinz%20Leide> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Asa%20Griggs%20Candler> .
+<urn:graphragprov:entity:Lucy%20Beall%20Candler%20Owens%20Heinz%20Leide> <urn:graphragprov:predicate:gender> <urn:graphragprov:entity:female> .

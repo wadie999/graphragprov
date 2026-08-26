@@ -1,0 +1,502 @@
+
+H0 one-case execution
+  case:          696dc9200bdd11eba7f7acde48001122
+  hops:          2
+  question:      Which country the performer of song Cien Años is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/696dc9200bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Cien Años'
+  source unit: u_47fb8c11a768a139c751a177f9bc6c7c622a39db73e786aafbde6e8c7cfa5c41
+  text chars:  277
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      checkpoint: reused
+    [LLM graph.reference #2] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 1
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Selena",
+                "segment": "text"
+              }
+            ],
+            "value": "Selena"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 6
+  coverage:
+    characters combined: 110 / 286 (38.5%)
+    characters text:     101 / 277 (36.5%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  68 chars
+      ". The song has been released in most of Selena's packages since its"
+    statement density:  20.98 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[GRAPH 2/2] paragraph=9 title='Selena'
+  source unit: u_2009ce3cdef08030a4057ec66882915d8e41a5eac6d9e93e8ecb864e253fee66
+  text chars:  3180
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 68.518s | model=deepseek-v4-flash
+      tokens:   in=3036 | out=16384 | total=19420 | cached=2944 | uncached=92
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 30.022s | model=deepseek-v4-flash
+      tokens:   in=3081 | out=6931 | total=10012 | cached=3072 | uncached=9
+    [LLM graph.reference #5] sending...
+      call failed: RuntimeError: LLM checkpoint sequence diverged at call 5: the stored prompt does not match the prompt produced by this execution
+  extraction: ACCEPTED
+  statements: 45
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    45
+    initially rejected: 3
+
+    initial rejection #26
+      validator:
+        response.statements[26].predicate.evidence[0]: quote 'peaked at number one on the US Billboard Regional Mexican Albums chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "number one",
+                "segment": "text"
+              }
+            ],
+            "value": "number one"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "peaked at number one on the US Billboard Regional Mexican Albums chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Entre a Mi Mundo",
+                "segment": "text"
+              }
+            ],
+            "value": "Entre a Mi Mundo"
+          }
+        }
+
+    initial rejection #45
+      validator:
+        response.statements[45].predicate.evidence[0]: quote 'debuted atop the Billboard 200' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "atop the Billboard 200",
+                "segment": "text"
+              }
+            ],
+            "value": "atop the Billboard 200"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "debuted atop the Billboard 200",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dreaming of You",
+                "segment": "text"
+              }
+            ],
+            "value": "Dreaming of You"
+          }
+        }
+
+    initial rejection #47
+      validator:
+        response.statements[47].object.evidence[0]: quote 'Cien Años' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Cien Años",
+                "segment": "text"
+              }
+            ],
+            "value": "Cien Años"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Selena",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Selena",
+                "segment": "title"
+              }
+            ],
+            "value": "Selena"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           unavailable
+    corrected valid:    0
+    still rejected:     3
+
+    remaining rejection #26
+      validator:
+        response.statements[26].predicate.evidence[0]: quote 'peaked at number one on the US Billboard Regional Mexican Albums chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "number one",
+                "segment": "text"
+              }
+            ],
+            "value": "number one"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "peaked at number one on the US Billboard Regional Mexican Albums chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Entre a Mi Mundo",
+                "segment": "text"
+              }
+            ],
+            "value": "Entre a Mi Mundo"
+          }
+        }
+
+    remaining rejection #45
+      validator:
+        response.statements[45].predicate.evidence[0]: quote 'debuted atop the Billboard 200' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "atop the Billboard 200",
+                "segment": "text"
+              }
+            ],
+            "value": "atop the Billboard 200"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "debuted atop the Billboard 200",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dreaming of You",
+                "segment": "text"
+              }
+            ],
+            "value": "Dreaming of You"
+          }
+        }
+
+    remaining rejection #47
+      validator:
+        response.statements[47].object.evidence[0]: quote 'Cien Años' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Cien Años",
+                "segment": "text"
+              }
+            ],
+            "value": "Cien Años"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Selena",
+                "segment": "text"
+              }
+            ],
+            "value": "performer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Selena",
+                "segment": "title"
+              }
+            ],
+            "value": "Selena"
+          }
+        }
+    correction error:  RuntimeError: LLM checkpoint sequence diverged at call 5: the stored prompt does not match the prompt produced by this execution
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 45
+  coverage:
+    characters combined: 803 / 3186 (25.2%)
+    characters text:     797 / 3180 (25.1%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           20 / 28 (71.4%)
+    longest uncovered:  635 chars
+      'music, her contributions to music and fashion made her one of the most celebrated Mexican-American entertainers of the late 20th century. "Billboard" magazine named her the top-se…'
+    statement density:  14.12 / 1000 chars
+    title reliance:      35 / 45 (77.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 51
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 2
+  initial rejections: 4
+  corrected valid: 0
+  remaining rejections: 3
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      50
+resource nodes:        30
+entity nodes:          30
+literal values:        16
+predicates:            33
+
+N-Triples:
+  <urn:graphragprov:entity:Amor%20Prohibido> <urn:graphragprov:predicate:releaseYear> "1994"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Dreaming%20of%20You> <urn:graphragprov:predicate:releaseYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Entre%20a%20Mi%20Mundo> <urn:graphragprov:predicate:chartDuration> "eight consecutive months" .
+  <urn:graphragprov:entity:Entre%20a%20Mi%20Mundo> <urn:graphragprov:predicate:releaseYear> "1992"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Entre%20a%20Mi%20Mundo> <urn:graphragprov:predicate:single> <urn:graphragprov:entity:Como%20la%20Flor> .
+  <urn:graphragprov:entity:Live%21> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Best%20Mexican%2FAmerican%20Album> .
+  <urn:graphragprov:entity:Live%21> <urn:graphragprov:predicate:awardYear> "1994"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Live%21> <urn:graphragprov:predicate:releaseYear> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:album> <urn:graphragprov:entity:Amor%20Prohibido> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:album> <urn:graphragprov:entity:Dreaming%20of%20You> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:album> <urn:graphragprov:entity:Entre%20a%20Mi%20Mundo> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:album> <urn:graphragprov:entity:Live%21> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:albumReleaseYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:albumSales> "60-65 million" .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Tejano%20Music%20Award%20for%20Female%20Vocalist%20of%20the%20Year> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:awardWins> "nine consecutive times" .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:awardYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:birthDate> "1971-04-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:deathDate> "1995-03-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:debutAlbum> <urn:graphragprov:entity:Selena> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:debutYear> "1980"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Tejano> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:honor> <urn:graphragprov:entity:Selena%20Day> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:honorLocation> <urn:graphragprov:entity:Texas> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:fashion%20designer> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:model> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:spokesperson> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:killedBy> <urn:graphragprov:entity:Yolanda%20Sald%C3%ADvar> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:marriageDate> "1992-04"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Selena%20y%20Los%20Dinos> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:A.B.%20Quintanilla> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:EMI%20Latin> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:recordingStartYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:A.B.%20Quintanilla> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Suzette%20Quintanilla> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:signedWith> <urn:graphragprov:entity:EMI%20Latin> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:songwriter> <urn:graphragprov:entity:A.B.%20Quintanilla> .
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Chris%20P%C3%A9rez> .
+  <urn:graphragprov:entity:Yolanda%20Sald%C3%ADvar> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:friend%20and%20former%20manager> .
+  <urn:graphragprov:entity:Yolanda%20Sald%C3%ADvar> <urn:graphragprov:predicate:sentence> "life in prison with possible parole after 30 years" .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Mexican> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Pedro%20Infante> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:publicationYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Rub%C3%A9n%20Fuentes-A.%20Cervantes> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.745s | model=deepseek-v4-flash
+      tokens:   in=2772 | out=185 | total=2957 | cached=384 | uncached=2388
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> .
+  - <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> . <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2009ce3cdef08030>
+  FROM <urn:graphragprov:unit:u_47fb8c11a768a139>
+  WHERE { <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> . <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Cien Años', 'Selena']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  696dc9200bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/696dc9200bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    1
+graph LLM reused:      2
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8889
+output tokens:         23500
+total tokens:          32389
+cached input tokens:   6400
+uncached input tokens: 2489
+cumulative LLM seconds: 100.286
+
+NOTE: token totals describe provider calls made in this invocation only; reused checkpoints were not billed again.
+
+statement occurrences: 51
+semantic triples:      50
+entity nodes:          30
+literal values:        16
+predicates:            33
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 98.564s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.056s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.746s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.580s

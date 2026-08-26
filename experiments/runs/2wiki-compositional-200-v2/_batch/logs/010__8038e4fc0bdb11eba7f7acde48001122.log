@@ -1,0 +1,185 @@
+
+H0 one-case execution
+  case:          8038e4fc0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Sol Madrid is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8038e4fc0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Sol Madrid'
+  source unit: u_b27af626ac0312e89c98fac3b2c4f0c17e8098b0b4c6bdecdc560692520b71e4
+  text chars:  317
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.500s | model=deepseek-v4-flash
+      tokens:   in=2315 | out=1669 | total=3984 | cached=0 | uncached=2315
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 222 / 327 (67.9%)
+    characters text:     222 / 317 (70.0%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  30 chars
+      'prior to filming. It was the'
+    statement density:  36.70 / 1000 chars
+    title reliance:      0 / 12 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Brian G. Hutton'
+  source unit: u_2f727aea42875b9d6ae22cf10e4980496ccf6820feee6873015e1ba0ab1264a8
+  text chars:  200
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.040s | model=deepseek-v4-flash
+      tokens:   in=2409 | out=1312 | total=3721 | cached=1792 | uncached=617
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 125 / 215 (58.1%)
+    characters text:     110 / 200 (55.0%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  27 chars
+      'are for the action films"'
+    statement density:  41.86 / 1000 chars
+    title reliance:      7 / 9 (77.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      21
+resource nodes:        18
+entity nodes:          18
+literal values:        4
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:birthDate> "1935-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:deathDate> "2014-08-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Kelly%27s%20Heroes> .
+  <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:notableWork> <urn:graphragprov:entity:Where%20Eagles%20Dare> .
+  <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Kelly%27s%20Heroes> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Where%20Eagles%20Dare> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Cassavetes> <urn:graphragprov:predicate:replacedBy> <urn:graphragprov:entity:Rip%20Torn> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:alternativeTitle> <urn:graphragprov:entity:The%20Heroin%20Gang> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Brian%20G.%20Hutton> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Acapulco> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:finalFilmOf> <urn:graphragprov:entity:Paul%20Lukas> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:MGM> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20McCallum> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ricardo%20Montalban> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Stella%20Stevens> .
+  <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Telly%20Savalas> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.960s | model=deepseek-v4-flash
+      tokens:   in=1512 | out=171 | total=1683 | cached=384 | uncached=1128
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Brian%20G.%20Hutton> .
+  - <urn:graphragprov:entity:Brian%20G.%20Hutton> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2f727aea42875b9d>
+  FROM <urn:graphragprov:unit:u_b27af626ac0312e8>
+  WHERE { <urn:graphragprov:entity:Sol%20Madrid> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Brian G. Hutton', 'Sol Madrid']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8038e4fc0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/8038e4fc0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6236
+output tokens:         3152
+total tokens:          9388
+cached input tokens:   2176
+uncached input tokens: 4060
+cumulative LLM seconds: 16.500
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          18
+literal values:        4
+predicates:            14
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.551s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.048s
+  graph.materialization [attempt=1]: 0.115s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.961s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.542s

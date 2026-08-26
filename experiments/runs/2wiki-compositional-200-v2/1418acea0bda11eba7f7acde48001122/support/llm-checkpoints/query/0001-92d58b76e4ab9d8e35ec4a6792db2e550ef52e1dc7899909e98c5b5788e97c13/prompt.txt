@@ -1,0 +1,125 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of the performer of song Everybody Needs Love (Marvin Gaye Song)?
+
+Expected answer: Los Angeles
+
+Benchmark evidence relations:
+1. Everybody Needs Love | performer | Marvin Gaye
+2. Marvin Gaye | place of death | Los Angeles
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Ed%20Townsend> <urn:graphragprov:predicate:coWriterOf> <urn:graphragprov:entity:Let%27s%20Get%20It%20On> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:basedOnTheme> <urn:graphragprov:entity:religious%20theme> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ed%20Townsend> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Marvin%20Gaye> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:lyricsAbout> <urn:graphragprov:entity:everybody%20needed%20love> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:lyricsQuote> "And my father/ he needs love/ that's true, baby/ and I need love too" .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Marvin%20Gaye> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:recordedOnAlbum> <urn:graphragprov:entity:Here%2C%20My%20Dear> .
+<urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:usedToIntroduce> <urn:graphragprov:entity:Here%2C%20My%20Dear> .
+<urn:graphragprov:entity:Here%2C%20My%20Dear> <urn:graphragprov:predicate:publicationYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Ed%20Townsend> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Marvin%2C%20Sr.> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:soul> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Anna%20Gaye> .
+<urn:graphragprov:entity:Marvin%2C%20Sr.> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:minister> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:appearedOn> <urn:graphragprov:entity:Soul%20Train> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:Motown> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Marvin%20Pentz%20Gay%20Jr.> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:bornOn> "1939-04-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Diana%20Ross> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Kim%20Weston> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Mary%20Wells> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Tammi%20Terrell> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:diedOn> "1984-04-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rhythm%20and%20Blues%20Music%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Songwriters%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:influencedGenre> <urn:graphragprov:entity:neo%20soul> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:influencedGenre> <urn:graphragprov:entity:quiet%20storm> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:killedBy> <urn:graphragprov:entity:Marvin%20Gay%20Sr.> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Prince%20of%20Motown> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Prince%20of%20Soul> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:record%20producer> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:performedAt> <urn:graphragprov:entity:1983%20NBA%20All-Star%20Game> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:performedSong> <urn:graphragprov:entity:Ain%27t%20That%20Peculiar> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:performedSong> <urn:graphragprov:entity:How%20Sweet%20It%20Is%20%28To%20Be%20Loved%20By%20You%29> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:performedSong> <urn:graphragprov:entity:I%20Heard%20It%20Through%20the%20Grapevine> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:performedSong> <urn:graphragprov:entity:The%20Star-Spangled%20Banner> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:recordedAlbum> <urn:graphragprov:entity:Let%27s%20Get%20It%20On> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:recordedAlbum> <urn:graphragprov:entity:What%27s%20Going%20On> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Midnight%20Love> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:releasedSong> <urn:graphragprov:entity:Sexual%20Healing> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:in-house%20session%20player> .
+<urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:solo%20artist> .
+<urn:graphragprov:entity:Sexual%20Healing> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Sexual%20Healing> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Grammy%20Awards> .

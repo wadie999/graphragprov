@@ -1,0 +1,281 @@
+
+H0 one-case execution
+  case:          028da5320bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the composer of film Metamorphoses (1978 Film)?
+  expected:      Cairo
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/028da5320bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Alec R. Costandinos'
+  source unit: u_9f1d1dadad29ccd66568635a7248f16ea3f1a9726501b0aac1d0e8467870ac85
+  text chars:  1529
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 21.984s | model=deepseek-v4-flash
+      tokens:   in=2611 | out=5218 | total=7829 | cached=2048 | uncached=563
+  extraction: ACCEPTED
+  statements: 35
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    35
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     35
+  coverage:
+    characters combined: 836 / 1548 (54.0%)
+    characters text:     817 / 1529 (53.4%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           15 / 15 (100.0%)
+    longest uncovered:  193 chars
+      ', some of whom later became famous in their own right. According to what he declared in one of his rare interview on 11 December 2011 at Open House Radio (Miami) his disco works w…'
+    statement density:  22.61 / 1000 chars
+    title reliance:      27 / 35 (77.1%)
+
+[GRAPH 2/2] paragraph=8 title='Metamorphoses (1978 film)'
+  source unit: u_5caed2f28088d508378f6f2f350c82d04d7215a98af8cf3038128e28297c43aa
+  text chars:  1321
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 22.890s | model=deepseek-v4-flash
+      tokens:   in=3074 | out=5538 | total=8612 | cached=2048 | uncached=1026
+    [LLM graph.reference #3] sending...
+      provider: 0.876s | model=deepseek-v4-flash
+      tokens:   in=845 | out=8 | total=853 | cached=0 | uncached=845
+  extraction: ACCEPTED
+  statements: 36
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    36
+    initially rejected: 1
+
+    initial rejection #36
+      validator:
+        response.statements[36].object.evidence[0]: quote 'Cairo' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Cairo",
+                "segment": "text"
+              }
+            ],
+            "value": "Cairo"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composed by Alec R. Costandinos",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Alec R. Costandinos",
+                "segment": "text"
+              }
+            ],
+            "value": "Alec R. Costandinos"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 36
+  coverage:
+    characters combined: 637 / 1346 (47.3%)
+    characters text:     612 / 1321 (46.3%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           9 / 11 (81.8%)
+    longest uncovered:  195 chars
+      'for the new version; the third and last parts remained unmoved. In the "Winds" cut, the first two were now "Perseus" and "Actaeon", and the fourth "Orpheus". In addition, the boy…'
+    statement density:  26.75 / 1000 chars
+    title reliance:      33 / 36 (91.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 71
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      71
+resource nodes:        64
+entity nodes:          64
+literal values:        8
+predicates:            52
+
+N-Triples:
+  <urn:graphragprov:entity:Artemis> <urn:graphragprov:predicate:romanName> <urn:graphragprov:entity:Diana> .
+  <urn:graphragprov:entity:Hades> <urn:graphragprov:predicate:romanName> <urn:graphragprov:entity:Pluto> .
+  <urn:graphragprov:entity:Hermes> <urn:graphragprov:predicate:romanName> <urn:graphragprov:entity:Mercury> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:animatorLocation> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:characterName> <urn:graphragprov:entity:Wondermaker> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:characterRole> <urn:graphragprov:entity:different%20characters%20in%20every%20segment> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Alec%20R.%20Costandinos> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:criticalReception> <urn:graphragprov:entity:critically%20reviled> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Sanrio> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:featuresMythologicalFigure> <urn:graphragprov:entity:Artemis> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:featuresMythologicalFigure> <urn:graphragprov:entity:Hades> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:featuresMythologicalFigure> <urn:graphragprov:entity:Hermes> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:anime> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Actaeon> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Orpheus%20and%20Eurydice> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Perseus> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Pha%C3%ABton> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:The%20House%20of%20Envy> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Disney> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:inspiredBy> <urn:graphragprov:entity:Fantasia> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:movie> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:narrator> <urn:graphragprov:entity:Peter%20Ustinov> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:numberOfAnimators> "170"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:precededBy> <urn:graphragprov:entity:The%20Mouse%20and%20His%20Child> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:productionDuration> <urn:graphragprov:entity:3%20years> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:rearranged> <urn:graphragprov:entity:re-arranged> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:reissueDate> "1979-05-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:reissueTitle> <urn:graphragprov:entity:Winds%20of%20Change> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:releaseLocation> <urn:graphragprov:entity:US> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:releaseOrder> <urn:graphragprov:entity:second%20animated%20release> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:releaseStatus> <urn:graphragprov:entity:closed%20as%20soon%20as%20it%20opened> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:renamed> <urn:graphragprov:entity:slightly%20renamed> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:runtime> "89"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:singer> <urn:graphragprov:entity:Arthur%20Simms> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:singer> <urn:graphragprov:entity:Pattie%20Brooks> .
+  <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:trimmedRuntime> "7"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:activeYears> "1970s" .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Alexandre%20Kouyoumdjian> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:bornOn> "1944"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:careerStart> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:careerStart> <urn:graphragprov:entity:publisher> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:coWriter> <urn:graphragprov:entity:Love%20in%20C%20Minor> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:The%20Birds%20of%20Paris> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:Crystal%20Grass> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:fatherEthnicity> <urn:graphragprov:entity:Armenian> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Euro-disco> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Classical> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Melodic%20Italian%20Music> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Philly%20Sound> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:motherEthnicity> <urn:graphragprov:entity:Greek> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:artist> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Cairo> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Egypt> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:pseudonym> <urn:graphragprov:entity:R.%20Rupen> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Barclay%20Records> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Casablanca> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:releasedAlbum> <urn:graphragprov:entity:Love%20%26%20Kisses> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Claude%20Fran%C3%A7ois> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Dalida> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:writerFor> <urn:graphragprov:entity:Demis%20Roussos> .
+  <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Thank%20God%20It%27s%20Friday> .
+  <urn:graphragprov:entity:Crystal%20Grass> <urn:graphragprov:predicate:debutAlbum> <urn:graphragprov:entity:Crystal%20World> .
+  <urn:graphragprov:entity:Crystal%20World> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Crystal%20World> <urn:graphragprov:predicate:releasedOn> <urn:graphragprov:entity:Philips%20label> .
+  <urn:graphragprov:entity:Love%20%26%20Kisses> <urn:graphragprov:predicate:featuredTrack> <urn:graphragprov:entity:I%27ve%20Found%20Love%20%28Now%20That%20I%20Have%20Found%20You%29> .
+  <urn:graphragprov:entity:Love%20%26%20Kisses> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Love%20in%20C%20Minor> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Romeo%20%26%20Juliet> <urn:graphragprov:predicate:creditedFor> <urn:graphragprov:entity:bringing%20the%20concept%20album%20to%20dance%20music> .
+  <urn:graphragprov:entity:Thank%20God%20It%27s%20Friday> <urn:graphragprov:predicate:themeTrackOf> <urn:graphragprov:entity:Thank%20God%20It%27s%20Friday> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.933s | model=deepseek-v4-flash
+      tokens:   in=4147 | out=223 | total=4370 | cached=384 | uncached=3763
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Alec%20R.%20Costandinos> .
+  - <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Cairo> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Alec%20R.%20Costandinos> . <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5caed2f28088d508>
+  FROM <urn:graphragprov:unit:u_9f1d1dadad29ccd6>
+  WHERE { <urn:graphragprov:entity:Metamorphoses%20%281978%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Alec%20R.%20Costandinos> . <urn:graphragprov:entity:Alec%20R.%20Costandinos> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Egypt', 'Cairo')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Alec R. Costandinos', 'Metamorphoses (1978 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  028da5320bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/028da5320bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10677
+output tokens:         10987
+total tokens:          21664
+cached input tokens:   4480
+uncached input tokens: 6197
+cumulative LLM seconds: 47.683
+
+statement occurrences: 71
+semantic triples:      71
+entity nodes:          64
+literal values:        8
+predicates:            52
+query attempts:        1
+observed answers:      ('Egypt', 'Cairo')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 45.774s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.066s
+  graph.materialization [attempt=1]: 0.108s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.934s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.654s

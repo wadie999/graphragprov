@@ -1,0 +1,105 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Which country the director of film Andy Warhol'S Bad is from?
+
+Expected answer: American
+
+Benchmark evidence relations:
+1. Andy Warhol's Bad | director | Jed Johnson
+2. Jed Johnson | country of citizenship | American
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:birthDate> "1948-12-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathCause> <urn:graphragprov:entity:TWA%20Flight%20800%20explosion> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathDate> "1996-07-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathLocation> <urn:graphragprov:entity:first%20class%20cabin> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:deathYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:Andy%20Warhol> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:jobFunction> <urn:graphragprov:entity:sweep%20floors> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:loverOf> <urn:graphragprov:entity:Andy%20Warhol> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:movedInWith> <urn:graphragprov:entity:Andy%20Warhol> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:interior%20designer> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:relationshipDuration> "12"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Jed%20Johnson> <urn:graphragprov:predicate:workplace> <urn:graphragprov:entity:Warhol%27s%20Factory> .
+<urn:graphragprov:entity:TWA%20Flight%20800> <urn:graphragprov:predicate:exploded> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:TWA%20Flight%20800> <urn:graphragprov:predicate:explosionTime> <urn:graphragprov:entity:shortly%20after%20takeoff> .
+<urn:graphragprov:entity:TWA%20Flight%20800> <urn:graphragprov:predicate:explosionYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Andy%20Warhol> <urn:graphragprov:predicate:deathYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jed%20Johnson> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:lastFilmProducedBy> <urn:graphragprov:entity:Andy%20Warhol> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:openingScreeningDate> "1977-05"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Andy%20Warhol> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Carroll%20Baker> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Perry%20King> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Susan%20Tyrrell> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:George%20Abagnalo> .
+<urn:graphragprov:entity:Andy%20Warhol%27s%20Bad> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Pat%20Hackett> .
+<urn:graphragprov:entity:Susan%20Tyrrell> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Saturn%20Award%20for%20Best%20Supporting%20Actress> .
+<urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:George%20Cukor> .
+<urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:Jack%20Nicholson> .
+<urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:Julie%20Christie> .
+<urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attendedBy> <urn:graphragprov:entity:Warren%20Beatty> .
+<urn:graphragprov:entity:opening%20screening> <urn:graphragprov:predicate:attracted> "750"^^<http://www.w3.org/2001/XMLSchema#integer> .

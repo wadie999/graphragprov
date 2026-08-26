@@ -1,0 +1,176 @@
+
+H0 one-case execution
+  case:          9a8d92c40bdd11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the director of film Keep It In The Family (Film)?
+  expected:      Johannesburg, South Africa
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9a8d92c40bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Keep It in the Family (film)'
+  source unit: u_8c530922e440afefab7f34789cdda2a949df33b44cc9e992af5aa29f5fcd5f57
+  text chars:  139
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.552s | model=deepseek-v4-flash
+      tokens:   in=2287 | out=1040 | total=3327 | cached=2048 | uncached=239
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 124 / 167 (74.3%)
+    characters text:     96 / 139 (69.1%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  28 chars
+      'Keep It in the Family is a'
+    statement density:  41.92 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='Larry Kent (filmmaker)'
+  source unit: u_81a071a5cfc3e045ffff5619a69572e7a378ea05e063d91df29981495829a4cf
+  text chars:  103
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.292s | model=deepseek-v4-flash
+      tokens:   in=2384 | out=725 | total=3109 | cached=2176 | uncached=208
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 87 / 125 (69.6%)
+    characters text:     87 / 103 (84.5%)
+    characters title:    0 / 22 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  7 chars
+      ') is a'
+    statement density:  40.00 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 12
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      12
+resource nodes:        10
+entity nodes:          10
+literal values:        2
+predicates:            9
+
+N-Triples:
+  <urn:graphragprov:entity:Larry%20Kent> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Laurence%20Lionel%20Kent> .
+  <urn:graphragprov:entity:Larry%20Kent> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Johannesburg%2C%20South%20Africa> .
+  <urn:graphragprov:entity:Larry%20Kent> <urn:graphragprov:predicate:bornOn> "1937-05-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Larry%20Kent> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Larry%20Kent> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+  <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Larry%20Kent> .
+  <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sex%20comedy%20film> .
+  <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Adrienne%20La%20Russa> .
+  <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:John%20Gavin> .
+  <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Patricia%20Gage> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.714s | model=deepseek-v4-flash
+      tokens:   in=1178 | out=204 | total=1382 | cached=384 | uncached=794
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Larry%20Kent> .
+  - <urn:graphragprov:entity:Larry%20Kent> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Johannesburg%2C%20South%20Africa> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_81a071a5cfc3e045>
+  FROM <urn:graphragprov:unit:u_8c530922e440afef>
+  WHERE { <urn:graphragprov:entity:Keep%20It%20in%20the%20Family%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Johannesburg, South Africa',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Keep It in the Family (film)', 'Larry Kent (filmmaker)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9a8d92c40bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9a8d92c40bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5849
+output tokens:         1969
+total tokens:          7818
+cached input tokens:   4608
+uncached input tokens: 1241
+cumulative LLM seconds: 10.557
+
+statement occurrences: 12
+semantic triples:      12
+entity nodes:          10
+literal values:        2
+predicates:            9
+query attempts:        1
+observed answers:      ('Johannesburg, South Africa',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 8.851s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.045s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.714s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.568s

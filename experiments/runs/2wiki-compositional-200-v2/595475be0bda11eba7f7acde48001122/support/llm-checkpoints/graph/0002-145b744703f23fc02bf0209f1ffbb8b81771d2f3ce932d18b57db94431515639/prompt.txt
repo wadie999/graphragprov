@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_c956d1bfacb090245b200fbdfa9133801bdc0f519847c580625b985ec804cfd8
+Title: Vladimir Gardin
+Text:
+Vladimir Rostislavovich Gardin  (born Vladimir Rostislavovich Blagonravov (Благонра́вов); – 28 May 1965) was a pioneering Russian film director and actor who strove to raise the artistic level of Russian cinema. He first gained renown as a stage actor in the adaptations of Russian classics by Vera Komissarzhevskaya and other directors. In 1913, he turned to cinema and started producing screen versions of great Russian fiction: "Anna Karenina" (1914), "The Kreutzer Sonata" (1914), "Home of the Gentry" (1914), "War and Peace" (1915, co-directed with Yakov Protazanov), and "On the Eve" (1915). After the Russian Revolution of 1917, he organized and presided over the first film school in the world, now known as VGIK. With the advent of sound pictures, he stopped directing and returned to acting. His roles won him a high critical acclaim and the title of People's Artist of the USSR (1947). Gardin published two volumes of memoirs in 1949 and 1952. Another book, "The Artist's Life and Labor", followed in 1960.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 30,
+    "statement": {
+      "subject": {
+        "value": "Vladimir Gardin",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Vladimir Gardin",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "directed",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Kastus Kalinovskiy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Kastus Kalinovskiy",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[30].object.evidence[0]: quote 'Kastus Kalinovskiy' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

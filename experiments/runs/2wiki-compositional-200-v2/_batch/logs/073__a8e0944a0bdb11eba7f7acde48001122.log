@@ -1,0 +1,188 @@
+
+H0 one-case execution
+  case:          a8e0944a0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Just Suppose born?
+  expected:      New York
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/a8e0944a0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Just Suppose'
+  source unit: u_ebcf4b5c8f20ea29dc2b46c46f59be2699b6f9d2e2e1d9654b0994756e224d8f
+  text chars:  296
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.837s | model=deepseek-v4-flash
+      tokens:   in=2292 | out=1666 | total=3958 | cached=2048 | uncached=244
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 207 / 308 (67.2%)
+    characters text:     207 / 296 (69.9%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  23 chars
+      'Barthelmess and young'
+    statement density:  38.96 / 1000 chars
+    title reliance:      0 / 12 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='Kenneth Webb'
+  source unit: u_77b627e64ba0d8dd83354af8c5440f02b040900da39c4a2941357dc6d2f3013c
+  text chars:  298
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.126s | model=deepseek-v4-flash
+      tokens:   in=2422 | out=2028 | total=4450 | cached=2176 | uncached=246
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 271 / 310 (87.4%)
+    characters text:     259 / 298 (86.9%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  9 chars
+      ') was an'
+    statement density:  38.71 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 24
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        18
+entity nodes:          18
+literal values:        5
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Kenneth%20Seymour%20Webb> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:bornOn> "1885-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Samuel%20Hoffenstein> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Hollywood%2C%20California> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:diedOn> "1966-03-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:notableFor> "directing a number of films in the early age of the American film industry" .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:writer> <urn:graphragprov:entity:Gay%20Divorce> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Just%20Suppose%20%28play%29> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenneth%20Webb> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:First%20National%20Pictures> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20drama%20film> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Richard%20Barthelmess> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:publicationYear> "1926"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lois%20Moran> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Richard%20Barthelmess> .
+  <urn:graphragprov:entity:Just%20Suppose%20%28play%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Broadway%20play> .
+  <urn:graphragprov:entity:Just%20Suppose%20%28play%29> <urn:graphragprov:predicate:publicationYear> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Just%20Suppose%20%28play%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Albert%20E.%20Thomas> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.714s | model=deepseek-v4-flash
+      tokens:   in=1640 | out=171 | total=1811 | cached=384 | uncached=1256
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenneth%20Webb> .
+  - <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:New%20York%20City> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_77b627e64ba0d8dd>
+  FROM <urn:graphragprov:unit:u_ebcf4b5c8f20ea29>
+  WHERE { <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('New York City',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Just Suppose', 'Kenneth Webb']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  a8e0944a0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/a8e0944a0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6354
+output tokens:         3865
+total tokens:          10219
+cached input tokens:   4608
+uncached input tokens: 1746
+cumulative LLM seconds: 18.677
+
+statement occurrences: 24
+semantic triples:      24
+entity nodes:          18
+literal values:        5
+predicates:            18
+query attempts:        1
+observed answers:      ('New York City',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 16.972s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.715s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.530s

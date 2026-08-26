@@ -1,0 +1,235 @@
+
+H0 one-case execution
+  case:          5ce19b0e0bde11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the composer of film Lionheart (1987 Film)?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/5ce19b0e0bde11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Jerry Goldsmith'
+  source unit: u_36585bfc92b182df2ca30222b7b7168c02678759bf06500d02c9613a5bc72b37
+  text chars:  1557
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 31.892s | model=deepseek-v4-flash
+      tokens:   in=2609 | out=7608 | total=10217 | cached=2048 | uncached=561
+  extraction: ACCEPTED
+  statements: 53
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    53
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     53
+  coverage:
+    characters combined: 841 / 1572 (53.5%)
+    characters text:     826 / 1557 (53.1%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           8 / 9 (88.9%)
+    longest uncovered:  279 chars
+      '. His work for Donner and Scott also involved a rejected score for "Timeline" and a controversially edited score for "Alien", where music by Howard Hanson replaced Goldsmith\'s end…'
+    statement density:  33.72 / 1000 chars
+    title reliance:      52 / 53 (98.1%)
+
+[GRAPH 2/2] paragraph=0 title='Lionheart (1987 film)'
+  source unit: u_2726d0c24d77e24087045162e79f8d1657b00221c435b8c9959763377dd20e4f
+  text chars:  540
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.636s | model=deepseek-v4-flash
+      tokens:   in=2980 | out=2730 | total=5710 | cached=2048 | uncached=932
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 420 / 561 (74.9%)
+    characters text:     399 / 540 (73.9%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  34 chars
+      'the film but instead opted to be'
+    statement density:  32.09 / 1000 chars
+    title reliance:      16 / 18 (88.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 71
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      71
+resource nodes:        60
+entity nodes:          60
+literal values:        5
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:Francis%20Ford%20Coppola> <urn:graphragprov:predicate:executiveProducerOf> <urn:graphragprov:entity:Lionheart%20%281987%20film%29> .
+  <urn:graphragprov:entity:Francis%20Ford%20Coppola> <urn:graphragprov:predicate:initiallyPlannedToDirect> <urn:graphragprov:entity:Lionheart%20%281987%20film%29> .
+  <urn:graphragprov:entity:Francis%20Ford%20Coppola> <urn:graphragprov:predicate:siblingOf> <urn:graphragprov:entity:Talia%20Shire> .
+  <urn:graphragprov:entity:Jack%20Schwartzman> <urn:graphragprov:predicate:executiveProducerOf> <urn:graphragprov:entity:Lionheart%20%281987%20film%29> .
+  <urn:graphragprov:entity:Jack%20Schwartzman> <urn:graphragprov:predicate:spouseOf> <urn:graphragprov:entity:Talia%20Shire> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Lionheart%20%281987%20film%29> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Lionheart%3A%20The%20Children%27s%20Crusade> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Menno%20Meyjes> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jerry%20Goldsmith> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Franklin%20J.%20Schaffner> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Orion%20Pictures> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:adventure%20film> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Stanley%20O%27Toole> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Talia%20Shire> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:releaseDate> "1987-08"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:screenplayWrittenBy> <urn:graphragprov:entity:Menno%20Meyjes> .
+  <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:screenplayWrittenBy> <urn:graphragprov:entity:Richard%20Outten> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:bornOn> "1929-02-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Franklin%20J.%20Schaffner> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Howard%20Hawks> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Joe%20Dante> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Michael%20Winner> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Otto%20Preminger> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Paul%20Verhoeven> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Richard%20Donner> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Ridley%20Scott> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Robert%20Wise> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Roman%20Polanski> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Steven%20Spielberg> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composed> <urn:graphragprov:entity:Paramount%20Pictures%20Fanfare> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Air%20Force%20One> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Alien> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Basic%20Instinct> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Capricorn%20One> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Chinatown> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Explorers> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Gremlins> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Hoosiers> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:L.A.%20Confidential> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Logan%27s%20Run> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Mulan> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Outland> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Papillon> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Patton> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Planet%20of%20the%20Apes> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Poltergeist> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Rambo%20films> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Rudy> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Star%20Trek> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:The%20Boys%20from%20Brazil> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:The%20Mummy> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:The%20Omen> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:The%20Sand%20Pebbles> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:The%20Secret%20of%20NIMH> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:The%20Wind%20and%20the%20Lion> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:composedScoreFor> <urn:graphragprov:entity:Total%20Recall> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:diedOn> "2004-07-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Jerrald%20King%20Goldsmith> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:film%20and%20television%20scoring> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Awards> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:British%20Academy%20Film%20Awards> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Golden%20Globe%20Awards> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Grammy%20Awards> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Primetime%20Emmy%20Awards> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:conductor> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Academy%20Award> .
+  <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:wonAwardFor> <urn:graphragprov:entity:The%20Omen> .
+  <urn:graphragprov:entity:Paramount%20Pictures%20Fanfare> <urn:graphragprov:predicate:usedFrom> "1976-2011" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.554s | model=deepseek-v4-flash
+      tokens:   in=4059 | out=183 | total=4242 | cached=384 | uncached=3675
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jerry%20Goldsmith> .
+  - <urn:graphragprov:entity:Jerry%20Goldsmith> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2726d0c24d77e240>
+  FROM <urn:graphragprov:unit:u_36585bfc92b182df>
+  WHERE { <urn:graphragprov:entity:Lionheart%20%281987%20film%29> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Jerry Goldsmith', 'Lionheart (1987 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  5ce19b0e0bde11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/5ce19b0e0bde11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9648
+output tokens:         10521
+total tokens:          20169
+cached input tokens:   4480
+uncached input tokens: 5168
+cumulative LLM seconds: 45.082
+
+statement occurrences: 71
+semantic triples:      71
+entity nodes:          60
+literal values:        5
+predicates:            27
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 43.538s
+  graph.reference.measurements [attempt=1]: 0.012s
+  graph.clear_support [attempt=1]: 0.058s
+  graph.materialization [attempt=1]: 0.074s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.555s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.605s

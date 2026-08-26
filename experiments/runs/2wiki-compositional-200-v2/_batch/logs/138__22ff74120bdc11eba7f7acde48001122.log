@@ -1,0 +1,192 @@
+
+H0 one-case execution
+  case:          22ff74120bdc11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Toto, Peppino, And The Hussy die?
+  expected:      23 April 1969
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/22ff74120bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Toto, Peppino, and the Hussy'
+  source unit: u_10c25a44f99646c883bbc2d600c55f8b08088bb526c8a408534fba58ab5fb094
+  text chars:  489
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.908s | model=deepseek-v4-flash
+      tokens:   in=2412 | out=2507 | total=4919 | cached=2048 | uncached=364
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 298 / 517 (57.6%)
+    characters text:     270 / 489 (55.2%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  41 chars
+      'Toto, Peppino, and the Hussy( originally'
+    statement density:  30.95 / 1000 chars
+    title reliance:      13 / 16 (81.2%)
+
+[GRAPH 2/2] paragraph=4 title='Camillo Mastrocinque'
+  source unit: u_d9a199e24f57d5cd98ab9dc718595d57f0b7d82a569a02d2756d888f67307517
+  text chars:  299
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.967s | model=deepseek-v4-flash
+      tokens:   in=2645 | out=1764 | total=4409 | cached=2048 | uncached=597
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 183 / 319 (57.4%)
+    characters text:     163 / 299 (54.5%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  60 chars
+      'between 1937 and 1968. He is known to horror film fans for'
+    statement density:  37.62 / 1000 chars
+    title reliance:      8 / 12 (66.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 28
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      28
+resource nodes:        21
+entity nodes:          21
+literal values:        6
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:Malafemmena> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Malafemmena> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Tot%C3%B2> .
+  <urn:graphragprov:entity:Teddy%20Reno> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:boxOffice> <urn:graphragprov:entity:top-%20grossing%20movie%20of%20the%20year> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:boxOfficeRevenue> "1751000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:boxOfficeRevenueCurrency> <urn:graphragprov:entity:Italian%20lire> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:boxOfficeRevenueEquivalent> <urn:graphragprov:entity:about%2040%20million%20Euro%20in%202009> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Malafemmena> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Reno%20singing%20some%20of%20his%20songs> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:publicationYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Peppino%20De%20Filippo> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Teddy%20Reno> .
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Tot%C3%B2> .
+  <urn:graphragprov:entity:An%20Angel%20for%20Satan> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:An%20Angel%20for%20Satan> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Barbara%20Steele> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:bornOn> "1901-05-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> "1969-04-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:63%20films> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:An%20Angel%20for%20Satan> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Terror%20in%20the%20Crypt> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:Terror%20in%20the%20Crypt> <urn:graphragprov:predicate:publicationYear> "1964"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Terror%20in%20the%20Crypt> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Christopher%20Lee> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.771s | model=deepseek-v4-flash
+      tokens:   in=2133 | out=251 | total=2384 | cached=384 | uncached=1749
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> .
+  - <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> "1969-04-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> . <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_10c25a44f99646c8>
+  FROM <urn:graphragprov:unit:u_d9a199e24f57d5cd>
+  WHERE { <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> . <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1969-04-23',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Camillo Mastrocinque', 'Toto, Peppino, and the Hussy']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  22ff74120bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/22ff74120bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7190
+output tokens:         4522
+total tokens:          11712
+cached input tokens:   4480
+uncached input tokens: 2710
+cumulative LLM seconds: 21.646
+
+statement occurrences: 28
+semantic triples:      28
+entity nodes:          21
+literal values:        6
+predicates:            15
+query attempts:        1
+observed answers:      ('1969-04-23',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 19.882s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.051s
+  graph.materialization [attempt=1]: 0.057s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.772s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.462s

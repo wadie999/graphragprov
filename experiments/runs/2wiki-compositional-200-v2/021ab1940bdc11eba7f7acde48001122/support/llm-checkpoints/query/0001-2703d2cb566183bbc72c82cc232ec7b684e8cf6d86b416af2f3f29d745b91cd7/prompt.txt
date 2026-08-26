@@ -1,0 +1,97 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the date of death of Queen Jeongseong's husband?
+
+Expected answer: 22 April 1776
+
+Benchmark evidence relations:
+1. Queen Jeongseong | spouse | Yeongjo of Joseon
+2. Yeongjo of Joseon | date of death | 22 April 1776
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:alternativeName> <urn:graphragprov:entity:Prince%20Yeoning> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:bornOn> "1694-10-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Prince%20Sado> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:King%20Sukjong> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:dateOfDeath> "1776-04-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:executed> <urn:graphragprov:entity:Prince%20Sado> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Consort%20Suk%20of%20the%20Choi%20clan> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:ordinal> "21st" .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:policy> <urn:graphragprov:entity:Magnificent%20Harmony%20Policy> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:reignDuration> "52 years" .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:reignEnd> "1776-04-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:reignOver> <urn:graphragprov:entity:Korean%20Joseon%20Dynasty> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:reignStart> "1724-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:reputation> "positive reputation" .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:royalTitle> <urn:graphragprov:entity:Royal%20Prince%20Successor%20Brother> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:King%20Gyeongjong> .
+<urn:graphragprov:entity:Queen%20Jeongseong> <urn:graphragprov:predicate:alternativeName> <urn:graphragprov:entity:Queen%20Jung-Sung> .
+<urn:graphragprov:entity:Queen%20Jeongseong> <urn:graphragprov:predicate:bornOn> "1693-01-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Queen%20Jeongseong> <urn:graphragprov:predicate:dateOfDeath> "1757-04-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Queen%20Jeongseong> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Queen%20Consort> .
+<urn:graphragprov:entity:Queen%20Jeongseong> <urn:graphragprov:predicate:koreanName> "정성왕후 서씨" .
+<urn:graphragprov:entity:Queen%20Jeongseong> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Dalsung%20Seo%20clan> .
+<urn:graphragprov:entity:Queen%20Jeongseong> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yeongjo%20of%20Joseon> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:monarch> .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:ordinal> "21st" .
+<urn:graphragprov:entity:Yeongjo%20of%20Joseon> <urn:graphragprov:predicate:reignOver> <urn:graphragprov:entity:Joseon%20Dynasty> .

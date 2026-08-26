@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_aa19f0eaf83790f98bf9a8cd10188c0c837c6f8ff3d5bbb9e25ff6cd83e8a1eb
+Title: All About You (Hilary Duff song)
+Text:
+"All About You" is a song recorded by American singer Hilary Duff, released as the second single for her fifth studio album, " Breathe In. Breathe Out." (2015). It was released on August 11, 2014 by RCA Records. Written by Duff, Kristian Lundin, Savan Kotecha, and Carl Falk, "All About You" a folk pop and pop rock song, having a banjo, handclaps, and a "heavy hand" drum as the song's instrumentation. Lyrically, the song talks about how the protagonist is so hooked on her boyfriend that she is willing to prove her true love for him anywhere. Critics found similarities between "All About You" and songs from Taylor Swift and The Lumineers. The song became more successful than "Chasing the Sun" in Australia, where it managed to reach the top 20, the first time a Duff song had done so in nine years. Elsewhere, it had less impact, failing to enter the "Billboard" Hot 100 but managing to chart on the Bubbling Under Hot 100 Singles and Top 40 Mainstream. Duff released a lyric video for the song, where she appeared seducing the camera, with a succession of extreme close-ups of Duff. The official music video was directed by Declan Whitebloom and it finds the singer chasing a guy she meets at a diner, while also doing a choreography with her dancers. The singer has promoted the track with some live performances on "The X Factor (Australia)Good Morning America" and "Live with Kelly & Michael".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "All About You (Hilary Duff song)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "All About You (Hilary Duff song)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "instrumentation",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "heavy hand drum",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "heavy hand drum",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "heavy hand drum",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].predicate.evidence[0]: quote 'heavy hand drum' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

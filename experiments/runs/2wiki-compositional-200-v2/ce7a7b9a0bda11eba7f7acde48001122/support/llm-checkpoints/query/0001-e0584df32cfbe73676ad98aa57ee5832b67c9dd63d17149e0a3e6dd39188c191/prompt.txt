@@ -1,0 +1,147 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When is the composer of song Life On Mars (Song) 's birthday?
+
+Expected answer: 8 January 1947
+
+Benchmark evidence relations:
+1. Life on Mars? | composer | David Bowie
+2. David Bowie | date of birth | 8 January 1947
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Ashes%20to%20Ashes> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+<urn:graphragprov:entity:Blackstar> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+<urn:graphragprov:entity:Blackstar> <urn:graphragprov:predicate:releaseYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:gold%20certification> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:platinum%20album%20certification> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:platinum%20certification> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:awardedCertification> <urn:graphragprov:entity:silver%20certification> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:David%20Robert%20Jones> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Brixton> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:South%20London> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:bornOn> "1947-01-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:liver%20cancer> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:createdAlterEgo> <urn:graphragprov:entity:Ziggy%20Stardust> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York%20City> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:diedOn> "2016-01-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:inductedInYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:lastLivePerformance> <urn:graphragprov:entity:charity%20event> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:numberOneAlbums> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer-songwriter> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:recordSales> "140000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:startedCareer> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:stoppedTouring> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:David%20Bowie> <urn:graphragprov:predicate:styleShiftedTo> <urn:graphragprov:entity:plastic%20soul> .
+<urn:graphragprov:entity:Fame> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number-one> .
+<urn:graphragprov:entity:Heroes> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Brian%20Eno> .
+<urn:graphragprov:entity:Heroes> <urn:graphragprov:predicate:releaseYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:releaseYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+<urn:graphragprov:entity:Let%27s%20Dance> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+<urn:graphragprov:entity:Let%27s%20Dance> <urn:graphragprov:predicate:releaseYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Lodger> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Brian%20Eno> .
+<urn:graphragprov:entity:Lodger> <urn:graphragprov:predicate:releaseYear> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Low> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Brian%20Eno> .
+<urn:graphragprov:entity:Low> <urn:graphragprov:predicate:releaseYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Merry%20Christmas%2C%20Mr.%20Lawrence> <urn:graphragprov:predicate:releaseYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Merry%20Christmas%2C%20Mr.%20Lawrence> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+<urn:graphragprov:entity:Scary%20Monsters%20%28and%20Super%20Creeps%29> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+<urn:graphragprov:entity:Space%20Oddity> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:top-five> .
+<urn:graphragprov:entity:Space%20Oddity> <urn:graphragprov:predicate:releaseDate> "1969-07"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Starman> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+<urn:graphragprov:entity:Station%20to%20Station> <urn:graphragprov:predicate:releaseYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Last%20Temptation%20of%20Christ> <urn:graphragprov:predicate:releaseYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Last%20Temptation%20of%20Christ> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+<urn:graphragprov:entity:The%20Man%20Who%20Fell%20to%20Earth> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Nicolas%20Roeg> .
+<urn:graphragprov:entity:The%20Man%20Who%20Fell%20to%20Earth> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cult%20film> .
+<urn:graphragprov:entity:The%20Man%20Who%20Fell%20to%20Earth> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+<urn:graphragprov:entity:The%20Next%20Day> <urn:graphragprov:predicate:releaseYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Prestige> <urn:graphragprov:predicate:releaseYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Prestige> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Bowie> .
+<urn:graphragprov:entity:The%20Rise%20and%20Fall%20of%20Ziggy%20Stardust%20and%20the%20Spiders%20from%20Mars> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+<urn:graphragprov:entity:Under%20Pressure> <urn:graphragprov:predicate:collaborator> <urn:graphragprov:entity:Queen> .
+<urn:graphragprov:entity:Under%20Pressure> <urn:graphragprov:predicate:releaseYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Young%20Americans> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+<urn:graphragprov:entity:Ziggy%20Stardust> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:glam%20rock> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Hunky%20Dory> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Legacy%20%28The%20Very%20Best%20of%20David%20Bowie%29> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:UK%20Singles%20Chart> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:chartDuration> "13 weeks" .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20three> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:David%20Bowie> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:lyricist> <urn:graphragprov:entity:David%20Bowie> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:musicVideoDirector> <urn:graphragprov:entity:Mick%20Rock> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:pianist> <urn:graphragprov:entity:Rick%20Wakeman> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Ken%20Scott> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Neil%20McCormick> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Pitchfork> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedInDecade> "1970s" .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedInList> <urn:graphragprov:entity:100%20Greatest%20Songs%20of%20All%20Time> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedNumber> <urn:graphragprov:entity:best%20song> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:rankedNumber> <urn:graphragprov:entity:number%20one> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:releaseYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Life%20on%20Mars%20%28song%29> <urn:graphragprov:predicate:releaseYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .

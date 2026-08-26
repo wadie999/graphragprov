@@ -1,0 +1,245 @@
+
+H0 one-case execution
+  case:          595475be0bda11eba7f7acde48001122
+  hops:          2
+  question:      Where does the director of film Kastus Kalinovskiy (Film) work at?
+  expected:      VGIK
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/595475be0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Vladimir Gardin'
+  source unit: u_c956d1bfacb090245b200fbdfa9133801bdc0f519847c580625b985ec804cfd8
+  text chars:  1017
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 19.472s | model=deepseek-v4-flash
+      tokens:   in=2510 | out=4581 | total=7091 | cached=2048 | uncached=462
+    [LLM graph.reference #2] sending...
+      provider: 0.628s | model=deepseek-v4-flash
+      tokens:   in=779 | out=8 | total=787 | cached=0 | uncached=779
+  extraction: ACCEPTED
+  statements: 28
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    30
+    initially rejected: 1
+
+    initial rejection #30
+      validator:
+        response.statements[30].object.evidence[0]: quote 'Kastus Kalinovskiy' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Kastus Kalinovskiy",
+                "segment": "text"
+              }
+            ],
+            "value": "Kastus Kalinovskiy"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Vladimir Gardin",
+                "segment": "title"
+              }
+            ],
+            "value": "Vladimir Gardin"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 28
+  coverage:
+    characters combined: 430 / 1032 (41.7%)
+    characters text:     415 / 1017 (40.8%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           6 / 8 (75.0%)
+    longest uncovered:  218 chars
+      'who strove to raise the artistic level of Russian cinema. He first gained renown as a stage actor in the adaptations of Russian classics by Vera Komissarzhevskaya and other direct…'
+    statement density:  27.13 / 1000 chars
+    title reliance:      19 / 28 (67.9%)
+
+[GRAPH 2/2] paragraph=3 title='Kastus Kalinovskiy (film)'
+  source unit: u_783d5bcc65f134ac80223bff38ede405220efd49e6e50bcd1e4bb691d2ba1612
+  text chars:  154
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.282s | model=deepseek-v4-flash
+      tokens:   in=2650 | out=1073 | total=3723 | cached=2048 | uncached=602
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 131 / 179 (73.2%)
+    characters text:     106 / 154 (68.8%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  24 chars
+      'Kastus Kalinovskiy is a'
+    statement density:  39.11 / 1000 chars
+    title reliance:      5 / 7 (71.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 35
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      35
+resource nodes:        20
+entity nodes:          20
+literal values:        10
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vladimir%20Gardin> .
+  <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:biopic%20film> .
+  <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Soviet> .
+  <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:portrays> <urn:graphragprov:entity:Konstanty%20Kalinowski> .
+  <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1928"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Konstanty%20Kalinowski> <urn:graphragprov:predicate:century> "nineteenth century" .
+  <urn:graphragprov:entity:Konstanty%20Kalinowski> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:revolutionary> .
+  <urn:graphragprov:entity:Anna%20Karenina> <urn:graphragprov:predicate:publicationYear> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Home%20of%20the%20Gentry> <urn:graphragprov:predicate:publicationYear> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:On%20the%20Eve> <urn:graphragprov:predicate:publicationYear> "1915"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Artist%27s%20Life%20and%20Labor> <urn:graphragprov:predicate:publicationYear> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Kreutzer%20Sonata> <urn:graphragprov:predicate:publicationYear> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:The%20Artist%27s%20Life%20and%20Labor> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:two%20volumes%20of%20memoirs> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:People%27s%20Artist%20of%20the%20USSR> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:awardYear> "1947"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:birthDate> "unknown" .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Vladimir%20Rostislavovich%20Blagonravov> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:deathDate> "1965-05-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Anna%20Karenina> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Home%20of%20the%20Gentry> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:On%20the%20Eve> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Kreutzer%20Sonata> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:War%20and%20Peace> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:VGIK> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:first%20film%20school%20in%20the%20world> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Russian> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:War%20and%20Peace> <urn:graphragprov:predicate:publicationYear> "1915"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:first%20film%20school%20in%20the%20world> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:VGIK> .
+  <urn:graphragprov:entity:two%20volumes%20of%20memoirs> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:two%20volumes%20of%20memoirs> <urn:graphragprov:predicate:publicationYear> "1952"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.712s | model=deepseek-v4-flash
+      tokens:   in=2320 | out=190 | total=2510 | cached=384 | uncached=1936
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vladimir%20Gardin> .
+  - <urn:graphragprov:entity:Vladimir%20Gardin> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:VGIK> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:employer> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_783d5bcc65f134ac>
+  FROM <urn:graphragprov:unit:u_c956d1bfacb09024>
+  WHERE { <urn:graphragprov:entity:Kastus%20Kalinovskiy%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:employer> ?answer . }
+
+GraphDB execution:
+  observed answers: ('VGIK',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Kastus Kalinovskiy (film)', 'Vladimir Gardin']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  595475be0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/595475be0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8259
+output tokens:         5852
+total tokens:          14111
+cached input tokens:   4480
+uncached input tokens: 3779
+cumulative LLM seconds: 27.095
+
+statement occurrences: 35
+semantic triples:      35
+entity nodes:          20
+literal values:        10
+predicates:            16
+query attempts:        1
+observed answers:      ('VGIK',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.395s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.713s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.530s

@@ -1,0 +1,293 @@
+
+H0 one-case execution
+  case:          749138a20bdb11eba7f7acde48001122
+  hops:          2
+  question:      Which country the performer of song The Wallflower (Dance With Me, Henry) is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/749138a20bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Etta James'
+  source unit: u_565f33e2f471fd7b173d5ffe4f44b55b43c2f73b4b926cdd0629e162474ec774
+  text chars:  1001
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 19.827s | model=deepseek-v4-flash
+      tokens:   in=2492 | out=4579 | total=7071 | cached=2048 | uncached=444
+    [LLM graph.reference #2] sending...
+      provider: 1.354s | model=deepseek-v4-flash
+      tokens:   in=766 | out=168 | total=934 | cached=0 | uncached=766
+  extraction: ACCEPTED
+  statements: 31
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    31
+    initially rejected: 1
+
+    initial rejection #30
+      validator:
+        response.statements[30].predicate.evidence[0]: quote 'Rolling Stone' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Rolling Stone",
+                "segment": "text"
+              }
+            ],
+            "value": "Rolling Stone"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "Rolling Stone",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Etta James",
+                "segment": "title"
+              }
+            ],
+            "value": "Etta James"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 31
+  coverage:
+    characters combined: 499 / 1011 (49.4%)
+    characters text:     489 / 1001 (48.9%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  74 chars
+      'on its list of the 100 Greatest Singers of All Time; she was also ranked'
+    statement density:  30.66 / 1000 chars
+    title reliance:      31 / 31 (100.0%)
+
+[GRAPH 2/2] paragraph=9 title='The Wallflower (Dance with Me, Henry)'
+  source unit: u_8f93fc09c23dea39d7273afb218239b1b50521fad156d5643131c4b45f9e1232
+  text chars:  211
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.984s | model=deepseek-v4-flash
+      tokens:   in=2641 | out=1107 | total=3748 | cached=2048 | uncached=593
+    [LLM graph.reference #4] sending...
+      provider: 0.919s | model=deepseek-v4-flash
+      tokens:   in=603 | out=8 | total=611 | cached=0 | uncached=603
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 1
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'has the same 12-bar blues melody' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "12-bar blues melody",
+                "segment": "text"
+              }
+            ],
+            "value": "12-bar blues melody"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "has the same 12-bar blues melody",
+                "segment": "text"
+              }
+            ],
+            "value": "hasMelody"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Wallflower (Dance with Me, Henry)",
+                "segment": "title"
+              }
+            ],
+            "value": "The Wallflower (Dance with Me, Henry)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 6
+  coverage:
+    characters combined: 144 / 248 (58.1%)
+    characters text:     107 / 211 (50.7%)
+    characters title:    37 / 37 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  40 chars
+      '" and has the same 12- bar blues melody.'
+    statement density:  24.19 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 37
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      37
+resource nodes:        31
+entity nodes:          31
+literal values:        7
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:album> <urn:graphragprov:entity:Seven%20Year%20Itch> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Blues%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Blues%20Music%20Awards> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Awards> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Jamesetta%20Hawkins> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:bornOn> "1938-01-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:careerStart> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:diedOn> "2012-01-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:facedProblem> <urn:graphragprov:entity:heroin%20addiction> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:facedProblem> <urn:graphragprov:entity:incarceration> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:facedProblem> <urn:graphragprov:entity:severe%20physical%20abuse> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:R%26B> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:blues> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:gospel> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rock%20and%20roll> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:soul> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:musicalComeback> "late 1980s" .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:At%20Last> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:I%27d%20Rather%20Go%20Blind> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Something%27s%20Got%20a%20Hold%20on%20Me> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Tell%20Mama> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:The%20Wallflower> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:rank> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:rank> "62"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:rankedBy> <urn:graphragprov:entity:Rolling%20Stone> .
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:voiceCharacteristic> <urn:graphragprov:entity:powerful%2C%20deep%2C%20earthy%20voice> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Dance%20with%20Me%2C%20Henry> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roll%20with%20Me%2C%20Henry> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:answerSongTo> <urn:graphragprov:entity:Work%20with%20Me%2C%20Annie> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Etta%20James> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:publicationYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.830s | model=deepseek-v4-flash
+      tokens:   in=2333 | out=201 | total=2534 | cached=384 | uncached=1949
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Etta%20James> .
+  - <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_565f33e2f471fd7b>
+  FROM <urn:graphragprov:unit:u_8f93fc09c23dea39>
+  WHERE { <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Etta James', 'The Wallflower (Dance with Me, Henry)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  749138a20bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/749138a20bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8835
+output tokens:         6063
+total tokens:          14898
+cached input tokens:   4480
+uncached input tokens: 4355
+cumulative LLM seconds: 28.914
+
+statement occurrences: 37
+semantic triples:      37
+entity nodes:          31
+literal values:        7
+predicates:            18
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 27.103s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.038s
+  graph.materialization [attempt=1]: 0.129s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.831s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.519s

@@ -1,0 +1,210 @@
+
+H0 one-case execution
+  case:          31ab9d8e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Who is the spouse of the performer of song Walking Down Madison?
+  expected:      Steve Lillywhite
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/31ab9d8e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Walking Down Madison'
+  source unit: u_cbf43335cc1601f57f9e1d7d510608ae3abd977efd822917a3f6a156fa12234b
+  text chars:  165
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.139s | model=deepseek-v4-flash
+      tokens:   in=2282 | out=983 | total=3265 | cached=2048 | uncached=234
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 119 / 185 (64.3%)
+    characters text:     119 / 165 (72.1%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  13 chars
+      'a number of'
+    statement density:  37.84 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Kirsty MacColl'
+  source unit: u_557656c6630500059c79df4cf0c386870d0b785648f3b9ea9fa238b41dda31eb
+  text chars:  498
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 64.642s | model=deepseek-v4-flash
+      tokens:   in=2447 | out=16384 | total=18831 | cached=2176 | uncached=271
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #3] sending...
+      provider: 63.664s | model=deepseek-v4-flash
+      tokens:   in=2492 | out=16384 | total=18876 | cached=2432 | uncached=60
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 3/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 10.387s | model=deepseek-v4-flash
+      tokens:   in=2492 | out=2502 | total=4994 | cached=2432 | uncached=60
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 333 / 512 (65.0%)
+    characters text:     319 / 498 (64.1%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  52 chars
+      'several pop hits in the 1980s and 1990s, including'
+    statement density:  33.20 / 1000 chars
+    title reliance:      12 / 17 (70.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 24
+  whole-source attempts: 4
+  whole-source retries: 2
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        21
+entity nodes:          21
+literal values:        3
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:A%20New%20England> <urn:graphragprov:predicate:coverVersionOf> <urn:graphragprov:entity:Billy%20Bragg> .
+  <urn:graphragprov:entity:Days> <urn:graphragprov:predicate:coverVersionOf> <urn:graphragprov:entity:The%20Kinks> .
+  <urn:graphragprov:entity:Fairytale%20of%20New%20York> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:The%20Pogues> .
+  <urn:graphragprov:entity:Fairytale%20of%20New%20York> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Steve%20Lillywhite> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:bornOn> "1959-10-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:diedOn> "2000-12-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:Kirsty%20Anna%20MacColl> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:recorded> <urn:graphragprov:entity:A%20New%20England> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:recorded> <urn:graphragprov:entity:Days> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:recorded> <urn:graphragprov:entity:There%27s%20a%20Guy%20Works%20Down%20the%20Chip%20Shop%20Swears%20He%27s%20Elvis> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:sangOn> <urn:graphragprov:entity:Fairytale%20of%20New%20York> .
+  <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Steve%20Lillywhite> .
+  <urn:graphragprov:entity:They%20Don%27t%20Know> <urn:graphragprov:predicate:coveredBy> <urn:graphragprov:entity:Tracey%20Ullman> .
+  <urn:graphragprov:entity:They%20Don%27t%20Know> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Kirsty%20MacColl> .
+  <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:chartedAt> <urn:graphragprov:entity:%2323> .
+  <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:chartedOn> <urn:graphragprov:entity:UK%20Singles%20Chart> .
+  <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:featuring> <urn:graphragprov:entity:Aniff%20Cousins> .
+  <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:impacted> <urn:graphragprov:entity:Billboard%20charts> .
+  <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Kirsty%20MacColl> .
+  <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:publicationYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.248s | model=deepseek-v4-flash
+      tokens:   in=1691 | out=204 | total=1895 | cached=384 | uncached=1307
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Kirsty%20MacColl> .
+  - <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Steve%20Lillywhite> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Kirsty%20MacColl> . <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_557656c663050005>
+  FROM <urn:graphragprov:unit:u_cbf43335cc1601f5>
+  WHERE { <urn:graphragprov:entity:Walking%20Down%20Madison> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Kirsty%20MacColl> . <urn:graphragprov:entity:Kirsty%20MacColl> <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Steve Lillywhite',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Kirsty MacColl', 'Walking Down Madison']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  31ab9d8e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/31ab9d8e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11404
+output tokens:         36457
+total tokens:          47861
+cached input tokens:   9472
+uncached input tokens: 1932
+cumulative LLM seconds: 146.080
+
+statement occurrences: 24
+semantic triples:      24
+entity nodes:          21
+literal values:        3
+predicates:            19
+query attempts:        1
+observed answers:      ('Steve Lillywhite',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 143.842s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.058s
+  graph.materialization [attempt=1]: 0.072s
+  graph.observation [attempt=1]: 0.014s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.249s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.555s

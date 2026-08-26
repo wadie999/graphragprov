@@ -1,0 +1,201 @@
+
+H0 one-case execution
+  case:          ce6ff17e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film On Borrowed Time?
+  expected:      13 February 1946
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/ce6ff17e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='On Borrowed Time'
+  source unit: u_1403694309b83a47e8fe2ffbb34c7dbfecedc7619e702a8cf426b780c33e08de
+  text chars:  968
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 15.542s | model=deepseek-v4-flash
+      tokens:   in=2490 | out=3374 | total=5864 | cached=2048 | uncached=442
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     23
+  coverage:
+    characters combined: 527 / 984 (53.6%)
+    characters text:     527 / 968 (54.4%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           10 / 10 (100.0%)
+    longest uncovered:  155 chars
+      "in which Death is tricked into climbing a pear tree which had been blessed by Saint Polycarp to trap anyone who was trying to steal an old woman's pears."
+    statement density:  23.37 / 1000 chars
+    title reliance:      0 / 23 (0.0%)
+
+[GRAPH 2/2] paragraph=9 title='Harold S. Bucquet'
+  source unit: u_906af988f76aeaddce8b08d780da3f30eea15973b0502cdab8759027dc4a9766
+  text chars:  349
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.447s | model=deepseek-v4-flash
+      tokens:   in=2647 | out=2094 | total=4741 | cached=2048 | uncached=599
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 267 / 366 (73.0%)
+    characters text:     250 / 349 (71.6%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  19 chars
+      'Harold S. Bucquet ('
+    statement density:  38.25 / 1000 chars
+    title reliance:      11 / 14 (78.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 37
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      37
+resource nodes:        25
+entity nodes:          25
+literal values:        7
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:awardedFor> <urn:graphragprov:entity:Torture%20Money> .
+  <urn:graphragprov:entity:Julian%20Northrup> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Gramps> .
+  <urn:graphragprov:entity:Julian%20Northrup> <urn:graphragprov:predicate:raising> <urn:graphragprov:entity:their%20orphaned%20grandson%2C%20Pud> .
+  <urn:graphragprov:entity:Julian%20Northrup> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Nellie> .
+  <urn:graphragprov:entity:Julian%20Northrup> <urn:graphragprov:predicate:usesWheelchair> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Lionel%20Barrymore> <urn:graphragprov:predicate:continuedToAct> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Lionel%20Barrymore> <urn:graphragprov:predicate:hadBrokenHip> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Lionel%20Barrymore> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Julian%20Northrup> .
+  <urn:graphragprov:entity:Lionel%20Barrymore> <urn:graphragprov:predicate:usedWheelchair> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Mr.%20Brink> <urn:graphragprov:predicate:personificationOf> <urn:graphragprov:entity:death> .
+  <urn:graphragprov:entity:Nellie> <urn:graphragprov:predicate:playedBy> <urn:graphragprov:entity:Beulah%20Bondi> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Paul%20Osborn%27s%201938%20Broadway%20hit%20play> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:a%20Greek%20fable> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harold%20S.%20Bucquet> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:publicationYear> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:setting> <urn:graphragprov:entity:small-town%20America> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Beulah%20Bondi> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lionel%20Barrymore> .
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sir%20Cedric%20Hardwicke> .
+  <urn:graphragprov:entity:Paul%20Osborn%27s%201938%20Broadway%20hit%20play> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:a%20novel%20by%20Lawrence%20Edward%20Watkin> .
+  <urn:graphragprov:entity:Sir%20Cedric%20Hardwicke> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Mr.%20Brink> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:activeYearsEndYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:activeYearsStartYear> "1936"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:birthDate> "1891-04-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:London%2C%20England> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:dateOfDeath> "1946-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Los%20Angeles%2C%20California> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:26%20films> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Glendale%27s%20Forest%20Lawn%20Memorial%20Park%20Cemetery> .
+  <urn:graphragprov:entity:Torture%20Money> <urn:graphragprov:predicate:awardCategory> <urn:graphragprov:entity:Best%20Short%20Subject%20%28Two-Reel%29> .
+  <urn:graphragprov:entity:Torture%20Money> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award> .
+  <urn:graphragprov:entity:Torture%20Money> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harold%20S.%20Bucquet> .
+  <urn:graphragprov:entity:Torture%20Money> <urn:graphragprov:predicate:publicationYear> "1937"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.566s | model=deepseek-v4-flash
+      tokens:   in=2450 | out=199 | total=2649 | cached=512 | uncached=1938
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harold%20S.%20Bucquet> .
+  - <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:dateOfDeath> "1946-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1403694309b83a47>
+  FROM <urn:graphragprov:unit:u_906af988f76aeadd>
+  WHERE { <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1946-02-13',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Harold S. Bucquet', 'On Borrowed Time']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  ce6ff17e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/ce6ff17e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7587
+output tokens:         5667
+total tokens:          13254
+cached input tokens:   4608
+uncached input tokens: 2979
+cumulative LLM seconds: 26.555
+
+statement occurrences: 37
+semantic triples:      37
+entity nodes:          25
+literal values:        7
+predicates:            29
+query attempts:        1
+observed answers:      ('1946-02-13',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.003s
+  graph.reference.measurements [attempt=1]: 0.012s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.061s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.567s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.478s

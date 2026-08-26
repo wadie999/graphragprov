@@ -1,0 +1,253 @@
+
+H0 one-case execution
+  case:          9294372c0bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of Charlotte Fitzroy, Countess Of Yarmouth's father?
+  expected:      6 February 1685
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9294372c0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Charlotte FitzRoy, Countess of Yarmouth'
+  source unit: u_1d8f41ef27d04b127b2de8323876981f4824c1831367dd009c3d33f5167805fd
+  text chars:  701
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.280s | model=deepseek-v4-flash
+      tokens:   in=2432 | out=2891 | total=5323 | cached=2048 | uncached=384
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 542 / 740 (73.2%)
+    characters text:     503 / 701 (71.8%)
+    characters title:    39 / 39 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  66 chars
+      'Charlotte Jemima Henrietta Maria FitzRoy, Countess of Yarmouth (–'
+    statement density:  25.68 / 1000 chars
+    title reliance:      10 / 19 (52.6%)
+
+[GRAPH 2/2] paragraph=1 title='Charles II of England'
+  source unit: u_db8dd3dc5e52948259e042014199b05b66d33c7555325ce09f0c65b538a8c605
+  text chars:  3169
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 39.819s | model=deepseek-v4-flash
+      tokens:   in=3223 | out=9991 | total=13214 | cached=2048 | uncached=1175
+  extraction: ACCEPTED
+  statements: 70
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    70
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     70
+  coverage:
+    characters combined: 1444 / 3190 (45.3%)
+    characters text:     1423 / 3169 (44.9%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           25 / 25 (100.0%)
+    longest uncovered:  189 chars
+      '", in reference to both the liveliness and hedonism of his court and the general relief at the return to normality after over a decade of rule by Cromwell and the Puritans. Charle…'
+    statement density:  21.94 / 1000 chars
+    title reliance:      13 / 70 (18.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 89
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      89
+resource nodes:        73
+entity nodes:          73
+literal values:        16
+predicates:            64
+
+N-Triples:
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:burialDate> "1684-08-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:burialPlace> <urn:graphragprov:entity:Westminster%20Abbey> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Stuarta> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:dateOfDeath> "1684-07-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Charles%20II> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:illegitimate%20child> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Elizabeth%20Killigrew%20Boyle> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:London> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:James%20Howard> .
+  <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:William%20Paston> .
+  <urn:graphragprov:entity:Elizabeth%20Killigrew%20Boyle> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:maid%20of%20honour> .
+  <urn:graphragprov:entity:Elizabeth%20Killigrew%20Boyle> <urn:graphragprov:predicate:servedUnder> <urn:graphragprov:entity:Queen%20Henrietta%20Maria> .
+  <urn:graphragprov:entity:Elizabeth%20Killigrew%20Boyle> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Francis%20Boyle> .
+  <urn:graphragprov:entity:Francis%20Boyle> <urn:graphragprov:predicate:laterTitle> <urn:graphragprov:entity:Viscount%20Shannon%20in%20Ireland> .
+  <urn:graphragprov:entity:William%20Paston> <urn:graphragprov:predicate:hadIssue> <urn:graphragprov:entity:issue> .
+  <urn:graphragprov:entity:William%20Paston> <urn:graphragprov:predicate:inFavourWith> <urn:graphragprov:entity:Stuarts> .
+  <urn:graphragprov:entity:William%20Paston> <urn:graphragprov:predicate:laterTitle> <urn:graphragprov:entity:second%20Earl%20of%20Yarmouth> .
+  <urn:graphragprov:entity:William%20Paston> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Paston%20family> .
+  <urn:graphragprov:entity:William%20Paston%27s%20father> <urn:graphragprov:predicate:inFavourWith> <urn:graphragprov:entity:Stuarts> .
+  <urn:graphragprov:entity:Catherine%20of%20Braganza> <urn:graphragprov:predicate:children> <urn:graphragprov:entity:no%20live%20children> .
+  <urn:graphragprov:entity:Charles%20I%20of%20England%2C%20Scotland%20and%20Ireland> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:execution> .
+  <urn:graphragprov:entity:Charles%20I%20of%20England%2C%20Scotland%20and%20Ireland> <urn:graphragprov:predicate:dateOfDeath> "1649-01-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20I%20of%20England%2C%20Scotland%20and%20Ireland> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Whitehall> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:acknowledgedChildren> <urn:graphragprov:entity:twelve%20illegitimate%20children> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:allianceWith> <urn:graphragprov:entity:King%20Louis%20XIV%20of%20France> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:arrivalDate> "1660-05-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:arrivalPlace> <urn:graphragprov:entity:London> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:attempted> <urn:graphragprov:entity:religious%20freedom> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:brother> <urn:graphragprov:entity:James%2C%20Duke%20of%20York> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:convertedTo> <urn:graphragprov:entity:Catholic%20Church> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:declaration> <urn:graphragprov:entity:Royal%20Declaration%20of%20Indulgence> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:dissolvedParliament> <urn:graphragprov:entity:English%20Parliament> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:enteredTreaty> <urn:graphragprov:entity:Treaty%20of%20Dover> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:exileDuration> "nine years" .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:exileIn> <urn:graphragprov:entity:Dutch%20Republic> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:exileIn> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:exileIn> <urn:graphragprov:entity:Spanish%20Netherlands> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:fledTo> <urn:graphragprov:entity:mainland%20Europe> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:foreignPolicyIssue> <urn:graphragprov:entity:Second%20Anglo-Dutch%20War> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:legalDocuments> <urn:graphragprov:entity:all%20legal%20documents> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Merry%20Monarch> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:parliament> <urn:graphragprov:entity:English%20parliament> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:policy> <urn:graphragprov:entity:religious%20tolerance> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:promised> <urn:graphragprov:entity:convert%20to%20Catholicism> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:receivedWith> <urn:graphragprov:entity:public%20acclaim> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:regnalYearStart> "1649"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:returnedTo> <urn:graphragprov:entity:Britain> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:ruledAlone> <urn:graphragprov:entity:alone> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:sidedWith> <urn:graphragprov:entity:Tories> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Catherine%20of%20Braganza> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:succeeded> <urn:graphragprov:entity:his%20father> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:James> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:dateOfBirth> "1630-05-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:dateOfDeath> "1685-02-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Charles%20I%20of%20England%2C%20Scotland%20and%20Ireland> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:king> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Henrietta%20Maria%20of%20France> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:realm> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:realm> <urn:graphragprov:entity:Ireland> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:realm> <urn:graphragprov:entity:Scotland> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:reignEnd> "1651"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:reignEnd> "1685"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:reignStart> "1649"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:reignStart> "1660"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:eldest%20surviving%20child> .
+  <urn:graphragprov:entity:Clarendon%20Code> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:shore%20up%20the%20position%20of%20the%20re-established%20Church%20of%20England> .
+  <urn:graphragprov:entity:England> <urn:graphragprov:predicate:governmentType> <urn:graphragprov:entity:republic> .
+  <urn:graphragprov:entity:England> <urn:graphragprov:predicate:leader> <urn:graphragprov:entity:Oliver%20Cromwell> .
+  <urn:graphragprov:entity:England> <urn:graphragprov:predicate:period> <urn:graphragprov:entity:English%20Commonwealth> .
+  <urn:graphragprov:entity:England> <urn:graphragprov:predicate:period> <urn:graphragprov:entity:English%20Interregnum> .
+  <urn:graphragprov:entity:English%20Parliament> <urn:graphragprov:predicate:forced> <urn:graphragprov:entity:him> .
+  <urn:graphragprov:entity:English%20parliament> <urn:graphragprov:predicate:enacted> <urn:graphragprov:entity:Clarendon%20Code> .
+  <urn:graphragprov:entity:Exclusion%20Crisis> <urn:graphragprov:predicate:resultedIn> <urn:graphragprov:entity:Tory%20party> .
+  <urn:graphragprov:entity:Exclusion%20Crisis> <urn:graphragprov:predicate:resultedIn> <urn:graphragprov:entity:Whig%20party> .
+  <urn:graphragprov:entity:James%2C%20Duke%20of%20York> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:Catholic> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:battle> <urn:graphragprov:entity:Battle%20of%20Worcester> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:date> "1651-09-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:dateOfDeath> "1658"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Charles%20II> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:realm> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:realm> <urn:graphragprov:entity:Ireland> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:realm> <urn:graphragprov:entity:Scotland> .
+  <urn:graphragprov:entity:Oliver%20Cromwell> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:virtual%20dictator> .
+  <urn:graphragprov:entity:Parliament%20of%20Scotland> <urn:graphragprov:predicate:date> "1649-02-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Parliament%20of%20Scotland> <urn:graphragprov:predicate:proclaimed> <urn:graphragprov:entity:Charles%20II%20king> .
+  <urn:graphragprov:entity:Rye%20House%20Plot> <urn:graphragprov:predicate:target> <urn:graphragprov:entity:Charles%20and%20James> .
+  <urn:graphragprov:entity:Rye%20House%20Plot> <urn:graphragprov:predicate:year> "1683"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Titus%20Oates> <urn:graphragprov:predicate:revelation> <urn:graphragprov:entity:Popish%20Plot> .
+  <urn:graphragprov:entity:Titus%20Oates> <urn:graphragprov:predicate:year> "1679"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.644s | model=deepseek-v4-flash
+      tokens:   in=4941 | out=243 | total=5184 | cached=384 | uncached=4557
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Charles%20II> .
+  - <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:dateOfDeath> "1685-02-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Charles%20II> . <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1d8f41ef27d04b12>
+  FROM <urn:graphragprov:unit:u_db8dd3dc5e529482>
+  WHERE { <urn:graphragprov:entity:Charlotte%20FitzRoy%2C%20Countess%20of%20Yarmouth> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Charles%20II> . <urn:graphragprov:entity:Charles%20II%20of%20England> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1685-02-06',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Charles II of England', 'Charlotte FitzRoy, Countess of Yarmouth']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9294372c0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/9294372c0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10596
+output tokens:         13125
+total tokens:          23721
+cached input tokens:   4480
+uncached input tokens: 6116
+cumulative LLM seconds: 54.742
+
+statement occurrences: 89
+semantic triples:      89
+entity nodes:          73
+literal values:        16
+predicates:            64
+query attempts:        1
+observed answers:      ('1685-02-06',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 53.127s
+  graph.reference.measurements [attempt=1]: 0.015s
+  graph.clear_support [attempt=1]: 0.046s
+  graph.materialization [attempt=1]: 0.099s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.644s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.454s

@@ -1,0 +1,104 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where did the director of film The Man Who Sold Himself (1959 Film) die?
+
+Expected answer: Munich
+
+Benchmark evidence relations:
+1. The Man Who Sold Himself | director | Josef von Báky
+2. Josef von Báky | place of death | Munich
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:J%C3%B3zsef%20Baky> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Josef%20v.%20Baky> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:assistantTo> <urn:graphragprov:entity:G%C3%A9za%20von%20Bolv%C3%A1ry> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:birthDate> "1902-03-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Kingdom%20of%20Hungary> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Zombor> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:deathDate> "1966-07-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Hungarian> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:numberOfFilms> "48"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Bavaria> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Germany> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Munich> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:producer> .
+<urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> .
+<urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:notedFor> <urn:graphragprov:entity:how%20it%20avoids%20politics%20of%20its%20time> .
+<urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:orderedBy> <urn:graphragprov:entity:Goebbels> .
+<urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:celebrate%20the%2025th%20anniversary%20of%20UFA> .
+<urn:graphragprov:entity:M%C3%BCnchhausen> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:compete%20with%20Hollywood%20productions> .
+<urn:graphragprov:entity:Erich%20Kettelhut> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:art%20director> .
+<urn:graphragprov:entity:Johannes%20Ott> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:art%20director> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:West%20German> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:setsDesignedBy> <urn:graphragprov:entity:Erich%20Kettelhut> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:setsDesignedBy> <urn:graphragprov:entity:Johannes%20Ott> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:shotAt> <urn:graphragprov:entity:Wandsbek%20Studios> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Antje%20Weisgerber> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Hansj%C3%B6rg%20Felmy> .
+<urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Hildegard%20Knef> .
+<urn:graphragprov:entity:Wandsbek%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hamburg> .

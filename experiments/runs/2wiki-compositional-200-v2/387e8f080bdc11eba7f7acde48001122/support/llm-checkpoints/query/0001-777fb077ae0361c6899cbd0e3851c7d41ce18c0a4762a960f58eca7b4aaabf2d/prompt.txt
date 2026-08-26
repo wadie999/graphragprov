@@ -1,0 +1,213 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Who is the father of the director of film Danger: Diabolik?
+
+Expected answer: Eugenio Bava
+
+Benchmark evidence relations:
+1. Danger: Diabolik | director | Mario Bava
+2. Mario Bava | father | Eugenio Bava
+
+Frozen RDF graph:
+<urn:graphragprov:entity:A%20Bay%20of%20Blood> <urn:graphragprov:predicate:precursorTo> <urn:graphragprov:entity:slasher%20films> .
+<urn:graphragprov:entity:A%20Bay%20of%20Blood> <urn:graphragprov:predicate:publicationYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Baron%20Blood> <urn:graphragprov:predicate:publicationYear> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Black%20Sabbath> <urn:graphragprov:predicate:publicationYear> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Black%20Sunday> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Italian%20gothic%20horror%20film> .
+<urn:graphragprov:entity:Black%20Sunday> <urn:graphragprov:predicate:publicationYear> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Blood%20and%20Black%20Lace> <urn:graphragprov:predicate:publicationYear> "1964"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Caltiki%20%E2%80%93%20The%20Immortal%20Monster> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Erik%20the%20Conqueror> <urn:graphragprov:predicate:publicationYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Eugenio%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cinematographer> .
+<urn:graphragprov:entity:Eugenio%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:sculptor> .
+<urn:graphragprov:entity:Eugenio%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:special%20effects%20pioneer> .
+<urn:graphragprov:entity:Five%20Dolls%20for%20an%20August%20Moon> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Four%20Times%20That%20Night> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Italian%20sex%20comedy> .
+<urn:graphragprov:entity:Four%20Times%20That%20Night> <urn:graphragprov:predicate:publicationYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hatchet%20for%20the%20Honeymoon> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hercules> <urn:graphragprov:predicate:lampoonedOn> <urn:graphragprov:entity:Mystery%20Science%20Theater%203000> .
+<urn:graphragprov:entity:Hercules> <urn:graphragprov:predicate:publicationYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hercules%20Unchained> <urn:graphragprov:predicate:lampoonedOn> <urn:graphragprov:entity:Mystery%20Science%20Theater%203000> .
+<urn:graphragprov:entity:Hercules%20Unchained> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Hercules%20in%20the%20Haunted%20World> <urn:graphragprov:predicate:publicationYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:I%20Vampiri> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Italian%20horror%20film> .
+<urn:graphragprov:entity:I%20Vampiri> <urn:graphragprov:predicate:publicationYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Kill%2C%20Baby%2C%20Kill> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:modern%20J-Horror> .
+<urn:graphragprov:entity:Kill%2C%20Baby%2C%20Kill> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Knives%20of%20the%20Avenger> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Lamberto%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:assistant%20director> .
+<urn:graphragprov:entity:Lamberto%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:fantasy%20and%20horror%20film%20director> .
+<urn:graphragprov:entity:Lisa%20and%20the%20Devil> <urn:graphragprov:predicate:publicationYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:birthDate> "1914-07-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:completedProject> <urn:graphragprov:entity:Caltiki%20%E2%80%93%20The%20Immortal%20Monster> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:completedProject> <urn:graphragprov:entity:I%20Vampiri> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:completedProject> <urn:graphragprov:entity:The%20Day%20the%20Sky%20Exploded> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:completedProject> <urn:graphragprov:entity:The%20Giant%20of%20Marathon> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:deathDate> "1980-04-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:A%20Bay%20of%20Blood> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Baron%20Blood> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Black%20Sabbath> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Black%20Sunday> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Blood%20and%20Black%20Lace> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20the%20Conqueror> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Five%20Dolls%20for%20an%20August%20Moon> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Four%20Times%20That%20Night> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hatchet%20for%20the%20Honeymoon> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hercules%20in%20the%20Haunted%20World> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kill%2C%20Baby%2C%20Kill> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Knives%20of%20the%20Avenger> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lisa%20and%20the%20Devil> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Planet%20of%20the%20Vampires> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Rabid%20Dogs> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Shock> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Girl%20Who%20Knew%20Too%20Much> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Whip%20and%20the%20Body> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eugenio%20Bava> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:followedFatherInto> <urn:graphragprov:entity:film%20industry> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Dario%20Argento> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Edgar%20Wright> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Federico%20Fellini> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Francis%20Ford%20Coppola> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Jennifer%20Kent> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Joe%20Dante> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:John%20Carpenter> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:John%20Landis> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Lucio%20Fulci> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Martin%20Scorsese> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Nicolas%20Winding%20Refn> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Quentin%20Tarantino> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Roger%20Corman> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Tim%20Burton> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cinematographer> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:special%20effects%20artist> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:providedLightingFor> <urn:graphragprov:entity:Hercules> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:providedLightingFor> <urn:graphragprov:entity:Hercules%20Unchained> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:providedSpecialEffectsFor> <urn:graphragprov:entity:Hercules> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:providedSpecialEffectsFor> <urn:graphragprov:entity:Hercules%20Unchained> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:referredToAs> <urn:graphragprov:entity:Master%20of%20Italian%20Horror> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:referredToAs> <urn:graphragprov:entity:Master%20of%20the%20Macabre> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:reputation> <urn:graphragprov:entity:one%20of%20Italy%27s%20foremost%20cameramen> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:son> <urn:graphragprov:entity:Lamberto%20Bava> .
+<urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:turnedDownOpportunity> <urn:graphragprov:entity:work%20in%20Hollywood> .
+<urn:graphragprov:entity:Planet%20of%20the%20Vampires> <urn:graphragprov:predicate:publicationYear> "1965"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Rabid%20Dogs> <urn:graphragprov:predicate:publicationYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Roy%20Colt%20%26%20Winchester%20Jack> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Spaghetti%20Western> .
+<urn:graphragprov:entity:Roy%20Colt%20%26%20Winchester%20Jack> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Shock> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Day%20the%20Sky%20Exploded> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Italian%20science%20fiction%20film> .
+<urn:graphragprov:entity:The%20Day%20the%20Sky%20Exploded> <urn:graphragprov:predicate:publicationYear> "1958"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Giant%20of%20Marathon> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Girl%20Who%20Knew%20Too%20Much> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:giallo%20film> .
+<urn:graphragprov:entity:The%20Girl%20Who%20Knew%20Too%20Much> <urn:graphragprov:predicate:publicationYear> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Whip%20and%20the%20Body> <urn:graphragprov:predicate:publicationYear> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Barbarella> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comic%20book%20adaptation> .
+<urn:graphragprov:entity:Barbarella> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Diabolik> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Diabolik> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:boxOfficePerformance> <urn:graphragprov:entity:below%20expectations> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:budget> <urn:graphragprov:entity:reduced%20budget> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:castMember> <urn:graphragprov:entity:Elsa%20Martinelli> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:castMember> <urn:graphragprov:entity:Gilbert%20Roland> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:castMember> <urn:graphragprov:entity:Jean%20Sorel> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:chosenBy> <urn:graphragprov:entity:Empire> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:coWrittenBy> <urn:graphragprov:entity:Mario%20Bava> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:criticizedFor> <urn:graphragprov:entity:performances%20of%20Law%20and%20Mell> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:criticizedFor> <urn:graphragprov:entity:visuals> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Bava> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Seth%20Holt> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:distributor> <urn:graphragprov:entity:Dino%20De%20Laurentiis> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:action%20film> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:producedInTandemWith> <urn:graphragprov:entity:Barbarella> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Dino%20De%20Laurentiis> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Tonino%20Cervi> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:productionType> <urn:graphragprov:entity:international%20co-production> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:rankYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:rankedIn> <urn:graphragprov:entity:The%20500%20Greatest%20Movies%20of%20All%20Time> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:receivedNegativeReviewFrom> <urn:graphragprov:entity:The%20New%20York%20Times> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:receivedNegativeReviewFrom> <urn:graphragprov:entity:Variety> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:reception> <urn:graphragprov:entity:positive> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:restartedFilming> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:scoreBy> <urn:graphragprov:entity:Ennio%20Morricone> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:screenplayBy> <urn:graphragprov:entity:new%20screenplay> .
+<urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:sharedCastAndCrewWith> <urn:graphragprov:entity:Barbarella> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:adaptedBy> <urn:graphragprov:entity:Manetti%20Bros.> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:announcementYear> "2018"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:createdBy> <urn:graphragprov:entity:Angela%20Giussani> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:createdBy> <urn:graphragprov:entity:Luciana%20Giussani> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:for> <urn:graphragprov:entity:Eva%20Kant> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Italian%20comic%20series> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:criminal> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:newAdaptationAnnounced> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:plans> <urn:graphragprov:entity:large-scale%20heists> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:John%20Phillip%20Law> .
+<urn:graphragprov:entity:Diabolik> <urn:graphragprov:predicate:pursuedBy> <urn:graphragprov:entity:Inspector%20Ginko> .
+<urn:graphragprov:entity:Eva%20Kant> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:girlfriend> .
+<urn:graphragprov:entity:Eva%20Kant> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Marisa%20Mell> .
+<urn:graphragprov:entity:Inspector%20Ginko> <urn:graphragprov:predicate:blackmails> <urn:graphragprov:entity:Ralph%20Valmont> .
+<urn:graphragprov:entity:Inspector%20Ginko> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Michel%20Piccoli> .
+<urn:graphragprov:entity:Ralph%20Valmont> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:gangster> .
+<urn:graphragprov:entity:Ralph%20Valmont> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Adolfo%20Celi> .
+<urn:graphragprov:entity:Ralph%20Valmont> <urn:graphragprov:predicate:taskedWith> <urn:graphragprov:entity:catching%20Diabolik> .

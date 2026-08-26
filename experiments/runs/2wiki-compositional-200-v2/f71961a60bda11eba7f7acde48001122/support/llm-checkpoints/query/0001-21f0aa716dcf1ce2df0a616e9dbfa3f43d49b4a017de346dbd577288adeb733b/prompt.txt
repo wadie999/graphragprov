@@ -1,0 +1,142 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the composer of song Theater (Song) born?
+
+Expected answer: Munich
+
+Benchmark evidence relations:
+1. Theater | composer | Ralph Siegel
+2. Ralph Siegel | place of birth | Munich
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Diese%20Welt> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:3rd%20position> .
+<urn:graphragprov:entity:It%27s%20Showtime> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Johnny%20Blue> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201981> .
+<urn:graphragprov:entity:Johnny%20Blue> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lena%20Valaitis> .
+<urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+<urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201970> .
+<urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201971> .
+<urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:performed> <urn:graphragprov:entity:Wunder%20gibt%20es%20immer%20wieder> .
+<urn:graphragprov:entity:Katja%20Ebstein> <urn:graphragprov:predicate:represented> <urn:graphragprov:entity:Germany> .
+<urn:graphragprov:entity:Love%20Enough%20For%20Two> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:United%20Kingdom> .
+<urn:graphragprov:entity:Love%20Enough%20For%20Two> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prima%20Donna> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:performedIn> <urn:graphragprov:entity:stage> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:playedInstrument> <urn:graphragprov:entity:piano> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:wearing> <urn:graphragprov:entity:gloves%20with%20small%20clowns%20on%20the%20fingers> .
+<urn:graphragprov:entity:S%C3%A1miid%20%C3%86dnan> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Norway> .
+<urn:graphragprov:entity:S%C3%A1miid%20%C3%86dnan> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Sverre%20Kjelsberg%20%26%20Mattis%20H%C3%A6tta> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:the%20manner%20in%20which%20clowns%20have%20to%20mask%20their%20true%20feelings%20when%20performing%20on%20stage> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:backingSingers> <urn:graphragprov:entity:four%20backing%20singers> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Bernd%20Meinunger> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Germany> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:fieldSize> "19"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:2nd> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:followed> <urn:graphragprov:entity:S%C3%A1miid%20%C3%86dnan> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:German> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:lyricist> <urn:graphragprov:entity:Bernd%20Meinunger> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest%201980> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:performedTwelfth> <urn:graphragprov:entity:twelfth> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:precededBy> <urn:graphragprov:entity:Love%20Enough%20For%20Two> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:receivedPoints> "128"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:recordedInLanguage> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:Theater%20%28song%29> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Johnny%20Blue> .
+<urn:graphragprov:entity:Wunder%20gibt%20es%20immer%20wieder> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:3rd%20position> .
+<urn:graphragprov:entity:four%20backing%20singers> <urn:graphragprov:predicate:dressedAs> <urn:graphragprov:entity:clowns> .
+<urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+<urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Switzerland> .
+<urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:8th%20position> .
+<urn:graphragprov:entity:C%27%C3%A9tait%20ma%20vie> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lys%20Assia> .
+<urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:hasSong> <urn:graphragprov:entity:Hadschi%20Halef%20Omar> .
+<urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:hasSong> <urn:graphragprov:entity:Moskau> .
+<urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Disco%20band> .
+<urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:organizedBy> <urn:graphragprov:entity:Bernd%20Meinunger> .
+<urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:organizedBy> <urn:graphragprov:entity:Ralph%20Siegel> .
+<urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+<urn:graphragprov:entity:Dschinghis%20Khan> <urn:graphragprov:predicate:publicationYear> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Bernd%20Meinunger> .
+<urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+<urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Nicole> .
+<urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Ein%20bi%C3%9Fchen%20Frieden> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+<urn:graphragprov:entity:Giulia%20Siegel> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Hans%20Wehrmann> .
+<urn:graphragprov:entity:Hans%20Wehrmann> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:entrepreneur> .
+<urn:graphragprov:entity:Kriemhild%20Jahn> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:opera%20singer> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:1984%20video%20footage%20of%20Dschinghis%20Khan%20performing%20Corrida%20and%20Ole%20Ole> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Munich> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:bornOn> "1945-09-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:hasChild> <urn:graphragprov:entity:Giulia%20Siegel> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:numberOfSongs> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:record%20producer> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:participantIn> <urn:graphragprov:entity:Eurovision%20Song%20Contest> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:playsInstrument> <urn:graphragprov:entity:classical%20guitar> .
+<urn:graphragprov:entity:Ralph%20Siegel> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Kriemhild%20Jahn> .
+<urn:graphragprov:entity:River%20of%20Silence> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Ralph%20Siegel> .
+<urn:graphragprov:entity:River%20of%20Silence> <urn:graphragprov:predicate:finishedInPlace> <urn:graphragprov:entity:last%20place> .
+<urn:graphragprov:entity:River%20of%20Silence> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lee%20Bradshaw> .
+<urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Sammarinese> .
+<urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jimmie%20Wilson> .
+<urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Valentina%20Monetta> .
+<urn:graphragprov:entity:Spirit%20of%20the%20Night> <urn:graphragprov:predicate:publicationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .

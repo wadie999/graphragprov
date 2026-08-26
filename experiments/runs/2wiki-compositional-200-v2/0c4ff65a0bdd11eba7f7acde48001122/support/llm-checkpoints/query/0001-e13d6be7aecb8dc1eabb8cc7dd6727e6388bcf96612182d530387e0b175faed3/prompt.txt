@@ -1,0 +1,122 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When is the director of film Kanchenjungha (Film) 's birthday?
+
+Expected answer: 2 May 1921
+
+Benchmark evidence relations:
+1.  Kanchenjungha | director | Satyajit Ray
+2. Satyajit Ray | date of birth | 2 May 1921
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Darjeeling> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:hill%20station> .
+<urn:graphragprov:entity:Darjeeling> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:resort> .
+<urn:graphragprov:entity:Darjeeling> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:Kanchenjunga> .
+<urn:graphragprov:entity:Kanchenjungha%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:upper%20class%20Bengali%20family> .
+<urn:graphragprov:entity:Kanchenjungha%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Satyajit%20Ray> .
+<urn:graphragprov:entity:Kanchenjungha%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:Kanchenjungha%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:Kanchenjungha%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:upper%20class%20Bengali%20family> <urn:graphragprov:predicate:vacationIn> <urn:graphragprov:entity:Darjeeling> .
+<urn:graphragprov:entity:Aparajito> <urn:graphragprov:predicate:publicationYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Apur%20Sansar> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Pather%20Panchali> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Best%20Human%20Document%20award> .
+<urn:graphragprov:entity:Pather%20Panchali> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:eleven%20international%20prizes> .
+<urn:graphragprov:entity:Pather%20Panchali> <urn:graphragprov:predicate:awardedAt> <urn:graphragprov:entity:1956%20Cannes%20Film%20Festival> .
+<urn:graphragprov:entity:Pather%20Panchali> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Satyajit%20Ray> .
+<urn:graphragprov:entity:Pather%20Panchali> <urn:graphragprov:predicate:publicationYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:several%20short%20stories%20and%20novels> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:2%20Silver%20Bears> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:32%20Indian%20National%20Film%20Awards> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Honorary%20Award> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Bharat%20Ratna> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Bear> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Golden%20Lion> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:honorary%20degree%20from%20Oxford%20University> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:awardedBy> <urn:graphragprov:entity:Government%20of%20India> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Calcutta> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:careerStart> <urn:graphragprov:entity:commercial%20artist> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:createdCharacter> <urn:graphragprov:entity:Feluda> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:createdCharacter> <urn:graphragprov:entity:Professor%20Shonku> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:dateOfBirth> "1921-05-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:dateOfDeath> "1992-04-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:36%20films> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:familyOrigin> <urn:graphragprov:entity:Bengali%20family> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Jean%20Renoir> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:author> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:calligrapher> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:fiction%20writer> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20critic> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:graphic%20artist> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:graphic%20designer> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:illustrator> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:lyricist> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20composer> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:publisher> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:ranked> "13"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Satyajit%20Ray> <urn:graphragprov:predicate:rankedIn> <urn:graphragprov:entity:BBC%27s%20poll%20of%20the%20Greatest%20Bengali%20of%20all%20time> .
+<urn:graphragprov:entity:The%20Apu%20Trilogy> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Aparajito> .
+<urn:graphragprov:entity:The%20Apu%20Trilogy> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Apur%20Sansar> .
+<urn:graphragprov:entity:The%20Apu%20Trilogy> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Pather%20Panchali> .

@@ -1,0 +1,198 @@
+
+H0 one-case execution
+  case:          91669c2e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Who is the spouse of the presenter of Los 8 Escalones?
+  expected:      Florencia Bertotti
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/91669c2e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Los 8 escalones'
+  source unit: u_f049c5980e1f9a8aa5b3ff7ca2ea013eaa5eece27fe66eb87d60147e56e774a7
+  text chars:  66
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 3
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     3
+  coverage:
+    characters combined: 54 / 81 (66.7%)
+    characters text:     39 / 66 (59.1%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  22 chars
+      'Los 8 escalones is an'
+    statement density:  37.04 / 1000 chars
+    title reliance:      3 / 3 (100.0%)
+
+[GRAPH 2/2] paragraph=1 title='Guido Kaczka'
+  source unit: u_176dfcfa12b93f5df3fbc23e06bfef1c569b1d185a2d47ac0e4b599c95a9d0b5
+  text chars:  253
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 67.903s | model=deepseek-v4-flash
+      tokens:   in=2355 | out=16384 | total=18739 | cached=2304 | uncached=51
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #3] sending...
+      provider: 65.016s | model=deepseek-v4-flash
+      tokens:   in=2400 | out=16384 | total=18784 | cached=2304 | uncached=96
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 3/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 8.303s | model=deepseek-v4-flash
+      tokens:   in=2400 | out=1822 | total=4222 | cached=2304 | uncached=96
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 155 / 265 (58.5%)
+    characters text:     143 / 253 (56.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  33 chars
+      'until their separation in 2010.'
+    statement density:  41.51 / 1000 chars
+    title reliance:      10 / 11 (90.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 14
+  whole-source attempts: 4
+  whole-source retries: 2
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      11
+resource nodes:        9
+entity nodes:          9
+literal values:        2
+predicates:            7
+
+N-Triples:
+  <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:bornOn> "1978-02-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:first%20child> .
+  <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+  <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:television%20show%20host> .
+  <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Florencia%20Bertotti> .
+  <urn:graphragprov:entity:first%20child> <urn:graphragprov:predicate:bornOn> "2008-07-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Los%208%20escalones> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:game%20show> .
+  <urn:graphragprov:entity:Los%208%20escalones> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+  <urn:graphragprov:entity:Los%208%20escalones> <urn:graphragprov:predicate:presenter> <urn:graphragprov:entity:Guido%20Kaczka> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.782s | model=deepseek-v4-flash
+      tokens:   in=1040 | out=179 | total=1219 | cached=384 | uncached=656
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Los%208%20escalones> <urn:graphragprov:predicate:presenter> <urn:graphragprov:entity:Guido%20Kaczka> .
+  - <urn:graphragprov:entity:Guido%20Kaczka> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Florencia%20Bertotti> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Los%208%20escalones> <urn:graphragprov:predicate:presenter> ?x . ?x <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_176dfcfa12b93f5d>
+  FROM <urn:graphragprov:unit:u_f049c5980e1f9a8a>
+  WHERE { <urn:graphragprov:entity:Los%208%20escalones> <urn:graphragprov:predicate:presenter> ?x . ?x <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Florencia Bertotti',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Guido Kaczka', 'Los 8 escalones']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  91669c2e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/91669c2e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    1
+graph LLM reused:      1
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8195
+output tokens:         34769
+total tokens:          42964
+cached input tokens:   7296
+uncached input tokens: 899
+cumulative LLM seconds: 143.006
+
+NOTE: token totals describe provider calls made in this invocation only; reused checkpoints were not billed again.
+
+statement occurrences: 14
+semantic triples:      11
+entity nodes:          9
+literal values:        2
+predicates:            7
+query attempts:        1
+observed answers:      ('Florencia Bertotti',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 141.232s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.037s
+  graph.materialization [attempt=1]: 0.044s
+  graph.observation [attempt=1]: 0.003s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.783s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.635s

@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_9167c82da2d4e82e2d6fa80add41299677fc7d96f6fcb885a08052bafa26e5be
+Title: En spännande dag för Josefine
+Text:
+En spännande dag för Josefine is a song written by Benny Borg, and recorded by Schytts, using it as a B-side for their 1974 single "Hasta la vista " and also charted at Svensktoppen for one weeks, at 9th position, on 20 October 1974. It was also recorded by Curt Haagers on their 1985 album with the same name, and Göran Lindbergs orkester, on the 1993 album "Den röda stugan". A 1973 recording by Inger Lise Rypdal, with lyrics in Norwegian by Arne Riis as "En spennende dag for Josefine", topped the Norwegian singles chart in 1974. Lyrical, the song deals with a girl being teased at school for coming from another country.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 10,
+    "statement": {
+      "subject": {
+        "value": "En spännande dag för Josefine",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "En spännande dag för Josefine",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "recordedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "recorded by",
+            "occurrence": 3
+          }
+        ]
+      },
+      "object": {
+        "value": "Göran Lindbergs orkester",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Göran Lindbergs orkester",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[10].predicate.evidence[0]: quote 'recorded by' occurs 2 time(s) in source segment 'text'; occurrence 3 does not exist"
+  },
+  {
+    "statement_index": 20,
+    "statement": {
+      "subject": {
+        "value": "Benny Borg",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Benny Borg",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "countryOfCitizenship",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Swedish",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Swedish",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Swedish",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[20].predicate.evidence[0]: quote 'Swedish' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

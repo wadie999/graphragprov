@@ -1,0 +1,978 @@
+
+H0 one-case execution
+  case:          4296e3a60bdb11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the composer of film The Amazing Mr. Bickford?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4296e3a60bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='The Amazing Mr. Bickford'
+  source unit: u_c7f47c2cb0bda7d342011faed374c5b6e1278c24f944b5a7d3581f5a015ece19
+  text chars:  231
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.386s | model=deepseek-v4-flash
+      tokens:   in=2305 | out=1192 | total=3497 | cached=2048 | uncached=257
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 178 / 255 (69.8%)
+    characters text:     178 / 231 (77.1%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  17 chars
+      '. To date it has'
+    statement density:  31.37 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='Frank Zappa'
+  source unit: u_5842c218621c34f3904187a19beacf2bd0b683d16121f3d47f0e3acf75a82f64
+  text chars:  2965
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 54.721s | model=deepseek-v4-flash
+      tokens:   in=2971 | out=13445 | total=16416 | cached=2048 | uncached=923
+    [LLM graph.reference #3] sending...
+      provider: 13.078s | model=deepseek-v4-flash
+      tokens:   in=4784 | out=3066 | total=7850 | cached=0 | uncached=4784
+  extraction: ACCEPTED
+  statements: 80
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    65
+    initially rejected: 16
+
+    initial rejection #15
+      validator:
+        response.statements[15].predicate.evidence[0]: quote 'director' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "director",
+                "segment": "text"
+              }
+            ],
+            "value": "occupation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #16
+      validator:
+        response.statements[16].predicate.evidence[0]: quote 'producer' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "produced",
+                "segment": "text"
+              }
+            ],
+            "value": "producer"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "producer",
+                "segment": "text"
+              }
+            ],
+            "value": "occupation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #17
+      validator:
+        response.statements[17].predicate.evidence[0]: quote 'film director' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed feature-length films",
+                "segment": "text"
+              }
+            ],
+            "value": "film director"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "film director",
+                "segment": "text"
+              }
+            ],
+            "value": "occupation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #18
+      validator:
+        response.statements[18].predicate.evidence[0]: quote 'music video director' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed ... music videos",
+                "segment": "text"
+              }
+            ],
+            "value": "music video director"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "music video director",
+                "segment": "text"
+              }
+            ],
+            "value": "occupation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #19
+      validator:
+        response.statements[19].predicate.evidence[0]: quote 'album cover designer' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "designed album covers",
+                "segment": "text"
+              }
+            ],
+            "value": "album cover designer"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "album cover designer",
+                "segment": "text"
+              }
+            ],
+            "value": "occupation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #21
+      validator:
+        response.statements[21].predicate.evidence[0]: quote '20th-century classical modernism' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "20th-century classical modernism",
+                "segment": "text"
+              }
+            ],
+            "value": "20th-century classical modernism"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "20th-century classical modernism",
+                "segment": "text"
+              }
+            ],
+            "value": "influencedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #22
+      validator:
+        response.statements[22].predicate.evidence[0]: quote 'African-American rhythm and blues' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "African-American rhythm and blues",
+                "segment": "text"
+              }
+            ],
+            "value": "African-American rhythm and blues"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "African-American rhythm and blues",
+                "segment": "text"
+              }
+            ],
+            "value": "influencedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #23
+      validator:
+        response.statements[23].predicate.evidence[0]: quote 'doo-wop' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "doo-wop",
+                "segment": "text"
+              }
+            ],
+            "value": "doo-wop"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "doo-wop",
+                "segment": "text"
+              }
+            ],
+            "value": "influencedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #40
+      validator:
+        response.statements[40].predicate.evidence[0]: quote '60-plus' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "60-plus",
+                "segment": "text"
+              }
+            ],
+            "value": "60-plus"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "60-plus",
+                "segment": "text"
+              }
+            ],
+            "value": "numberOfAlbums"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #44
+      validator:
+        response.statements[44].predicate.evidence[0]: quote 'Project/Object' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Project/Object",
+                "segment": "text"
+              }
+            ],
+            "value": "Project/Object"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Project/Object",
+                "segment": "text"
+              }
+            ],
+            "value": "concept"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #48
+      validator:
+        response.statements[48].predicate.evidence[0]: quote 'self-education' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "self-education",
+                "segment": "text"
+              }
+            ],
+            "value": "self-education"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "self-education",
+                "segment": "text"
+              }
+            ],
+            "value": "advocateFor"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #54
+      validator:
+        response.statements[54].predicate.evidence[0]: quote 'godfather of comedy rock' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "godfather",
+                "segment": "text"
+              }
+            ],
+            "value": "godfather of comedy rock"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "godfather of comedy rock",
+                "segment": "text"
+              }
+            ],
+            "value": "describedAs"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #55
+      validator:
+        response.statements[55].predicate.evidence[0]: quote 'self-taught' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "boolean",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "self-taught",
+                "segment": "text"
+              }
+            ],
+            "value": "true"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "self-taught",
+                "segment": "text"
+              }
+            ],
+            "value": "selfTaught"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #61
+      validator:
+        response.statements[61].predicate.evidence[0]: quote 'free-form improvisation' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "free-form improvisation",
+                "segment": "text"
+              }
+            ],
+            "value": "free-form improvisation"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "free-form improvisation",
+                "segment": "text"
+              }
+            ],
+            "value": "characterizedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #71
+      validator:
+        response.statements[71].predicate.evidence[0]: quote 'almost all of the 60-plus albums' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "almost all of the 60-plus albums",
+                "segment": "text"
+              }
+            ],
+            "value": "almost all of the 60-plus albums"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "almost all of the 60-plus albums",
+                "segment": "text"
+              }
+            ],
+            "value": "producedAlbums"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #72
+      validator:
+        response.statements[72].predicate.evidence[0]: quote 'feature-length films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "feature-length films",
+                "segment": "text"
+              }
+            ],
+            "value": "feature-length films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "feature-length films",
+                "segment": "text"
+              }
+            ],
+            "value": "directedFilms"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    15
+    still rejected:     1
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'directed feature-length films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed feature-length films",
+                "segment": "text"
+              }
+            ],
+            "value": "film director"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed feature-length films",
+                "segment": "text"
+              }
+            ],
+            "value": "occupation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 80
+  coverage:
+    characters combined: 1183 / 2976 (39.8%)
+    characters text:     1172 / 2965 (39.5%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           19 / 20 (95.0%)
+    longest uncovered:  318 chars
+      '", combined songs in conventional rock and roll format with collective improvisations and studio- generated sound collages. He continued this eclectic and experimental approach, i…'
+    statement density:  26.88 / 1000 chars
+    title reliance:      78 / 80 (97.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 88
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 16
+  corrected valid: 15
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      88
+resource nodes:        57
+entity nodes:          57
+literal values:        21
+predicates:            50
+
+N-Triples:
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:admiredFor> <urn:graphragprov:entity:compositional%20complexity> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:abolition%20of%20censorship> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:freedom%20of%20speech> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:political%20participation> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:advocateFor> <urn:graphragprov:entity:self-education> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:beganWritingClassicalMusicIn> <urn:graphragprov:entity:high%20school> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:birthDate> "1940-12-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:careerSpan> "more than 30 years" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:free-form%20improvisation> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:musical%20virtuosity> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:nonconformity> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:satire%20of%20American%20culture> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:sound%20experiments> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:commercialSuccess> "some commercial success" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:concept> <urn:graphragprov:entity:Project%2FObject> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:considered> "one of the most innovative and stylistically diverse rock musicians of his era" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:criticOf> <urn:graphragprov:entity:mainstream%20education> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:criticOf> <urn:graphragprov:entity:organized%20religion> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:criticizedFor> "lacking emotional depth" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:deathDate> "1993-12-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:debutAlbum> <urn:graphragprov:entity:Freak%20Out%21> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:godfather%20of%20comedy%20rock> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:designedAlbumCovers> <urn:graphragprov:entity:album%20covers> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:directedFilms> <urn:graphragprov:entity:feature-length%20films> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:directedMusicVideos> <urn:graphragprov:entity:music%20videos> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz%20fusion> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:musique%20concr%C3%A8te> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:orchestral> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rock> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:hadCommercialSuccessIn> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:musicians%20and%20composers> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:20th-century%20classical%20modernism> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:African-American%20rhythm%20and%20blues> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:doo-wop> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bandleader> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musician> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:drums> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:electric%20guitar> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:the%20Mothers%20of%20Invention> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:numberOfAlbums> "60-plus" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:album%20cover%20designer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:bandleader> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:multi-instrumentalist> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:music%20video%20director> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:playedDrumsIn> <urn:graphragprov:entity:rhythm%20and%20blues%20bands> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:producedAlbums> "almost all of the 60-plus albums" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rank> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rank> "36"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rank> "71"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankYear> "2000"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedAt> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedAt> "36"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedAt> "71"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedOn> <urn:graphragprov:entity:100%20Greatest%20Artists%20of%20All%20Time> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedOn> <urn:graphragprov:entity:100%20Greatest%20Artists%20of%20Hard%20Rock> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:rankedOn> <urn:graphragprov:entity:100%20Greatest%20Guitarists%20of%20All%20Time> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:receivedAward> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:releasedAlbumsAs> <urn:graphragprov:entity:solo%20artist> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:releasedAlbumsWith> <urn:graphragprov:entity:the%20Mothers%20of%20Invention> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:selfTaught> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:stanceOnDrugs> "disapproved of drugs" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:stanceOnDrugs> "supported their decriminalization and regulation" .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:switchedTo> <urn:graphragprov:entity:electric%20guitar> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:wasInductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:independent%20artist> .
+  <urn:graphragprov:entity:Freak%20Out%21> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:the%20Mothers%20of%20Invention> .
+  <urn:graphragprov:entity:Freak%20Out%21> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:animationBy> <urn:graphragprov:entity:Bruce%20Bickford> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:orchestral%20pieces> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:video> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:notReleasedOn> <urn:graphragprov:entity:DVD> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:releaseFormat> <urn:graphragprov:entity:direct-to-video> .
+  <urn:graphragprov:entity:orchestral%20pieces> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.107s | model=deepseek-v4-flash
+      tokens:   in=4652 | out=203 | total=4855 | cached=384 | uncached=4268
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .
+  - <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> . <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5842c218621c34f3>
+  FROM <urn:graphragprov:unit:u_c7f47c2cb0bda7d3>
+  WHERE { <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> . <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Frank Zappa', 'The Amazing Mr. Bickford']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4296e3a60bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/4296e3a60bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          14712
+output tokens:         17906
+total tokens:          32618
+cached input tokens:   4480
+uncached input tokens: 10232
+cumulative LLM seconds: 76.292
+
+statement occurrences: 88
+semantic triples:      88
+entity nodes:          57
+literal values:        21
+predicates:            50
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 74.224s
+  graph.reference.measurements [attempt=1]: 0.011s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.078s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.008s
+  query.reference.generation [attempt=1]: 2.108s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.492s

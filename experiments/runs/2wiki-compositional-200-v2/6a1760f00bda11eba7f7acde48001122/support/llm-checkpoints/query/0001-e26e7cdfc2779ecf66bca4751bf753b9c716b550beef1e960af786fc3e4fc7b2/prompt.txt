@@ -1,0 +1,91 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the place of birth of the director of film The City Gone Wild?
+
+Expected answer: Ogden
+
+Benchmark evidence relations:
+1. The City Gone Wild | director | James Cruze
+2. James Cruze | place of birth | Ogden
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Paramount> <urn:graphragprov:predicate:contractedWith> <urn:graphragprov:entity:junk%20men> .
+<urn:graphragprov:entity:Shepard> <urn:graphragprov:predicate:arrivedAt> <urn:graphragprov:entity:studio> .
+<urn:graphragprov:entity:Shepard> <urn:graphragprov:predicate:arrivedJustAs> <urn:graphragprov:entity:junkmen%20carted%20the%20film%20off%20for%20disposal> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Paramount%20Pictures> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20gangster%20film> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:lastKnownCopy> <urn:graphragprov:entity:last%20known%20copy> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Famous%20Players-Lasky> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:publicationYear> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Louise%20Brooks> .
+<urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:lost%20film> .
+<urn:graphragprov:entity:junk%20men> <urn:graphragprov:predicate:haulOff> <urn:graphragprov:entity:old%20rusting%20reels> .
+<urn:graphragprov:entity:last%20known%20copy> <urn:graphragprov:predicate:forDepositAt> <urn:graphragprov:entity:AFI> .
+<urn:graphragprov:entity:last%20known%20copy> <urn:graphragprov:predicate:nearlySavedBy> <urn:graphragprov:entity:David%20Shepard> .
+<urn:graphragprov:entity:last%20known%20copy> <urn:graphragprov:predicate:nearlySavedIn> "late 1960s" .
+<urn:graphragprov:entity:old%20rusting%20reels> <urn:graphragprov:predicate:withFilmStillWound> <urn:graphragprov:entity:film> .
+<urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Jens%20Vera%20Cruz%20Bosen> .
+<urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Ogden%2C%20Utah> .
+<urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:bornOn> "1884-03-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:silent%20film%20actor> .

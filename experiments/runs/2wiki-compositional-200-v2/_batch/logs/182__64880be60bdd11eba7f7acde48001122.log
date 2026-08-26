@@ -1,0 +1,208 @@
+
+H0 one-case execution
+  case:          64880be60bdd11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film The Street With No Name die?
+  expected:      June 24, 1984
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/64880be60bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='The Street with No Name'
+  source unit: u_b427b504cef81fa1f94672beb31cdbce4ce7345ad5200033bfb2e214b41a2d07
+  text chars:  478
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.942s | model=deepseek-v4-flash
+      tokens:   in=2380 | out=2618 | total=4998 | cached=2048 | uncached=332
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 387 / 501 (77.2%)
+    characters text:     387 / 478 (81.0%)
+    characters title:    0 / 23 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  29 chars
+      '" The House on 92nd Street".'
+    statement density:  35.93 / 1000 chars
+    title reliance:      0 / 18 (0.0%)
+
+[GRAPH 2/2] paragraph=9 title='William Keighley'
+  source unit: u_bfd24ab7990db9971020f842060f5ba4a0a70cc4586ef0f18406479795b619cd
+  text chars:  901
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 15.977s | model=deepseek-v4-flash
+      tokens:   in=2691 | out=3781 | total=6472 | cached=2048 | uncached=643
+  extraction: ACCEPTED
+  statements: 26
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    26
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     26
+  coverage:
+    characters combined: 509 / 917 (55.5%)
+    characters text:     493 / 901 (54.7%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           11 / 11 (100.0%)
+    longest uncovered:  77 chars
+      ', where he proved adept at directing in a wide variety of genres. He was the'
+    statement density:  28.35 / 1000 chars
+    title reliance:      22 / 26 (84.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 44
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      44
+resource nodes:        38
+entity nodes:          38
+literal values:        6
+predicates:            32
+
+N-Triples:
+  <urn:graphragprov:entity:Center%20City> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Los%20Angeles> .
+  <urn:graphragprov:entity:Cordell%27s%20superior> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:FBI%20Inspector> .
+  <urn:graphragprov:entity:Gene%20Cordell> <urn:graphragprov:predicate:infiltrates> <urn:graphragprov:entity:deadly%20crime%20gang> .
+  <urn:graphragprov:entity:Gene%20Cordell> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:undercover%20FBI%20agent> .
+  <urn:graphragprov:entity:Gene%20Cordell> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Mark%20Stevens> .
+  <urn:graphragprov:entity:George%20A.%20Briggs> <urn:graphragprov:predicate:appearsIn> <urn:graphragprov:entity:The%20House%20on%2092nd%20Street> .
+  <urn:graphragprov:entity:George%20A.%20Briggs> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:FBI%20Inspector> .
+  <urn:graphragprov:entity:George%20A.%20Briggs> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Lloyd%20Nolan> .
+  <urn:graphragprov:entity:Skid%20Row%20section> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Center%20City> .
+  <urn:graphragprov:entity:The%20House%20on%2092nd%20Street> <urn:graphragprov:predicate:publicationYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:filmingStyle> <urn:graphragprov:entity:semidocumentary%20style> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:followUpTo> <urn:graphragprov:entity:The%20House%20on%2092nd%20Street> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20noir> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:publicationYear> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:publicationYear> "1948"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:takesPlaceIn> <urn:graphragprov:entity:Skid%20Row%20section> .
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:tellsStoryOf> <urn:graphragprov:entity:Gene%20Cordell> .
+  <urn:graphragprov:entity:First%20Motion%20Picture%20Unit> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:U.S.%20Army%20Air%20Forces> .
+  <urn:graphragprov:entity:Genevieve%20Tobin> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:The%20Adventures%20of%20Robin%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Errol%20Flynn> .
+  <urn:graphragprov:entity:The%20Adventures%20of%20Robin%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Olivia%20de%20Havilland> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:activeIn> <urn:graphragprov:entity:1910s%20and%201920s> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Philadelphia%2C%20Pennsylvania> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:bornOn> "1889-08-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:stroke> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> "1984-06-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:New%20York%2C%20New%20York> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:The%20Adventures%20of%20Robin%20Hood> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Ludlum%20School%20of%20Dramatic%20Art> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Warner%20Bros.> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:William%20Jackson%20Keighley> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20actor> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:still%20photographer> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:relocatedTo> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:replacedBy> <urn:graphragprov:entity:Michael%20Curtiz> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:retiredIn> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Genevieve%20Tobin> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:startedActingAtAge> "23"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:supervised> <urn:graphragprov:entity:First%20Motion%20Picture%20Unit> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Broadway> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.791s | model=deepseek-v4-flash
+      tokens:   in=2742 | out=223 | total=2965 | cached=512 | uncached=2230
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> .
+  - <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> "1984-06-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> . <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b427b504cef81fa1>
+  FROM <urn:graphragprov:unit:u_bfd24ab7990db997>
+  WHERE { <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> . <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1984-06-24',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['The Street with No Name', 'William Keighley']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  64880be60bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/64880be60bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7813
+output tokens:         6622
+total tokens:          14435
+cached input tokens:   4608
+uncached input tokens: 3205
+cumulative LLM seconds: 28.710
+
+statement occurrences: 44
+semantic triples:      44
+entity nodes:          38
+literal values:        6
+predicates:            32
+query attempts:        1
+observed answers:      ('1984-06-24',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 26.932s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.792s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.557s

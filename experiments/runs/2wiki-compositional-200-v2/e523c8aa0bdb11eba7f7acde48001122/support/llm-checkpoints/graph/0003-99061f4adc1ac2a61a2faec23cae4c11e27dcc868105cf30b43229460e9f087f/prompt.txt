@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_59602a37f88e0e1da62ab2a8053327bdeb2154909c824a1b234baded6d3d2e51
+Title: Rainer Werner Fassbinder
+Text:
+Rainer Werner Fassbinder( 31 May 1945 – 10 June 1982), sometimes credited as R. W. Fassbinder, was a West German filmmaker, actor, playwright, theatre director, composer, cinematographer, editor, and essayist. He is widely regarded as a prominent figure and catalyst of the New German Cinema movement. His first feature- length film was a gangster movie called" Love Is Colder Than Death"( 1969); he scored his first domestic commercial success with" The Merchant of Four Seasons"( 1972) and his first international success with( 1974), both of which are considered masterpieces by contemporary critics. Big- budget projects such as" Despair"( 1978)," Lili Marleen" and" Lola"( both 1981) followed. His greatest success came with" The Marriage of Maria Braun"( 1979), chronicling the rise and fall of a German woman in the wake of World War II. Other notable films include" The Bitter Tears of Petra von Kant"( 1972)," Fox and His Friends"( 1975)," Satan's Brew"( 1976), and" Querelle"( 1982), all of which focused on gay and lesbian themes. Fassbinder died on 10 June 1982, at the age of 37, from a lethal cocktail of cocaine and barbiturates. Although his career lasted less than two decades, he was extremely prolific; by the time of his death, he had completed over forty feature films, two television series, three short films, four video productions, and twenty- four plays.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 15,
+    "statement": {
+      "subject": {
+        "value": "Love Is Colder Than Death",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Love Is Colder Than Death",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "his first feature- length film",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Rainer Werner Fassbinder",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Rainer Werner Fassbinder",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[15].predicate.evidence[0]: quote 'his first feature- length film' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 21,
+    "statement": {
+      "subject": {
+        "value": "The Marriage of Maria Braun",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "The Marriage of Maria Braun",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "his greatest success",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Rainer Werner Fassbinder",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Rainer Werner Fassbinder",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[21].predicate.evidence[0]: quote 'his greatest success' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

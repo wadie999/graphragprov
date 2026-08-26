@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_2f019b1dec28d3398c27dacf389169faae37c16d6151891f24a6894bf519c089
+Title: Johannes Winding Harbitz
+Text:
+Johannes Winding Harbitz (26 December 1831 – 5 September 1917) was a Norwegian politician for the Conservative Party. He was born in Askvold as the oldest son of vicar and politician Georg Prahl Harbitz and his wife Maren Mariken Hof. He enrolled as a student in 1850, but soon took off to work at sea. He took the mate's examination in 1852, and worked as a shipmaster from 1859 to 1869, as well as ship-owner. He was also vice consul from the mid-1880s, at that time living in Tønsberg. He was elected to the Norwegian Parliament in 1880, representing the urban constituency Tønsberg. He was re-elected on four occasions, serving a total of five terms. He was also mayor of Tønsberg for twelve years. On 2 May 1893 he was appointed to the second cabinet Stang as a member of the Council of State Division in Stockholm. He left on 1 July 1894 to become Minister of Defence. On 1 April the next year there was a reshuffle and he was appointed Minister of Auditing. He held this post until October 1895, when the second cabinet Stang fell. He moved from Tønsberg to Vestre Aker i 1897, and died in 1917. He was married to Louise Henriette Betty Lunnevig, daughter of Ole Lunnevig in Tønsberg.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 41,
+    "statement": {
+      "subject": {
+        "value": "Georg Prahl Harbitz",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Georg Prahl Harbitz",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "dateOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "22 November 1889",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1889-11-22",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "22 November 1889",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[41].predicate.evidence[0]: quote '22 November 1889' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

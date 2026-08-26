@@ -1,0 +1,261 @@
+
+H0 one-case execution
+  case:          b315b37e0bda11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of burial of the performer of song Poor Boy (Elvis Presley Song)?
+  expected:      Graceland
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b315b37e0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=7 title='Poor Boy'
+  source unit: u_94aa66a541e69a27ddd413aab634ee9c641731c6b7eac575090bfe138768bc3f
+  text chars:  22
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.757s | model=deepseek-v4-flash
+      tokens:   in=2247 | out=8 | total=2255 | cached=2048 | uncached=199
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    0
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     0
+  extraction attempt: REJECTED
+    stage:  response_validation
+    error:  EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    [LLM graph.reference #2] sending...
+      provider: 1.831s | model=deepseek-v4-flash
+      tokens:   in=2306 | out=147 | total=2453 | cached=2176 | uncached=130
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 20 / 30 (66.7%)
+    characters text:     12 / 22 (54.5%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  9 chars
+      'Poor Boy'
+    statement density:  33.33 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/3] paragraph=9 title='Poor Boy (Elvis Presley song)'
+  source unit: u_46ff4367e42da18c258058e076fa03878c25c372901011d610381da745973274
+  text chars:  286
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 6.472s | model=deepseek-v4-flash
+      tokens:   in=2325 | out=1544 | total=3869 | cached=2176 | uncached=149
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 190 / 315 (60.3%)
+    characters text:     190 / 286 (66.4%)
+    characters title:    0 / 29 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      'Elvis Presley and'
+    statement density:  34.92 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 3/3] paragraph=0 title='Elvis Presley'
+  source unit: u_207d457385af3c87441fdd84093513bc80d112aeb9f5e06f98c6e76a90ea8550
+  text chars:  2709
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 26.269s | model=deepseek-v4-flash
+      tokens:   in=2945 | out=6416 | total=9361 | cached=2176 | uncached=769
+  extraction: ACCEPTED
+  statements: 44
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    44
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     44
+  coverage:
+    characters combined: 1181 / 2722 (43.4%)
+    characters text:     1168 / 2709 (43.1%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           17 / 19 (89.5%)
+    longest uncovered:  285 chars
+      '. His energized interpretations of songs and sexually provocative performance style, combined with a singularly potent mix of influences across color lines during a transformative…'
+    statement density:  16.16 / 1000 chars
+    title reliance:      37 / 44 (84.1%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 56
+  whole-source attempts: 4
+  whole-source retries: 1
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      56
+resource nodes:        45
+entity nodes:          45
+literal values:        8
+predicates:            42
+
+N-Triples:
+  <urn:graphragprov:entity:Aloha%20from%20Hawaii> <urn:graphragprov:predicate:broadcastAroundWorld> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Aloha%20from%20Hawaii> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:concert> .
+  <urn:graphragprov:entity:Aloha%20from%20Hawaii> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:Colonel%20Tom%20Parker> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:D.%20J.%20Fontana> <urn:graphragprov:predicate:joined> <urn:graphragprov:entity:classic%20quartet> .
+  <urn:graphragprov:entity:Elvis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20comeback%20special> .
+  <urn:graphragprov:entity:Elvis> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:accompaniedBy> <urn:graphragprov:entity:Bill%20Black> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:accompaniedBy> <urn:graphragprov:entity:Scotty%20Moore> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:ageAtDeath> "42"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Elvis> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bestSellingSoloArtistIn> <urn:graphragprov:entity:history%20of%20recorded%20music> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tupelo%2C%20Mississippi> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:bornOn> "1935-01-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:devotedTo> <urn:graphragprov:entity:Hollywood%20films%20and%20soundtrack%20albums> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:diedAt> <urn:graphragprov:entity:Graceland%20estate> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:diedOn> "1977-08-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:draftedInto> <urn:graphragprov:entity:military%20service> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:blues> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:gospel> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:multiple%20music%20halls%20of%20fame> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:instrument> <urn:graphragprov:entity:rhythm%20acoustic%20guitar> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:leadingFigureOf> <urn:graphragprov:entity:rock%20and%20roll> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:classic%20quartet> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:musicCareerBegan> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:rockabilly> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Graceland> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Sam%20Phillips> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:receivedAward> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:recordedAt> <urn:graphragprov:entity:Sun%20Records> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:relaunchedRecordingCareer> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:relocatedTo> <urn:graphragprov:entity:Memphis%2C%20Tennessee> .
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:wonGrammy> <urn:graphragprov:entity:three%20competitive%20Grammys> .
+  <urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number-one%20hit%20in%20the%20United%20States> .
+  <urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:Heartbreak%20Hotel> <urn:graphragprov:predicate:releaseDate> "1956-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Love%20Me%20Tender> <urn:graphragprov:predicate:filmDebutOf> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:RCA%20Victor> <urn:graphragprov:predicate:acquiredContractOf> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:Ken%20Darby> <urn:graphragprov:predicate:principalWriter> <urn:graphragprov:entity:Poor%20Boy> .
+  <urn:graphragprov:entity:Love%20Me%20Tender> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:20th%20Century%20Fox> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:creditedTo> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:creditedTo> <urn:graphragprov:entity:Vera%20Matson> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:featuredIn> <urn:graphragprov:entity:Love%20Me%20Tender> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:publicationYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:publishedBy> <urn:graphragprov:entity:Elvis%20Presley%20Music> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:releaseFormat> <urn:graphragprov:entity:RCA%20Victor%20EP> .
+  <urn:graphragprov:entity:Vera%20Matson> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Ken%20Darby> .
+  <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:disambiguation%20page> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.367s | model=deepseek-v4-flash
+      tokens:   in=3155 | out=196 | total=3351 | cached=384 | uncached=2771
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> .
+  - <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Graceland> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> . <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_207d457385af3c87>
+  FROM <urn:graphragprov:unit:u_46ff4367e42da18c>
+  FROM <urn:graphragprov:unit:u_94aa66a541e69a27>
+  WHERE { <urn:graphragprov:entity:Poor%20Boy> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Elvis%20Presley> . <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Graceland',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Elvis Presley', 'Poor Boy (Elvis Presley song)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b315b37e0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/b315b37e0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12978
+output tokens:         8311
+total tokens:          21289
+cached input tokens:   8960
+uncached input tokens: 4018
+cumulative LLM seconds: 37.696
+
+statement occurrences: 56
+semantic triples:      56
+entity nodes:          45
+literal values:        8
+predicates:            42
+query attempts:        1
+observed answers:      ('Graceland',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 36.346s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.071s
+  graph.materialization [attempt=1]: 0.088s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.368s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.475s

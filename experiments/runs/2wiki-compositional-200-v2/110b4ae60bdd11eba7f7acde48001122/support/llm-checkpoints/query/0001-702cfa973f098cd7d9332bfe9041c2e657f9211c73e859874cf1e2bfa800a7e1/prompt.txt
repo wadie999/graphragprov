@@ -1,0 +1,160 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What nationality is the performer of song Her Town Too?
+
+Expected answer: American
+
+Benchmark evidence relations:
+1. Her Town Too | performer | James Taylor
+2. James Taylor | country of citizenship | American
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Betsy%20Asher> <urn:graphragprov:predicate:divorcedFrom> <urn:graphragprov:entity:Peter%20Asher> .
+<urn:graphragprov:entity:Dad%20Loves%20His%20Work> <urn:graphragprov:predicate:publicationYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Don%20Shewey> <urn:graphragprov:predicate:critic> <urn:graphragprov:entity:Rolling%20Stone> .
+<urn:graphragprov:entity:Don%20Shewey> <urn:graphragprov:predicate:noted> <urn:graphragprov:entity:the%20narrative%20never%20quite%20reaches%20a%20resolution> .
+<urn:graphragprov:entity:Greatest%20Hits%20Volume%202> <urn:graphragprov:predicate:publicationYear> "2000"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Dad%20Loves%20His%20Work> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Billboard%20Adult%20Contemporary%20chart> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Billboard%20Hot%20100> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Mainstream%20Rock%20chart> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chartPosition> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:chartPosition> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:a%20catchy%2C%20mindless%20ditty> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:a%20relentless%20bolero%20quality> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:a%20tender%2C%20well-meaning%20song> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:mellifluous%20melody> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:enteredChartAt> "38"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:enteredTop40> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:hasLyric> <urn:graphragprov:entity:she%20always%20figured%20that%20they%20were%20her%20friends%20but%20maybe%20they%20can%20live%20without%20her> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:hasMaturityInSongStructure> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:hasMellifluousMelody> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:notReachTop10> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:J.%20D.%20Souther> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:publicationYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:releasedAsSingle> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:releasedOnCompilation> <urn:graphragprov:entity:Greatest%20Hits%20Volume%202> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:resonatesWith> <urn:graphragprov:entity:people%20who%20have%20had%20friendships%20with%20one%20or%20the%20other%20partner%20disintegrate%20after%20a%20relationship%20ends> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:speculatedAbout> <urn:graphragprov:entity:Carly%20Simon> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:statedSubject> <urn:graphragprov:entity:the%20ex-wife%20of%20a%20mutual%20friend> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:aftermath%20of%20a%20breakup%20of%20a%20long%20term%20relationship> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:subjectPerson> <urn:graphragprov:entity:Betsy%20Asher> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:J.%20D.%20Souther> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:James%20Taylor> .
+<urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Waddy%20Wachtel> .
+<urn:graphragprov:entity:J.%20D.%20Souther> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Her%20Town%20Too> .
+<urn:graphragprov:entity:JT> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:lastSingleToReachTop40> <urn:graphragprov:entity:Her%20Town%20Too> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:manager> <urn:graphragprov:entity:Peter%20Asher> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Her%20Town%20Too> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Peter%20Asher> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Carly%20Simon> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:wroteSong> <urn:graphragprov:entity:Her%20Town%20Too> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:wroteSong> <urn:graphragprov:entity:Your%20Smiling%20Face> .
+<urn:graphragprov:entity:John%20Griffin> <urn:graphragprov:predicate:critic> <urn:graphragprov:entity:Montreal%20Gazette> .
+<urn:graphragprov:entity:John%20Griffin> <urn:graphragprov:predicate:praised> <urn:graphragprov:entity:Her%20Town%20Too> .
+<urn:graphragprov:entity:Peter%20Asher> <urn:graphragprov:predicate:managerOf> <urn:graphragprov:entity:James%20Taylor> .
+<urn:graphragprov:entity:Peter%20Asher> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:James%20Taylor> .
+<urn:graphragprov:entity:Rolling%20Stone%20Album%20Guide> <urn:graphragprov:predicate:describedAs> <urn:graphragprov:entity:Her%20Town%20Too> .
+<urn:graphragprov:entity:Waddy%20Wachtel> <urn:graphragprov:predicate:wroteSong> <urn:graphragprov:entity:Her%20Town%20Too> .
+<urn:graphragprov:entity:Your%20Smiling%20Face> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Before%20This%20World> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Before%20This%20World> <urn:graphragprov:predicate:publicationYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Fire%20and%20Rain> <urn:graphragprov:predicate:chartPosition> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:certification> <urn:graphragprov:entity:Diamond> .
+<urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:sales> "12000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Greatest%20Hits> <urn:graphragprov:predicate:salesRegion> <urn:graphragprov:entity:US> .
+<urn:graphragprov:entity:JT> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:albumSales> "1000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:albumSalesPeriod> "1977-2007" .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:awardCount> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Award> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:awardWinner> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:breakthroughSingle> <urn:graphragprov:entity:Fire%20and%20Rain> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:breakthroughYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:firstNumberOneHit> <urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:fullName> <urn:graphragprov:entity:James%20Vernon%20Taylor> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:inductedInYear> "2000"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:inductedInto> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:best-selling%20music%20artist> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Handy%20Man> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:How%20Sweet%20It%20Is%20%28To%20Be%20Loved%20by%20You%29> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Sweet%20Baby%20James> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:guitarist> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer-songwriter> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordSales> "100000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordSalesScope> <urn:graphragprov:entity:worldwide> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordSalesUnit> <urn:graphragprov:entity:record> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedSong> <urn:graphragprov:entity:Before%20This%20World> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedSong> <urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedWork> <urn:graphragprov:entity:Covers> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedWork> <urn:graphragprov:entity:Hourglass> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:recordedWork> <urn:graphragprov:entity:October%20Road> .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:resurgencePeriod> "late 1990s and 2000s" .
+<urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:retainedLargeAudience> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Carole%20King> .
+<urn:graphragprov:entity:You%27ve%20Got%20a%20Friend> <urn:graphragprov:predicate:writtenInYear> "1971"^^<http://www.w3.org/2001/XMLSchema#gYear> .

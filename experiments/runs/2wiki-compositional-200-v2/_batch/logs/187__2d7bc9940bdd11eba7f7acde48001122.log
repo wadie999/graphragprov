@@ -1,0 +1,205 @@
+
+H0 one-case execution
+  case:          2d7bc9940bdd11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the director of film The Don Juans?
+  expected:      Prague
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/2d7bc9940bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='The Don Juans'
+  source unit: u_5f3d0505cdd7e7e921a73e942b0aef8194dbe463a696363c309fad735602d247
+  text chars:  740
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.508s | model=deepseek-v4-flash
+      tokens:   in=2404 | out=2254 | total=4658 | cached=2048 | uncached=356
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 559 / 753 (74.2%)
+    characters text:     546 / 740 (73.8%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  56 chars
+      'the film before it was chosen and because the film was'
+    statement density:  19.92 / 1000 chars
+    title reliance:      9 / 15 (60.0%)
+
+[GRAPH 2/2] paragraph=9 title='Jiří Menzel'
+  source unit: u_ee645a1e63ff5eca4fa7290b06ab2ae010b69b77f3ee657f7bfab6f09c95cbc4
+  text chars:  1233
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 16.661s | model=deepseek-v4-flash
+      tokens:   in=2770 | out=3902 | total=6672 | cached=2048 | uncached=722
+  extraction: ACCEPTED
+  statements: 26
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    26
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     26
+  coverage:
+    characters combined: 808 / 1244 (65.0%)
+    characters text:     797 / 1233 (64.6%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           10 / 12 (83.3%)
+    longest uncovered:  218 chars
+      '. His films often combine a humanistic view of the world with sarcasm and provocative cinematography. Some of these films are adapted from works by Czech writers such as Bohumil H…'
+    statement density:  20.90 / 1000 chars
+    title reliance:      18 / 26 (69.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 41
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      41
+resource nodes:        32
+entity nodes:          32
+literal values:        7
+predicates:            28
+
+N-Triples:
+  <urn:graphragprov:entity:AMPAS> <urn:graphragprov:predicate:citingRegulation> <urn:graphragprov:entity:the%20film%20must%20not%20have%20initially%20appeared%20on%20television> .
+  <urn:graphragprov:entity:AMPAS> <urn:graphragprov:predicate:disqualified> <urn:graphragprov:entity:Agnieszka%20Holland%27s%20mini-series%20%22Burning%20Bush%22> .
+  <urn:graphragprov:entity:Agnieszka%20Holland%27s%20mini-series%20%22Burning%20Bush%22> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:Czech%20TV> .
+  <urn:graphragprov:entity:Agnieszka%20Holland%27s%20mini-series%20%22Burning%20Bush%22> <urn:graphragprov:predicate:airedPriorTo> <urn:graphragprov:entity:the%20re-edited%20version%20that%20appeared%20in%20cinemas> .
+  <urn:graphragprov:entity:Agnieszka%20Holland%27s%20mini-series%20%22Burning%20Bush%22> <urn:graphragprov:predicate:selectedToRepresent> <urn:graphragprov:entity:Czech%20Republic> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Skirt%20Chasers> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:controversialPick> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czech> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:notNominatedFor> <urn:graphragprov:entity:Best%20Foreign%20Language%20Film%20at%20the%2086th%20Academy%20Awards> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:poorlyReceivedBy> <urn:graphragprov:entity:Czech%20critics> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:selectedFor> <urn:graphragprov:entity:Best%20Foreign%20Language%20Film%20at%20the%2086th%20Academy%20Awards> .
+  <urn:graphragprov:entity:members%20of%20the%20Czech%20Film%20Academy> <urn:graphragprov:predicate:didNotSee> <urn:graphragprov:entity:The%20Don%20Juans> .
+  <urn:graphragprov:entity:Closely%20Watched%20Trains> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> .
+  <urn:graphragprov:entity:Closely%20Watched%20Trains> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:feature%20film> .
+  <urn:graphragprov:entity:Closely%20Watched%20Trains> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:awarded> <urn:graphragprov:entity:IIFA%20Lifetime%20Achievement%20Award> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:awardedOn> "2013-11"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:becameInternationallyFamousIn> "1967"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:bornOn> "1938-02-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Czech%20New%20Wave> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:memberOfJuryAt> <urn:graphragprov:entity:16th%20Moscow%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:memberOfJuryAt> <urn:graphragprov:entity:19th%20Moscow%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:memberOfJuryAt> <urn:graphragprov:entity:37th%20Berlin%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czech> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:theatre%20director> .
+  <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Prague> .
+  <urn:graphragprov:entity:Larks%20on%20a%20String> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> .
+  <urn:graphragprov:entity:Larks%20on%20a%20String> <urn:graphragprov:predicate:filmedInYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Larks%20on%20a%20String> <urn:graphragprov:predicate:initiallyBannedBy> <urn:graphragprov:entity:Czechoslovakian%20government> .
+  <urn:graphragprov:entity:Larks%20on%20a%20String> <urn:graphragprov:predicate:releasedInYear> "1990"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Larks%20on%20a%20String> <urn:graphragprov:predicate:wonAward> <urn:graphragprov:entity:Golden%20Bear> .
+  <urn:graphragprov:entity:My%20Sweet%20Little%20Village> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> .
+  <urn:graphragprov:entity:My%20Sweet%20Little%20Village> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:dark%20comedy> .
+  <urn:graphragprov:entity:My%20Sweet%20Little%20Village> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Foreign%20Language%20Film> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.000s | model=deepseek-v4-flash
+      tokens:   in=2907 | out=189 | total=3096 | cached=384 | uncached=2523
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> .
+  - <urn:graphragprov:entity:Ji%C5%99%C3%AD%20Menzel> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Prague> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5f3d0505cdd7e7e9>
+  FROM <urn:graphragprov:unit:u_ee645a1e63ff5eca>
+  WHERE { <urn:graphragprov:entity:The%20Don%20Juans> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Prague',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Jiří Menzel', 'The Don Juans']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2d7bc9940bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/2d7bc9940bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8081
+output tokens:         6345
+total tokens:          14426
+cached input tokens:   4480
+uncached input tokens: 3601
+cumulative LLM seconds: 28.169
+
+statement occurrences: 41
+semantic triples:      41
+entity nodes:          32
+literal values:        7
+predicates:            28
+query attempts:        1
+observed answers:      ('Prague',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 26.181s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.058s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.001s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.468s

@@ -1,0 +1,250 @@
+
+H0 one-case execution
+  case:          ba413fca0bd911eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Meesaya Murukku is from?
+  expected:      India
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/ba413fca0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Meesaya Murukku'
+  source unit: u_97b0c6f239826f9bfbe372a62c62aaa917b09616eb7a921fb3cfa4498dec5115
+  text chars:  455
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.682s | model=deepseek-v4-flash
+      tokens:   in=2378 | out=2969 | total=5347 | cached=0 | uncached=2378
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 326 / 470 (69.4%)
+    characters text:     326 / 455 (71.6%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  16 chars
+      '. The movie was'
+    statement density:  42.55 / 1000 chars
+    title reliance:      0 / 20 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Hiphop Tamizha'
+  source unit: u_5ba0f14c9a3ed0be7205bf7a2a88634f3f5bf432b31e99e1aeabd244dc761494
+  text chars:  722
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 13.211s | model=deepseek-v4-flash
+      tokens:   in=2704 | out=3104 | total=5808 | cached=1792 | uncached=912
+    [LLM graph.reference #3] sending...
+      provider: 0.718s | model=deepseek-v4-flash
+      tokens:   in=700 | out=8 | total=708 | cached=0 | uncached=700
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 1
+
+    initial rejection #20
+      validator:
+        response.statements[20].predicate.evidence[0]: quote 'contributing primarily to composing for films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composing for films",
+                "segment": "text"
+              }
+            ],
+            "value": "composing for films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "contributing primarily to composing for films",
+                "segment": "text"
+              }
+            ],
+            "value": "contributedTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hiphop Tamizha",
+                "segment": "title"
+              }
+            ],
+            "value": "Hiphop Tamizha"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 20
+  coverage:
+    characters combined: 339 / 736 (46.1%)
+    characters text:     325 / 722 (45.0%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           9 / 9 (100.0%)
+    longest uncovered:  73 chars
+      'with both the general public and critics. While the duo were originally'
+    statement density:  27.17 / 1000 chars
+    title reliance:      14 / 20 (70.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 40
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      40
+resource nodes:        30
+entity nodes:          30
+literal values:        6
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:Club%20le%20Mabbu%20le> <urn:graphragprov:predicate:publicationYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:India%27s%20first%20Tamil%20hip%20hop%20album> .
+  <urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:publicationYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hip%20Hop%20Tamizhan> <urn:graphragprov:predicate:success> <urn:graphragprov:entity:major%20success> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:commercialSuccess> <urn:graphragprov:entity:Club%20le%20Mabbu%20le> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Tamil%20hip%20hop> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:musical%20duo> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Chennai> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Tamil%20Nadu> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Adhithya%20%22Adhi%22%20Venkatapathy> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:R.%20Jeeva> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:officialBrandOf> <urn:graphragprov:entity:Remy%20Martin> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:pioneerOf> <urn:graphragprov:entity:Tamil%20hip%20hop%20in%20India> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:released> <urn:graphragprov:entity:Hip%20Hop%20Tamizhan> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:since> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:independent%20musicians> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:underground> .
+  <urn:graphragprov:entity:Remy%20Martin> <urn:graphragprov:predicate:launched> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+  <urn:graphragprov:entity:Aathmika> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+  <urn:graphragprov:entity:Adhi> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+  <urn:graphragprov:entity:Adhi> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:directorialDebut> <urn:graphragprov:entity:Meesaya%20Murukku> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Adhithya%20Venkatapathy> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:R.Jeeva> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:romantic%20comedy%20film> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Indian> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:publicationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:releaseDate> "2017-07-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:remadeAs> <urn:graphragprov:entity:Padde%20Huli> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+  <urn:graphragprov:entity:Padde%20Huli> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Kannada> .
+  <urn:graphragprov:entity:Padde%20Huli> <urn:graphragprov:predicate:publicationYear> "2019"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:RJ%20Vigneshkanth> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+  <urn:graphragprov:entity:Vijayalakshmi> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+  <urn:graphragprov:entity:Vivek> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meesaya%20Murukku> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.842s | model=deepseek-v4-flash
+      tokens:   in=2445 | out=179 | total=2624 | cached=384 | uncached=2061
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+  - <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5ba0f14c9a3ed0be>
+  FROM <urn:graphragprov:unit:u_97b0c6f239826f9b>
+  WHERE { <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('India',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Meesaya Murukku']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  ba413fca0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v2/ba413fca0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8227
+output tokens:         6260
+total tokens:          14487
+cached input tokens:   2176
+uncached input tokens: 6051
+cumulative LLM seconds: 29.453
+
+statement occurrences: 40
+semantic triples:      40
+entity nodes:          30
+literal values:        6
+predicates:            24
+query attempts:        1
+observed answers:      ('India',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 27.629s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.056s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.843s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.495s
