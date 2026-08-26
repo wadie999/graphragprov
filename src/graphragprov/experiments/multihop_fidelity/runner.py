@@ -7,6 +7,11 @@ from dataclasses import dataclass
 from typing import Literal, TypeAlias
 
 from graphragprov.benchmarks.musique import MusiqueCase, MusiqueSourceUnit
+from graphragprov.benchmarks.twowiki import TwoWikiCase
+from graphragprov.benchmarks.twowiki.selection import (
+    supporting_paragraphs as twowiki_supporting_paragraphs,
+)
+from graphragprov.benchmarks.twowiki.source_unit import TwoWikiSourceUnit
 from graphragprov.domain import SourceUnit
 from graphragprov.experiments.multihop_fidelity.config import ArtifactOrigin, ExperimentConfig
 from graphragprov.experiments.multihop_fidelity.graph import (
@@ -36,6 +41,12 @@ from graphragprov.experiments.multihop_fidelity.query import (
 from graphragprov.experiments.multihop_fidelity.telemetry import (
     ExperimentTelemetry,
     ExperimentTelemetryRecorder,
+)
+from graphragprov.experiments.multihop_fidelity.twowiki_graph import (
+    construct_twowiki_reference_extractions,
+)
+from graphragprov.experiments.multihop_fidelity.twowiki_query import (
+    generate_twowiki_reference_query,
 )
 from graphragprov.extraction.run import (
     GenerateResponse,
@@ -299,6 +310,77 @@ def run_h0_case(
             question=case.question,
             expected_answer=case.answer,
             hop_count=case.hop_count,
+        ),
+        sources=sources,
+        support_source_ids=support_source_ids,
+        configuration=configuration,
+        construct_graph=construct_graph,
+        generate_query=generate_query,
+        graph_generate_response=graph_generate_response,
+        query_generate_response=query_generate_response,
+        graphdb=graphdb,
+        npcs=npcs,
+        telemetry=telemetry,
+        progress_sink=progress_sink,
+    )
+
+
+def run_twowiki_h0_case(
+    *,
+    case: TwoWikiCase,
+    sources: tuple[TwoWikiSourceUnit, ...],
+    configuration: ExperimentConfig,
+    graph_generate_response: GenerateResponse,
+    query_generate_response: GenerateResponse,
+    graphdb: GraphDBClient,
+    npcs: NPCSClient,
+    telemetry: ExperimentTelemetryRecorder,
+    progress_sink: H0ProgressSink | None = None,
+) -> H0CaseOutcome:
+    """Run one complete 2Wiki H0 reference case through the shared kernel."""
+
+    if case.answer is None or not case.answer.strip():
+        raise ValueError("2Wiki H0 requires a non-empty gold answer")
+
+    if not case.evidences:
+        raise ValueError("2Wiki H0 requires at least one benchmark evidence relation")
+
+    support_source_ids = tuple(
+        paragraph.unit_id for paragraph in twowiki_supporting_paragraphs(case)
+    )
+
+    if not support_source_ids:
+        raise ValueError("2Wiki H0 requires at least one supporting source")
+
+    def construct_graph(
+        generate_response: GenerateResponse, max_attempts: int, sink: H0ProgressSink | None
+    ) -> ReferenceGraphExtractionOutcome:
+        return construct_twowiki_reference_extractions(
+            case=case,
+            sources=sources,
+            generate_response=generate_response,
+            max_attempts=max_attempts,
+            progress_sink=sink,
+        )
+
+    def generate_query(
+        graph_ntriples: str, feedback: str | None, generate_response: GenerateResponse
+    ) -> ReferenceQueryGeneration:
+        return generate_twowiki_reference_query(
+            case=case,
+            graph_ntriples=graph_ntriples,
+            feedback=feedback,
+            generate_response=generate_response,
+        )
+
+    return _run_reference_h0_case(
+        case=_H0CaseMetadata(
+            case_id=case.case_id,
+            question=case.question,
+            expected_answer=case.answer,
+            # 2Wiki exposes evidence relations rather than MuSiQue-style hop objects.
+            # In the shared artifact contract, hop_count records that relation count.
+            hop_count=len(case.evidences),
         ),
         sources=sources,
         support_source_ids=support_source_ids,
