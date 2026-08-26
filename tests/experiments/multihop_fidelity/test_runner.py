@@ -450,15 +450,19 @@ def test_h0_runner_retries_only_mechanically_invalid_query_response() -> None:
     assert second.answer_correct is None
     assert second.gold_support_covered is None
     assert second.provenance is not None
+    assert second.execution_sparql is not None
 
     semantic_queries = [
         call.args[0]
         for call in graphdb.query.call_args_list
-        if call.args and isinstance(call.args[0], str) and "?answer" in call.args[0]
+        if call.args and call.args[0] == second.execution_sparql
     ]
 
     # The malformed first response never reached GraphDB.
-    assert len(semantic_queries) == 1
+    #
+    # The valid semantic query is executed once by the H0 collector and
+    # once again by the provenance executor before NPCS rewriting.
+    assert len(semantic_queries) == 2
 
 
 def test_h0_runner_returns_structured_graph_extraction_failure() -> None:
