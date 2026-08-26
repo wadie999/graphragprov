@@ -14,16 +14,39 @@ from graphragprov.extraction.run import GroundedExtractionRun
 H0_QUERY_PROMPT_VERSION = "musique-sparql-evidence-first-v1"
 
 CONSTRUCT_TWOWIKI_QUESTION_GRAPH = """
-We are constructing a grounded RDF graph for one 2WikiMultiHopQA question.
+We are constructing a rich grounded RDF graph for one 2WikiMultiHopQA question.
+
+The CURRENT SOURCE is the extraction target.
 
 The question, expected answer, and benchmark evidence relations are coordination
-context. They tell you which semantic relations the final graph must represent.
-They are not textual evidence.
+context. They identify relations that the final graph must not miss, but they
+do not define the complete graph and they are not textual evidence.
 
-For the CURRENT SOURCE only, return grounded RDF statements using the extraction
-schema below.
+For the CURRENT SOURCE:
 
-Represent the benchmark relation or relations supported by CURRENT SOURCE.
+1. MANDATORY BENCHMARK COVERAGE
+
+Represent every benchmark evidence relation that is explicitly supported by
+CURRENT SOURCE.
+
+These relations are a required minimum. They must not be omitted.
+
+2. BROAD SOURCE EXTRACTION
+
+After ensuring the mandatory benchmark relations are represented, continue
+through the entire CURRENT SOURCE and extract all other useful explicit atomic
+facts that can be grounded correctly.
+
+Do not stop after extracting the benchmark relation.
+
+Do not restrict extraction to facts needed for the question or expected answer.
+
+Treat each sentence or local clause independently: when it contains a useful
+explicit factual relation, represent that relation unless doing so would violate
+the grounding or graph-quality rules.
+
+The benchmark evidence tells you what must not be missed.
+It is not the extraction target and is not a reason to stop.
 
 Reuse semantic names already present in the accepted graph when they denote the
 same thing.
@@ -31,8 +54,8 @@ same thing.
 Every returned subject, predicate, and object must cite exact evidence from the
 CURRENT SOURCE.
 
-Do not use the question, expected answer, benchmark evidence relations, or
-another source as textual evidence.
+Do not use the question, expected answer, benchmark evidence relations, accepted
+graph, or another source as textual evidence.
 
 Python owns source identity; never return source IDs.
 """.strip()
