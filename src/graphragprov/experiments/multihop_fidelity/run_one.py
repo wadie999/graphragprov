@@ -12,12 +12,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import cast
 
-from graphragprov.benchmarks.musique import (
-    MusiqueSourceUnit,
-    collect_musique_source_units,
-    load_case,
-)
+from graphragprov.benchmarks.musique import collect_musique_source_units, load_case
 from graphragprov.config import musique_dataset_path
+from graphragprov.domain import SourceUnit
 from graphragprov.experiments.multihop_fidelity.config import (
     ArtifactOrigin,
     ExperimentConfig,
@@ -279,7 +276,7 @@ class VerboseH0Reporter:
         if event == "graph.source.started":
             source = payload.get("source")
 
-            if not isinstance(source, MusiqueSourceUnit):
+            if not isinstance(source, SourceUnit):
                 return
 
             _print("")
