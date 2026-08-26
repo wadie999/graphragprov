@@ -1,0 +1,218 @@
+
+H0 one-case execution
+  case:          4163ce1c0bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film ... Nur Ein Komödiant?
+  expected:      10 May 1966
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4163ce1c0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='... nur ein Komödiant'
+  source unit: u_2f0abc97a35446acae9b0ddd00406977ec9f88711f0b6c37e4d2476c32a17ea7
+  text chars:  743
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.830s | model=deepseek-v4-flash
+      tokens:   in=2271 | out=152 | total=2423 | cached=1920 | uncached=351
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 40 / 764 (5.2%)
+    characters text:     19 / 743 (2.6%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           1 / 6 (16.7%)
+    longest uncovered:  570 chars
+      ', temporarily in Vienna as a political emigrant from Germany, who with this film made a statement against fascism and authoritarian government. That it passed the strict censors n…'
+    statement density:  1.31 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='Erich Engel'
+  source unit: u_f0cb183b7910c83db3459c8d1229b4fbde0710af0dc41bb6befe1c9ee0b8bd51
+  text chars:  84
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.025s | model=deepseek-v4-flash
+      tokens:   in=2124 | out=1129 | total=3253 | cached=1920 | uncached=204
+    [LLM graph.reference #3] sending...
+      provider: 0.999s | model=deepseek-v4-flash
+      tokens:   in=531 | out=8 | total=539 | cached=0 | uncached=531
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].object.evidence[0]: quote 'film director' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "film director",
+                "segment": "text"
+              }
+            ],
+            "value": "film director"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "director",
+                "segment": "text"
+              }
+            ],
+            "value": "occupation"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Erich Engel",
+                "segment": "title"
+              }
+            ],
+            "value": "Erich Engel"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 64 / 95 (67.4%)
+    characters text:     53 / 84 (63.1%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  13 chars
+      'Erich Engel('
+    statement density:  73.68 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 8
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      8
+resource nodes:        7
+entity nodes:          7
+literal values:        2
+predicates:            6
+
+N-Triples:
+  <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erich%20Engel> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:birthDate> "1891-02-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:dateOfDeath> "1966-05-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:theatre> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:theatre%20director> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.716s | model=deepseek-v4-flash
+      tokens:   in=903 | out=233 | total=1136 | cached=384 | uncached=519
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erich%20Engel> .
+  - <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:dateOfDeath> "1966-05-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erich%20Engel> . <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2f0abc97a35446ac>
+  FROM <urn:graphragprov:unit:u_f0cb183b7910c83d>
+  WHERE { <urn:graphragprov:entity:...%20nur%20ein%20Kom%C3%B6diant> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erich%20Engel> . <urn:graphragprov:entity:Erich%20Engel> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1966-05-10',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['... nur ein Komödiant', 'Erich Engel']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4163ce1c0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4163ce1c0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5829
+output tokens:         1522
+total tokens:          7351
+cached input tokens:   4224
+uncached input tokens: 1605
+cumulative LLM seconds: 9.569
+
+statement occurrences: 8
+semantic triples:      8
+entity nodes:          7
+literal values:        2
+predicates:            6
+query attempts:        1
+observed answers:      ('1966-05-10',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.858s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.045s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.717s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.443s

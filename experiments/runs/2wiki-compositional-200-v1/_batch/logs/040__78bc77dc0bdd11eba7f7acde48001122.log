@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          78bc77dc0bdd11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Noon At Ngayon: Pagsasamang Kay Ganda die?
+  expected:      October 8, 2012
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/78bc77dc0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Noon at Ngayon: Pagsasamang Kay Ganda'
+  source unit: u_90bd1d7f119e97301cc726f7082dea264c318d5bb9cce7ce723618817a0e42fc
+  text chars:  196
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.066s | model=deepseek-v4-flash
+      tokens:   in=2188 | out=181 | total=2369 | cached=1920 | uncached=268
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 66 / 233 (28.3%)
+    characters text:     66 / 196 (33.7%)
+    characters title:    0 / 37 (0.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  77 chars
+      'and written by Ricky Lee. It was released by Star Cinema on August 13, 2003.'
+    statement density:  4.29 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Marilou Diaz-Abaya'
+  source unit: u_cbc60b253823865b55b9bb67fd09953f4eabc7495c7c7e3c061ac4d4bc23d650
+  text chars:  419
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.782s | model=deepseek-v4-flash
+      tokens:   in=2249 | out=177 | total=2426 | cached=1920 | uncached=329
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 33 / 437 (7.6%)
+    characters text:     15 / 419 (3.6%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           1 / 4 (25.0%)
+    longest uncovered:  367 chars
+      ') was a multi-awarded film director from the Philippines. She was the founder and president of the Marilou Díaz-Abaya Film Institute and Arts Center, a film school based in Antipo…'
+    statement density:  2.29 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        2
+entity nodes:          2
+literal values:        1
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> .
+  <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> "2012-10-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.099s | model=deepseek-v4-flash
+      tokens:   in=682 | out=269 | total=951 | cached=384 | uncached=298
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> .
+  - <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> "2012-10-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> . <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_90bd1d7f119e9730>
+  FROM <urn:graphragprov:unit:u_cbc60b253823865b>
+  WHERE { <urn:graphragprov:entity:Noon%20at%20Ngayon%3A%20Pagsasamang%20Kay%20Ganda> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marilou%20Diaz-Abaya> . <urn:graphragprov:entity:Marilou%20Diaz-Abaya> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2012-10-08',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Marilou Diaz-Abaya', 'Noon at Ngayon: Pagsasamang Kay Ganda']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  78bc77dc0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/78bc77dc0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5119
+output tokens:         627
+total tokens:          5746
+cached input tokens:   4224
+uncached input tokens: 895
+cumulative LLM seconds: 5.947
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          2
+literal values:        1
+predicates:            2
+query attempts:        1
+observed answers:      ('2012-10-08',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.851s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.031s
+  graph.materialization [attempt=1]: 0.079s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 2.100s
+  graphdb.semantic [attempt=1]: 0.012s
+  provenance.execution [attempt=1]: 0.506s

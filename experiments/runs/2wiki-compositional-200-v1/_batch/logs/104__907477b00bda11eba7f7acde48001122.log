@@ -1,0 +1,176 @@
+
+H0 one-case execution
+  case:          907477b00bda11eba7f7acde48001122
+  hops:          2
+  question:      Where did the director of film The Man Who Sold Himself (1959 Film) die?
+  expected:      Munich
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/907477b00bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Josef von Báky'
+  source unit: u_82a95d68324b282e5792f78320c00387b2c398eb62d75380eb4acd92d50629e9
+  text chars:  716
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.937s | model=deepseek-v4-flash
+      tokens:   in=2283 | out=155 | total=2438 | cached=1920 | uncached=363
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 27 / 730 (3.7%)
+    characters text:     13 / 716 (1.8%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 10 (20.0%)
+    longest uncovered:  314 chars
+      'Munich, Bavaria, Germany. Báky\'s best known film is" Münchhausen", which was released in 1943. It is a fantasy- comedy and is noted for how it avoids politics of its time. The fil…'
+    statement density:  1.37 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=4 title='The Man Who Sold Himself (1959 film)'
+  source unit: u_a4f3de608ee812adf27ac10fc5ac6d6bf8ec732b8a9fd53ae6218a18b2b289ae
+  text chars:  283
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.132s | model=deepseek-v4-flash
+      tokens:   in=2174 | out=1613 | total=3787 | cached=1920 | uncached=254
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 207 / 319 (64.9%)
+    characters text:     207 / 283 (73.1%)
+    characters title:    0 / 36 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      'the art directors'
+    statement density:  34.48 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 12
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      12
+resource nodes:        12
+entity nodes:          12
+literal values:        1
+predicates:            9
+
+N-Triples:
+  <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Munich> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:West%20German> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:publicationYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:setsDesignedBy> <urn:graphragprov:entity:Erich%20Kettelhut> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:setsDesignedBy> <urn:graphragprov:entity:Johannes%20Ott> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:shotAt> <urn:graphragprov:entity:Wandsbek%20Studios> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Antje%20Weisgerber> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Hansj%C3%B6rg%20Felmy> .
+  <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Hildegard%20Knef> .
+  <urn:graphragprov:entity:Wandsbek%20Studios> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hamburg> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.414s | model=deepseek-v4-flash
+      tokens:   in=1180 | out=246 | total=1426 | cached=384 | uncached=796
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> .
+  - <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Munich> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> . <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_82a95d68324b282e>
+  FROM <urn:graphragprov:unit:u_a4f3de608ee812ad>
+  WHERE { <urn:graphragprov:entity:The%20Man%20Who%20Sold%20Himself> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> . <urn:graphragprov:entity:Josef%20von%20B%C3%A1ky> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Munich',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Josef von Báky', 'The Man Who Sold Himself (1959 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  907477b00bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/907477b00bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5637
+output tokens:         2014
+total tokens:          7651
+cached input tokens:   4224
+uncached input tokens: 1413
+cumulative LLM seconds: 10.483
+
+statement occurrences: 12
+semantic triples:      12
+entity nodes:          12
+literal values:        1
+predicates:            9
+query attempts:        1
+observed answers:      ('Munich',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.074s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.415s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.468s

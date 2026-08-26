@@ -1,0 +1,171 @@
+
+H0 one-case execution
+  case:          696dc9200bdd11eba7f7acde48001122
+  hops:          2
+  question:      Which country the performer of song Cien Años is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/696dc9200bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Cien Años'
+  source unit: u_47fb8c11a768a139c751a177f9bc6c7c622a39db73e786aafbde6e8c7cfa5c41
+  text chars:  277
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.345s | model=deepseek-v4-flash
+      tokens:   in=2143 | out=866 | total=3009 | cached=1920 | uncached=223
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 118 / 286 (41.3%)
+    characters text:     109 / 277 (39.4%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  68 chars
+      ". The song has been released in most of Selena's packages since its"
+    statement density:  20.98 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[GRAPH 2/2] paragraph=9 title='Selena'
+  source unit: u_2009ce3cdef08030a4057ec66882915d8e41a5eac6d9e93e8ecb864e253fee66
+  text chars:  3180
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.427s | model=deepseek-v4-flash
+      tokens:   in=2872 | out=144 | total=3016 | cached=1920 | uncached=952
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 14 / 3186 (0.4%)
+    characters text:     8 / 3180 (0.3%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           1 / 28 (3.6%)
+    longest uncovered:  3106 chars
+      'singer, songwriter, spokesperson, model, actress, and fashion designer. Called the Queen of Tejano music, her contributions to music and fashion made her one of the most celebrate…'
+    statement density:  0.31 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 7
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      7
+resource nodes:        7
+entity nodes:          7
+literal values:        1
+predicates:            6
+
+N-Triples:
+  <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Mexican> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Pedro%20Infante> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:publicationYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Rub%C3%A9n%20Fuentes-A.%20Cervantes> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.656s | model=deepseek-v4-flash
+      tokens:   in=846 | out=191 | total=1037 | cached=384 | uncached=462
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> .
+  - <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> . <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2009ce3cdef08030>
+  FROM <urn:graphragprov:unit:u_47fb8c11a768a139>
+  WHERE { <urn:graphragprov:entity:Cien%20A%C3%B1os> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Selena> . <urn:graphragprov:entity:Selena> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Cien Años', 'Selena']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  696dc9200bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/696dc9200bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5861
+output tokens:         1201
+total tokens:          7062
+cached input tokens:   4224
+uncached input tokens: 1637
+cumulative LLM seconds: 7.427
+
+statement occurrences: 7
+semantic triples:      7
+entity nodes:          7
+literal values:        1
+predicates:            6
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 5.776s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.036s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.657s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.482s

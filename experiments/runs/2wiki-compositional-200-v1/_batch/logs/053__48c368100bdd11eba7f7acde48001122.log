@@ -1,0 +1,176 @@
+
+H0 one-case execution
+  case:          48c368100bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film 10 To 11 born?
+  expected:      Istanbul
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/48c368100bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='10 to 11'
+  source unit: u_d19348e93be59a4c46a2d6dec72945c8cd87b3d5279cf3883724e02bd88721d3
+  text chars:  284
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.357s | model=deepseek-v4-flash
+      tokens:   in=2148 | out=1189 | total=3337 | cached=1920 | uncached=228
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 233 / 292 (79.8%)
+    characters text:     233 / 284 (82.0%)
+    characters title:    0 / 8 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  20 chars
+      '. The film, loosely'
+    statement density:  27.40 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 2/2] paragraph=2 title='Pelin Esmer'
+  source unit: u_d93300c4c041720eccc0589b366a14508e26b100245cc9219dc3882b91e98ffc
+  text chars:  73
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.294s | model=deepseek-v4-flash
+      tokens:   in=2213 | out=559 | total=2772 | cached=1920 | uncached=293
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 50 / 84 (59.5%)
+    characters text:     39 / 73 (53.4%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  13 chars
+      'Pelin Esmer ('
+    statement density:  47.62 / 1000 chars
+    title reliance:      4 / 4 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 12
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      12
+resource nodes:        12
+entity nodes:          12
+literal values:        1
+predicates:            9
+
+N-Triples:
+  <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:story%20of%20Esmer%E2%80%99s%20uncle%2C%20Mithat%20Esmer> .
+  <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Pelin%20Esmer> .
+  <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:follows> <urn:graphragprov:entity:an%20elderly%20collector%20in%20%C4%B0stanbul%20who%20lives%20in%20a%20rundown%20apartment%20building%20that%20is%20under%20threat%20of%20demolition> .
+  <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Turkish> .
+  <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:publicationYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mithat%20Esmer> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:leading%20role> .
+  <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:%C4%B0stanbul> .
+  <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Turkish> .
+  <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Istanbul> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.734s | model=deepseek-v4-flash
+      tokens:   in=1130 | out=195 | total=1325 | cached=384 | uncached=746
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Pelin%20Esmer> .
+  - <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Istanbul> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Pelin%20Esmer> . <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_d19348e93be59a4c>
+  FROM <urn:graphragprov:unit:u_d93300c4c041720e>
+  WHERE { <urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Pelin%20Esmer> . <urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('İstanbul', 'Istanbul')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['10 to 11', 'Pelin Esmer']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  48c368100bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/48c368100bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5491
+output tokens:         1943
+total tokens:          7434
+cached input tokens:   4224
+uncached input tokens: 1267
+cumulative LLM seconds: 11.385
+
+statement occurrences: 12
+semantic triples:      12
+entity nodes:          12
+literal values:        1
+predicates:            9
+query attempts:        1
+observed answers:      ('İstanbul', 'Istanbul')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.657s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.056s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.735s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.484s

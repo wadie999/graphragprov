@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_08afc26851c11a2f5ae4492283258cac027523b5d3c69ce4420baa85a129ead8
+Title: Theater (song)
+Text:
+"Theater" was the German entry in the Eurovision Song Contest 1980, performed in German by Katja Ebstein. This was Ebstein's third Eurovision entry; she had represented Germany in 1970 and 1971, with "Wunder gibt es immer wieder" and "Diese Welt" respectively, both times finishing in 3rd position. The song was performed twelfth on the night (following Norway's Sverre Kjelsberg & Mattis Hætta with "Sámiid Ædnan" and preceding the United Kingdom's Prima Donna with "Love Enough For Two"). At the close of voting, it had received 128 points, placing 2nd in a field of 19. The song is a Ralph Siegel-Bernd Meinunger collaboration, with Ebstein singing about the manner in which clowns have to mask their true feelings when performing on stage - a situation which is said to be true of all performers. The four backing singers were dressed as clowns and Ralph Siegel played the piano on stage wearing gloves with small clowns on the fingers. Ebstein also recorded the song in English (as "It's Showtime"), French ("Théâtre") and Italian ("Teatro"). The song was succeeded as German representative at the 1981 Contest by Lena Valaitis with "Johnny Blue".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 2,
+    "statement": {
+      "subject": {
+        "value": "Ralph Siegel",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ralph Siegel",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "placeOfBirth",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ralph Siegel",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Munich",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Munich",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[2].object.evidence[0]: quote 'Munich' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,167 @@
+
+H0 one-case execution
+  case:          361ffcec0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Who is the mother of the performer of song L8 Cmmr?
+  expected:      Alison Owen
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/361ffcec0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='L8 CMMR'
+  source unit: u_8285e366206fc7e3f9b628cd5003507a61531882f0e588cd94ffe193b7c25e84
+  text chars:  525
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.075s | model=deepseek-v4-flash
+      tokens:   in=2218 | out=293 | total=2511 | cached=1920 | uncached=298
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 52 / 532 (9.8%)
+    characters text:     45 / 525 (8.6%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           2 / 5 (40.0%)
+    longest uncovered:  424 chars
+      'from her third studio album, "Sheezus" (2014). It premiered online on 6 February 2014, the same day as the release of the music video for Allen\'s previous single "Air Balloon". Th…'
+    statement density:  3.76 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=7 title='Lily Allen'
+  source unit: u_25e801d5debcfc7d350da08973f1d41fbc409bb66075ce85601867c6eca825b6
+  text chars:  1833
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.487s | model=deepseek-v4-flash
+      tokens:   in=2517 | out=147 | total=2664 | cached=1920 | uncached=597
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 32 / 1843 (1.7%)
+    characters text:     22 / 1833 (1.2%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           1 / 15 (6.7%)
+    longest uncovered:  1671 chars
+      '. Allen left school when she was 15 and concentrated on improving her performing and compositional skills. In 2005, she made some of her recordings public on Myspace and the publi…'
+    statement density:  0.54 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Alison%20Owen> .
+  <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Alison%20Owen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.410s | model=deepseek-v4-flash
+      tokens:   in=641 | out=166 | total=807 | cached=384 | uncached=257
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Lily%20Allen> .
+  - <urn:graphragprov:entity:Lily%20Allen> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Alison%20Owen> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> ?x . ?x <urn:graphragprov:predicate:mother> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_25e801d5debcfc7d>
+  FROM <urn:graphragprov:unit:u_8285e366206fc7e3>
+  WHERE { <urn:graphragprov:entity:L8%20CMMR> <urn:graphragprov:predicate:performer> ?x . ?x <urn:graphragprov:predicate:mother> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Alison Owen',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['L8 CMMR', 'Lily Allen']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  361ffcec0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/361ffcec0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5376
+output tokens:         606
+total tokens:          5982
+cached input tokens:   4224
+uncached input tokens: 1152
+cumulative LLM seconds: 5.972
+
+statement occurrences: 3
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Alison Owen',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.568s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.052s
+  graph.materialization [attempt=1]: 0.072s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.411s
+  graphdb.semantic [attempt=1]: 0.012s
+  provenance.execution [attempt=1]: 0.473s

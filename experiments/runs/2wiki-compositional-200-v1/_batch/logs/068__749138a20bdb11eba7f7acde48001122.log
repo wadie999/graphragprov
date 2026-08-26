@@ -1,0 +1,172 @@
+
+H0 one-case execution
+  case:          749138a20bdb11eba7f7acde48001122
+  hops:          2
+  question:      Which country the performer of song The Wallflower (Dance With Me, Henry) is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/749138a20bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Etta James'
+  source unit: u_565f33e2f471fd7b173d5ffe4f44b55b43c2f73b4b926cdd0629e162474ec774
+  text chars:  1001
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.305s | model=deepseek-v4-flash
+      tokens:   in=2328 | out=146 | total=2474 | cached=1920 | uncached=408
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 18 / 1011 (1.8%)
+    characters text:     8 / 1001 (0.8%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           1 / 7 (14.3%)
+    longest uncovered:  913 chars
+      'singer who performed in various genres, including blues, R&B, soul, rock and roll, jazz and gospel. Starting her career in 1954, she gained fame with hits such as "The WallflowerA…'
+    statement density:  0.99 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=9 title='The Wallflower (Dance with Me, Henry)'
+  source unit: u_8f93fc09c23dea39d7273afb218239b1b50521fad156d5643131c4b45f9e1232
+  text chars:  211
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.513s | model=deepseek-v4-flash
+      tokens:   in=2158 | out=1098 | total=3256 | cached=1920 | uncached=238
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 163 / 248 (65.7%)
+    characters text:     126 / 211 (59.7%)
+    characters title:    37 / 37 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  24 chars
+      '. It was one of several'
+    statement density:  28.23 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 8
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      8
+resource nodes:        8
+entity nodes:          8
+literal values:        1
+predicates:            7
+
+N-Triples:
+  <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Dance%20with%20Me%2C%20Henry> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roll%20with%20Me%2C%20Henry> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:answerSongTo> <urn:graphragprov:entity:Work%20with%20Me%2C%20Annie> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:melody> <urn:graphragprov:entity:12-bar%20blues%20melody> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Etta%20James> .
+  <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:publicationYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.681s | model=deepseek-v4-flash
+      tokens:   in=1035 | out=229 | total=1264 | cached=384 | uncached=651
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Etta%20James> .
+  - <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Etta%20James> . <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_565f33e2f471fd7b>
+  FROM <urn:graphragprov:unit:u_8f93fc09c23dea39>
+  WHERE { <urn:graphragprov:entity:The%20Wallflower%20%28Dance%20with%20Me%2C%20Henry%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Etta%20James> . <urn:graphragprov:entity:Etta%20James> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Etta James', 'The Wallflower (Dance with Me, Henry)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  749138a20bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/749138a20bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5521
+output tokens:         1473
+total tokens:          6994
+cached input tokens:   4224
+uncached input tokens: 1297
+cumulative LLM seconds: 9.499
+
+statement occurrences: 8
+semantic triples:      8
+entity nodes:          8
+literal values:        1
+predicates:            7
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.824s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.100s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.682s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.280s

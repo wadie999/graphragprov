@@ -1,0 +1,221 @@
+
+H0 one-case execution
+  case:          44f72b9e0bd911eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the director of film Something To Think About?
+  expected:      Hollywood
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/44f72b9e0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Something to Think About'
+  source unit: u_c2eefbae1ec653ed2d0700b0088193ce03200c6bcfe4a6aefca45737d5a03da9
+  text chars:  255
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.684s | model=deepseek-v4-flash
+      tokens:   in=2142 | out=1435 | total=3577 | cached=1920 | uncached=222
+    [LLM graph.reference #2] sending...
+      provider: 1.585s | model=deepseek-v4-flash
+      tokens:   in=579 | out=169 | total=748 | cached=0 | uncached=579
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 1
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'exist at' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Filmmuseum",
+                "segment": "text"
+              }
+            ],
+            "value": "Filmmuseum"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "exist at",
+                "segment": "text"
+              }
+            ],
+            "value": "preservedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Something to Think About",
+                "segment": "text"
+              }
+            ],
+            "value": "Something to Think About"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 10
+  coverage:
+    characters combined: 186 / 279 (66.7%)
+    characters text:     186 / 255 (72.9%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  21 chars
+      '. Prints of the film'
+    statement density:  35.84 / 1000 chars
+    title reliance:      0 / 10 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='Cecil B. DeMille'
+  source unit: u_3700a12eae9275628a1573e288acd607e3ec02221595442edbb916d3f532a0c0
+  text chars:  2829
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.214s | model=deepseek-v4-flash
+      tokens:   in=2844 | out=160 | total=3004 | cached=2048 | uncached=796
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 41 / 2845 (1.4%)
+    characters text:     25 / 2829 (0.9%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           2 / 24 (8.3%)
+    longest uncovered:  2026 chars
+      '. Its interracial love story made it commercially successful and it first publicized Hollywood as the home of the U.S. film industry. The continued success of his productions led…'
+    statement density:  0.35 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 11
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      11
+resource nodes:        11
+entity nodes:          11
+literal values:        1
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Filmmuseum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Amsterdam> .
+  <urn:graphragprov:entity:George%20Eastman%20Museum> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rochester%2C%20New%20York> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20drama%20film> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:preservedAt> <urn:graphragprov:entity:Filmmuseum> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:preservedAt> <urn:graphragprov:entity:George%20Eastman%20Museum> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:publicationYear> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Elliott%20Dexter> .
+  <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gloria%20Swanson> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.548s | model=deepseek-v4-flash
+      tokens:   in=1069 | out=186 | total=1255 | cached=384 | uncached=685
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Cecil%20B.%20DeMille> .
+  - <urn:graphragprov:entity:Cecil%20B.%20DeMille> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3700a12eae927562>
+  FROM <urn:graphragprov:unit:u_c2eefbae1ec653ed>
+  WHERE { <urn:graphragprov:entity:Something%20to%20Think%20About> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Hollywood',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Cecil B. DeMille', 'Something to Think About']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  44f72b9e0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/44f72b9e0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6634
+output tokens:         1950
+total tokens:          8584
+cached input tokens:   4352
+uncached input tokens: 2282
+cumulative LLM seconds: 11.031
+
+statement occurrences: 11
+semantic triples:      11
+entity nodes:          11
+literal values:        1
+predicates:            8
+query attempts:        1
+observed answers:      ('Hollywood',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.493s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.054s
+  graph.materialization [attempt=1]: 0.138s
+  graph.observation [attempt=1]: 0.012s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.549s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.504s

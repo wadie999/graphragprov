@@ -1,0 +1,173 @@
+
+H0 one-case execution
+  case:          591acbfc0bda11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of burial of the performer of song Baby Let'S Play House?
+  expected:      Graceland
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/591acbfc0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title="Baby Let's Play House"
+  source unit: u_d37e1b49971a84d977878408049f3b69752fa606362e4256958404cb21b74772
+  text chars:  179
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.585s | model=deepseek-v4-flash
+      tokens:   in=2121 | out=1160 | total=3281 | cached=1920 | uncached=201
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 134 / 200 (67.0%)
+    characters text:     113 / 179 (63.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  29 chars
+      '"Baby Let\'s Play House" is a'
+    statement density:  40.00 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/2] paragraph=4 title='Elvis Presley'
+  source unit: u_207d457385af3c87441fdd84093513bc80d112aeb9f5e06f98c6e76a90ea8550
+  text chars:  2709
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.430s | model=deepseek-v4-flash
+      tokens:   in=2760 | out=161 | total=2921 | cached=1920 | uncached=840
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 58 / 2722 (2.1%)
+    characters text:     45 / 2709 (1.7%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           1 / 19 (5.3%)
+    longest uncovered:  2333 chars
+      'Elvis Aaron Presley (January 8, 1935 – August 16, 1977), also known mononymously as Elvis, was an American singer and actor. Regarded as one of the most significant cultural icons…'
+    statement density:  0.37 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 9
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      9
+resource nodes:        7
+entity nodes:          7
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Graceland> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:coveredBy> <urn:graphragprov:entity:Elvis%20Presley> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:coveredInYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Excello%20Records> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sun%20Records> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Arthur%20Gunter> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:recordedInYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Arthur%20Gunter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.444s | model=deepseek-v4-flash
+      tokens:   in=987 | out=214 | total=1201 | cached=384 | uncached=603
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:coveredBy> <urn:graphragprov:entity:Elvis%20Presley> .
+  - <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> <urn:graphragprov:entity:Graceland> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:coveredBy> <urn:graphragprov:entity:Elvis%20Presley> . <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_207d457385af3c87>
+  FROM <urn:graphragprov:unit:u_d37e1b49971a84d9>
+  WHERE { <urn:graphragprov:entity:Baby%20Let%27s%20Play%20House> <urn:graphragprov:predicate:coveredBy> <urn:graphragprov:entity:Elvis%20Presley> . <urn:graphragprov:entity:Elvis%20Presley> <urn:graphragprov:predicate:placeOfBurial> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Graceland',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ["Baby Let's Play House", 'Elvis Presley']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  591acbfc0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/591acbfc0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5868
+output tokens:         1535
+total tokens:          7403
+cached input tokens:   4224
+uncached input tokens: 1644
+cumulative LLM seconds: 8.459
+
+statement occurrences: 9
+semantic triples:      9
+entity nodes:          7
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ('Graceland',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.022s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.050s
+  graph.materialization [attempt=1]: 0.065s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.445s
+  graphdb.semantic [attempt=1]: 0.008s
+  provenance.execution [attempt=1]: 0.657s

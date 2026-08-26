@@ -1,0 +1,186 @@
+
+H0 one-case execution
+  case:          58a9683a0bdb11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Oh, God! Book Ii die?
+  expected:      October 31, 2011
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/58a9683a0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Oh, God! Book II'
+  source unit: u_17f36ba81ff2719d04ab7af37e01a57e6cf62c15f82bf277f565973c9e9a5f1e
+  text chars:  412
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.269s | model=deepseek-v4-flash
+      tokens:   in=2207 | out=1759 | total=3966 | cached=1920 | uncached=287
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 172 / 428 (40.2%)
+    characters text:     172 / 412 (41.7%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           6 / 8 (75.0%)
+    longest uncovered:  97 chars
+      '. Joyce Brothers and Hugh Downs also made cameo appearances in the film. " Oh, God! Book II" was'
+    statement density:  28.04 / 1000 chars
+    title reliance:      0 / 12 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Gilbert Cates'
+  source unit: u_bc140c41e8c5431db7f2ef849718680fe2e962851a806c6dfac3df0ba598cf07
+  text chars:  361
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.247s | model=deepseek-v4-flash
+      tokens:   in=2351 | out=1515 | total=3866 | cached=1920 | uncached=431
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 242 / 374 (64.7%)
+    characters text:     229 / 361 (63.4%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  33 chars
+      '. Cates is most known for having'
+    statement density:  26.74 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 22
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      22
+resource nodes:        15
+entity nodes:          15
+literal values:        5
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:George%20Burns> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> .
+  <urn:graphragprov:entity:George%20Burns> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:Oh%2C%20God%21%20You%20Devil> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gilbert%20Cates> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:followedBy> <urn:graphragprov:entity:Oh%2C%20God%21%20You%20Devil> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:publicationYear> "1980"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:sequelTo> <urn:graphragprov:entity:Oh%2C%20God%21> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:David%20Birney> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20Burns> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Louanne%20Sirota> .
+  <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Suzanne%20Pleshette> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:bornOn> "1934-06-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:dateOfDeath> "2011-10-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:directorOf> <urn:graphragprov:entity:Geffen%20Playhouse> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:foundingDeanOf> <urn:graphragprov:entity:UCLA%20School%20of%20Theater%2C%20Film%20and%20Television> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20producer> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:Academy%20Awards%20telecast> .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:producedBetween> "1990-2008" .
+  <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:producedCount> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.960s | model=deepseek-v4-flash
+      tokens:   in=1699 | out=229 | total=1928 | cached=384 | uncached=1315
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gilbert%20Cates> .
+  - <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:dateOfDeath> "2011-10-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gilbert%20Cates> . <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_17f36ba81ff2719d>
+  FROM <urn:graphragprov:unit:u_bc140c41e8c5431d>
+  WHERE { <urn:graphragprov:entity:Oh%2C%20God%21%20Book%20II> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Gilbert%20Cates> . <urn:graphragprov:entity:Gilbert%20Cates> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2011-10-31',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Gilbert Cates', 'Oh, God! Book II']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  58a9683a0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/58a9683a0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6257
+output tokens:         3503
+total tokens:          9760
+cached input tokens:   4224
+uncached input tokens: 2033
+cumulative LLM seconds: 17.476
+
+statement occurrences: 22
+semantic triples:      22
+entity nodes:          15
+literal values:        5
+predicates:            15
+query attempts:        1
+observed answers:      ('2011-10-31',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.523s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.079s
+  graph.materialization [attempt=1]: 0.074s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.961s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.588s

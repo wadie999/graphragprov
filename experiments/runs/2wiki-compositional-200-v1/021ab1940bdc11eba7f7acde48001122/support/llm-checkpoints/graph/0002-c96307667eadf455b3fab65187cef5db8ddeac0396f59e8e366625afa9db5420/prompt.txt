@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_eead945fa4793ab052ce461b14852910fcd7047088be265fedf09592a69bb6a9
+Title: Queen Jeongseong
+Text:
+Queen Jeongseong or Queen Jung-Sung (정성왕후 서씨) (12 January 1693 – 3 April 1757) was the first wife and Queen Consort of King Yeongjo of Joseon, the 21st monarch of the Joseon Dynasty. She was a member of the Dalsung Seo clan.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Yeongjo of Joseon",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "King Yeongjo of Joseon",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "dateOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "22 April 1776",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1776-04-22",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "22 April 1776",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].predicate.evidence[0]: quote '22 April 1776' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

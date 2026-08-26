@@ -1,0 +1,183 @@
+
+H0 one-case execution
+  case:          fb839ada0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the director of film Waldrausch (1962 Film)?
+  expected:      German
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/fb839ada0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Paul May'
+  source unit: u_01e9e7948f1cc10e7639e05aafe4bb8463ea62e88049a6b85ea4063f2e1a0165
+  text chars:  123
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.394s | model=deepseek-v4-flash
+      tokens:   in=2110 | out=1139 | total=3249 | cached=1920 | uncached=190
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 75 / 131 (57.3%)
+    characters text:     67 / 123 (54.5%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  14 chars
+      '. He directed'
+    statement density:  61.07 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/2] paragraph=6 title='Waldrausch (1962 film)'
+  source unit: u_0aab11647bbd6d409731b8ca6d69e7b2fc512b43dc4f16bf06218e27c9a9357d
+  text chars:  293
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.193s | model=deepseek-v4-flash
+      tokens:   in=2231 | out=1702 | total=3933 | cached=1920 | uncached=311
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 247 / 315 (78.4%)
+    characters text:     225 / 293 (76.8%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  16 chars
+      'Waldrausch is a'
+    statement density:  34.92 / 1000 chars
+    title reliance:      11 / 11 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 19
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      19
+resource nodes:        13
+entity nodes:          13
+literal values:        7
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:activeYearsEnd> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:activeYearsStart> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:birthDate> "1909-05-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:deathDate> "1976-02-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:directedFilmsCount> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:editor> .
+  <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Ludwig%20Ganghofer> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Waldrausch> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Paul%20May> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:hasAdaptation> <urn:graphragprov:entity:1977%20film%20adaptation> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Austrian> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:plot> "An architect proposes a plan to build a dam, flooding a valley." .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:publicationYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gerhard%20Riedmann> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ingeborg%20Sch%C3%B6ner> .
+  <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Marianne%20Hold> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.279s | model=deepseek-v4-flash
+      tokens:   in=1485 | out=181 | total=1666 | cached=384 | uncached=1101
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Paul%20May> .
+  - <urn:graphragprov:entity:Paul%20May> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_01e9e7948f1cc10e>
+  FROM <urn:graphragprov:unit:u_0aab11647bbd6d40>
+  WHERE { <urn:graphragprov:entity:Waldrausch%20%281962%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('German',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Paul May', 'Waldrausch (1962 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  fb839ada0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/fb839ada0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5826
+output tokens:         3022
+total tokens:          8848
+cached input tokens:   4224
+uncached input tokens: 1602
+cumulative LLM seconds: 13.867
+
+statement occurrences: 19
+semantic triples:      19
+entity nodes:          13
+literal values:        7
+predicates:            14
+query attempts:        1
+observed answers:      ('German',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 12.593s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.052s
+  graph.materialization [attempt=1]: 0.065s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.280s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.298s

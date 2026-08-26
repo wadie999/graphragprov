@@ -1,0 +1,87 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: When was the director of film 5 År – Som Vi Så Dem born?
+
+Expected answer: 11 April 1910
+
+Benchmark evidence relations:
+1. 5 år – som vi så dem | director | Per G. Jonson
+2. Per G. Jonson | date of birth | 11 April 1910
+
+Frozen RDF graph:
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Norwegians%27%20efforts%20outside%20Norway%20during%20the%20Second%20World%20War%20II> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Bredo%20Lind> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Per%20G.%20Jonson> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Crown%20Prince%20Olav> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:King%20Haakon%20VII> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:narrator> <urn:graphragprov:entity:Ola%20Isene> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:publicationYear> "1947"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Hans%20Jacob%20Nilsen> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Hartvig%20Kiran> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Lars%20Nordrum> .
+<urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Reidar%20Lunde> .
+<urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:dateOfBirth> "1910-04-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+<urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cinematographer> .
+<urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:ski%20jumper> .

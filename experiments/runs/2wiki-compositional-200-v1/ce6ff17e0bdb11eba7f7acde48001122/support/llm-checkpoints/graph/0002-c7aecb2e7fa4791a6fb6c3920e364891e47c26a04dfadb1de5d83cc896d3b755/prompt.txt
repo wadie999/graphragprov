@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_1403694309b83a47e8fe2ffbb34c7dbfecedc7619e702a8cf426b780c33e08de
+Title: On Borrowed Time
+Text:
+On Borrowed Time is a 1939 film about the role death plays in life, and how humanity can not live without it. It is adapted from Paul Osborn's 1938 Broadway hit play. The play, based on a novel by Lawrence Edward Watkin, has been revived twice on Broadway since its original run. Academy Award winner( for his 1937 short film" Torture Money") Harold S. Bucquet directed. The story is a retelling of a Greek fable in which Death is tricked into climbing a pear tree which had been blessed by Saint Polycarp to trap anyone who was trying to steal an old woman's pears. Set in small- town America, the film stars Lionel Barrymore, Beulah Bondi and Sir Cedric Hardwicke. Barrymore plays Julian Northrup(" Gramps"), a wheelchair user( Barrymore had broken his hip twice and was now using a wheelchair, though he continued to act), who, with his wife Nellie, played by Bondi, are raising their orphaned grandson, Pud. Hardwicke plays Mr. Brink, the personification of death.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Harold S. Bucquet",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Harold S. Bucquet",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "dateOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "13 February 1946",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1946-02-13",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "13 February 1946",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].predicate.evidence[0]: quote '13 February 1946' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

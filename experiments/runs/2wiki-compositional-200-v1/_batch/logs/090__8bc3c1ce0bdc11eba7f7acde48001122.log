@@ -1,0 +1,174 @@
+
+H0 one-case execution
+  case:          8bc3c1ce0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where did the director of film Adelheid (Film) die?
+  expected:      Prague
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/8bc3c1ce0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='František Vláčil'
+  source unit: u_481cf53f952ca9a3cc3f9ced4754fd350e9a29bddb2ea817e2621d508f06ca78
+  text chars:  777
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.829s | model=deepseek-v4-flash
+      tokens:   in=2278 | out=164 | total=2442 | cached=1920 | uncached=358
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 40 / 793 (5.0%)
+    characters text:     24 / 777 (3.1%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           1 / 8 (12.5%)
+    longest uncovered:  701 chars
+      ') was a Czech film director, painter, and graphic artist. Between 1945 and 1950, he studied esthetics and art history at Masaryk University in Brno. Later he worked in various gro…'
+    statement density:  1.26 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=4 title='Adelheid (film)'
+  source unit: u_b03e5d7bf992b68f16f0fb90b15cb52415d392c6083b95e09ab57cd4945e1929
+  text chars:  333
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.933s | model=deepseek-v4-flash
+      tokens:   in=2167 | out=1344 | total=3511 | cached=1920 | uncached=247
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 269 / 348 (77.3%)
+    characters text:     254 / 333 (76.3%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  17 chars
+      'by Czech writer'
+    statement density:  25.86 / 1000 chars
+    title reliance:      7 / 9 (77.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 10
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      10
+resource nodes:        10
+entity nodes:          10
+literal values:        1
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Prague> .
+  <urn:graphragprov:entity:1967%20novel%20of%20the%20same%20name> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Vladim%C3%ADr%20K%C3%B6rner> .
+  <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:complicated%20relationship%20between%20Czech%20man%20Viktor%20and%20German%20woman%20Adelheid> .
+  <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:relationships%20between%20Czechs%20and%20Germans%20in%20postwar%20Czechoslovakia> .
+  <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:1967%20novel%20of%20the%20same%20name> .
+  <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> .
+  <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovak> .
+  <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vladim%C3%ADr%20K%C3%B6rner> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czech> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.040s | model=deepseek-v4-flash
+      tokens:   in=1118 | out=265 | total=1383 | cached=384 | uncached=734
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> .
+  - <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Prague> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> . <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_481cf53f952ca9a3>
+  FROM <urn:graphragprov:unit:u_b03e5d7bf992b68f>
+  WHERE { <urn:graphragprov:entity:Adelheid%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> . <urn:graphragprov:entity:Franti%C5%A1ek%20Vl%C3%A1%C4%8Dil> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Prague',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Adelheid (film)', 'František Vláčil']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8bc3c1ce0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/8bc3c1ce0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5563
+output tokens:         1773
+total tokens:          7336
+cached input tokens:   4224
+uncached input tokens: 1339
+cumulative LLM seconds: 9.802
+
+statement occurrences: 10
+semantic triples:      10
+entity nodes:          10
+literal values:        1
+predicates:            8
+query attempts:        1
+observed answers:      ('Prague',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.767s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.050s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.041s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.526s

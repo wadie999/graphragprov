@@ -1,0 +1,186 @@
+
+H0 one-case execution
+  case:          e27e5af80bda11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the director of film Tracks (2013 Film)?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e27e5af80bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Tracks (2013 film)'
+  source unit: u_15fa7d8c9181c0e46adac54a7cc3a58ebde3e86a4f1f8bee50522f6975747518
+  text chars:  656
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.798s | model=deepseek-v4-flash
+      tokens:   in=2217 | out=2661 | total=4878 | cached=1920 | uncached=297
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 385 / 674 (57.1%)
+    characters text:     367 / 656 (55.9%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  93 chars
+      ", chronicling the author's nine-month journey on camels across the Australian desert. It was"
+    statement density:  26.71 / 1000 chars
+    title reliance:      18 / 18 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='John Curran (director)'
+  source unit: u_81282747a1a29a6fe7a785a16a74b64faf9fd536b75d4c349b15e6e6cc6332c4
+  text chars:  82
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.111s | model=deepseek-v4-flash
+      tokens:   in=2370 | out=655 | total=3025 | cached=1920 | uncached=450
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 75 / 104 (72.1%)
+    characters text:     64 / 82 (78.0%)
+    characters title:    11 / 22 (50.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  8 chars
+      ') is an'
+    statement density:  38.46 / 1000 chars
+    title reliance:      4 / 4 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 22
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      22
+resource nodes:        20
+entity nodes:          20
+literal values:        3
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Robyn%20Davidson%27s%20memoir%20of%20the%20same%20name> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:John%20Curran> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Australian> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:premiereDate> "2013-10-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:premieredAt> <urn:graphragprov:entity:Adelaide%20Film%20Festival> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:2013%20Toronto%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:70th%20Venice%20International%20Film%20Festival%202013> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:Dubai> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:Dublin> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:Glasgow> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:London> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:Sydney%20OpenAir> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:Telluride> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:shownAt> <urn:graphragprov:entity:Vancouver> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Adam%20Driver> .
+  <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mia%20Wasikowska> .
+  <urn:graphragprov:entity:John%20Curran> <urn:graphragprov:predicate:bornOn> "1960-11-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Curran> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:John%20Curran> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:John%20Curran> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.303s | model=deepseek-v4-flash
+      tokens:   in=1634 | out=177 | total=1811 | cached=384 | uncached=1250
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:John%20Curran> .
+  - <urn:graphragprov:entity:John%20Curran> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_15fa7d8c9181c0e4>
+  FROM <urn:graphragprov:unit:u_81282747a1a29a6f>
+  WHERE { <urn:graphragprov:entity:Tracks%20%282013%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['John Curran (director)', 'Tracks (2013 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  e27e5af80bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e27e5af80bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6221
+output tokens:         3493
+total tokens:          9714
+cached input tokens:   4224
+uncached input tokens: 1997
+cumulative LLM seconds: 16.212
+
+statement occurrences: 22
+semantic triples:      22
+entity nodes:          20
+literal values:        3
+predicates:            10
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.917s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.304s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.461s

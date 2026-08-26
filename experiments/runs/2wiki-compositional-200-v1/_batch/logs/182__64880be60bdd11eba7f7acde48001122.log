@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          64880be60bdd11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film The Street With No Name die?
+  expected:      June 24, 1984
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/64880be60bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='The Street with No Name'
+  source unit: u_b427b504cef81fa1f94672beb31cdbce4ce7345ad5200033bfb2e214b41a2d07
+  text chars:  478
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.919s | model=deepseek-v4-flash
+      tokens:   in=2216 | out=155 | total=2371 | cached=1920 | uncached=296
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 50 / 501 (10.0%)
+    characters text:     50 / 478 (10.5%)
+    characters title:    0 / 23 (0.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  406 chars
+      '. A follow- up to" The House on 92nd Street"( 1945), it tells the story of an undercover FBI agent, Gene Cordell( Mark Stevens), who infiltrates a deadly crime gang. Cordell\'s sup…'
+    statement density:  2.00 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=9 title='William Keighley'
+  source unit: u_bfd24ab7990db9971020f842060f5ba4a0a70cc4586ef0f18406479795b619cd
+  text chars:  901
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.994s | model=deepseek-v4-flash
+      tokens:   in=2310 | out=171 | total=2481 | cached=1920 | uncached=390
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 29 / 917 (3.2%)
+    characters text:     13 / 901 (1.4%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           1 / 11 (9.1%)
+    longest uncovered:  817 chars
+      ', New York, New York) was an American stage actor and Hollywood film director. After graduating from the Ludlum School of Dramatic Art, Keighley began acting at the age of 23. By…'
+    statement density:  1.09 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        2
+entity nodes:          2
+literal values:        1
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> .
+  <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> "1984-06-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.772s | model=deepseek-v4-flash
+      tokens:   in=633 | out=223 | total=856 | cached=384 | uncached=249
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> .
+  - <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> "1984-06-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> . <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b427b504cef81fa1>
+  FROM <urn:graphragprov:unit:u_bfd24ab7990db997>
+  WHERE { <urn:graphragprov:entity:The%20Street%20with%20No%20Name> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Keighley> . <urn:graphragprov:entity:William%20Keighley> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1984-06-24',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['The Street with No Name', 'William Keighley']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  64880be60bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/64880be60bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5159
+output tokens:         549
+total tokens:          5708
+cached input tokens:   4224
+uncached input tokens: 935
+cumulative LLM seconds: 5.685
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          2
+literal values:        1
+predicates:            2
+query attempts:        1
+observed answers:      ('1984-06-24',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.918s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.034s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.773s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.452s

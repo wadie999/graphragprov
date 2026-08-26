@@ -1,0 +1,175 @@
+
+H0 one-case execution
+  case:          c21b3cf00bd911eba7f7acde48001122
+  hops:          2
+  question:      Where did the director of film Hariyali Aur Rasta die?
+  expected:      Mumbai
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/c21b3cf00bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Hariyali Aur Rasta'
+  source unit: u_4369e0d9c30899dc5e153e131d3a75f0d282d35fe0843b820ad454e00eb30576
+  text chars:  324
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.397s | model=deepseek-v4-flash
+      tokens:   in=2171 | out=1485 | total=3656 | cached=1920 | uncached=251
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 135 / 342 (39.5%)
+    characters text:     117 / 324 (36.1%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  57 chars
+      'Hariyali Aur Rasta( English: The Greenery and the Road)('
+    statement density:  29.24 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[GRAPH 2/2] paragraph=9 title='Vijay Bhatt'
+  source unit: u_eae26db6cb46ab5a236f1cf4a402f46a13b230081f5696744c0faaa1feae4a13
+  text chars:  476
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.629s | model=deepseek-v4-flash
+      tokens:   in=2357 | out=152 | total=2509 | cached=1920 | uncached=437
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 32 / 487 (6.6%)
+    characters text:     21 / 476 (4.4%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  282 chars
+      ') was a noted producer-director-screenwriter of Hindi cinema, who made such films as "Ram Rajya" (1943), "Baiju Bawra" (1952), "Goonj Uthi Shehnai" (1959) and "Himalaya Ki God Mei…'
+    statement density:  2.05 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 11
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      11
+resource nodes:        10
+entity nodes:          10
+literal values:        1
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:boxOfficeRanking> <urn:graphragprov:entity:fourth%20highest%20grosser> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:boxOfficeStatus> <urn:graphragprov:entity:Hit> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vijay%20Bhatt> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Hindi> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:musicComposer> <urn:graphragprov:entity:Shankar%20Jaikishan> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Vijay%20Bhatt> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:publicationYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mala%20Sinha> .
+  <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Manoj%20Kumar> .
+  <urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Mumbai> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.911s | model=deepseek-v4-flash
+      tokens:   in=1070 | out=215 | total=1285 | cached=384 | uncached=686
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vijay%20Bhatt> .
+  - <urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Mumbai> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vijay%20Bhatt> . <urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4369e0d9c30899dc>
+  FROM <urn:graphragprov:unit:u_eae26db6cb46ab5a>
+  WHERE { <urn:graphragprov:entity:Hariyali%20Aur%20Rasta> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Vijay%20Bhatt> . <urn:graphragprov:entity:Vijay%20Bhatt> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Mumbai',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Hariyali Aur Rasta', 'Vijay Bhatt']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  c21b3cf00bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/c21b3cf00bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5598
+output tokens:         1852
+total tokens:          7450
+cached input tokens:   4224
+uncached input tokens: 1374
+cumulative LLM seconds: 10.937
+
+statement occurrences: 11
+semantic triples:      11
+entity nodes:          10
+literal values:        1
+predicates:            10
+query attempts:        1
+observed answers:      ('Mumbai',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.032s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.084s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.912s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.536s

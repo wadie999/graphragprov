@@ -1,0 +1,169 @@
+
+H0 one-case execution
+  case:          4b90bcb00bdc11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Thaka Thimi Tha is from?
+  expected:      India
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4b90bcb00bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Thaka Thimi Tha'
+  source unit: u_9c472461b17dc197b7cdd60e7c13dc7067d643d22a9cbffc1ca2405f90ee349e
+  text chars:  58
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.149s | model=deepseek-v4-flash
+      tokens:   in=2101 | out=588 | total=2689 | cached=1920 | uncached=181
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 48 / 73 (65.8%)
+    characters text:     48 / 58 (82.8%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  54.79 / 1000 chars
+    title reliance:      0 / 4 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='Sundar C.'
+  source unit: u_058089c7a8b41422a7984bc3fbf08bd286dd8e65363c4f1c441c253b6f1fb797
+  text chars:  1527
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.418s | model=deepseek-v4-flash
+      tokens:   in=2553 | out=150 | total=2703 | cached=1920 | uncached=633
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 16 / 1536 (1.0%)
+    characters text:     16 / 1527 (1.0%)
+    characters title:    0 / 9 (0.0%)
+    sentences:           3 / 13 (23.1%)
+    longest uncovered:  1124 chars
+      ', is a Tamil film director and actor. He has directed over 16 films in Tamil and acted in over 9 movies as the protagonist. Initially, he worked as an assistant director to Maniva…'
+    statement density:  0.65 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 5
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      5
+resource nodes:        5
+entity nodes:          5
+literal values:        1
+predicates:            5
+
+N-Triples:
+  <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Sundar%20C.> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Tamil> .
+  <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:publicationYear> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.311s | model=deepseek-v4-flash
+      tokens:   in=755 | out=183 | total=938 | cached=384 | uncached=371
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Sundar%20C.> .
+  - <urn:graphragprov:entity:Sundar%20C.> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_058089c7a8b41422>
+  FROM <urn:graphragprov:unit:u_9c472461b17dc197>
+  WHERE { <urn:graphragprov:entity:Thaka%20Thimi%20Tha> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('India',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Sundar C.', 'Thaka Thimi Tha']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4b90bcb00bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4b90bcb00bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5409
+output tokens:         921
+total tokens:          6330
+cached input tokens:   4224
+uncached input tokens: 1185
+cumulative LLM seconds: 5.878
+
+statement occurrences: 5
+semantic triples:      5
+entity nodes:          5
+literal values:        1
+predicates:            5
+query attempts:        1
+observed answers:      ('India',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.571s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.037s
+  graph.materialization [attempt=1]: 0.047s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.312s
+  graphdb.semantic [attempt=1]: 0.009s
+  provenance.execution [attempt=1]: 0.611s

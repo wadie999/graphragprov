@@ -1,0 +1,178 @@
+
+H0 one-case execution
+  case:          e523c8aa0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of the director of film Mother Küsters' Trip To Heaven?
+  expected:      31 May 1945
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e523c8aa0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title="Mother Küsters' Trip to Heaven"
+  source unit: u_e1b182ad0ce1a6d4f256c9590abf346da59cf52b959874aac90964ed5ecf3d1f
+  text chars:  374
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.812s | model=deepseek-v4-flash
+      tokens:   in=2200 | out=1959 | total=4159 | cached=1920 | uncached=280
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 281 / 404 (69.6%)
+    characters text:     281 / 374 (75.1%)
+    characters title:    0 / 30 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  14 chars
+      'over 20 days'
+    statement density:  32.18 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[GRAPH 2/2] paragraph=3 title='Rainer Werner Fassbinder'
+  source unit: u_59602a37f88e0e1da62ab2a8053327bdeb2154909c824a1b234baded6d3d2e51
+  text chars:  1380
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.874s | model=deepseek-v4-flash
+      tokens:   in=2664 | out=173 | total=2837 | cached=1920 | uncached=744
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 35 / 1404 (2.5%)
+    characters text:     11 / 1380 (0.8%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           1 / 9 (11.1%)
+    longest uncovered:  1343 chars
+      '– 10 June 1982), sometimes credited as R. W. Fassbinder, was a West German filmmaker, actor, playwright, theatre director, composer, cinematographer, editor, and essayist. He is w…'
+    statement density:  0.71 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 14
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      14
+resource nodes:        11
+entity nodes:          11
+literal values:        3
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> <urn:graphragprov:predicate:dateOfBirth> "1945-05-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:filmingLocation> <urn:graphragprov:entity:Frankfurt%20am%20Main> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:filmingPeriod> "February 1975 to March 1975" .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:political%20coming%20of%20age%20story> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Sirk%27s%20melodramas> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Weimar%20era%20workers%27%20films> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:publicationYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Brigitte%20Mira> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ingrid%20Caven> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Karlheinz%20B%C3%B6hm> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Margit%20Carstensen> .
+  <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.223s | model=deepseek-v4-flash
+      tokens:   in=1429 | out=261 | total=1690 | cached=384 | uncached=1045
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> .
+  - <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> <urn:graphragprov:predicate:dateOfBirth> "1945-05-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> . <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_59602a37f88e0e1d>
+  FROM <urn:graphragprov:unit:u_e1b182ad0ce1a6d4>
+  WHERE { <urn:graphragprov:entity:Mother%20K%C3%BCsters%27%20Trip%20to%20Heaven> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> . <urn:graphragprov:entity:Rainer%20Werner%20Fassbinder> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1945-05-31',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ["Mother Küsters' Trip to Heaven", 'Rainer Werner Fassbinder']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  e523c8aa0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e523c8aa0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6293
+output tokens:         2393
+total tokens:          8686
+cached input tokens:   4224
+uncached input tokens: 2069
+cumulative LLM seconds: 13.910
+
+statement occurrences: 14
+semantic triples:      14
+entity nodes:          11
+literal values:        3
+predicates:            10
+query attempts:        1
+observed answers:      ('1945-05-31',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 11.694s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.046s
+  graph.materialization [attempt=1]: 0.072s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.224s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.310s

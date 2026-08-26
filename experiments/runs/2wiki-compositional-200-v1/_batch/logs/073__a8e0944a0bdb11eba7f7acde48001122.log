@@ -1,0 +1,273 @@
+
+H0 one-case execution
+  case:          a8e0944a0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Just Suppose born?
+  expected:      New York
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a8e0944a0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Just Suppose'
+  source unit: u_ebcf4b5c8f20ea29dc2b46c46f59be2699b6f9d2e2e1d9654b0994756e224d8f
+  text chars:  296
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.402s | model=deepseek-v4-flash
+      tokens:   in=2128 | out=283 | total=2411 | cached=1920 | uncached=208
+    [LLM graph.reference #2] sending...
+      provider: 0.891s | model=deepseek-v4-flash
+      tokens:   in=572 | out=8 | total=580 | cached=0 | uncached=572
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'New York' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "New York",
+                "segment": "text"
+              }
+            ],
+            "value": "New York"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "New York",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Kenneth Webb",
+                "segment": "text"
+              }
+            ],
+            "value": "Kenneth Webb"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 32 / 308 (10.4%)
+    characters text:     32 / 296 (10.8%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           2 / 4 (50.0%)
+    longest uncovered:  144 chars
+      'is a surviving 1926 American silent drama film produced by and starring Richard Barthelmess with distribution through First National Pictures.'
+    statement density:  3.25 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='Kenneth Webb'
+  source unit: u_77b627e64ba0d8dd83354af8c5440f02b040900da39c4a2941357dc6d2f3013c
+  text chars:  298
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.344s | model=deepseek-v4-flash
+      tokens:   in=2142 | out=1826 | total=3968 | cached=1920 | uncached=222
+    [LLM graph.reference #4] sending...
+      provider: 1.722s | model=deepseek-v4-flash
+      tokens:   in=603 | out=197 | total=800 | cached=0 | uncached=603
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'born' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "New York City",
+                "segment": "text"
+              }
+            ],
+            "value": "New York City"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Kenneth Webb",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Kenneth Seymour Webb",
+                "segment": "text"
+              }
+            ],
+            "value": "Kenneth Webb"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 224 / 310 (72.3%)
+    characters text:     212 / 298 (71.1%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  52 chars
+      'in the early age of the American film industry. He'
+    statement density:  35.48 / 1000 chars
+    title reliance:      11 / 11 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 12
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      12
+resource nodes:        11
+entity nodes:          11
+literal values:        2
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:birthDate> "1885-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Samuel%20Hoffenstein> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:deathDate> "1966-03-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:notableFor> <urn:graphragprov:entity:directing%20a%20number%20of%20films> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood%2C%20California> .
+  <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:writer> <urn:graphragprov:entity:Gay%20Divorce> .
+  <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenneth%20Webb> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.734s | model=deepseek-v4-flash
+      tokens:   in=1073 | out=199 | total=1272 | cached=384 | uncached=689
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenneth%20Webb> .
+  - <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:New%20York%20City> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenneth%20Webb> . <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_77b627e64ba0d8dd>
+  FROM <urn:graphragprov:unit:u_ebcf4b5c8f20ea29>
+  WHERE { <urn:graphragprov:entity:Just%20Suppose> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenneth%20Webb> . <urn:graphragprov:entity:Kenneth%20Webb> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('New York City',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Just Suppose', 'Kenneth Webb']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  a8e0944a0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a8e0944a0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6518
+output tokens:         2513
+total tokens:          9031
+cached input tokens:   4224
+uncached input tokens: 2294
+cumulative LLM seconds: 15.093
+
+statement occurrences: 12
+semantic triples:      12
+entity nodes:          11
+literal values:        2
+predicates:            10
+query attempts:        1
+observed answers:      ('New York City',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.367s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.735s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.481s

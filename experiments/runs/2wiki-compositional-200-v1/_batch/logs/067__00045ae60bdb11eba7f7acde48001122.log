@@ -1,0 +1,175 @@
+
+H0 one-case execution
+  case:          00045ae60bdb11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the director of film Private Vices, Public Pleasures?
+  expected:      Hungarian
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/00045ae60bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Private Vices, Public Pleasures'
+  source unit: u_ce5e41a1456688a90c551ac741adcd9d6107d5d2995e09ce376c25f7b4dd531c
+  text chars:  151
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.176s | model=deepseek-v4-flash
+      tokens:   in=2134 | out=911 | total=3045 | cached=1920 | uncached=214
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 125 / 182 (68.7%)
+    characters text:     125 / 151 (82.8%)
+    characters title:    0 / 31 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  9 chars
+      '. It was'
+    statement density:  32.97 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=6 title='Miklós Jancsó'
+  source unit: u_7a2b9533bdcf92e5f118828c7428ba7b7816d45e337b89c9180798bd4d26a47a
+  text chars:  849
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.651s | model=deepseek-v4-flash
+      tokens:   in=2388 | out=772 | total=3160 | cached=2048 | uncached=340
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 84 / 862 (9.7%)
+    characters text:     71 / 849 (8.4%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           1 / 6 (16.7%)
+    longest uncovered:  753 chars
+      '. Jancs ó achieved international prominence from the mid-1960s onwards, with works including" The Round- UpSzegénylegények", 1965)," The Red and the WhiteCsillagosok, katonák", 19…'
+    statement density:  5.80 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 11
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      11
+resource nodes:        9
+entity nodes:          9
+literal values:        3
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> <urn:graphragprov:predicate:birthDate> "1921-09-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> <urn:graphragprov:predicate:deathDate> "2014-01-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Hungarian> .
+  <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> .
+  <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:event> <urn:graphragprov:entity:1976%20Cannes%20Film%20Festival> .
+  <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Italian> .
+  <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Yugoslavian> .
+  <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.534s | model=deepseek-v4-flash
+      tokens:   in=1156 | out=208 | total=1364 | cached=384 | uncached=772
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> .
+  - <urn:graphragprov:entity:Mikl%C3%B3s%20Jancs%C3%B3> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Hungarian> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_7a2b9533bdcf92e5>
+  FROM <urn:graphragprov:unit:u_ce5e41a1456688a9>
+  WHERE { <urn:graphragprov:entity:Private%20Vices%2C%20Public%20Pleasures> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Hungarian',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Miklós Jancsó', 'Private Vices, Public Pleasures']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  00045ae60bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/00045ae60bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5678
+output tokens:         1891
+total tokens:          7569
+cached input tokens:   4352
+uncached input tokens: 1326
+cumulative LLM seconds: 10.360
+
+statement occurrences: 11
+semantic triples:      11
+entity nodes:          9
+literal values:        3
+predicates:            8
+query attempts:        1
+observed answers:      ('Hungarian',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 8.833s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.069s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.535s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.427s

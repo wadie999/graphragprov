@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          a5d549260bdb11eba7f7acde48001122
+  hops:          2
+  question:      Who is the father of the director of film Shanti Kranti (1991 Telugu Film)?
+  expected:      N. Veeraswamy
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a5d549260bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='V. Ravichandran'
+  source unit: u_4656cbacf4bb75dbd6f13cca26f07218621cbdbd58c616d76787849009129ef3
+  text chars:  620
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.189s | model=deepseek-v4-flash
+      tokens:   in=2261 | out=186 | total=2447 | cached=1920 | uncached=341
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 57 / 635 (9.0%)
+    characters text:     42 / 620 (6.8%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           3 / 7 (42.9%)
+    longest uncovered:  408 chars
+      ', Dr. Ravichandran made his acting debut in "Khadeema Kallaru" (1982) as an antagonist and followed it up with "Chakravyuha" in 1983. After starring in a series of multi-starrers…'
+    statement density:  1.57 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='Shanti Kranti (1991 Telugu film)'
+  source unit: u_6ba8fe5d686436875e4648e40aeaa2ad0af7e1d0aeb6ecd97a6423c41bea1e6c
+  text chars:  735
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.553s | model=deepseek-v4-flash
+      tokens:   in=2317 | out=171 | total=2488 | cached=1920 | uncached=397
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 58 / 767 (7.6%)
+    characters text:     26 / 735 (3.5%)
+    characters title:    32 / 32 (100.0%)
+    sentences:           2 / 8 (25.0%)
+    longest uncovered:  622 chars
+      'under his Eshwari Productions banner. It stars Akkineni Nagarjuna, V. Ravichandran, Juhi Chawla, Kushboo in the lead roles and music composed by Hamsalekha. The film is a multilin…'
+    statement density:  1.30 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:N.%20Veeraswamy> .
+  <urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:V.%20Ravichandran> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.644s | model=deepseek-v4-flash
+      tokens:   in=643 | out=206 | total=849 | cached=384 | uncached=259
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:V.%20Ravichandran> .
+  - <urn:graphragprov:entity:V.%20Ravichandran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:N.%20Veeraswamy> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:father> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4656cbacf4bb75db>
+  FROM <urn:graphragprov:unit:u_6ba8fe5d68643687>
+  WHERE { <urn:graphragprov:entity:Shanti%20Kranti%20%281991%20Telugu%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:father> ?answer . }
+
+GraphDB execution:
+  observed answers: ('N. Veeraswamy',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Shanti Kranti (1991 Telugu film)', 'V. Ravichandran']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  a5d549260bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a5d549260bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5221
+output tokens:         563
+total tokens:          5784
+cached input tokens:   4224
+uncached input tokens: 997
+cumulative LLM seconds: 5.386
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('N. Veeraswamy',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.747s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.050s
+  graph.materialization [attempt=1]: 0.111s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.645s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.488s

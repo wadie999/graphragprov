@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          3b076fee0bda11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film The Trollenberg Terror die?
+  expected:      9 March 1979
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/3b076fee0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='The Trollenberg Terror'
+  source unit: u_85bd5d8985b16e737737316afb3940a199a181dc82b538a01dc45f01786bf8dd
+  text chars:  1281
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.482s | model=deepseek-v4-flash
+      tokens:   in=2361 | out=151 | total=2512 | cached=1920 | uncached=441
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 49 / 1303 (3.8%)
+    characters text:     49 / 1281 (3.8%)
+    characters title:    0 / 22 (0.0%)
+    sentences:           2 / 14 (14.3%)
+    longest uncovered:  1046 chars
+      ', that stars Forrest Tucker, Laurence Payne, Jennifer Jayne, and Janet Munro. The special effects were handled by Les Bowie. The story was based on a 1956 British ITV" Saturday Se…'
+    statement density:  0.77 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Quentin Lawrence'
+  source unit: u_8da3fa229dd824c9c5004bda8170d8a01f6d62b6560809d13c1cc6358431839b
+  text chars:  129
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.864s | model=deepseek-v4-flash
+      tokens:   in=2120 | out=165 | total=2285 | cached=1920 | uncached=200
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 28 / 145 (19.3%)
+    characters text:     12 / 129 (9.3%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  68 chars
+      'in Halifax, Yorkshire) was an English film and television director.'
+    statement density:  6.90 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        2
+entity nodes:          2
+literal values:        1
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Quentin%20Lawrence> .
+  <urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:dateOfDeath> "1979-03-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.355s | model=deepseek-v4-flash
+      tokens:   in=620 | out=213 | total=833 | cached=384 | uncached=236
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Quentin%20Lawrence> .
+  - <urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:dateOfDeath> "1979-03-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Quentin%20Lawrence> . <urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_85bd5d8985b16e73>
+  FROM <urn:graphragprov:unit:u_8da3fa229dd824c9>
+  WHERE { <urn:graphragprov:entity:The%20Trollenberg%20Terror> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Quentin%20Lawrence> . <urn:graphragprov:entity:Quentin%20Lawrence> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1979-03-09',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Quentin Lawrence', 'The Trollenberg Terror']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3b076fee0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/3b076fee0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5101
+output tokens:         529
+total tokens:          5630
+cached input tokens:   4224
+uncached input tokens: 877
+cumulative LLM seconds: 4.701
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          2
+literal values:        1
+predicates:            2
+query attempts:        1
+observed answers:      ('1979-03-09',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.349s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.115s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.356s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.473s

@@ -1,0 +1,172 @@
+
+H0 one-case execution
+  case:          eaed44680bdc11eba7f7acde48001122
+  hops:          2
+  question:      When was Hjalmar Krag's father born?
+  expected:      9 August 1829
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/eaed44680bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Hjalmar Krag'
+  source unit: u_4cb8a47f53f84c8e433eef1013bb2f9d52574749df1bb6daa19bb4b6409fd31d
+  text chars:  636
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.287s | model=deepseek-v4-flash
+      tokens:   in=2266 | out=171 | total=2437 | cached=1920 | uncached=346
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 87 / 648 (13.4%)
+    characters text:     75 / 636 (11.8%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           1 / 9 (11.1%)
+    longest uncovered:  422 chars
+      ', and Anna Marie Pedersen. He married Claudine Emilie Heiberg in 1896. He graduated as military officer in 1889, and from the Norwegian Military College in 1893. He served as adju…'
+    statement density:  1.54 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=6 title='Hans Hagerup Krag'
+  source unit: u_97b2be6ca2c1015defbe16fed344b019af023713d53f6110f998c6c57a763e9c
+  text chars:  431
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.249s | model=deepseek-v4-flash
+      tokens:   in=2213 | out=1051 | total=3264 | cached=1920 | uncached=293
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 219 / 448 (48.9%)
+    characters text:     202 / 431 (46.9%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  57 chars
+      'from 1874 to 1903. Also, together with Thomas Heftye he'
+    statement density:  15.62 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 8
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      8
+resource nodes:        8
+entity nodes:          8
+literal values:        1
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Hans%20Hagerup%20Krag> .
+  <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:chairmanOf> <urn:graphragprov:entity:Norwegian%20Polytechnic%20Society> .
+  <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:dateOfBirth> "1829-08-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Norwegian%20Public%20Roads%20Administration> .
+  <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Norwegian%20Mountain%20Touring%20Association> .
+  <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+  <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:engineer> .
+  <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:director%20of%20the%20Norwegian%20Directorate%20of%20Public%20Roads> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.856s | model=deepseek-v4-flash
+      tokens:   in=961 | out=225 | total=1186 | cached=384 | uncached=577
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Hans%20Hagerup%20Krag> .
+  - <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:dateOfBirth> "1829-08-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Hans%20Hagerup%20Krag> . <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4cb8a47f53f84c8e>
+  FROM <urn:graphragprov:unit:u_97b2be6ca2c1015d>
+  WHERE { <urn:graphragprov:entity:Hjalmar%20Krag> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Hans%20Hagerup%20Krag> . <urn:graphragprov:entity:Hans%20Hagerup%20Krag> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1829-08-09',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Hans Hagerup Krag', 'Hjalmar Krag']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  eaed44680bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/eaed44680bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5440
+output tokens:         1447
+total tokens:          6887
+cached input tokens:   4224
+uncached input tokens: 1216
+cumulative LLM seconds: 9.392
+
+statement occurrences: 8
+semantic triples:      8
+entity nodes:          8
+literal values:        1
+predicates:            8
+query attempts:        1
+observed answers:      ('1829-08-09',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.542s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.051s
+  graph.materialization [attempt=1]: 0.104s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.857s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.519s

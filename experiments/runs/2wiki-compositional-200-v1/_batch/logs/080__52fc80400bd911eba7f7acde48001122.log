@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          52fc80400bd911eba7f7acde48001122
+  hops:          2
+  question:      Who is the spouse of the director of film Shri Ram Bhakta Hanuman?
+  expected:      Fearless Nadia
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/52fc80400bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Shri Ram Bhakta Hanuman'
+  source unit: u_24bcfce22835391a7c8e4d6e02cba66b14b843613cbc4e99790ecafd1e2f9ca9
+  text chars:  626
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.051s | model=deepseek-v4-flash
+      tokens:   in=2262 | out=303 | total=2565 | cached=1920 | uncached=342
+    [LLM graph.reference #2] sending...
+      provider: 1.000s | model=deepseek-v4-flash
+      tokens:   in=689 | out=8 | total=697 | cached=0 | uncached=689
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'spouse' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Fearless Nadia",
+                "segment": "text"
+              }
+            ],
+            "value": "Fearless Nadia"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "spouse",
+                "segment": "text"
+              }
+            ],
+            "value": "spouse"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Homi Wadia",
+                "segment": "text"
+              }
+            ],
+            "value": "Homi Wadia"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 44 / 649 (6.8%)
+    characters text:     21 / 626 (3.4%)
+    characters title:    23 / 23 (100.0%)
+    sentences:           1 / 8 (12.5%)
+    longest uncovered:  497 chars
+      'for Basant Pictures. The story was adapted from Valmiki’s Ramayana by Shivram Vashikar and the dialogues were written by P. C. Joshi. S. N. Tripathi not only provided music for th…'
+    statement density:  1.54 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='Homi Wadia'
+  source unit: u_24f64484dbdec808320c2bf28235d7b113c5a3c5eb8cc7107bcec8a62fe43024
+  text chars:  691
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 2.173s | model=deepseek-v4-flash
+      tokens:   in=2285 | out=176 | total=2461 | cached=1920 | uncached=365
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 48 / 701 (6.8%)
+    characters text:     38 / 691 (5.5%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 6 (33.3%)
+    longest uncovered:  550 chars
+      '( 22 May 1911 – 10 December 2004) was an Indian film director and producer in Bollywood( Hindi cinema). He was the co-founder of Wadia Movietone productions, established in 1933 a…'
+    statement density:  1.43 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Shri%20Ram%20Bhakta%20Hanuman> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Homi%20Wadia> .
+  <urn:graphragprov:entity:Homi%20Wadia> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Fearless%20Nadia> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.724s | model=deepseek-v4-flash
+      tokens:   in=621 | out=212 | total=833 | cached=384 | uncached=237
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Shri%20Ram%20Bhakta%20Hanuman> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Homi%20Wadia> .
+  - <urn:graphragprov:entity:Homi%20Wadia> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Fearless%20Nadia> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Shri%20Ram%20Bhakta%20Hanuman> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Homi%20Wadia> . <urn:graphragprov:entity:Homi%20Wadia> <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_24bcfce22835391a>
+  FROM <urn:graphragprov:unit:u_24f64484dbdec808>
+  WHERE { <urn:graphragprov:entity:Shri%20Ram%20Bhakta%20Hanuman> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Homi%20Wadia> . <urn:graphragprov:entity:Homi%20Wadia> <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Fearless Nadia',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Homi Wadia', 'Shri Ram Bhakta Hanuman']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  52fc80400bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/52fc80400bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5857
+output tokens:         699
+total tokens:          6556
+cached input tokens:   4224
+uncached input tokens: 1633
+cumulative LLM seconds: 7.948
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Fearless Nadia',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 6.231s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.051s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.725s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.471s

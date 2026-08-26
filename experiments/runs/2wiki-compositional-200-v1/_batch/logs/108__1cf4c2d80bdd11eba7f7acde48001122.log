@@ -1,0 +1,171 @@
+
+H0 one-case execution
+  case:          1cf4c2d80bdd11eba7f7acde48001122
+  hops:          2
+  question:      When did Johannes Winding Harbitz's father die?
+  expected:      22 November 1889
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/1cf4c2d80bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Johannes Winding Harbitz'
+  source unit: u_2f019b1dec28d3398c27dacf389169faae37c16d6151891f24a6894bf519c089
+  text chars:  1191
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.147s | model=deepseek-v4-flash
+      tokens:   in=2403 | out=320 | total=2723 | cached=1920 | uncached=483
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 94 / 1215 (7.7%)
+    characters text:     70 / 1191 (5.9%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           3 / 14 (21.4%)
+    longest uncovered:  887 chars
+      "and his wife Maren Mariken Hof. He enrolled as a student in 1850, but soon took off to work at sea. He took the mate's examination in 1852, and worked as a shipmaster from 1859 to…"
+    statement density:  1.65 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=3 title='Georg Prahl Harbitz'
+  source unit: u_ab13c81a53ffc47fbcdeab3f940a4f22d3f53fc9797de93f4b5f6b299159254d
+  text chars:  182
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.636s | model=deepseek-v4-flash
+      tokens:   in=2160 | out=743 | total=2903 | cached=1920 | uncached=240
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 106 / 201 (52.7%)
+    characters text:     87 / 182 (47.8%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  36 chars
+      'Georg Prahl Harbitz( 26 June 1802 –'
+    statement density:  24.88 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 7
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      7
+resource nodes:        6
+entity nodes:          6
+literal values:        2
+predicates:            5
+
+N-Triples:
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:dateOfDeath> "1917"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:dateOfDeath> "1889-11-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:priest> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Parliament> .
+  <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:President%20of%20the%20Storting> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.480s | model=deepseek-v4-flash
+      tokens:   in=888 | out=235 | total=1123 | cached=384 | uncached=504
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> .
+  - <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:dateOfDeath> "1889-11-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> . <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2f019b1dec28d339>
+  FROM <urn:graphragprov:unit:u_ab13c81a53ffc47f>
+  WHERE { <urn:graphragprov:entity:Johannes%20Winding%20Harbitz> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> . <urn:graphragprov:entity:Georg%20Prahl%20Harbitz> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1917', '1889-11-22')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Georg Prahl Harbitz', 'Johannes Winding Harbitz']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1cf4c2d80bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/1cf4c2d80bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5451
+output tokens:         1298
+total tokens:          6749
+cached input tokens:   4224
+uncached input tokens: 1227
+cumulative LLM seconds: 7.264
+
+statement occurrences: 7
+semantic triples:      7
+entity nodes:          6
+literal values:        2
+predicates:            5
+query attempts:        1
+observed answers:      ('1917', '1889-11-22')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 5.787s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.029s
+  graph.materialization [attempt=1]: 0.037s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.481s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.460s

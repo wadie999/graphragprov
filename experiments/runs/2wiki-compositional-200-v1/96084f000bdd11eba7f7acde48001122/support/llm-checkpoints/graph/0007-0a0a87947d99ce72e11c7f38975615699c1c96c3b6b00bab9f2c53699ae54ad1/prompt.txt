@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_38c304089a12027c17b9cd316465fb6443818f3d96ba8477c1f41c636aff2882
+Title: Asa Griggs Candler
+Text:
+Asa Griggs Candler (December 30, 1851 – March 12, 1929) was an American business tycoon who purchased the Coca-Cola Company for USD1,750 from chemist John Stith Pemberton in Atlanta, Georgia in 1892 and developed it as a major company. Prominent among civic leaders of Atlanta, Candler was elected and served as the 41st Mayor of the city, from 1916 to 1919. Candler Field, the site of the present-day Hartsfield-Jackson Atlanta International Airport, was named after him, as is Candler Park in Atlanta. As head of Coca-Cola, he built the Candler Building in Atlanta, as well as one in Kansas City (which became known as the Western Auto Building), a Candler Building (New York City), and one at what is now known as the Inner Harbor area of Baltimore, Maryland.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Asa Griggs Candler",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Asa Griggs Candler",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "placeOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "died",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Atlanta, Georgia",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Atlanta, Georgia",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,229 @@
+
+H0 one-case execution
+  case:          965cbc360bdb11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Go Quiet is from?
+  expected:      Canadian
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/965cbc360bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Go Quiet'
+  source unit: u_cfafb41dcdb9fc2d8cf257606f0cb8007cfcdde112be146eda5e8a3ae9ab8541
+  text chars:  938
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.316s | model=deepseek-v4-flash
+      tokens:   in=2312 | out=287 | total=2599 | cached=1920 | uncached=392
+    [LLM graph.reference #2] sending...
+      provider: 0.829s | model=deepseek-v4-flash
+      tokens:   in=744 | out=8 | total=752 | cached=0 | uncached=744
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'Canadian' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Canadian",
+                "segment": "text"
+              }
+            ],
+            "value": "Canadian"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Canadian",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dean DeBlois",
+                "segment": "text"
+              }
+            ],
+            "value": "Dean DeBlois"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 31 / 946 (3.3%)
+    characters text:     31 / 938 (3.3%)
+    characters title:    0 / 8 (0.0%)
+    sentences:           1 / 6 (16.7%)
+    longest uncovered:  889 chars
+      ', featuring acoustic renditions of all nine songs from the 2010 album" Go" by Jón Þór( Jónsi) Birgisson. The film was created as a counterpart to the lavishly produced studio trac…'
+    statement density:  1.06 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Dean DeBlois'
+  source unit: u_43e48e87d4d43427f29d13a9956ea08504eead9153f4445b6aaec721d684e736
+  text chars:  432
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 12.190s | model=deepseek-v4-flash
+      tokens:   in=2179 | out=2899 | total=5078 | cached=1920 | uncached=259
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 254 / 444 (57.2%)
+    characters text:     242 / 432 (56.0%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  68 chars
+      '(the first film also with Sanders), and directing the documentary "'
+    statement density:  40.54 / 1000 chars
+    title reliance:      14 / 18 (77.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 19
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      19
+resource nodes:        14
+entity nodes:          14
+literal values:        1
+predicates:            9
+
+N-Triples:
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:birthDate> "1970-06-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Heima> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:How%20to%20Train%20Your%20Dragon> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:Lilo%20%26%20Stitch> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:animator> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20producer> .
+  <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Heima> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dean%20DeBlois> .
+  <urn:graphragprov:entity:Heima> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:Sigur%20R%C3%B3s> .
+  <urn:graphragprov:entity:How%20to%20Train%20Your%20Dragon> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dean%20DeBlois> .
+  <urn:graphragprov:entity:How%20to%20Train%20Your%20Dragon> <urn:graphragprov:predicate:studio> <urn:graphragprov:entity:DreamWorks%20Animation> .
+  <urn:graphragprov:entity:How%20to%20Train%20Your%20Dragon> <urn:graphragprov:predicate:writer> <urn:graphragprov:entity:Dean%20DeBlois> .
+  <urn:graphragprov:entity:Lilo%20%26%20Stitch> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dean%20DeBlois> .
+  <urn:graphragprov:entity:Lilo%20%26%20Stitch> <urn:graphragprov:predicate:studio> <urn:graphragprov:entity:Walt%20Disney%20Animation%20Studios> .
+  <urn:graphragprov:entity:Lilo%20%26%20Stitch> <urn:graphragprov:predicate:writer> <urn:graphragprov:entity:Dean%20DeBlois> .
+  <urn:graphragprov:entity:Sigur%20R%C3%B3s> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Icelandic> .
+  <urn:graphragprov:entity:Go%20Quiet> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dean%20DeBlois> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.811s | model=deepseek-v4-flash
+      tokens:   in=1415 | out=173 | total=1588 | cached=384 | uncached=1031
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Go%20Quiet> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dean%20DeBlois> .
+  - <urn:graphragprov:entity:Dean%20DeBlois> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Canadian> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Go%20Quiet> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_43e48e87d4d43427>
+  FROM <urn:graphragprov:unit:u_cfafb41dcdb9fc2d>
+  WHERE { <urn:graphragprov:entity:Go%20Quiet> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Canadian',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Dean DeBlois', 'Go Quiet']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  965cbc360bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/965cbc360bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6650
+output tokens:         3367
+total tokens:          10017
+cached input tokens:   4224
+uncached input tokens: 2426
+cumulative LLM seconds: 17.147
+
+statement occurrences: 19
+semantic triples:      19
+entity nodes:          14
+literal values:        1
+predicates:            9
+query attempts:        1
+observed answers:      ('Canadian',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.345s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.158s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.813s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.625s

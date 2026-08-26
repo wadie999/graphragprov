@@ -1,0 +1,175 @@
+
+H0 one-case execution
+  case:          ec9d4fe80bdb11eba7f7acde48001122
+  hops:          2
+  question:      When is the director of film Loie Fuller (Film) 's birthday?
+  expected:      17 October 1871
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/ec9d4fe80bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Loie Fuller (film)'
+  source unit: u_306cd9ed8c866d6ea8108878a48b6b7771c5b22f45ec9e183b524f283de88263
+  text chars:  197
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.884s | model=deepseek-v4-flash
+      tokens:   in=2139 | out=1431 | total=3570 | cached=1920 | uncached=219
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 127 / 215 (59.1%)
+    characters text:     109 / 197 (55.3%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  44 chars
+      '. Some copies have been stencil-coloured in'
+    statement density:  46.51 / 1000 chars
+    title reliance:      9 / 10 (90.0%)
+
+[GRAPH 2/2] paragraph=3 title='Segundo de Chomón'
+  source unit: u_5b3fba8a0acd12aae941ad019e8d80e669d12ea4fddb308c17dea14b1d1d18c5
+  text chars:  437
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.328s | model=deepseek-v4-flash
+      tokens:   in=2316 | out=171 | total=2487 | cached=2048 | uncached=268
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 32 / 454 (7.0%)
+    characters text:     15 / 437 (3.4%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  353 chars
+      '– 2 May 1929) was a pioneering Spanish film director, cinematographer and screenwriter. He produced many short films in France while working for Pathé Frères and has been compared…'
+    statement density:  2.20 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 11
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      11
+resource nodes:        11
+entity nodes:          11
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:Loie%20Fuller> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:depicts> <urn:graphragprov:entity:serpentine%20dance> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Segundo%20de%20Chomon> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:black-and-white> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:short> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:silent> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1901"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Segundo%20de%20Chomon> <urn:graphragprov:predicate:workshop> <urn:graphragprov:entity:Barcelona%20workshop> .
+  <urn:graphragprov:entity:Segundo%20de%20Chom%C3%B3n> <urn:graphragprov:predicate:dateOfBirth> "1871-10-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.766s | model=deepseek-v4-flash
+      tokens:   in=1105 | out=210 | total=1315 | cached=384 | uncached=721
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Segundo%20de%20Chomon> .
+  - <urn:graphragprov:entity:Segundo%20de%20Chom%C3%B3n> <urn:graphragprov:predicate:dateOfBirth> "1871-10-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_306cd9ed8c866d6e>
+  FROM <urn:graphragprov:unit:u_5b3fba8a0acd12aa>
+  WHERE { <urn:graphragprov:entity:Loie%20Fuller%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  ec9d4fe80bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/ec9d4fe80bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5560
+output tokens:         1812
+total tokens:          7372
+cached input tokens:   4352
+uncached input tokens: 1208
+cumulative LLM seconds: 9.978
+
+statement occurrences: 11
+semantic triples:      11
+entity nodes:          11
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 8.217s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.153s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.767s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.630s

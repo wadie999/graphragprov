@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          22ff74120bdc11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Toto, Peppino, And The Hussy die?
+  expected:      23 April 1969
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/22ff74120bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Toto, Peppino, and the Hussy'
+  source unit: u_10c25a44f99646c883bbc2d600c55f8b08088bb526c8a408534fba58ab5fb094
+  text chars:  489
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.027s | model=deepseek-v4-flash
+      tokens:   in=2248 | out=171 | total=2419 | cached=1920 | uncached=328
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 59 / 517 (11.4%)
+    characters text:     31 / 489 (6.3%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  354 chars
+      'in 1956. It stars the comedy duo of Totò and Peppino De Filippo. The film also stars the popular singer Teddy Reno, and features Reno singing some of his songs as well as" Malafem…'
+    statement density:  1.93 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=4 title='Camillo Mastrocinque'
+  source unit: u_d9a199e24f57d5cd98ab9dc718595d57f0b7d82a569a02d2756d888f67307517
+  text chars:  299
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.941s | model=deepseek-v4-flash
+      tokens:   in=2208 | out=171 | total=2379 | cached=1920 | uncached=288
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 33 / 319 (10.3%)
+    characters text:     13 / 299 (4.3%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  250 chars
+      ') was an Italian film director and screenwriter. He directed 63 films between 1937 and 1968. He is known to horror film fans for directing" Terror in the Crypt"( 1964) starring Ch…'
+    statement density:  3.13 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        2
+entity nodes:          2
+literal values:        1
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> .
+  <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> "1969-04-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.818s | model=deepseek-v4-flash
+      tokens:   in=661 | out=251 | total=912 | cached=384 | uncached=277
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> .
+  - <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> "1969-04-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> . <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_10c25a44f99646c8>
+  FROM <urn:graphragprov:unit:u_d9a199e24f57d5cd>
+  WHERE { <urn:graphragprov:entity:Toto%2C%20Peppino%2C%20and%20the%20Hussy> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Camillo%20Mastrocinque> . <urn:graphragprov:entity:Camillo%20Mastrocinque> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1969-04-23',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Camillo Mastrocinque', 'Toto, Peppino, and the Hussy']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  22ff74120bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/22ff74120bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5117
+output tokens:         593
+total tokens:          5710
+cached input tokens:   4224
+uncached input tokens: 893
+cumulative LLM seconds: 5.786
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          2
+literal values:        1
+predicates:            2
+query attempts:        1
+observed answers:      ('1969-04-23',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.972s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.070s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.819s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.467s

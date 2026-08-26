@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          b46239680bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the husband of Princess Agnes Of Anhalt-Dessau born?
+  expected:      Hildburghausen
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b46239680bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Princess Agnes of Anhalt-Dessau'
+  source unit: u_6e313f8fa85a17618a4b9f0d2094ab9b490bd3579665d00dd2e1348b8e38efd6
+  text chars:  321
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.240s | model=deepseek-v4-flash
+      tokens:   in=2196 | out=180 | total=2376 | cached=1920 | uncached=276
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 78 / 352 (22.2%)
+    characters text:     47 / 321 (14.6%)
+    characters title:    31 / 31 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  236 chars
+      'Princess Agnes of Anhalt- Dessau( Frederica Amalia Agnes; 24 June 1824 – 23 October 1897) was the eldest daughter of Leopold IV, Duke of Anhalt by his wife Princess Frederica of P…'
+    statement density:  2.84 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=6 title='Ernst I, Duke of Saxe-Altenburg'
+  source unit: u_6d77142654e4dc4e8e3772295e1e9cce9b5aa0fc214391b99ed3f5ece23428d2
+  text chars:  593
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.595s | model=deepseek-v4-flash
+      tokens:   in=2291 | out=172 | total=2463 | cached=1920 | uncached=371
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 48 / 624 (7.7%)
+    characters text:     17 / 593 (2.9%)
+    characters title:    31 / 31 (100.0%)
+    sentences:           1 / 6 (16.7%)
+    longest uncovered:  452 chars
+      '– 7 February 1908 in Altenburg), was a duke of Saxe- Altenburg. He was the first son of Georg, Duke of Saxe- Altenburg and Marie Luise of Mecklenburg- Schwerin. In 1853 he succeed…'
+    statement density:  1.60 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hildburghausen> .
+  <urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.028s | model=deepseek-v4-flash
+      tokens:   in=670 | out=287 | total=957 | cached=384 | uncached=286
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> .
+  - <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Hildburghausen> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> . <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6d77142654e4dc4e>
+  FROM <urn:graphragprov:unit:u_6e313f8fa85a1761>
+  WHERE { <urn:graphragprov:entity:Princess%20Agnes%20of%20Anhalt-Dessau> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> . <urn:graphragprov:entity:Ernst%20I%2C%20Duke%20of%20Saxe-Altenburg> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Hildburghausen',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Ernst I, Duke of Saxe-Altenburg', 'Princess Agnes of Anhalt-Dessau']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b46239680bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b46239680bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5157
+output tokens:         639
+total tokens:          5796
+cached input tokens:   4224
+uncached input tokens: 933
+cumulative LLM seconds: 5.864
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Hildburghausen',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.839s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.032s
+  graph.materialization [attempt=1]: 0.038s
+  graph.observation [attempt=1]: 0.003s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 2.029s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.278s

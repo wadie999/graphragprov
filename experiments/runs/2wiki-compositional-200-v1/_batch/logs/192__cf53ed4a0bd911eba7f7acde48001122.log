@@ -1,0 +1,531 @@
+
+H0 one-case execution
+  case:          cf53ed4a0bd911eba7f7acde48001122
+  hops:          2
+  question:      Where was the composer of film Petulia born?
+  expected:      York
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/cf53ed4a0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Petulia'
+  source unit: u_e7f3b441634f6db0770d51a71a91a6bb3af57a9b9f6e4666a53765fe6561031d
+  text chars:  268
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.220s | model=deepseek-v4-flash
+      tokens:   in=2127 | out=1531 | total=3658 | cached=1920 | uncached=207
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 209 / 275 (76.0%)
+    characters text:     209 / 268 (78.0%)
+    characters title:    0 / 7 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  12 chars
+      'the novel"'
+    statement density:  40.00 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='John Barry (composer)'
+  source unit: u_9fb37d7d4acd89ece88bdc3b5501270b2150804e7b5b9ca63e6a496421bdcd22
+  text chars:  2205
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.794s | model=deepseek-v4-flash
+      tokens:   in=2690 | out=2520 | total=5210 | cached=1920 | uncached=770
+    [LLM graph.reference #3] sending...
+      provider: 3.610s | model=deepseek-v4-flash
+      tokens:   in=1787 | out=774 | total=2561 | cached=0 | uncached=1787
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 4
+
+    initial rejection #6
+      validator:
+        response.statements[6].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Bond films",
+                "segment": "text"
+              }
+            ],
+            "value": "James Bond films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composed the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'wrote the scores' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dances with Wolves",
+                "segment": "text"
+              }
+            ],
+            "value": "Dances with Wolves"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "wrote the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'wrote the scores' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Out of Africa",
+                "segment": "text"
+              }
+            ],
+            "value": "Out of Africa"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "wrote the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'wrote the theme' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Persuaders!",
+                "segment": "text"
+              }
+            ],
+            "value": "The Persuaders!"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "wrote the theme",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     4
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote 'James Bond films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Bond films",
+                "segment": "text"
+              }
+            ],
+            "value": "James Bond films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composed the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'wrote the scores' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dances with Wolves",
+                "segment": "text"
+              }
+            ],
+            "value": "Dances with Wolves"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "wrote the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'wrote the scores' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Out of Africa",
+                "segment": "text"
+              }
+            ],
+            "value": "Out of Africa"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "wrote the scores",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+    remaining rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'wrote the theme' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Persuaders!",
+                "segment": "text"
+              }
+            ],
+            "value": "The Persuaders!"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "wrote the theme",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Barry (composer)",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "John Barry Prendergast",
+                "segment": "text"
+              }
+            ],
+            "value": "John Barry"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 222 / 2226 (10.0%)
+    characters text:     201 / 2205 (9.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           6 / 19 (31.6%)
+    longest uncovered:  1205 chars
+      '. He later developed an interest in composing and arranging music, making his début for television in 1958. He came to the notice of the makers of the first James Bond film "Dr. N…'
+    statement density:  4.94 / 1000 chars
+    title reliance:      11 / 11 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 22
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 0
+  remaining rejections: 4
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      22
+resource nodes:        18
+entity nodes:          18
+literal values:        4
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:OBE> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:York> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:bornOn> "1933-11-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:childCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:diedOn> "2011-01-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:The%20John%20Barry%20Seven> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:conductor> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:spouseCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Me%20and%20the%20Arch%20Kook%20Petulia> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Haase> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Me%20and%20the%20Arch%20Kook%20Petulia> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Barry> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Richard%20Lester> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:publicationYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:screenplayBy> <urn:graphragprov:entity:Lawrence%20B.%20Marcus> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:George%20C.%20Scott> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Christie> .
+  <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Richard%20Chamberlain> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.597s | model=deepseek-v4-flash
+      tokens:   in=1495 | out=159 | total=1654 | cached=384 | uncached=1111
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Barry> .
+  - <urn:graphragprov:entity:John%20Barry> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:York> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9fb37d7d4acd89ec>
+  FROM <urn:graphragprov:unit:u_e7f3b441634f6db0>
+  WHERE { <urn:graphragprov:entity:Petulia> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('York',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['John Barry (composer)', 'Petulia']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  cf53ed4a0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/cf53ed4a0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8099
+output tokens:         4984
+total tokens:          13083
+cached input tokens:   4224
+uncached input tokens: 3875
+cumulative LLM seconds: 23.221
+
+statement occurrences: 22
+semantic triples:      22
+entity nodes:          18
+literal values:        4
+predicates:            18
+query attempts:        1
+observed answers:      ('York',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.641s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.036s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.598s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.555s

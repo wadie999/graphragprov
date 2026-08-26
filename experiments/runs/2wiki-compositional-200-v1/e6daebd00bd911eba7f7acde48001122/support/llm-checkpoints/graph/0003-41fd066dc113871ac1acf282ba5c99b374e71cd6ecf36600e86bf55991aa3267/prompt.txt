@@ -1,0 +1,319 @@
+Convert one source unit into a rich grounded RDF-style knowledge graph.
+
+The source has two immutable segments: `title` and `text`.
+
+Goals:
+1. extract as many useful explicit atomic facts as possible;
+2. represent them as reusable subject-predicate-object statements;
+3. ground every subject, predicate, and object to exact source substrings.
+
+Do not stop after finding only the facts needed for one downstream question.
+
+Return ONLY:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "...",
+        "datatype": "... optional ...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+RULES
+
+1. ATOMIC FACTS
+Each statement expresses one relation.
+Subjects and entity objects must be reusable entities/concepts, not sentences,
+clauses, explanations, or lists.
+
+Split dimensions:
+"American jazz guitarist" ->
+  nationality -> American
+  occupation -> guitarist
+  genre -> jazz
+
+Split lists:
+"CD and vinyl" -> two statements.
+
+2. ENTITIES VS LITERALS
+Subjects are always entities.
+Objects without `datatype` are entities.
+
+Use literals only for scalar values.
+
+Allowed datatypes:
+string, integer, decimal, boolean, year, yearMonth, date, dateTime
+
+Normalize when the source provides enough precision:
+
+"68,202,492" -> value "68202492", datatype "integer"
+"6 March 2018" -> value "2018-03-06", datatype "date"
+"March 2018" -> value "2018-03", datatype "yearMonth"
+"2018" -> value "2018", datatype "year"
+
+Keep imprecise scalars as strings:
+"the 1950s"
+"around 2018"
+"35 to 40 hours per week"
+
+Never invent missing precision.
+Every `value` is a JSON string.
+
+3. PREDICATES
+Use concise lowerCamelCase relations, normally 1-4 words, e.g.:
+
+instanceOf, nationality, occupation, genre, bornIn, bornOn,
+director, writtenBy, producedBy, starring, locatedIn,
+foundedBy, foundedInYear, publicationYear, headquarteredIn
+
+Predicate evidence should be the shortest exact phrase expressing the relation.
+
+4. LOCAL SUPPORT
+A statement must be supported by one local assertion, normally one clause or
+sentence.
+
+Cross-sentence resolution is allowed only for local identity/coreference:
+pronouns, aliases, abbreviations, omitted subjects, or the title.
+
+Do not combine unrelated fragments to manufacture a relation.
+
+5. EXACT GROUNDING
+Every subject, predicate, and object requires evidence.
+
+Each `quote` must be an exact non-empty substring of its declared segment.
+Preserve capitalization, spelling, punctuation, whitespace, Unicode, etc.
+
+Occurrences are counted independently per segment from left to right.
+Use occurrence 1 unless the same quote appears multiple times.
+
+Evidence roles must be meaningful:
+- subject evidence identifies the subject;
+- predicate evidence expresses the relation;
+- object evidence identifies/expresses the object.
+
+6. TITLE
+Use the title when needed to resolve a local subject/object.
+
+Example:
+Title: "Maria Torres"
+Text: "She founded Lumen Works."
+
+"Maria Torres" may use title evidence "Maria Torres" plus text evidence "She".
+
+Do not automatically make the title entity the subject of every statement.
+
+7. SOURCE BOUNDARY
+Use only explicit information in the supplied title and text.
+
+Do not automatically add inverse, symmetric, transitive, ontology-derived,
+cross-source, or external-world facts.
+
+8. BROAD COVERAGE
+Continue through the whole source.
+
+Extract useful explicit facts about identity, type, nationality, occupation,
+location, people, works, organizations, authorship, direction, production,
+membership, leadership, dates, quantities, genres, formats, and other grounded
+relations.
+
+Do not manufacture facts merely to increase graph size.
+
+Return {"statements": []} only when no useful fully grounded atomic fact exists.
+
+
+EXAMPLE
+
+Title:
+"Example Film"
+
+Text:
+"Example Film is a 2018 French drama film directed by Maria Torres and starring
+John Lee and Anna Smith."
+
+Output:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {"segment": "text", "quote": "film", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "drama film",
+        "evidence": [
+          {"segment": "text", "quote": "drama film", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "publicationYear",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "2018",
+        "datatype": "year",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "French",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {"segment": "text", "quote": "directed by", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Maria Torres",
+        "evidence": [
+          {"segment": "text", "quote": "Maria Torres", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "John Lee",
+        "evidence": [
+          {"segment": "text", "quote": "John Lee", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Anna Smith",
+        "evidence": [
+          {"segment": "text", "quote": "Anna Smith", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+EXPERIMENT TASK — CONSTRUCT 2WIKI QUESTION GRAPH
+
+We are constructing a grounded RDF graph for one 2WikiMultiHopQA question.
+
+The question, expected answer, and benchmark evidence relations are coordination
+context. They tell you which semantic relations the final graph must represent.
+They are not textual evidence.
+
+For the CURRENT SOURCE only, return grounded RDF statements using the extraction
+schema below.
+
+Represent the benchmark relation or relations supported by CURRENT SOURCE.
+
+Reuse semantic names already present in the accepted graph when they denote the
+same thing.
+
+Every returned subject, predicate, and object must cite exact evidence from the
+CURRENT SOURCE.
+
+Do not use the question, expected answer, benchmark evidence relations, or
+another source as textual evidence.
+
+Python owns source identity; never return source IDs.
+
+Question: Why did Richard Of Cornwall's father die?
+
+Expected answer: dysentery
+
+Benchmark evidence relations:
+1. Richard of Cornwall | father | John, King of England
+2. John, King of England | cause of death | dysentery
+
+Accepted semantic graph so far:
+Richard of Cornwall | father | John, King of England
+
+CURRENT SOURCE — 2Wiki paragraph 7
+
+{
+  "title": "John, King of England",
+  "text": "John (24 December 1166 – 19 October 1216) was King of England from 1199 until his death in 1216. He lost the Duchy of Normandy and most of his other French lands to King Philip II of France, resulting in the collapse of the Angevin Empire and contributing to the subsequent growth in power of the French Capetian dynasty during the 13th century. The baronial revolt at the end of John's reign led to the sealing of \", a document sometimes considered an early step in the evolution of the constitution of the United Kingdom. John was the youngest of the four surviving sons of King Henry II of England and Duchess Eleanor of Aquitaine. He was nicknamed John Lackland because he was not expected to inherit significant lands. He became Henry's favourite child following the failed revolt of 1173–74 by his brothers Henry the Young King, Richard, and Geoffrey against the King. John was appointed the Lord of Ireland in 1177 and given lands in England and on the continent. The war between Henry II and his eldest sons ended with the deaths of Henry the Young King and Geoffrey. John unsuccessfully attempted a rebellion against the royal administrators of his brother, King Richard, whilst Richard was participating in the Third Crusade, but he was proclaimed king after Richard died in 1199. He came to an agreement with Philip II of France to recognise John's possession of the continental Angevin lands at the peace treaty of Le Goulet in 1200. When war with France broke out again in 1202, John achieved early victories, but shortages of military resources and his treatment of Norman, Breton, and Anjou nobles resulted in the collapse of his empire in northern France in 1204. He spent much of the next decade attempting to regain these lands, raising huge revenues, reforming his armed forces and rebuilding continental alliances. His judicial reforms had a lasting effect on the English common law system, as well as providing an additional source of revenue. An argument with Pope Innocent III led to John's excommunication in 1209, a dispute he finally settled in 1213. John's attempt to defeat Philip in 1214 failed due to the French victory over John's allies at the battle of Bouvines. When he returned to England, John faced a rebellion by many of his barons, who were unhappy with his fiscal policies and his treatment of many of England's most powerful nobles. Although both John and the barons agreed to the \" peace treaty in 1215, neither side complied with its conditions. Civil war broke out shortly afterwards, with the barons aided by Louis VIII of France. It soon descended into a stalemate. John died of dysentery contracted whilst on campaign in eastern England during late 1216; supporters of his son Henry III went on to achieve victory over Louis and the rebel barons the following year. Contemporary chroniclers were mostly critical of John's performance as king, and his reign has since been the subject of significant debate and periodic revision by historians from the 16th century onwards. Historian Jim Bradbury has summarised the current historical opinion of John's positive qualities, observing that John is today usually considered a \"hard-working administrator, an able man, an able general\". Nonetheless, modern historians agree that he also had many faults as king, including what historian Ralph Turner describes as \"distasteful, even dangerous personality traits\", such as pettiness, spitefulness, and cruelty. These negative qualities provided extensive material for fiction writers in the Victorian era, and John remains a recurring character within Western popular culture, primarily as a villain in films and stories depicting the Robin Hood legends."
+}

@@ -1,0 +1,180 @@
+
+H0 one-case execution
+  case:          9b84b3820bd911eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the director of film Swan Song (1945 Film)?
+  expected:      Santiago del Estero
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/9b84b3820bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Carlos Hugo Christensen'
+  source unit: u_1abeecdb529bc3bf4c74e1df02d8115bbca2c514664fd7846a5d4d19dbadace5
+  text chars:  506
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.392s | model=deepseek-v4-flash
+      tokens:   in=2198 | out=2342 | total=4540 | cached=1920 | uncached=278
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 311 / 529 (58.8%)
+    characters text:     288 / 506 (56.9%)
+    characters title:    23 / 23 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  54 chars
+      'between 1946 and his retirement. In the mid 1950s he'
+    statement density:  26.47 / 1000 chars
+    title reliance:      14 / 14 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='Swan Song (1945 film)'
+  source unit: u_6c17b93566c2c5e0db3aa73b0dea15672b3697e1c1e7fe258a5794cdc9b5590f
+  text chars:  387
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.787s | model=deepseek-v4-flash
+      tokens:   in=2332 | out=301 | total=2633 | cached=1920 | uncached=412
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 64 / 408 (15.7%)
+    characters text:     43 / 387 (11.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  273 chars
+      'and starring Mecha Ortiz, Roberto Escalada and Miguel Gómez Bao. The film portrays the ultimately tragic relationship between a young composer and a more mature woman. For her per…'
+    statement density:  4.90 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 16
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        13
+entity nodes:          13
+literal values:        3
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:bornOn> "1914-12-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:diedOf> <urn:graphragprov:entity:heart%20attack> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:diedOn> "1999-11-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:54%20different%20films> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:ethnicity> <urn:graphragprov:entity:Danish> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Carlos%20Hugo%20Christensen%20Produ%C3%A7%C3%B5es%20Cinematogr%C3%A1ficas> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Argentine> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20producer> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Santiago%20del%20Estero> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Rio%20de%20Janeiro> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:relocatedTo> <urn:graphragprov:entity:Brazil> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:retiredFromFilm> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Santiago%20del%20Estero> .
+  <urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.416s | model=deepseek-v4-flash
+      tokens:   in=1350 | out=200 | total=1550 | cached=384 | uncached=966
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> .
+  - <urn:graphragprov:entity:Carlos%20Hugo%20Christensen> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Santiago%20del%20Estero> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1abeecdb529bc3bf>
+  FROM <urn:graphragprov:unit:u_6c17b93566c2c5e0>
+  WHERE { <urn:graphragprov:entity:Swan%20Song%20%281945%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Santiago del Estero',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Carlos Hugo Christensen', 'Swan Song (1945 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9b84b3820bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/9b84b3820bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5880
+output tokens:         2843
+total tokens:          8723
+cached input tokens:   4224
+uncached input tokens: 1656
+cumulative LLM seconds: 13.595
+
+statement occurrences: 16
+semantic triples:      15
+entity nodes:          13
+literal values:        3
+predicates:            13
+query attempts:        1
+observed answers:      ('Santiago del Estero',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 12.186s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.143s
+  graph.observation [attempt=1]: 0.013s
+  graph.frozen.measurements [attempt=1]: 0.010s
+  query.reference.generation [attempt=1]: 1.417s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.461s

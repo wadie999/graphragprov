@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          4a39d5200bde11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of Pattie Menzies's husband?
+  expected:      Melbourne
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4a39d5200bde11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Pattie Menzies'
+  source unit: u_96a3c114cd7739d2acdb1d9f5af08fb57e5993633db52c5d7d040f887a2fc6dd
+  text chars:  137
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.112s | model=deepseek-v4-flash
+      tokens:   in=2126 | out=156 | total=2282 | cached=1920 | uncached=206
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 39 / 151 (25.8%)
+    characters text:     25 / 137 (18.2%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  66 chars
+      'Dame Pattie Maie Menzies GBE (2 March 189930 August 1995) was the'
+    statement density:  6.62 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='Robert Menzies'
+  source unit: u_c6b1592bbd8bedf945ba49bb536f19105d5c562b8e9b4bdfcb36f22c44cbb367
+  text chars:  2173
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.139s | model=deepseek-v4-flash
+      tokens:   in=2547 | out=156 | total=2703 | cached=2048 | uncached=499
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 45 / 2187 (2.1%)
+    characters text:     45 / 2173 (2.1%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           2 / 14 (14.3%)
+    longest uncovered:  1726 chars
+      "and became one of Melbourne's leading lawyers. He was Deputy Premier of Victoria from 1932 to 1934, and then transferred to federal parliament, subsequently becoming Attorney-Gene…"
+    statement density:  0.46 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        4
+entity nodes:          4
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Pattie%20Menzies> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Sir%20Robert%20Menzies> .
+  <urn:graphragprov:entity:Sir%20Robert%20Gordon%20Menzies> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Melbourne> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.376s | model=deepseek-v4-flash
+      tokens:   in=619 | out=216 | total=835 | cached=384 | uncached=235
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Pattie%20Menzies> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Sir%20Robert%20Menzies> .
+  - <urn:graphragprov:entity:Sir%20Robert%20Gordon%20Menzies> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Melbourne> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Pattie%20Menzies> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Sir%20Robert%20Menzies> . <urn:graphragprov:entity:Sir%20Robert%20Gordon%20Menzies> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_96a3c114cd7739d2>
+  FROM <urn:graphragprov:unit:u_c6b1592bbd8bedf9>
+  WHERE { <urn:graphragprov:entity:Pattie%20Menzies> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Sir%20Robert%20Menzies> . <urn:graphragprov:entity:Sir%20Robert%20Gordon%20Menzies> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Melbourne',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Pattie Menzies', 'Robert Menzies']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4a39d5200bde11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4a39d5200bde11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5292
+output tokens:         528
+total tokens:          5820
+cached input tokens:   4352
+uncached input tokens: 940
+cumulative LLM seconds: 4.627
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          4
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Melbourne',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.255s
+  graph.reference.measurements [attempt=1]: 0.000s
+  graph.clear_support [attempt=1]: 0.031s
+  graph.materialization [attempt=1]: 0.037s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.377s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.566s

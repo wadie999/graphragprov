@@ -1,0 +1,173 @@
+
+H0 one-case execution
+  case:          18a22b2c0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the performer of song Batdance?
+  expected:      Chanhassen, Minnesota
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/18a22b2c0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Batdance'
+  source unit: u_fcf1976a4c2f83608a58b88941b73295d62595fa7e8fff2ba75e70165f445fd6
+  text chars:  209
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.231s | model=deepseek-v4-flash
+      tokens:   in=2129 | out=1273 | total=3402 | cached=1920 | uncached=209
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 154 / 217 (71.0%)
+    characters text:     146 / 209 (69.9%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  44 chars
+      ". Helped by the film's popularity, the song"
+    statement density:  36.87 / 1000 chars
+    title reliance:      6 / 8 (75.0%)
+
+[GRAPH 2/2] paragraph=1 title='Prince (musician)'
+  source unit: u_fc1dd1f27dcb3302bc17c15c3dd2b1b9dc5c33a8387e0178009c1a74fa25f61c
+  text chars:  3180
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.548s | model=deepseek-v4-flash
+      tokens:   in=2881 | out=171 | total=3052 | cached=1920 | uncached=961
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 48 / 3197 (1.5%)
+    characters text:     31 / 3180 (1.0%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           2 / 25 (8.0%)
+    longest uncovered:  2426 chars
+      'Rogers Nelson (June 7, 1958 – April 21, 2016) was an American singer, songwriter, musician, record producer, dancer, actor, and filmmaker. A guitar virtuoso known for his genre-cr…'
+    statement density:  0.31 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 9
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      9
+resource nodes:        9
+entity nodes:          9
+literal values:        1
+predicates:            9
+
+N-Triples:
+  <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Chanhassen%2C%20Minnesota> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:chartCountry> <urn:graphragprov:entity:US> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:numberOneSingle> <urn:graphragprov:entity:Prince%27s%20fourth%20American%20number-one%20single> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:partOfSoundtrack> <urn:graphragprov:entity:Batman%20soundtrack> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> .
+  <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:musician> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.298s | model=deepseek-v4-flash
+      tokens:   in=903 | out=181 | total=1084 | cached=384 | uncached=519
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> .
+  - <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Chanhassen%2C%20Minnesota> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> . <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_fc1dd1f27dcb3302>
+  FROM <urn:graphragprov:unit:u_fcf1976a4c2f8360>
+  WHERE { <urn:graphragprov:entity:Batdance> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Prince> . <urn:graphragprov:entity:Prince> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Chanhassen, Minnesota',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Batdance', 'Prince (musician)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  18a22b2c0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/18a22b2c0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5913
+output tokens:         1625
+total tokens:          7538
+cached input tokens:   4224
+uncached input tokens: 1689
+cumulative LLM seconds: 9.078
+
+statement occurrences: 9
+semantic triples:      9
+entity nodes:          9
+literal values:        1
+predicates:            9
+query attempts:        1
+observed answers:      ('Chanhassen, Minnesota',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.784s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.097s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.299s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.473s

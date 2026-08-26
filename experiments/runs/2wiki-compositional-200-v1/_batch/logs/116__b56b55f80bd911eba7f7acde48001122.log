@@ -1,0 +1,171 @@
+
+H0 one-case execution
+  case:          b56b55f80bd911eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the composer of song You Know Better Than I?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b56b55f80bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='You Know Better Than I'
+  source unit: u_86f6acbb91f0b7fdf69b56ea84f98df072b07332790acb390651ce280fca05fb
+  text chars:  457
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.643s | model=deepseek-v4-flash
+      tokens:   in=2184 | out=154 | total=2338 | cached=1920 | uncached=264
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 45 / 479 (9.4%)
+    characters text:     23 / 457 (5.0%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  275 chars
+      '. The song is performed when Joseph is at his lowest point, almost giving up on his faith. He decides to trust fully in God and acknowledge that he is the master of the universe w…'
+    statement density:  2.09 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=0 title='John Bucchino'
+  source unit: u_3618dfa951dcf19c64747eb8bfd3dc69fa6a5e7d1c0e5ee1e860138f7f260521
+  text chars:  334
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.460s | model=deepseek-v4-flash
+      tokens:   in=2167 | out=989 | total=3156 | cached=1920 | uncached=247
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 88 / 347 (25.4%)
+    characters text:     75 / 334 (22.5%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           1 / 4 (25.0%)
+    longest uncovered:  206 chars
+      '. He has been called "super-talented". Stephen Schwartz said his songs have "insightful lyrics and gorgeous melodiesrich harmonic textures and subtle…inner voicings. " His music h…'
+    statement density:  17.29 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 7
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      7
+resource nodes:        7
+entity nodes:          7
+literal values:        1
+predicates:            4
+
+N-Triples:
+  <urn:graphragprov:entity:John%20Bucchino> <urn:graphragprov:predicate:bornOn> "1952"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Bucchino> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:John%20Bucchino> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:accompanist> .
+  <urn:graphragprov:entity:John%20Bucchino> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cabaret%20performer> .
+  <urn:graphragprov:entity:John%20Bucchino> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:John%20Bucchino> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:teacher> .
+  <urn:graphragprov:entity:You%20Know%20Better%20Than%20I> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Bucchino> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.610s | model=deepseek-v4-flash
+      tokens:   in=841 | out=189 | total=1030 | cached=384 | uncached=457
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:You%20Know%20Better%20Than%20I> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:John%20Bucchino> .
+  - <urn:graphragprov:entity:John%20Bucchino> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:You%20Know%20Better%20Than%20I> <urn:graphragprov:predicate:composer> ?x . ?x <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3618dfa951dcf19c>
+  FROM <urn:graphragprov:unit:u_86f6acbb91f0b7fd>
+  WHERE { <urn:graphragprov:entity:You%20Know%20Better%20Than%20I> <urn:graphragprov:predicate:composer> ?x . ?x <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['John Bucchino', 'You Know Better Than I']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b56b55f80bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b56b55f80bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5192
+output tokens:         1332
+total tokens:          6524
+cached input tokens:   4224
+uncached input tokens: 968
+cumulative LLM seconds: 7.713
+
+statement occurrences: 7
+semantic triples:      7
+entity nodes:          7
+literal values:        1
+predicates:            4
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 6.107s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.117s
+  graph.materialization [attempt=1]: 0.064s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.611s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.599s

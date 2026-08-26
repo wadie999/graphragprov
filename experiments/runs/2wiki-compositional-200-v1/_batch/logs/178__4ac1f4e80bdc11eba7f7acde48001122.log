@@ -1,0 +1,171 @@
+
+H0 one-case execution
+  case:          4ac1f4e80bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film The Glass Wall?
+  expected:      October 25, 1983
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4ac1f4e80bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='The Glass Wall'
+  source unit: u_ea022dd0ea3b2c88554e04c5ab41629c2b4a52ab99e9e06f8bc9b7af925761ce
+  text chars:  403
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.167s | model=deepseek-v4-flash
+      tokens:   in=2171 | out=149 | total=2320 | cached=1920 | uncached=251
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 38 / 417 (9.1%)
+    characters text:     38 / 403 (9.4%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           1 / 4 (25.0%)
+    longest uncovered:  310 chars
+      'and starring Vittorio Gassman and Gloria Grahame. The film was produced and distributed by Columbia Pictures. The title refers to the design of the United Nations headquarters in…'
+    statement density:  2.40 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=2 title='Maxwell Shane'
+  source unit: u_efe360e5c9ce3adbc3b20250f34d825d501b5cf49401c7787c1fea92d0d5dd17
+  text chars:  125
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.069s | model=deepseek-v4-flash
+      tokens:   in=2125 | out=869 | total=2994 | cached=2048 | uncached=77
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 80 / 138 (58.0%)
+    characters text:     67 / 125 (53.6%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  22 chars
+      'movie and television'
+    statement density:  43.48 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 7
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      7
+resource nodes:        6
+entity nodes:          6
+literal values:        2
+predicates:            5
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Glass%20Wall> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maxwell%20Shane> .
+  <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:dateOfBirth> "1905-08-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:dateOfDeath> "1983-10-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.462s | model=deepseek-v4-flash
+      tokens:   in=846 | out=211 | total=1057 | cached=384 | uncached=462
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Glass%20Wall> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maxwell%20Shane> .
+  - <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:dateOfDeath> "1983-10-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Glass%20Wall> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maxwell%20Shane> . <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_ea022dd0ea3b2c88>
+  FROM <urn:graphragprov:unit:u_efe360e5c9ce3adb>
+  WHERE { <urn:graphragprov:entity:The%20Glass%20Wall> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maxwell%20Shane> . <urn:graphragprov:entity:Maxwell%20Shane> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1983-10-25',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Maxwell Shane', 'The Glass Wall']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4ac1f4e80bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4ac1f4e80bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5142
+output tokens:         1229
+total tokens:          6371
+cached input tokens:   4352
+uncached input tokens: 790
+cumulative LLM seconds: 7.699
+
+statement occurrences: 7
+semantic triples:      7
+entity nodes:          6
+literal values:        2
+predicates:            5
+query attempts:        1
+observed answers:      ('1983-10-25',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 6.241s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.046s
+  graph.materialization [attempt=1]: 0.040s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.463s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.435s

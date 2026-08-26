@@ -1,0 +1,173 @@
+
+H0 one-case execution
+  case:          74b3de660bdb11eba7f7acde48001122
+  hops:          2
+  question:      Who is the child of the director of film The Argyle Case (1929 Film)?
+  expected:      David Bretherton
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/74b3de660bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Howard Bretherton'
+  source unit: u_3e426bfc9e490e28e2dcb5214d96071dc39a6ed64c066e0b26b8a44ac14be139
+  text chars:  187
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.614s | model=deepseek-v4-flash
+      tokens:   in=2135 | out=1165 | total=3300 | cached=1920 | uncached=215
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 142 / 204 (69.6%)
+    characters text:     125 / 187 (66.8%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  19 chars
+      'Howard Bretherton('
+    statement density:  39.22 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/2] paragraph=1 title='The Argyle Case (1929 film)'
+  source unit: u_7f6deafee3f146ddea05e4c0ad0ac6c4905f2b715dd52a63ba9630b5a1dbd060
+  text chars:  366
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.533s | model=deepseek-v4-flash
+      tokens:   in=2284 | out=161 | total=2445 | cached=2048 | uncached=236
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 55 / 393 (14.0%)
+    characters text:     28 / 366 (7.7%)
+    characters title:    27 / 27 (100.0%)
+    sentences:           1 / 6 (16.7%)
+    longest uncovered:  267 chars
+      "and starring Thomas Meighan, H.B. Warner, Lila Lee, John Darrow and Zasu Pitts. The film was based on a play by Harriet Ford and Harvey J. O' Higgins. It was produced and released…"
+    statement density:  2.54 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 9
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      9
+resource nodes:        8
+entity nodes:          8
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tacoma%2C%20Washington> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:bornOn> "1890-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:David%20Bretherton> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:San%20Diego%2C%20California> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:diedOn> "1969-04-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20editor> .
+  <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Argyle%20Case%20%281929%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Howard%20Bretherton> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.637s | model=deepseek-v4-flash
+      tokens:   in=962 | out=194 | total=1156 | cached=384 | uncached=578
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Argyle%20Case%20%281929%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Howard%20Bretherton> .
+  - <urn:graphragprov:entity:Howard%20Bretherton> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:David%20Bretherton> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Argyle%20Case%20%281929%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:child> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3e426bfc9e490e28>
+  FROM <urn:graphragprov:unit:u_7f6deafee3f146dd>
+  WHERE { <urn:graphragprov:entity:The%20Argyle%20Case%20%281929%20film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:child> ?answer . }
+
+GraphDB execution:
+  observed answers: ('David Bretherton',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Howard Bretherton', 'The Argyle Case (1929 film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  74b3de660bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/74b3de660bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5381
+output tokens:         1520
+total tokens:          6901
+cached input tokens:   4352
+uncached input tokens: 1029
+cumulative LLM seconds: 8.784
+
+statement occurrences: 9
+semantic triples:      9
+entity nodes:          8
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ('David Bretherton',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.151s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.638s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.583s

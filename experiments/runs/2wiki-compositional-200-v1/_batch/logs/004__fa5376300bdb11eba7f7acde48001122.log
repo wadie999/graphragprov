@@ -1,0 +1,167 @@
+
+H0 one-case execution
+  case:          fa5376300bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of Catherine Of Pfalz-Zweibrücken (1661–1720)'s father?
+  expected:      11 October 1629
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/fa5376300bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Adolph John I, Count Palatine of Kleeburg'
+  source unit: u_a5821cb2745595a356be5c49870fc85befbc0ab88060d055d13494dd1f088d7c
+  text chars:  265
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.356s | model=deepseek-v4-flash
+      tokens:   in=2204 | out=183 | total=2387 | cached=1920 | uncached=284
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 56 / 306 (18.3%)
+    characters text:     15 / 265 (5.7%)
+    characters title:    41 / 41 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  182 chars
+      '– 14 October 1689) was Count Palatine of Kleeburg from 1654 until 1689 and was considered Prince of Sweden until 1660. He was the younger brother of King Charles X Gustav of Swede…'
+    statement density:  3.27 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=8 title='Catherine of Pfalz-Zweibrücken (1661–1720)'
+  source unit: u_111863ccbada53d26360f768691195db9c62c198d7943e9731322a6a948b310d
+  text chars:  472
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 2.471s | model=deepseek-v4-flash
+      tokens:   in=2277 | out=364 | total=2641 | cached=1920 | uncached=357
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 110 / 514 (21.4%)
+    characters text:     68 / 472 (14.4%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  345 chars
+      'and Countess Elsa Elisabeth Brahe of Wisingsborg, cousin of Charles XI of Sweden and the sister of Adolph John II, Count Palatine of Kleeburg and Gustav, Duke of Zweibrücken. She…'
+    statement density:  3.89 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      3
+resource nodes:        2
+entity nodes:          2
+literal values:        2
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:dateOfBirth> "1661-12-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> .
+  <urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:dateOfBirth> "1629-10-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.973s | model=deepseek-v4-flash
+      tokens:   in=801 | out=273 | total=1074 | cached=384 | uncached=417
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> .
+  - <urn:graphragprov:entity:Adolph%20John%20I%2C%20Count%20Palatine%20of%20Kleeburg> <urn:graphragprov:predicate:dateOfBirth> "1629-10-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_111863ccbada53d2>
+  FROM <urn:graphragprov:unit:u_a5821cb2745595a3>
+  WHERE { <urn:graphragprov:entity:Catherine%20of%20Pfalz-Zweibr%C3%BCcken%20%281661%E2%80%931720%29> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1629-10-11', '1661-12-10')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Adolph John I, Count Palatine of Kleeburg', 'Catherine of Pfalz-Zweibrücken (1661–1720)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  fa5376300bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/fa5376300bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5282
+output tokens:         820
+total tokens:          6102
+cached input tokens:   4224
+uncached input tokens: 1058
+cumulative LLM seconds: 6.801
+
+statement occurrences: 3
+semantic triples:      3
+entity nodes:          2
+literal values:        2
+predicates:            2
+query attempts:        1
+observed answers:      ('1629-10-11', '1661-12-10')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.833s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.082s
+  graph.materialization [attempt=1]: 0.093s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.974s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.490s

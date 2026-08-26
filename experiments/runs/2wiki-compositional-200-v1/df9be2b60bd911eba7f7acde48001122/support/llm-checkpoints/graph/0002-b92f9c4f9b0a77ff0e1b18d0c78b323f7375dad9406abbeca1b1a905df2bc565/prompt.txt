@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_3728991545ae79822d194ce84e22bbf83827a909b1c257d8863424e82e3f7053
+Title: Cidade Ameaçada
+Text:
+Cidade Ameaçada is a 1960 Brazilian crime film directed by Roberto Farias. It was submitted into the 1960 Cannes Film Festival. The plot follows the story of a São Paulo criminal known as" Passarinho", which is based on an actual criminal dubbed" Promessinha".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 5,
+    "statement": {
+      "subject": {
+        "value": "Cidade Ameaçada",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Cidade Ameaçada",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "plotFollows",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "The plot follows the story of",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "a São Paulo criminal known as \"Passarinho\"",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "a São Paulo criminal known as \"Passarinho\"",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[5].object.evidence[0]: quote 'a São Paulo criminal known as \"Passarinho\"' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "a São Paulo criminal known as \"Passarinho\"",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "a São Paulo criminal known as \"Passarinho\"",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "basedOn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "based on",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "an actual criminal dubbed \"Promessinha\"",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "an actual criminal dubbed \"Promessinha\"",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].subject.evidence[0]: quote 'a São Paulo criminal known as \"Passarinho\"' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

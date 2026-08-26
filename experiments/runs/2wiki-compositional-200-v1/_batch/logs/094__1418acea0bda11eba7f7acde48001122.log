@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          1418acea0bda11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the performer of song Everybody Needs Love (Marvin Gaye Song)?
+  expected:      Los Angeles
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/1418acea0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Marvin Gaye'
+  source unit: u_760001cdfeca855b0606a4c5ebc6ab6fbc0fc449cc6a7295c6ae4055e5e04ae9
+  text chars:  1625
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.714s | model=deepseek-v4-flash
+      tokens:   in=2493 | out=162 | total=2655 | cached=1920 | uncached=573
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 84 / 1636 (5.1%)
+    characters text:     73 / 1625 (4.5%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 9 (11.1%)
+    longest uncovered:  1296 chars
+      'Marvin Gaye (born Marvin Pentz Gay Jr.; April 2, 1939 – April 1, 1984) was an American singer, songwriter, and record producer. He helped to shape the sound of Motown in the 1960s…'
+    statement density:  0.61 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=2 title='Everybody Needs Love (Marvin Gaye song)'
+  source unit: u_597786c6277144fee9156d5d1fe5646209e3c3de5d9d32032b761063a3fd4d69
+  text chars:  760
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.256s | model=deepseek-v4-flash
+      tokens:   in=2271 | out=163 | total=2434 | cached=1920 | uncached=351
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 61 / 799 (7.6%)
+    characters text:     22 / 760 (2.9%)
+    characters title:    39 / 39 (100.0%)
+    sentences:           1 / 4 (25.0%)
+    longest uncovered:  678 chars
+      'and issued on the singer\'s confessional 1978 album, "Here, My Dear". Though most of the songs on the album were based on a mostly antagonistic view of Marvin\'s first wife, Anna Ga…'
+    statement density:  1.25 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Marvin%20Gaye> .
+  <urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.767s | model=deepseek-v4-flash
+      tokens:   in=628 | out=235 | total=863 | cached=384 | uncached=244
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Marvin%20Gaye> .
+  - <urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Marvin%20Gaye> . <urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_597786c6277144fe>
+  FROM <urn:graphragprov:unit:u_760001cdfeca855b>
+  WHERE { <urn:graphragprov:entity:Everybody%20Needs%20Love%20%28Marvin%20Gaye%20song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Marvin%20Gaye> . <urn:graphragprov:entity:Marvin%20Gaye> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Los Angeles',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Everybody Needs Love (Marvin Gaye song)', 'Marvin Gaye']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1418acea0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/1418acea0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5392
+output tokens:         560
+total tokens:          5952
+cached input tokens:   4224
+uncached input tokens: 1168
+cumulative LLM seconds: 4.737
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Los Angeles',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 2.975s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.037s
+  graph.materialization [attempt=1]: 0.051s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.768s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.504s

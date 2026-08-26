@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          bbfbd13e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the composer of film Darsanam born?
+  expected:      Paravoor
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/bbfbd13e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Darsanam'
+  source unit: u_df7501331e10f0ce14f154a04bf673c733f09db0e614da4bc9d1ded4b8a47846
+  text chars:  218
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.731s | model=deepseek-v4-flash
+      tokens:   in=2144 | out=154 | total=2298 | cached=1920 | uncached=224
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 36 / 226 (15.9%)
+    characters text:     36 / 218 (16.5%)
+    characters title:    0 / 8 (0.0%)
+    sentences:           3 / 6 (50.0%)
+    longest uncovered:  180 chars
+      'is a 1973 Indian Malayalam film, directed by P. N. Menon and produced by P. C. George. The film stars Adoor Bhasi, Supriya, Sankaradi and Raghavan in the lead roles. The film had'
+    statement density:  4.42 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=3 title='G. Devarajan'
+  source unit: u_038b543052a6a26ac756df268021406ff7c27149a84414fa58f64d960e69e153
+  text chars:  635
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.450s | model=deepseek-v4-flash
+      tokens:   in=2224 | out=160 | total=2384 | cached=1920 | uncached=304
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 39 / 647 (6.0%)
+    characters text:     39 / 635 (6.1%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           2 / 8 (25.0%)
+    longest uncovered:  575 chars
+      'or Devarajan master, was an Indian music composer. He is considered one of the greatest music directors in Indian film music arena. He scored music for more than three hundred Mal…'
+    statement density:  1.55 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:G.%20Devarajan> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paravoor> .
+  <urn:graphragprov:entity:Darsanam> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:G.%20Devarajan> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.334s | model=deepseek-v4-flash
+      tokens:   in=599 | out=187 | total=786 | cached=384 | uncached=215
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Darsanam> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:G.%20Devarajan> .
+  - <urn:graphragprov:entity:G.%20Devarajan> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paravoor> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Darsanam> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:G.%20Devarajan> . <urn:graphragprov:entity:G.%20Devarajan> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_038b543052a6a26a>
+  FROM <urn:graphragprov:unit:u_df7501331e10f0ce>
+  WHERE { <urn:graphragprov:entity:Darsanam> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:G.%20Devarajan> . <urn:graphragprov:entity:G.%20Devarajan> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Paravoor',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Darsanam', 'G. Devarajan']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  bbfbd13e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/bbfbd13e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          4967
+output tokens:         501
+total tokens:          5468
+cached input tokens:   4224
+uncached input tokens: 743
+cumulative LLM seconds: 4.515
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Paravoor',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.185s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.065s
+  graph.materialization [attempt=1]: 0.058s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.335s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.574s

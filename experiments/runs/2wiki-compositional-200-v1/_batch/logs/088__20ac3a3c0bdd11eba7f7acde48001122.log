@@ -1,0 +1,178 @@
+
+H0 one-case execution
+  case:          20ac3a3c0bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the director of film Mrs. Temple'S Telegram?
+  expected:      Hollywood
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/20ac3a3c0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title="Mrs. Temple's Telegram"
+  source unit: u_d348f0ce8f567892a056c6e3cc2e8ec76dda616c4d99824d82c0eceac1d76867
+  text chars:  383
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.966s | model=deepseek-v4-flash
+      tokens:   in=2167 | out=1891 | total=4058 | cached=1920 | uncached=247
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 287 / 405 (70.9%)
+    characters text:     287 / 383 (74.9%)
+    characters title:    0 / 22 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  28 chars
+      '. This film survives and is'
+    statement density:  32.10 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='James Cruze'
+  source unit: u_7b5b90bbc4b3b4e487a28718ce6cac1704f15fc65e602bdda8d5cbab6f0e1c5f
+  text chars:  157
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.116s | model=deepseek-v4-flash
+      tokens:   in=2292 | out=149 | total=2441 | cached=1920 | uncached=372
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 35 / 168 (20.8%)
+    characters text:     24 / 157 (15.3%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  89 chars
+      'James Cruze( born Jens Vera Cruz Bosen, March 27, 1884 near Ogden, Utah – August 3, 1942'
+    statement density:  5.95 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 14
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      14
+resource nodes:        13
+entity nodes:          13
+literal values:        1
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:1905%20Broadway%20play> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20comedy%20film> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:preservedAt> <urn:graphragprov:entity:Gosfilmofond%2C%20Moscow> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:preservedAt> <urn:graphragprov:entity:Library%20of%20Congress> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Famous%20Players-Lasky> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:publicationYear> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:releasedBy> <urn:graphragprov:entity:Paramount%20Pictures> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Bryant%20Washburn> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wanda%20Hawley> .
+  <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Frank%20Wyatt> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.588s | model=deepseek-v4-flash
+      tokens:   in=1257 | out=182 | total=1439 | cached=384 | uncached=873
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> .
+  - <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_7b5b90bbc4b3b4e4>
+  FROM <urn:graphragprov:unit:u_d348f0ce8f567892>
+  WHERE { <urn:graphragprov:entity:Mrs.%20Temple%27s%20Telegram> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Hollywood',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['James Cruze', "Mrs. Temple's Telegram"]
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  20ac3a3c0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/20ac3a3c0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5716
+output tokens:         2222
+total tokens:          7938
+cached input tokens:   4224
+uncached input tokens: 1492
+cumulative LLM seconds: 11.670
+
+statement occurrences: 14
+semantic triples:      14
+entity nodes:          13
+literal values:        1
+predicates:            11
+query attempts:        1
+observed answers:      ('Hollywood',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.087s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.089s
+  graph.materialization [attempt=1]: 0.065s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.589s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.527s

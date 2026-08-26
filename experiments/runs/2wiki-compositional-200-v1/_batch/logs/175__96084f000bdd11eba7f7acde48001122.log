@@ -1,0 +1,255 @@
+
+H0 one-case execution
+  case:          96084f000bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where did Lucy Beall Candler Owens Heinz Leide's father die?
+  expected:      Atlanta, Georgia
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/96084f000bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Lucy Beall Candler Owens Heinz Leide'
+  source unit: u_d5b17130767f1eb5386bfa6b7eae0983074f225b8a7ad9dfda0fa66866725676
+  text chars:  150
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.066s | model=deepseek-v4-flash
+      tokens:   in=2140 | out=165 | total=2305 | cached=1920 | uncached=220
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 65 / 186 (34.9%)
+    characters text:     29 / 150 (19.3%)
+    characters title:    36 / 36 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  86 chars
+      'Lucy Beall Candler Owens Heinz Leide (April 11, 1883 – 3 September 1962) was the only'
+    statement density:  5.38 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=4 title='Asa Griggs Candler'
+  source unit: u_38c304089a12027c17b9cd316465fb6443818f3d96ba8477c1f41c636aff2882
+  text chars:  762
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.336s | model=deepseek-v4-flash
+      tokens:   in=2298 | out=156 | total=2454 | cached=2048 | uncached=250
+    [LLM graph.reference #3] sending...
+      provider: 0.612s | model=deepseek-v4-flash
+      tokens:   in=702 | out=8 | total=710 | cached=0 | uncached=702
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    0
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Atlanta, Georgia",
+                "segment": "text"
+              }
+            ],
+            "value": "Atlanta, Georgia"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Asa Griggs Candler",
+                "segment": "text"
+              }
+            ],
+            "value": "Asa Griggs Candler"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 0
+  extraction attempt: REJECTED
+    stage:  response_validation
+    error:  EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    [LLM graph.reference #4] sending...
+      provider: 1.191s | model=deepseek-v4-flash
+      tokens:   in=2357 | out=156 | total=2513 | cached=2176 | uncached=181
+    [LLM graph.reference #5] sending...
+      provider: 0.676s | model=deepseek-v4-flash
+      tokens:   in=702 | out=8 | total=710 | cached=0 | uncached=702
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    0
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Atlanta, Georgia",
+                "segment": "text"
+              }
+            ],
+            "value": "Atlanta, Georgia"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Asa Griggs Candler",
+                "segment": "title"
+              }
+            ],
+            "value": "Asa Griggs Candler"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 0
+  extraction attempt: REJECTED
+    stage:  response_validation
+    error:  EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    action: whole-source retry
+  whole-source attempt: 3/3
+  previous failure: EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    [LLM graph.reference #6] sending...
+      provider: 1.533s | model=deepseek-v4-flash
+      tokens:   in=2357 | out=156 | total=2513 | cached=2304 | uncached=53
+    [LLM graph.reference #7] sending...
+      provider: 0.829s | model=deepseek-v4-flash
+      tokens:   in=702 | out=8 | total=710 | cached=640 | uncached=62
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    0
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Atlanta, Georgia",
+                "segment": "text"
+              }
+            ],
+            "value": "Atlanta, Georgia"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Asa Griggs Candler",
+                "segment": "title"
+              }
+            ],
+            "value": "Asa Griggs Candler"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 0
+  extraction attempt: REJECTED
+    stage:  response_validation
+    error:  EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    action: whole-source retry
+
+========================================================================
+H0 COLLECTION FAILED
+========================================================================
+case:                  96084f000bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/96084f000bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    7
+graph LLM reused:      0
+query LLM executed:    0
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11258
+output tokens:         657
+total tokens:          11915
+cached input tokens:   9088
+uncached input tokens: 2170
+cumulative LLM seconds: 8.242
+
+failure stage:         graph_extraction
+failure:               EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 8.253s

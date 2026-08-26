@@ -1,0 +1,178 @@
+
+H0 one-case execution
+  case:          1fb3877a0bdd11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Darts Are Trumps die?
+  expected:      4 January 1962
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/1fb3877a0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Darts Are Trumps'
+  source unit: u_90a0360b85bc1ca0e84dbd8d6b8c1b12cb61cca602bc8b4d537d4bf7b9e2073f
+  text chars:  255
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.294s | model=deepseek-v4-flash
+      tokens:   in=2148 | out=1296 | total=3444 | cached=1920 | uncached=228
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 148 / 271 (54.6%)
+    characters text:     148 / 255 (58.0%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  57 chars
+      '. A darts player manages to thwart a jewel thief. It was'
+    statement density:  33.21 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=3 title='Maclean Rogers'
+  source unit: u_6c3168a0db56444a07ebdf0447279edb6fb42b9f90a1b9dcf1c54ae846046580
+  text chars:  92
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.380s | model=deepseek-v4-flash
+      tokens:   in=2217 | out=735 | total=2952 | cached=2048 | uncached=169
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 72 / 106 (67.9%)
+    characters text:     58 / 92 (63.0%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  16 chars
+      'Maclean Rogers('
+    statement density:  47.17 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 14
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      14
+resource nodes:        11
+entity nodes:          11
+literal values:        3
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:dateOfBirth> "1899-07-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:dateOfDeath> "1962-01-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maclean%20Rogers> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:distributor> <urn:graphragprov:entity:RKO%20Pictures> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:publicationYear> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Eliot%20Makeham> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ian%20Colin> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Nancy%20O%27Neil> .
+  <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:studio> <urn:graphragprov:entity:Walton%20Studios> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.609s | model=deepseek-v4-flash
+      tokens:   in=1199 | out=219 | total=1418 | cached=384 | uncached=815
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maclean%20Rogers> .
+  - <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:dateOfDeath> "1962-01-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maclean%20Rogers> . <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6c3168a0db56444a>
+  FROM <urn:graphragprov:unit:u_90a0360b85bc1ca0>
+  WHERE { <urn:graphragprov:entity:Darts%20Are%20Trumps> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Maclean%20Rogers> . <urn:graphragprov:entity:Maclean%20Rogers> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1962-01-04',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Darts Are Trumps', 'Maclean Rogers']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  1fb3877a0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/1fb3877a0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5564
+output tokens:         2250
+total tokens:          7814
+cached input tokens:   4352
+uncached input tokens: 1212
+cumulative LLM seconds: 11.284
+
+statement occurrences: 14
+semantic triples:      14
+entity nodes:          11
+literal values:        3
+predicates:            10
+query attempts:        1
+observed answers:      ('1962-01-04',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.680s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.027s
+  graph.materialization [attempt=1]: 0.067s
+  graph.observation [attempt=1]: 0.003s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.610s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.552s

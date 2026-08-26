@@ -1,0 +1,179 @@
+
+H0 one-case execution
+  case:          b275d3a80bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Charlie Ve'Hetzi born?
+  expected:      Tel Aviv
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b275d3a80bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title="Charlie Ve'hetzi"
+  source unit: u_70c3cd360ceeedc6e1c190d864de213a5fe3ca3e07909461a04476ea0f280400
+  text chars:  192
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.652s | model=deepseek-v4-flash
+      tokens:   in=2137 | out=1013 | total=3150 | cached=1920 | uncached=217
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 103 / 208 (49.5%)
+    characters text:     87 / 192 (45.3%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  56 chars
+      "(a.k.a. - Charlie and a Half; Hebrew צ'ארלי וחצי) is a"
+    statement density:  28.85 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[GRAPH 2/2] paragraph=9 title='Boaz Davidson'
+  source unit: u_1ace37d0fd8166ea53d5892d8847f2d144eedc9bad37d4da04c9b16da8cde827
+  text chars:  174
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.851s | model=deepseek-v4-flash
+      tokens:   in=2188 | out=1249 | total=3437 | cached=1920 | uncached=268
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 127 / 187 (67.9%)
+    characters text:     114 / 174 (65.5%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  15 chars
+      'Boaz Davidson('
+    statement density:  48.13 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 15
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        13
+entity nodes:          13
+literal values:        2
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Israel> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tel%20Aviv> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:bornOn> "1943-11-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:studiedAt> <urn:graphragprov:entity:London%20Film%20School> .
+  <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:studiedIn> <urn:graphragprov:entity:London> .
+  <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Boaz%20Davidson> .
+  <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy> .
+  <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> .
+  <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:publicationYear> "1974"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Yehuda%20Barkan> .
+  <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ze%27ev%20Revach> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.332s | model=deepseek-v4-flash
+      tokens:   in=1203 | out=177 | total=1380 | cached=384 | uncached=819
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Boaz%20Davidson> .
+  - <urn:graphragprov:entity:Boaz%20Davidson> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Tel%20Aviv> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:bornIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1ace37d0fd8166ea>
+  FROM <urn:graphragprov:unit:u_70c3cd360ceeedc6>
+  WHERE { <urn:graphragprov:entity:Charlie%20Ve%27hetzi> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:bornIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Israel', 'Tel Aviv')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Boaz Davidson', "Charlie Ve'hetzi"]
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b275d3a80bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b275d3a80bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5528
+output tokens:         2439
+total tokens:          7967
+cached input tokens:   4224
+uncached input tokens: 1304
+cumulative LLM seconds: 12.835
+
+statement occurrences: 15
+semantic triples:      15
+entity nodes:          13
+literal values:        2
+predicates:            10
+query attempts:        1
+observed answers:      ('Israel', 'Tel Aviv')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 11.512s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.067s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.333s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.505s

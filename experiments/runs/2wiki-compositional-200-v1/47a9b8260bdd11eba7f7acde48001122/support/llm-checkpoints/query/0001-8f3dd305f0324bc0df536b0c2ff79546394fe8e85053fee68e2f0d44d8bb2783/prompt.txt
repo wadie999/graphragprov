@@ -1,0 +1,85 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Which country the performer of song Al'S Place is from?
+
+Expected answer: American
+
+Benchmark evidence relations:
+1. Al's Place | performer | Al Hirt
+2. Al Hirt | country of citizenship | American
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:chartPosition> "#13 on the Adult Contemporary chart" .
+<urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:chartPosition> "#57 on the \"Billboard\" Hot 100" .
+<urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Al%20Hirt> .
+<urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:publicationYear> "1965"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Robert%20Allen> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:The%20Louisiana%20Music%20Hall%20of%20Fame> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:awardReceivedInYear> "2009-11"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:birthDate> "1922-11-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:deathDate> "1999-04-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Jumbo> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:The%20Round%20Mound%20of%20Sound> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:bandleader> .
+<urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:trumpeter> .

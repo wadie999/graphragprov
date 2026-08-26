@@ -1,0 +1,167 @@
+
+H0 one-case execution
+  case:          9ab5b1ce0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Der Frosch Mit Der Maske is from?
+  expected:      Austria
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/9ab5b1ce0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Der Frosch mit der Maske'
+  source unit: u_c7227a1e7315120d5a87f3f50f1effc3784ec3943b0a2268d49555421c16e96b
+  text chars:  427
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.683s | model=deepseek-v4-flash
+      tokens:   in=2194 | out=302 | total=2496 | cached=1920 | uncached=274
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 58 / 451 (12.9%)
+    characters text:     34 / 427 (8.0%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  254 chars
+      'and starring Siegfried Lowitz and Joachim Fuchsberger. It was the first of a very successful series of films based on works by Edgar Wallace produced by Rialto Film in West German…'
+    statement density:  4.43 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=2 title='Harald Reinl'
+  source unit: u_e4ab01c7a8dd7efc7d4317ab80d1d1454950a87b8b459ac6bb79d4ff9e17ae7b
+  text chars:  943
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.477s | model=deepseek-v4-flash
+      tokens:   in=2352 | out=151 | total=2503 | cached=1920 | uncached=432
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 27 / 955 (2.8%)
+    characters text:     27 / 943 (2.9%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           1 / 9 (11.1%)
+    longest uncovered:  829 chars
+      'film director. He is known for the films he made based on Edgar Wallace and Karl May books( see Karl May movies and Edgar Wallace movies) and also made mountain films, Heimatfilms…'
+    statement density:  1.05 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      3
+resource nodes:        4
+entity nodes:          4
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:West%20Germany> .
+  <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Austria> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.813s | model=deepseek-v4-flash
+      tokens:   in=671 | out=226 | total=897 | cached=384 | uncached=287
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> .
+  - <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Austria> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> . <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_c7227a1e7315120d>
+  FROM <urn:graphragprov:unit:u_e4ab01c7a8dd7efc>
+  WHERE { <urn:graphragprov:entity:Der%20Frosch%20mit%20der%20Maske> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harald%20Reinl> . <urn:graphragprov:entity:Harald%20Reinl> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Austria', 'West Germany')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Der Frosch mit der Maske', 'Harald Reinl']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9ab5b1ce0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/9ab5b1ce0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5217
+output tokens:         679
+total tokens:          5896
+cached input tokens:   4224
+uncached input tokens: 993
+cumulative LLM seconds: 5.973
+
+statement occurrences: 3
+semantic triples:      3
+entity nodes:          4
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Austria', 'West Germany')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.165s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.060s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.814s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.495s

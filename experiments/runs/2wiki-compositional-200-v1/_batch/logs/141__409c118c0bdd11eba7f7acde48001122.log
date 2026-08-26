@@ -1,0 +1,191 @@
+
+H0 one-case execution
+  case:          409c118c0bdd11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film God'S Law And Man'S is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/409c118c0bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title="God's Law and Man's"
+  source unit: u_86da27dd3d96be3299a0bda8eb98ca00167b706a76b4a61040c88b1c36a2ee6b
+  text chars:  217
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.190s | model=deepseek-v4-flash
+      tokens:   in=2135 | out=1029 | total=3164 | cached=1920 | uncached=215
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 164 / 236 (69.5%)
+    characters text:     164 / 217 (75.6%)
+    characters title:    0 / 19 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  16 chars
+      "Collins's wife"
+    statement density:  29.66 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='John H. Collins (academic)'
+  source unit: u_f126cfa8d781bd2c847707adeb6ead6ea6acbc3f3a5ed71745964a9c75d5b910
+  text chars:  1804
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 12.687s | model=deepseek-v4-flash
+      tokens:   in=2547 | out=3098 | total=5645 | cached=1920 | uncached=627
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 581 / 1830 (31.7%)
+    characters text:     555 / 1804 (30.8%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           8 / 17 (47.1%)
+    longest uncovered:  702 chars
+      '. In 1971, he received an Illinois mandatory retirement notice. Not ready to retire, he sought the aid of a former student, and protégé W.R.S., who was in a position to discuss th…'
+    statement density:  10.93 / 1000 chars
+    title reliance:      20 / 20 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 27
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      27
+resource nodes:        24
+entity nodes:          24
+literal values:        5
+predicates:            21
+
+N-Triples:
+  <urn:graphragprov:entity:A%20Wife%20by%20Purchase> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Paul%20Trent> .
+  <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:A%20Wife%20by%20Purchase> .
+  <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:John%20H.%20Collins> .
+  <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Metro%20Pictures> .
+  <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20film%20drama> .
+  <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:publicationYear> "1917"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Viola%20Dana> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:NIU%20Excellence%20in%20Teaching%20award> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Anaconda%2C%20Montana> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:bornOn> "1902-11-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:diedOn> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:diedOn> "1981-01-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:doctoralAdvisor> <urn:graphragprov:entity:Matthias%20Gelzer> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:doctoralDegree> <urn:graphragprov:entity:doctorate%20in%20classical%20history> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:editor> <urn:graphragprov:entity:Theodor%20Mommsen%27s%20%22History%20of%20Rome%22> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Cornell%20University> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Goethe%20University%20in%20Frankfurt-am-Main> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Illinois> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:expertOn> <urn:graphragprov:entity:Julius%20Caesar> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:fieldOfStudy> <urn:graphragprov:entity:classical%20history> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:classical%20scholar> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:languageSpoken> <urn:graphragprov:entity:six%20languages> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:retiredOn> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:taughtAt> <urn:graphragprov:entity:Northern%20Illinois%20University%20at%20DeKalb> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:taughtAt> <urn:graphragprov:entity:University%20of%20California%2C%20Berkeley> .
+  <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:taughtAt> <urn:graphragprov:entity:University%20of%20Maryland> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.409s | model=deepseek-v4-flash
+      tokens:   in=2115 | out=199 | total=2314 | cached=384 | uncached=1731
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:John%20H.%20Collins> .
+  - <urn:graphragprov:entity:John%20H.%20Collins%20%28academic%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_86da27dd3d96be32>
+  FROM <urn:graphragprov:unit:u_f126cfa8d781bd2c>
+  WHERE { <urn:graphragprov:entity:God%27s%20Law%20and%20Man%27s> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nationality> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  409c118c0bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/409c118c0bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6797
+output tokens:         4326
+total tokens:          11123
+cached input tokens:   4224
+uncached input tokens: 2573
+cumulative LLM seconds: 19.286
+
+statement occurrences: 27
+semantic triples:      27
+entity nodes:          24
+literal values:        5
+predicates:            21
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 17.884s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.066s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.410s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.464s

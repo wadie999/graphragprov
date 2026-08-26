@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          e6daebd00bd911eba7f7acde48001122
+  hops:          2
+  question:      Why did Richard Of Cornwall's father die?
+  expected:      dysentery
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e6daebd00bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Richard of Cornwall'
+  source unit: u_426bfdf076b8128c5f3b057657a55b2005d7585853786e1bb23b79199b8cbd54
+  text chars:  386
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.248s | model=deepseek-v4-flash
+      tokens:   in=2179 | out=295 | total=2474 | cached=1920 | uncached=259
+    [LLM graph.reference #2] sending...
+      provider: 0.504s | model=deepseek-v4-flash
+      tokens:   in=613 | out=8 | total=621 | cached=0 | uncached=613
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "dysentery",
+                "segment": "text"
+              }
+            ],
+            "value": "dysentery"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "cause of death"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John, King of England",
+                "segment": "text"
+              }
+            ],
+            "value": "John, King of England"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 46 / 405 (11.4%)
+    characters text:     27 / 386 (7.0%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  310 chars
+      ", was the nominal Count of Poitou (1225–43), Earl of Cornwall (from 1225) and King of Germany (from 1257). He was one of the wealthiest men in Europe and joined the Barons' Crusad…"
+    statement density:  2.47 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='John, King of England'
+  source unit: u_14ad5b17c58a534876d2a9382482286df417e31e9bd3b949bc8c26b494fc0756
+  text chars:  3694
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.506s | model=deepseek-v4-flash
+      tokens:   in=2840 | out=158 | total=2998 | cached=1920 | uncached=920
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 38 / 3715 (1.0%)
+    characters text:     17 / 3694 (0.5%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           1 / 24 (4.2%)
+    longest uncovered:  2617 chars
+      'John (24 December 1166 – 19 October 1216) was King of England from 1199 until his death in 1216. He lost the Duchy of Normandy and most of his other French lands to King Philip II…'
+    statement density:  0.27 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:John%2C%20King%20of%20England> <urn:graphragprov:predicate:cause%20of%20death> <urn:graphragprov:entity:dysentery> .
+  <urn:graphragprov:entity:Richard%20of%20Cornwall> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:John%2C%20King%20of%20England> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.504s | model=deepseek-v4-flash
+      tokens:   in=622 | out=195 | total=817 | cached=384 | uncached=238
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Richard%20of%20Cornwall> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:John%2C%20King%20of%20England> .
+  - <urn:graphragprov:entity:John%2C%20King%20of%20England> <urn:graphragprov:predicate:cause%20of%20death> <urn:graphragprov:entity:dysentery> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Richard%20of%20Cornwall> <urn:graphragprov:predicate:father> ?x . ?x <urn:graphragprov:predicate:cause%20of%20death> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_14ad5b17c58a5348>
+  FROM <urn:graphragprov:unit:u_426bfdf076b8128c>
+  WHERE { <urn:graphragprov:entity:Richard%20of%20Cornwall> <urn:graphragprov:predicate:father> ?x . ?x <urn:graphragprov:predicate:cause%20of%20death> ?answer . }
+
+GraphDB execution:
+  observed answers: ('dysentery',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['John, King of England', 'Richard of Cornwall']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  e6daebd00bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e6daebd00bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6254
+output tokens:         656
+total tokens:          6910
+cached input tokens:   4224
+uncached input tokens: 2030
+cumulative LLM seconds: 5.762
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('dysentery',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.262s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.046s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.505s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.257s

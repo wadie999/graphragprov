@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          3c60c7fa0bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the cause of death of creator of The Land Of Gorch?
+  expected:      toxic shock syndrome
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/3c60c7fa0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='The Land of Gorch'
+  source unit: u_26c8ed312d618409d8ca5788b98ba8e328bc9919dcb8b3111e14c86675884c96
+  text chars:  2255
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.330s | model=deepseek-v4-flash
+      tokens:   in=2589 | out=158 | total=2747 | cached=1920 | uncached=669
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 47 / 2272 (2.1%)
+    characters text:     30 / 2255 (1.3%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 19 (5.3%)
+    longest uncovered:  2093 chars
+      '. Prior to his work for children on "Sesame Street", Henson had created puppetry work, including his show "Sam and Friends", for adult audiences. His characters appeared regularly…'
+    statement density:  0.44 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='Jim Henson'
+  source unit: u_5504e76e112312257378137613b6619b4a99f0d1f68f6f7f148b8db21f2a21fb
+  text chars:  1823
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.545s | model=deepseek-v4-flash
+      tokens:   in=2534 | out=176 | total=2710 | cached=1920 | uncached=614
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 58 / 1833 (3.2%)
+    characters text:     48 / 1823 (2.6%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 16 (12.5%)
+    longest uncovered:  1458 chars
+      '(September 24, 1936 – May 16, 1990) was an American puppeteer, animator, cartoonist, actor, inventor, filmmaker, and screenwriter who achieved worldwide notice as the creator of T…'
+    statement density:  0.55 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Jim%20Henson> .
+  <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:toxic%20shock%20syndrome> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.758s | model=deepseek-v4-flash
+      tokens:   in=614 | out=207 | total=821 | cached=384 | uncached=230
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Jim%20Henson> .
+  - <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:toxic%20shock%20syndrome> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Jim%20Henson> . <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:causeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_26c8ed312d618409>
+  FROM <urn:graphragprov:unit:u_5504e76e11231225>
+  WHERE { <urn:graphragprov:entity:The%20Land%20of%20Gorch> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Jim%20Henson> . <urn:graphragprov:entity:Jim%20Henson> <urn:graphragprov:predicate:causeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('toxic shock syndrome',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Jim Henson', 'The Land of Gorch']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3c60c7fa0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/3c60c7fa0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5737
+output tokens:         541
+total tokens:          6278
+cached input tokens:   4224
+uncached input tokens: 1513
+cumulative LLM seconds: 5.633
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('toxic shock syndrome',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.879s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.045s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.758s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.512s

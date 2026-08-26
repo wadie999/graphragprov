@@ -1,0 +1,345 @@
+
+H0 one-case execution
+  case:          55aee1820bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the director of film Neutral Port?
+  expected:      West Sussex
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/55aee1820bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='Neutral Port'
+  source unit: u_87264f2a16345675040973ec45602276d417fa9bea2a8ff4e53d5aa6b2709a16
+  text chars:  180
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.403s | model=deepseek-v4-flash
+      tokens:   in=2125 | out=1266 | total=3391 | cached=1920 | uncached=205
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 124 / 192 (64.6%)
+    characters text:     124 / 180 (68.9%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  29 chars
+      ', with a supporting role for'
+    statement density:  46.88 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='Marcel Varnel'
+  source unit: u_bf42c8f095b58431acb57b62d4ae2c3a7c7e650f7fa8ff8667cfda83937b0d51
+  text chars:  796
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.238s | model=deepseek-v4-flash
+      tokens:   in=2357 | out=2463 | total=4820 | cached=1920 | uncached=437
+    [LLM graph.reference #3] sending...
+      provider: 2.285s | model=deepseek-v4-flash
+      tokens:   in=910 | out=325 | total=1235 | cached=0 | uncached=910
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 2
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'French' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French",
+                "segment": "text"
+              }
+            ],
+            "value": "French"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French",
+                "segment": "text"
+              }
+            ],
+            "value": "nationality"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marcel Varnel",
+                "segment": "title"
+              }
+            ],
+            "value": "Marcel Varnel"
+          }
+        }
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'moved to Hollywood' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hollywood",
+                "segment": "text"
+              }
+            ],
+            "value": "Hollywood"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "moved to Hollywood",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marcel Varnel",
+                "segment": "title"
+              }
+            ],
+            "value": "Marcel Varnel"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'French' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French",
+                "segment": "text"
+              }
+            ],
+            "value": "French"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "French",
+                "segment": "text"
+              }
+            ],
+            "value": "nationality"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marcel Varnel",
+                "segment": "title"
+              }
+            ],
+            "value": "Marcel Varnel"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'moved to Hollywood' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hollywood",
+                "segment": "text"
+              }
+            ],
+            "value": "Hollywood"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "moved to Hollywood",
+                "segment": "text"
+              }
+            ],
+            "value": "workedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marcel Varnel",
+                "segment": "title"
+              }
+            ],
+            "value": "Marcel Varnel"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 286 / 809 (35.4%)
+    characters text:     273 / 796 (34.3%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           6 / 8 (75.0%)
+    longest uncovered:  195 chars
+      'working as director in several Broadway operettas, musicals and dramas for the Shubert family. This was followed by a move to Hollywood where he directed three low budget thriller…'
+    statement density:  18.54 / 1000 chars
+    title reliance:      15 / 15 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 24
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        22
+entity nodes:          22
+literal values:        3
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marcel%20Varnel> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:war%20film> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:publicationYear> "1940"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Leslie%20Banks> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Phyllis%20Calvert> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wally%20Patch> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Will%20Fyffe> .
+  <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Yvonne%20Arnaud> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Marcel%20Hyacinthe%20le%20Bozec> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:bornOn> "1892-10-16"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:car%20crash> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:diedOn> "1947-07-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:West%20Sussex> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:British%20International%20Pictures> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:Gainsborough%20Pictures> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Arthur%20Askey> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:George%20Formby> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:The%20Crazy%20Gang> .
+  <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Will%20Hay> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.735s | model=deepseek-v4-flash
+      tokens:   in=1624 | out=199 | total=1823 | cached=384 | uncached=1240
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marcel%20Varnel> .
+  - <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:West%20Sussex> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marcel%20Varnel> . <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_87264f2a16345675>
+  FROM <urn:graphragprov:unit:u_bf42c8f095b58431>
+  WHERE { <urn:graphragprov:entity:Neutral%20Port> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Marcel%20Varnel> . <urn:graphragprov:entity:Marcel%20Varnel> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('West Sussex',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Marcel Varnel', 'Neutral Port']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  55aee1820bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/55aee1820bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7016
+output tokens:         4253
+total tokens:          11269
+cached input tokens:   4224
+uncached input tokens: 2792
+cumulative LLM seconds: 20.662
+
+statement occurrences: 24
+semantic triples:      24
+entity nodes:          22
+literal values:        3
+predicates:            15
+query attempts:        1
+observed answers:      ('West Sussex',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.936s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.066s
+  graph.observation [attempt=1]: 0.012s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.736s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.475s

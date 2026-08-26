@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          8dae43ba0bdc11eba7f7acde48001122
+  hops:          2
+  question:      Where did Leopold William Jerome Fane De Salis's father study?
+  expected:      Eton College
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/8dae43ba0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Leopold William Jerome Fane De Salis'
+  source unit: u_dffc7097fbf4b3a6058a253a17d74e74d6a9915b0ad16eda059589ba137f05ee
+  text chars:  533
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.550s | model=deepseek-v4-flash
+      tokens:   in=2224 | out=306 | total=2530 | cached=1920 | uncached=304
+    [LLM graph.reference #2] sending...
+      provider: 0.523s | model=deepseek-v4-flash
+      tokens:   in=650 | out=8 | total=658 | cached=0 | uncached=650
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'study' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Eton College",
+                "segment": "text"
+              }
+            ],
+            "value": "Eton College"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "study",
+                "segment": "text"
+              }
+            ],
+            "value": "educatedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Leopold Fane De Salis",
+                "segment": "text"
+              }
+            ],
+            "value": "Leopold Fane De Salis"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 63 / 569 (11.1%)
+    characters text:     63 / 533 (11.8%)
+    characters title:    0 / 36 (0.0%)
+    sentences:           2 / 6 (33.3%)
+    longest uncovered:  396 chars
+      'and Charlotte Macdonald; his brother George De Salis would also enter politics. He was elected to the New South Wales Legislative Assembly for Queanbeyan in 1872, but did not re-c…'
+    statement density:  1.76 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='Leopold Fane De Salis'
+  source unit: u_c5033480185a928caecc381e11189764f603121739023dcb2ee678ed6e4e86b3
+  text chars:  1304
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.765s | model=deepseek-v4-flash
+      tokens:   in=2418 | out=154 | total=2572 | cached=1920 | uncached=498
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 41 / 1325 (3.1%)
+    characters text:     20 / 1304 (1.5%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           1 / 13 (7.7%)
+    longest uncovered:  1073 chars
+      'and studied sheep farming at Jedburgh in Scotland. In 1840 he migrated to Sydney, where he formed a partnership to run a station at Junee. In the same decade, in 1842, 1844 and 18…'
+    statement density:  0.75 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Eton%20College> .
+  <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.920s | model=deepseek-v4-flash
+      tokens:   in=637 | out=252 | total=889 | cached=384 | uncached=253
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> .
+  - <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Eton%20College> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> . <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_c5033480185a928c>
+  FROM <urn:graphragprov:unit:u_dffc7097fbf4b3a6>
+  WHERE { <urn:graphragprov:entity:Leopold%20William%20Jerome%20Fane%20De%20Salis> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> . <urn:graphragprov:entity:Leopold%20Fane%20De%20Salis> <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Eton College',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Leopold Fane De Salis', 'Leopold William Jerome Fane De Salis']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8dae43ba0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/8dae43ba0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5929
+output tokens:         720
+total tokens:          6649
+cached input tokens:   4224
+uncached input tokens: 1705
+cumulative LLM seconds: 6.758
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Eton College',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.843s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.049s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.921s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.496s

@@ -1,0 +1,267 @@
+
+H0 one-case execution
+  case:          9943cf640bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where was the director of film Pharaoh'S Curse (Film) born?
+  expected:      Paris
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/9943cf640bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Lee Sholem'
+  source unit: u_c3d3e6719bf4b57bb22c46e2a9d8382b0aee3abf45c8b92f6300eb5e477202a9
+  text chars:  563
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.940s | model=deepseek-v4-flash
+      tokens:   in=2216 | out=1682 | total=3898 | cached=1920 | uncached=296
+    [LLM graph.reference #2] sending...
+      provider: 1.251s | model=deepseek-v4-flash
+      tokens:   in=684 | out=197 | total=881 | cached=0 | uncached=684
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'born in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Paris, Illinois",
+                "segment": "text"
+              }
+            ],
+            "value": "Paris, Illinois"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born in",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lee Sholem",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Lee Tabor Sholem",
+                "segment": "text"
+              }
+            ],
+            "value": "Lee Sholem"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'born in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Paris, Illinois",
+                "segment": "text"
+              }
+            ],
+            "value": "Paris, Illinois"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born in",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lee Sholem",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Lee Tabor Sholem",
+                "segment": "text"
+              }
+            ],
+            "value": "Lee Sholem"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 178 / 573 (31.1%)
+    characters text:     168 / 563 (29.8%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  216 chars
+      'more than 1300 shows, including both features and TV episodes, without ever going over schedule. His achievements over a 40- year career have, as yet, been unsurpassed in Hollywoo…'
+    statement density:  15.71 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 2/2] paragraph=4 title="Pharaoh's Curse (film)"
+  source unit: u_64179260992132fba7a9b6e08e8aec8cf03f28d4557f2057c9b5f053aa8b2a6a
+  text chars:  317
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.305s | model=deepseek-v4-flash
+      tokens:   in=2264 | out=153 | total=2417 | cached=1920 | uncached=344
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 36 / 339 (10.6%)
+    characters text:     36 / 317 (11.4%)
+    characters title:    0 / 22 (0.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  237 chars
+      'and written by Richard H. Landau. The film stars Mark Dana, Ziva Rodann, Diane Brewster, George N. Neise, Alvaro Guillot and Ben Wright. The film was released in February 1957 by…'
+    statement density:  2.95 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 10
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      10
+resource nodes:        9
+entity nodes:          9
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Pharaoh%27s%20Curse> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lee%20Sholem> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:birthDate> "1913-05-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:deathDate> "2000-08-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:deathPlace> <urn:graphragprov:entity:Los%20Angeles%2C%20California> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Doomsday%20Machine> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Tarzan%27s%20Magic%20Fountain> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Roll%20%27Em%22%20Sholem%22> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:television%20director> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.358s | model=deepseek-v4-flash
+      tokens:   in=993 | out=173 | total=1166 | cached=384 | uncached=609
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Pharaoh%27s%20Curse> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lee%20Sholem> .
+  - <urn:graphragprov:entity:Lee%20Sholem> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Paris> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Pharaoh%27s%20Curse> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:birthPlace> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_64179260992132fb>
+  FROM <urn:graphragprov:unit:u_c3d3e6719bf4b57b>
+  WHERE { <urn:graphragprov:entity:Pharaoh%27s%20Curse> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:birthPlace> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  9943cf640bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/9943cf640bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6157
+output tokens:         2205
+total tokens:          8362
+cached input tokens:   4224
+uncached input tokens: 1933
+cumulative LLM seconds: 11.854
+
+statement occurrences: 10
+semantic triples:      10
+entity nodes:          9
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.503s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.058s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.359s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.435s

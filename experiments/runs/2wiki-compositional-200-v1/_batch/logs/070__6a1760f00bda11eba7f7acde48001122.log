@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          6a1760f00bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the director of film The City Gone Wild?
+  expected:      Ogden
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/6a1760f00bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=6 title='The City Gone Wild'
+  source unit: u_64f544b49b19fd347dc0b21c843a55fd79e39d9d7abe7f02a30c5f18c5cf8509
+  text chars:  522
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.589s | model=deepseek-v4-flash
+      tokens:   in=2197 | out=288 | total=2485 | cached=1920 | uncached=277
+    [LLM graph.reference #2] sending...
+      provider: 0.902s | model=deepseek-v4-flash
+      tokens:   in=627 | out=8 | total=635 | cached=0 | uncached=627
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'Ogden' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Ogden",
+                "segment": "text"
+              }
+            ],
+            "value": "Ogden"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Ogden",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "James Cruze",
+                "segment": "text"
+              }
+            ],
+            "value": "James Cruze"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 40 / 540 (7.4%)
+    characters text:     40 / 522 (7.7%)
+    characters title:    0 / 18 (0.0%)
+    sentences:           2 / 5 (40.0%)
+    longest uncovered:  336 chars
+      ', and is now a lost film. The last known copy of this film was nearly saved in the late 1960s by preservationist David Shepard for deposit at AFI. Paramount had also contracted wi…'
+    statement density:  1.85 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='James Cruze'
+  source unit: u_7b5b90bbc4b3b4e487a28718ce6cac1704f15fc65e602bdda8d5cbab6f0e1c5f
+  text chars:  157
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.461s | model=deepseek-v4-flash
+      tokens:   in=2132 | out=146 | total=2278 | cached=1920 | uncached=212
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 20 / 168 (11.9%)
+    characters text:     9 / 157 (5.7%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  92 chars
+      ', Utah – August 3, 1942 in Hollywood, California) was a silent film actor and film director.'
+    statement density:  5.95 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> .
+  <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Ogden> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.775s | model=deepseek-v4-flash
+      tokens:   in=606 | out=202 | total=808 | cached=384 | uncached=222
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> .
+  - <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Ogden> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> . <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_64f544b49b19fd34>
+  FROM <urn:graphragprov:unit:u_7b5b90bbc4b3b4e4>
+  WHERE { <urn:graphragprov:entity:The%20City%20Gone%20Wild> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:James%20Cruze> . <urn:graphragprov:entity:James%20Cruze> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Ogden',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['James Cruze', 'The City Gone Wild']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  6a1760f00bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/6a1760f00bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5562
+output tokens:         644
+total tokens:          6206
+cached input tokens:   4224
+uncached input tokens: 1338
+cumulative LLM seconds: 6.727
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Ogden',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.959s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.046s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.776s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.319s

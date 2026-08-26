@@ -1,0 +1,117 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where did the director of film A Peep Behind The Scenes (1918 Film) die?
+
+Expected answer: London
+
+Benchmark evidence relations:
+1. A Peep Behind the Scenes | director | Kenelm Foss
+2. Kenelm Foss | place of death | London
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:biographer> <urn:graphragprov:entity:Fanny%20Burney%20Woolnough> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:biography> <urn:graphragprov:entity:Stage%2C%20Screen%20and%20Sandwiches%3A%20the%20Remarkable%20Life%20of%20Kenelm%20Foss> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:birthDate> "1885-12-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Croydon%2C%20Surrey> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Fanny%20Burney%20Woolnough> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:six%20children> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:contracted> <urn:graphragprov:entity:tuberculosis> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:deathDate> "1963-11-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Magic> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Wellesley%20School%20of%20Art> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:hadChild> <urn:graphragprov:entity:Fanny%20Burney%20Woolnough> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:hadChild> <urn:graphragprov:entity:two%20of%20whom%20died%20in%20childhood> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:hadChildren> <urn:graphragprov:entity:six%20children> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:hadRelapse> <urn:graphragprov:entity:relapse%20of%20his%20illness> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:author> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theatre%20director> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:author> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:theatre%20director> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:sandwich%20bar> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:London> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:The%20Cherry%20Orchard> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:Practical%20Course%20in%20Cinema%20Acting%20in%20Ten%20Complete%20Lessons> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:biographical%20studies> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:several%20novels> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:published> <urn:graphragprov:entity:works%20of%20poetry> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Elisabeth%20Gilson> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:Glasgow> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:London> .
+<urn:graphragprov:entity:Kenelm%20Foss> <urn:graphragprov:predicate:workedIn> <urn:graphragprov:entity:New%20York%20City> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:1877%20novel%20of%20the%20same%20name> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Geoffrey%20H.%20Malins> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Kenelm%20Foss> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20drama%20film> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:publicationYear> "1918"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:travelling%20fair> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gerald%20Ames> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Gertrude%20Bain> .
+<urn:graphragprov:entity:A%20Peep%20Behind%20the%20Scenes%20%281918%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ivy%20Close> .

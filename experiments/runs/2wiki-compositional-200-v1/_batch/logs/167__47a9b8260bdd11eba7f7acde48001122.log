@@ -1,0 +1,179 @@
+
+H0 one-case execution
+  case:          47a9b8260bdd11eba7f7acde48001122
+  hops:          2
+  question:      Which country the performer of song Al'S Place is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/47a9b8260bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title="Al's Place"
+  source unit: u_3412557dcb1d22499ecfe39120be3b8d6737a400ca467207626b4c706f1da032
+  text chars:  172
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.557s | model=deepseek-v4-flash
+      tokens:   in=2119 | out=892 | total=3011 | cached=1920 | uncached=199
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 134 / 182 (73.6%)
+    characters text:     124 / 172 (72.1%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  18 chars
+      '"Al\'s Place" is a'
+    statement density:  32.97 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[GRAPH 2/2] paragraph=8 title='Al Hirt'
+  source unit: u_4c20e9a9a77a78c9aee1dff3799c04b6f7fec26e0f285d902bac91edf4d0fdc8
+  text chars:  671
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.677s | model=deepseek-v4-flash
+      tokens:   in=2308 | out=1328 | total=3636 | cached=1920 | uncached=388
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 152 / 678 (22.4%)
+    characters text:     145 / 671 (21.6%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           3 / 5 (60.0%)
+    longest uncovered:  276 chars
+      '". Colin Escott, an author of musician biographies, wrote that RCA Victor Records, for which Hirt had recorded most of his best-selling recordings and for which he had spent much…'
+    statement density:  13.27 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 15
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        10
+entity nodes:          10
+literal values:        6
+predicates:            12
+
+N-Triples:
+  <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:chartPosition> "#13 on the Adult Contemporary chart" .
+  <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:chartPosition> "#57 on the \"Billboard\" Hot 100" .
+  <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Al%20Hirt> .
+  <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:publicationYear> "1965"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Robert%20Allen> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:The%20Louisiana%20Music%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:awardReceivedInYear> "2009-11"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:birthDate> "1922-11-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:deathDate> "1999-04-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Jumbo> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:The%20Round%20Mound%20of%20Sound> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:bandleader> .
+  <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:trumpeter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.558s | model=deepseek-v4-flash
+      tokens:   in=1216 | out=199 | total=1415 | cached=384 | uncached=832
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Al%20Hirt> .
+  - <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Al%20Hirt> . <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3412557dcb1d2249>
+  FROM <urn:graphragprov:unit:u_4c20e9a9a77a78c9>
+  WHERE { <urn:graphragprov:entity:Al%27s%20Place> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Al%20Hirt> . <urn:graphragprov:entity:Al%20Hirt> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Al Hirt', "Al's Place"]
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  47a9b8260bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/47a9b8260bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5643
+output tokens:         2419
+total tokens:          8062
+cached input tokens:   4224
+uncached input tokens: 1419
+cumulative LLM seconds: 11.792
+
+statement occurrences: 15
+semantic triples:      15
+entity nodes:          10
+literal values:        6
+predicates:            12
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.241s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.119s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.558s
+  graphdb.semantic [attempt=1]: 0.011s
+  provenance.execution [attempt=1]: 0.480s

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_6583f396de8833c0ef195680b05ca0fde3b9ffd3ae44e0989e9d3c852f67e373
+Title: Moodu Pani
+Text:
+Moodu Pani  is a 1980 Indian Tamil-language thriller film written, directed and filmed by Balu Mahendra. Starring his then wife Shoba and Pratap K. Pothen in the lead roles, with N. Viswanathan, Ganthimathi, Mohan and Bhanu Chander in supporting roles, it is based on two novels: "Idhuvum Oru Viduthalai Thaan" (1978) by Rajendra Kumar, and "The Collector" (1963) by John Fowles. The film follows Chandru (Pratap), who has a strong hatred towards prostitutes and would kill any such woman he encounters. He falls in love with Rekha (Shoba) and believes marrying her will end his psychological distress. "Moodu Pani" was the third directorial venture of Mahendra and his second in Tamil after "Azhiyatha Kolangal" (1979). It also marked Mohan's debut in Tamil cinema, and the last film Shoba acted in before her death. Principal photography took place between January and April 1980, mostly in Udupi, Bangalore and Ooty. The film's similarities to Alfred Hitchcock's film "Psycho" (1960) have been widely discussed. The soundtrack was composed by Ilaiyaraaja, this being his 100th film, and his brother Gangai Amaran was the main lyricist. "Moodu Pani" was released on 6 November 1980, during the Diwali holiday frame. The film received critical acclaim, with particular praise for the performances of Pratap and Shoba, and Ilaiyaraaja's music; the song "Yen Iniya Pon Nilavae" attained immense popularity. It was a commercial success, running for over 200 days in theatres, and responsible for a resurgence of the thriller genre in Tamil cinema at that point. Despite the film propelling Pratap to stardom, it also led to him being typecast in similar roles.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Moodu Pani",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Moodu Pani",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "directed by",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Balu Mahendra",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Balu Mahendra",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'directed by' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

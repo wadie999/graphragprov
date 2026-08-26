@@ -1,0 +1,218 @@
+
+H0 one-case execution
+  case:          b2f437f60bdc11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the director of film The White Parade?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b2f437f60bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='The White Parade'
+  source unit: u_2c078b69a5c27db67845b3324cd6bf9e8386cb93bd3b318ca1859ae50db60b70
+  text chars:  684
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.573s | model=deepseek-v4-flash
+      tokens:   in=2226 | out=285 | total=2511 | cached=1920 | uncached=306
+    [LLM graph.reference #2] sending...
+      provider: 0.535s | model=deepseek-v4-flash
+      tokens:   in=660 | out=8 | total=668 | cached=0 | uncached=660
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Irving Cummings",
+                "segment": "text"
+              }
+            ],
+            "value": "Irving Cummings"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 42 / 700 (6.0%)
+    characters text:     42 / 684 (6.1%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           1 / 7 (14.3%)
+    longest uncovered:  625 chars
+      'and starring Loretta Young and John Boles. It was written by Rian James, Jesse Lasky Jr., Sonya Levien and Ernest Pascal, from the novel by Rian James. Dedicated to" the memory of…'
+    statement density:  1.43 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=6 title='Irving Cummings'
+  source unit: u_909fd1305b4067b1b8101b7c8a8acfe0c2175f82b22040e1e275663169bc5b2a
+  text chars:  109
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.508s | model=deepseek-v4-flash
+      tokens:   in=2109 | out=1000 | total=3109 | cached=1920 | uncached=189
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 79 / 124 (63.7%)
+    characters text:     64 / 109 (58.7%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  16 chars
+      'Irving Camisky('
+    statement density:  56.45 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 8
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      8
+resource nodes:        7
+entity nodes:          7
+literal values:        2
+predicates:            5
+
+N-Triples:
+  <urn:graphragprov:entity:The%20White%20Parade> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Irving%20Cummings> .
+  <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:birthDate> "1888-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:deathDate> "1959-04-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+  <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.484s | model=deepseek-v4-flash
+      tokens:   in=880 | out=179 | total=1059 | cached=384 | uncached=496
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20White%20Parade> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Irving%20Cummings> .
+  - <urn:graphragprov:entity:Irving%20Cummings> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20White%20Parade> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2c078b69a5c27db6>
+  FROM <urn:graphragprov:unit:u_909fd1305b4067b1>
+  WHERE { <urn:graphragprov:entity:The%20White%20Parade> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Irving Cummings', 'The White Parade']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b2f437f60bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b2f437f60bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5875
+output tokens:         1472
+total tokens:          7347
+cached input tokens:   4224
+uncached input tokens: 1651
+cumulative LLM seconds: 9.100
+
+statement occurrences: 8
+semantic triples:      8
+entity nodes:          7
+literal values:        2
+predicates:            5
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.620s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.034s
+  graph.materialization [attempt=1]: 0.049s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.485s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.517s

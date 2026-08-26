@@ -1,0 +1,105 @@
+
+H0 one-case execution
+  case:          91669c2e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      Who is the spouse of the presenter of Los 8 Escalones?
+  expected:      Florencia Bertotti
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/91669c2e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Los 8 escalones'
+  source unit: u_f049c5980e1f9a8aa5b3ff7ca2ea013eaa5eece27fe66eb87d60147e56e774a7
+  text chars:  66
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.861s | model=deepseek-v4-flash
+      tokens:   in=2108 | out=437 | total=2545 | cached=1920 | uncached=188
+  extraction: ACCEPTED
+  statements: 3
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     3
+  coverage:
+    characters combined: 54 / 81 (66.7%)
+    characters text:     39 / 66 (59.1%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  22 chars
+      'Los 8 escalones is an'
+    statement density:  37.04 / 1000 chars
+    title reliance:      3 / 3 (100.0%)
+
+[GRAPH 2/2] paragraph=1 title='Guido Kaczka'
+  source unit: u_176dfcfa12b93f5df3fbc23e06bfef1c569b1d185a2d47ac0e4b599c95a9d0b5
+  text chars:  253
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 62.714s | model=deepseek-v4-flash
+      tokens:   in=2191 | out=16384 | total=18575 | cached=2048 | uncached=143
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #3] sending...
+      provider: 64.007s | model=deepseek-v4-flash
+      tokens:   in=2236 | out=16384 | total=18620 | cached=2176 | uncached=60
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 3/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 62.793s | model=deepseek-v4-flash
+      tokens:   in=2236 | out=16384 | total=18620 | cached=2176 | uncached=60
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+
+========================================================================
+H0 COLLECTION FAILED
+========================================================================
+case:                  91669c2e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/91669c2e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    1
+graph LLM reused:      0
+query LLM executed:    0
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8771
+output tokens:         49589
+total tokens:          58360
+cached input tokens:   8320
+uncached input tokens: 451
+cumulative LLM seconds: 192.375
+
+failure stage:         graph_extraction
+failure:               ValueError: DeepSeek response was truncated by the token limit
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 192.379s

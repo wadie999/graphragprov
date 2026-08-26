@@ -1,0 +1,179 @@
+
+H0 one-case execution
+  case:          a55b79e40bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of the director of film ...And God Created Them?
+  expected:      12 November 1934
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a55b79e40bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='...And God Created Them'
+  source unit: u_118a653e1568c236218e48e7971029ec001806563388713a841e6f6ba22f69db
+  text chars:  170
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.186s | model=deepseek-v4-flash
+      tokens:   in=2129 | out=878 | total=3007 | cached=1920 | uncached=209
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 137 / 193 (71.0%)
+    characters text:     137 / 170 (80.6%)
+    characters title:    0 / 23 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  9 chars
+      '. It was'
+    statement density:  31.09 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Jacobo Morales'
+  source unit: u_2efe06bad1cc8b36014a62b5998d32329c88491a93409e45e45b2769c1c990a3
+  text chars:  191
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.357s | model=deepseek-v4-flash
+      tokens:   in=2210 | out=1453 | total=3663 | cached=2048 | uncached=162
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 114 / 205 (55.6%)
+    characters text:     100 / 191 (52.4%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  41 chars
+      '. Many consider him the most influential'
+    statement density:  43.90 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 15
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      15
+resource nodes:        13
+entity nodes:          13
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jacobo%20Morales> .
+  <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Puerto%20Rican> .
+  <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:publicationYear> "1979"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:screenedAt> <urn:graphragprov:entity:1981%20Cannes%20Film%20Festival> .
+  <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:screenedIn> <urn:graphragprov:entity:Un%20Certain%20Regard%20section> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:dateOfBirth> "1934-11-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Puerto%20Rican> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:auteur> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:filmmaker> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playwright> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:poet> .
+  <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.486s | model=deepseek-v4-flash
+      tokens:   in=1254 | out=223 | total=1477 | cached=384 | uncached=870
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jacobo%20Morales> .
+  - <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:dateOfBirth> "1934-11-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jacobo%20Morales> . <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_118a653e1568c236>
+  FROM <urn:graphragprov:unit:u_2efe06bad1cc8b36>
+  WHERE { <urn:graphragprov:entity:...And%20God%20Created%20Them> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Jacobo%20Morales> . <urn:graphragprov:entity:Jacobo%20Morales> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1934-11-12',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['...And God Created Them', 'Jacobo Morales']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  a55b79e40bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a55b79e40bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5593
+output tokens:         2554
+total tokens:          8147
+cached input tokens:   4352
+uncached input tokens: 1241
+cumulative LLM seconds: 13.029
+
+statement occurrences: 15
+semantic triples:      15
+entity nodes:          13
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ('1934-11-12',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 11.549s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.027s
+  graph.materialization [attempt=1]: 0.044s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.487s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.282s

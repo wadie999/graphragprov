@@ -1,0 +1,178 @@
+
+H0 one-case execution
+  case:          edd117100bda11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the director of film Her Silent Sacrifice?
+  expected:      Belgian
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/edd117100bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Her Silent Sacrifice'
+  source unit: u_548d7994e0763472495c960fcf3ade4bae1f2bd80a9706c2c339bd06d5f65d41
+  text chars:  116
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.631s | model=deepseek-v4-flash
+      tokens:   in=2095 | out=712 | total=2807 | cached=1920 | uncached=175
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 99 / 136 (72.8%)
+    characters text:     99 / 116 (85.3%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  36.76 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='Edward José'
+  source unit: u_84339905ba2b8151c5cdee84b64cb44915ab810d444a981ac0423adfbcf85283
+  text chars:  198
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.862s | model=deepseek-v4-flash
+      tokens:   in=2179 | out=1331 | total=3510 | cached=1920 | uncached=259
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 143 / 209 (68.4%)
+    characters text:     132 / 198 (66.7%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  23 chars
+      'of the silent era. He'
+    statement density:  43.06 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 14
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      14
+resource nodes:        8
+entity nodes:          8
+literal values:        7
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Edward%20Jos%C3%A9> .
+  <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20film%20romantic%20drama> .
+  <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:publicationYear> "1917"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Alice%20Brady> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:birthDate> "1865-07-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Belgian> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:deathDate> "1930-12-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:directedFilmsCount> "42"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:directedFilmsPeriod> "1915-1925" .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:performedInFilmsCount> "12"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:performedInFilmsPeriod> "1910-1916" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.636s | model=deepseek-v4-flash
+      tokens:   in=1209 | out=186 | total=1395 | cached=384 | uncached=825
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Edward%20Jos%C3%A9> .
+  - <urn:graphragprov:entity:Edward%20Jos%C3%A9> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Belgian> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_548d7994e0763472>
+  FROM <urn:graphragprov:unit:u_84339905ba2b8151>
+  WHERE { <urn:graphragprov:entity:Her%20Silent%20Sacrifice> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Belgian',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Edward José', 'Her Silent Sacrifice']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  edd117100bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/edd117100bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5483
+output tokens:         2229
+total tokens:          7712
+cached input tokens:   4224
+uncached input tokens: 1259
+cumulative LLM seconds: 11.128
+
+statement occurrences: 14
+semantic triples:      14
+entity nodes:          8
+literal values:        7
+predicates:            13
+query attempts:        1
+observed answers:      ('Belgian',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.498s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.055s
+  graph.materialization [attempt=1]: 0.061s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.637s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.479s

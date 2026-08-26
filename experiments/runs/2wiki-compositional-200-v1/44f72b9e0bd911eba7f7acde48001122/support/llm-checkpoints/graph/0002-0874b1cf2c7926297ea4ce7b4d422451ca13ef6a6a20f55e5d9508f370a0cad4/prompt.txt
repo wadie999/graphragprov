@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_c2eefbae1ec653ed2d0700b0088193ce03200c6bcfe4a6aefca45737d5a03da9
+Title: Something to Think About
+Text:
+Something to Think About is a 1920 American silent drama film directed by Cecil B. DeMille. The film stars Elliott Dexter and Gloria Swanson. Prints of the film exist at the George Eastman Museum in Rochester, New York, and at the Filmmuseum in Amsterdam.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 8,
+    "statement": {
+      "subject": {
+        "value": "Something to Think About",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Something to Think About",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "preservedAt",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "exist at",
+            "occurrence": 2
+          }
+        ]
+      },
+      "object": {
+        "value": "Filmmuseum",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Filmmuseum",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[8].predicate.evidence[0]: quote 'exist at' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,339 @@
+
+H0 one-case execution
+  case:          df9be2b60bd911eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film Cidade Ameaçada die?
+  expected:      14 May 2018
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/df9be2b60bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Cidade Ameaçada'
+  source unit: u_3728991545ae79822d194ce84e22bbf83827a909b1c257d8863424e82e3f7053
+  text chars:  260
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.673s | model=deepseek-v4-flash
+      tokens:   in=2158 | out=1086 | total=3244 | cached=1920 | uncached=238
+    [LLM graph.reference #2] sending...
+      provider: 2.078s | model=deepseek-v4-flash
+      tokens:   in=851 | out=379 | total=1230 | cached=0 | uncached=851
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 2
+
+    initial rejection #5
+      validator:
+        response.statements[5].object.evidence[0]: quote 'a São Paulo criminal known as "Passarinho"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a São Paulo criminal known as \"Passarinho\"",
+                "segment": "text"
+              }
+            ],
+            "value": "a São Paulo criminal known as \"Passarinho\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The plot follows the story of",
+                "segment": "text"
+              }
+            ],
+            "value": "plotFollows"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Cidade Ameaçada",
+                "segment": "text"
+              }
+            ],
+            "value": "Cidade Ameaçada"
+          }
+        }
+
+    initial rejection #6
+      validator:
+        response.statements[6].subject.evidence[0]: quote 'a São Paulo criminal known as "Passarinho"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "an actual criminal dubbed \"Promessinha\"",
+                "segment": "text"
+              }
+            ],
+            "value": "an actual criminal dubbed \"Promessinha\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "based on",
+                "segment": "text"
+              }
+            ],
+            "value": "basedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a São Paulo criminal known as \"Passarinho\"",
+                "segment": "text"
+              }
+            ],
+            "value": "a São Paulo criminal known as \"Passarinho\""
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     2
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote 'a São Paulo criminal known as "Passarinho"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a São Paulo criminal known as \"Passarinho\"",
+                "segment": "text"
+              }
+            ],
+            "value": "a São Paulo criminal known as \"Passarinho\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The plot follows the story of",
+                "segment": "text"
+              }
+            ],
+            "value": "plotFollows"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Cidade Ameaçada",
+                "segment": "text"
+              }
+            ],
+            "value": "Cidade Ameaçada"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].subject.evidence[0]: quote 'a São Paulo criminal known as "Passarinho"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "an actual criminal dubbed \"Promessinha\"",
+                "segment": "text"
+              }
+            ],
+            "value": "an actual criminal dubbed \"Promessinha\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "based on",
+                "segment": "text"
+              }
+            ],
+            "value": "basedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "a São Paulo criminal known as \"Passarinho\"",
+                "segment": "text"
+              }
+            ],
+            "value": "a São Paulo criminal known as \"Passarinho\""
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 102 / 275 (37.1%)
+    characters text:     102 / 260 (39.2%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  134 chars
+      '. The plot follows the story of a São Paulo criminal known as" Passarinho", which is based on an actual criminal dubbed" Promessinha".'
+    statement density:  18.18 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Roberto Farias'
+  source unit: u_719aa1f52fc271542e2ce17a01999ebf313367f54d1aa57d4a528f87f583179c
+  text chars:  372
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.875s | model=deepseek-v4-flash
+      tokens:   in=2258 | out=2084 | total=4342 | cached=2048 | uncached=210
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 226 / 386 (58.5%)
+    characters text:     212 / 372 (57.0%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  77 chars
+      "( the's' was added to his surname due to an error at the registry) is also a"
+    statement density:  33.68 / 1000 chars
+    title reliance:      9 / 13 (69.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 18
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 2
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      18
+resource nodes:        13
+entity nodes:          13
+literal values:        4
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Brazilian> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:publicationYear> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:submittedTo> <urn:graphragprov:entity:1960%20Cannes%20Film%20Festival> .
+  <urn:graphragprov:entity:Pra%20Frente%2C%20Brasil> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> .
+  <urn:graphragprov:entity:Pra%20Frente%2C%20Brasil> <urn:graphragprov:predicate:enteredInto> <urn:graphragprov:entity:33rd%20Berlin%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Pra%20Frente%2C%20Brasil> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Reginaldo%20Faria> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Reginaldo%20Faria> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Reginaldo%20Faria> <urn:graphragprov:predicate:siblingOf> <urn:graphragprov:entity:Roberto%20Farias> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:bornOn> "1932-03-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> "2018-05-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:15%20films> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Brazilian> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.455s | model=deepseek-v4-flash
+      tokens:   in=1426 | out=221 | total=1647 | cached=384 | uncached=1042
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> .
+  - <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> "2018-05-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> . <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3728991545ae7982>
+  FROM <urn:graphragprov:unit:u_719aa1f52fc27154>
+  WHERE { <urn:graphragprov:entity:Cidade%20Amea%C3%A7ada> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Roberto%20Farias> . <urn:graphragprov:entity:Roberto%20Farias> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2018-05-14',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Cidade Ameaçada', 'Roberto Farias']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  df9be2b60bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/df9be2b60bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6693
+output tokens:         3770
+total tokens:          10463
+cached input tokens:   4352
+uncached input tokens: 2341
+cumulative LLM seconds: 18.080
+
+statement occurrences: 18
+semantic triples:      18
+entity nodes:          13
+literal values:        4
+predicates:            11
+query attempts:        1
+observed answers:      ('2018-05-14',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 16.635s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.057s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.456s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.504s

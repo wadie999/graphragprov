@@ -1,0 +1,174 @@
+
+H0 one-case execution
+  case:          e3543fb60bd911eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the performer of song I Sustain The Wings?
+  expected:      English Channel
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e3543fb60bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='I Sustain the Wings'
+  source unit: u_0a078bd54be34c729b6bf9c800f91b743ecb09d8c643ba5782a559c5300c9a7e
+  text chars:  197
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.524s | model=deepseek-v4-flash
+      tokens:   in=2127 | out=1320 | total=3447 | cached=1920 | uncached=207
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 148 / 216 (68.5%)
+    characters text:     129 / 197 (65.5%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  27 chars
+      '"I Sustain the Wings" is a'
+    statement density:  41.67 / 1000 chars
+    title reliance:      6 / 9 (66.7%)
+
+[GRAPH 2/2] paragraph=2 title='Glenn Miller'
+  source unit: u_38c5f1cad9330c749b815cdc4f6618f433d4c8f7798a2ab80a99caf2c4be4e9d
+  text chars:  797
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.694s | model=deepseek-v4-flash
+      tokens:   in=2393 | out=171 | total=2564 | cached=1920 | uncached=473
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 56 / 809 (6.9%)
+    characters text:     44 / 797 (5.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 6 (33.3%)
+    longest uncovered:  734 chars
+      'December 15, 1944) was an American big-band trombonist, arranger, composer, and bandleader in the swing era. He was the best-selling recording artist from 1939 to 1942, leading on…'
+    statement density:  1.24 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 10
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      10
+resource nodes:        9
+entity nodes:          9
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Glenn%20Miller> .
+  <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:big%20band> .
+  <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+  <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:instrumental> .
+  <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:publicationYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:themeFor> <urn:graphragprov:entity:the%20eponymous%20radio%20program> .
+  <urn:graphragprov:entity:the%20eponymous%20radio%20program> <urn:graphragprov:predicate:broadcastOn> <urn:graphragprov:entity:CBS> .
+  <urn:graphragprov:entity:the%20eponymous%20radio%20program> <urn:graphragprov:predicate:broadcastOn> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:the%20eponymous%20radio%20program> <urn:graphragprov:predicate:broadcastPeriod> "1943-1945" .
+  <urn:graphragprov:entity:Glenn%20Miller> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:English%20Channel> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.605s | model=deepseek-v4-flash
+      tokens:   in=999 | out=206 | total=1205 | cached=384 | uncached=615
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Glenn%20Miller> .
+  - <urn:graphragprov:entity:Glenn%20Miller> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:English%20Channel> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Glenn%20Miller> . <urn:graphragprov:entity:Glenn%20Miller> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0a078bd54be34c72>
+  FROM <urn:graphragprov:unit:u_38c5f1cad9330c74>
+  WHERE { <urn:graphragprov:entity:I%20Sustain%20the%20Wings> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Glenn%20Miller> . <urn:graphragprov:entity:Glenn%20Miller> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('English Channel',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Glenn Miller', 'I Sustain the Wings']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  e3543fb60bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/e3543fb60bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5519
+output tokens:         1697
+total tokens:          7216
+cached input tokens:   4224
+uncached input tokens: 1295
+cumulative LLM seconds: 9.824
+
+statement occurrences: 10
+semantic triples:      10
+entity nodes:          9
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ('English Channel',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 8.226s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.062s
+  graph.materialization [attempt=1]: 0.124s
+  graph.observation [attempt=1]: 0.010s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.606s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.620s

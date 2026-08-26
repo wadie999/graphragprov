@@ -1,0 +1,82 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the place of death of the director of film What Do Men Want??
+
+Expected answer: Hollywood
+
+Benchmark evidence relations:
+1. What Do Men Want? | director | Lois Weber
+2. Lois Weber | place of death | Hollywood
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Lois%20Weber> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+<urn:graphragprov:entity:Lois%20Weber> <urn:graphragprov:predicate:muse> <urn:graphragprov:entity:Claire%20Windsor> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Lois%20Weber> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:Blu-ray> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:DVD> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20drama%20film> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Lois%20Weber> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:publicationYear> "1921"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:releaseYear> "2018"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Claire%20Windsor> .
+<urn:graphragprov:entity:What%20Do%20Men%20Want%3F> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Lois%20Weber> .

@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          0528de780bdd11eba7f7acde48001122
+  hops:          2
+  question:      Which country the composer of song En Spännande Dag För Josefine is from?
+  expected:      Swedish
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/0528de780bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='En spännande dag för Josefine'
+  source unit: u_9167c82da2d4e82e2d6fa80add41299677fc7d96f6fcb885a08052bafa26e5be
+  text chars:  626
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.410s | model=deepseek-v4-flash
+      tokens:   in=2257 | out=295 | total=2552 | cached=1920 | uncached=337
+    [LLM graph.reference #2] sending...
+      provider: 0.861s | model=deepseek-v4-flash
+      tokens:   in=687 | out=8 | total=695 | cached=0 | uncached=687
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'Swedish' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Swedish",
+                "segment": "text"
+              }
+            ],
+            "value": "Swedish"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Swedish",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Benny Borg",
+                "segment": "text"
+              }
+            ],
+            "value": "Benny Borg"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 49 / 655 (7.5%)
+    characters text:     49 / 626 (7.8%)
+    characters title:    0 / 29 (0.0%)
+    sentences:           1 / 4 (25.0%)
+    longest uncovered:  565 chars
+      ', and recorded by Schytts, using it as a B-side for their 1974 single "Hasta la vista " and also charted at Svensktoppen for one weeks, at 9th position, on 20 October 1974. It was…'
+    statement density:  1.53 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='Benny Borg'
+  source unit: u_91d5c988314185ebe54718d69f52bbd3da0d7e1dfe61742c3a1a581ee18af37e
+  text chars:  423
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.536s | model=deepseek-v4-flash
+      tokens:   in=2208 | out=149 | total=2357 | cached=1920 | uncached=288
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 17 / 433 (3.9%)
+    characters text:     7 / 423 (1.7%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  376 chars
+      'singer and composer. He was born in Gothenburg, but moved to Norway in 1968, and was married to Kirsti Sparboe from 1972 to 1978. He is known for his cooperation with the Dizzie T…'
+    statement density:  2.31 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Benny%20Borg> .
+  <urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Swedish> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.557s | model=deepseek-v4-flash
+      tokens:   in=625 | out=242 | total=867 | cached=384 | uncached=241
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Benny%20Borg> .
+  - <urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:Swedish> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Benny%20Borg> . <urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9167c82da2d4e82e>
+  FROM <urn:graphragprov:unit:u_91d5c988314185eb>
+  WHERE { <urn:graphragprov:entity:En%20sp%C3%A4nnande%20dag%20f%C3%B6r%20Josefine> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Benny%20Borg> . <urn:graphragprov:entity:Benny%20Borg> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Swedish',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Benny Borg', 'En spännande dag för Josefine']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  0528de780bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/0528de780bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5777
+output tokens:         694
+total tokens:          6471
+cached input tokens:   4224
+uncached input tokens: 1553
+cumulative LLM seconds: 6.365
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Swedish',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.813s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.042s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.558s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.505s

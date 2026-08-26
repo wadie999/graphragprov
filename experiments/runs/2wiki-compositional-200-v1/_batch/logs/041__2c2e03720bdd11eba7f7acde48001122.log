@@ -1,0 +1,214 @@
+
+H0 one-case execution
+  case:          2c2e03720bdd11eba7f7acde48001122
+  hops:          2
+  question:      Where did Jimmy Cochran's father graduate from?
+  expected:      University of Vermont
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/2c2e03720bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Jimmy Cochran'
+  source unit: u_5765e0b418cc3c4fd46a3d0068fff2f12d2f6e7094f25d258eb16a9510d8d769
+  text chars:  725
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.732s | model=deepseek-v4-flash
+      tokens:   in=2269 | out=288 | total=2557 | cached=1920 | uncached=349
+    [LLM graph.reference #2] sending...
+      provider: 0.994s | model=deepseek-v4-flash
+      tokens:   in=707 | out=8 | total=715 | cached=0 | uncached=707
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'University of Vermont' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "University of Vermont",
+                "segment": "text"
+              }
+            ],
+            "value": "University of Vermont"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "University of Vermont",
+                "segment": "text"
+              }
+            ],
+            "value": "educatedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bob Cochran",
+                "segment": "text"
+              }
+            ],
+            "value": "Bob Cochran"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 38 / 738 (5.1%)
+    characters text:     38 / 725 (5.2%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           2 / 8 (25.0%)
+    longest uncovered:  441 chars
+      ', one of the "Skiing Cochrans" family of Richmond, Vermont. He represented the U.S. in the Winter Olympics in 2006 and 2010 and the World Championships in 2005, 2007, and 2009. Co…'
+    statement density:  1.36 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='Bob Cochran (skier)'
+  source unit: u_7baabd3125652f702a464650d4cd9e6020f6c1c29c46646857e87834f78af33c
+  text chars:  1685
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 3.082s | model=deepseek-v4-flash
+      tokens:   in=2498 | out=526 | total=3024 | cached=1920 | uncached=578
+  extraction: ACCEPTED
+  statements: 3
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     3
+  coverage:
+    characters combined: 115 / 1704 (6.7%)
+    characters text:     96 / 1685 (5.7%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           4 / 18 (22.2%)
+    longest uncovered:  1210 chars
+      ', M.D. (born December 11, 1951) is a former World Cup alpine ski racer from the United States. Born in Claremont, New Hampshire, Cochran was a member of the Skiing Cochrans family…'
+    statement density:  1.76 / 1000 chars
+    title reliance:      3 / 3 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 4
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      4
+resource nodes:        4
+entity nodes:          4
+literal values:        1
+predicates:            4
+
+N-Triples:
+  <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Bob%20Cochran> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Vermont> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:fatherOf> <urn:graphragprov:entity:Jimmy%20Cochran> .
+  <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:graduatedInYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.663s | model=deepseek-v4-flash
+      tokens:   in=707 | out=206 | total=913 | cached=384 | uncached=323
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Bob%20Cochran> .
+  - <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Vermont> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Bob%20Cochran> . <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5765e0b418cc3c4f>
+  FROM <urn:graphragprov:unit:u_7baabd3125652f70>
+  WHERE { <urn:graphragprov:entity:James%20Michael%20Cochran> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Bob%20Cochran> . <urn:graphragprov:entity:Bob%20Cochran> <urn:graphragprov:predicate:educatedAt> ?answer . }
+
+GraphDB execution:
+  observed answers: ('University of Vermont',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Bob Cochran (skier)', 'Jimmy Cochran']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2c2e03720bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/2c2e03720bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6181
+output tokens:         1028
+total tokens:          7209
+cached input tokens:   4224
+uncached input tokens: 1957
+cumulative LLM seconds: 8.472
+
+statement occurrences: 4
+semantic triples:      4
+entity nodes:          4
+literal values:        1
+predicates:            4
+query attempts:        1
+observed answers:      ('University of Vermont',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 6.814s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.664s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.514s

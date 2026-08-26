@@ -1,0 +1,183 @@
+
+H0 one-case execution
+  case:          242025c20bdb11eba7f7acde48001122
+  hops:          2
+  question:      When is the director of film Fortress Of Amerikkka 's birthday?
+  expected:      September 1, 1952
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/242025c20bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Fortress of Amerikkka'
+  source unit: u_ebcbce90886c5b08a00ddfd271c8a03147e615aef4a10ae7cc291acf5002229d
+  text chars:  416
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.257s | model=deepseek-v4-flash
+      tokens:   in=2198 | out=2032 | total=4230 | cached=1920 | uncached=278
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 290 / 437 (66.4%)
+    characters text:     290 / 416 (69.7%)
+    characters title:    0 / 21 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  35 chars
+      '. The director, Eric Louzil, later'
+    statement density:  32.04 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 2/2] paragraph=3 title='Eric Louzil'
+  source unit: u_09834d1cee24ea136e378f45a38eb678b2f4631347066eaa3040bd80c49f8d7c
+  text chars:  91
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.824s | model=deepseek-v4-flash
+      tokens:   in=2296 | out=725 | total=3021 | cached=1920 | uncached=376
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 73 / 102 (71.6%)
+    characters text:     62 / 91 (68.1%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  13 chars
+      'Eric Louzil('
+    statement density:  49.02 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 19
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      19
+resource nodes:        17
+entity nodes:          17
+literal values:        2
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:Eric%20Louzil> <urn:graphragprov:predicate:budgetType> <urn:graphragprov:entity:low-%20budget> .
+  <urn:graphragprov:entity:Eric%20Louzil> <urn:graphragprov:predicate:dateOfBirth> "1952-09-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eric%20Louzil> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Eric%20Louzil> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Eric%20Louzil> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Class%20of%20Nuke%20%27Em%20High> <urn:graphragprov:predicate:belongsTo> <urn:graphragprov:entity:Troma%20Entertainment> .
+  <urn:graphragprov:entity:Class%20of%20Nuke%20%27Em%20High> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sequel> .
+  <urn:graphragprov:entity:Eric%20Louzil> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Class%20of%20Nuke%20%27Em%20High> .
+  <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:citedByFansAs> <urn:graphragprov:entity:one%20of%20the%20company%27s%20worst%20films> .
+  <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Eric%20Louzil> .
+  <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Troma%20Entertainment> .
+  <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:follows> <urn:graphragprov:entity:John%20Whitecloud> .
+  <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:action%20film> .
+  <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:General> <urn:graphragprov:predicate:characterizedAs> <urn:graphragprov:entity:crazed> .
+  <urn:graphragprov:entity:John%20Whitecloud> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:criminal%20rebel> .
+  <urn:graphragprov:entity:John%20Whitecloud> <urn:graphragprov:predicate:seeksRevengeAgainst> <urn:graphragprov:entity:Sheriff> .
+  <urn:graphragprov:entity:John%20Whitecloud> <urn:graphragprov:predicate:seeksRevengeAgainst> <urn:graphragprov:entity:militia> .
+  <urn:graphragprov:entity:militia> <urn:graphragprov:predicate:runBy> <urn:graphragprov:entity:General> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.610s | model=deepseek-v4-flash
+      tokens:   in=1450 | out=193 | total=1643 | cached=384 | uncached=1066
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Eric%20Louzil> .
+  - <urn:graphragprov:entity:Eric%20Louzil> <urn:graphragprov:predicate:dateOfBirth> "1952-09-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_09834d1cee24ea13>
+  FROM <urn:graphragprov:unit:u_ebcbce90886c5b08>
+  WHERE { <urn:graphragprov:entity:Fortress%20of%20Amerikkka> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1952-09-01',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Eric Louzil', 'Fortress of Amerikkka']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  242025c20bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/242025c20bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5944
+output tokens:         2950
+total tokens:          8894
+cached input tokens:   4224
+uncached input tokens: 1720
+cumulative LLM seconds: 14.692
+
+statement occurrences: 19
+semantic triples:      19
+entity nodes:          17
+literal values:        2
+predicates:            15
+query attempts:        1
+observed answers:      ('1952-09-01',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.086s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.058s
+  graph.materialization [attempt=1]: 0.065s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.611s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.650s

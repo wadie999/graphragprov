@@ -1,0 +1,91 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the date of death of the director of film Relax Freddie?
+
+Expected answer: 19 November 2005
+
+Benchmark evidence relations:
+1. Relax Freddie | director | Erik Balling
+2. Erik Balling | date of death | 19 November 2005
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Den%20k%C3%A6re%20familie> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20Balling> .
+<urn:graphragprov:entity:Den%20k%C3%A6re%20familie> <urn:graphragprov:predicate:enteredInto> <urn:graphragprov:entity:3rd%20Moscow%20International%20Film%20Festival> .
+<urn:graphragprov:entity:Den%20k%C3%A6re%20familie> <urn:graphragprov:predicate:publicationYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:birthDate> "1924-11-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Henning%20Bahs> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Huset%20p%C3%A5%20Christianshavn> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Matador> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Olsen%20Gang> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:dateOfDeath> "2005-11-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Danish> .
+<urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:TV%20and%20film%20director> .
+<urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20Balling> .
+<urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Golden%20Palm> .
+<urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Oscar%20as%20Best%20Foreign%20Language%20Film> .
+<urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:publicationYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20Balling> .
+<urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+<urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Danish> .
+<urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:sequelTo> <urn:graphragprov:entity:Strike%20first%20Freddy> .
+<urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Morten%20Grunwald> .

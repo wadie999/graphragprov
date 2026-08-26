@@ -1,0 +1,104 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: What is the date of death of the director of film All Coppers Are...?
+
+Expected answer: 8 February 2000
+
+Benchmark evidence relations:
+1. All Coppers Are... | director | Sidney Hayers
+2. Sidney Hayers | date of death | 8 February 2000
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Edinburgh> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Scotland> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:bornOn> "1921-08-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:cancer> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Robert> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Susan> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:dateOfDeath> "2000-02-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Altea> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Spain> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Baywatch> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Circus%20of%20Horrors> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Knight%20Rider> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Magnum%2C%20P.I.> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Night%20of%20the%20Eagle> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:T.%20J.%20Hooker> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20A-Team> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20Famous%20Five> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20New%20Avengers> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20Persuaders%21> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:The%20Trap> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Three%20Hats%20for%20Lisa> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+<urn:graphragprov:entity:Sidney%20Hayers> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Erika%20Remberg> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Sidney%20Hayers> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:filmedAt> <urn:graphragprov:entity:Pinewood%20Studios> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:British> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:publicationYear> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julia%20Foster> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Martin%20Potter> .
+<urn:graphragprov:entity:All%20Coppers%20Are...> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Nicky%20Henson> .

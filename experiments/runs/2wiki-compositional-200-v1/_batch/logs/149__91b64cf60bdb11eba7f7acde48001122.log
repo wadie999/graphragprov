@@ -1,0 +1,173 @@
+
+H0 one-case execution
+  case:          91b64cf60bdb11eba7f7acde48001122
+  hops:          2
+  question:      When is the composer of film Arena (1989 Film) 's birthday?
+  expected:      December 28, 1953
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/91b64cf60bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Richard Band'
+  source unit: u_84a608f53e8f3f6ebbd2ebcc5289e934936089e3669e39a319de46b8543de4a8
+  text chars:  243
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.878s | model=deepseek-v4-flash
+      tokens:   in=2137 | out=1154 | total=3291 | cached=1920 | uncached=217
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 181 / 255 (71.0%)
+    characters text:     169 / 243 (69.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  21 chars
+      'Richard Howard Band('
+    statement density:  31.37 / 1000 chars
+    title reliance:      6 / 8 (75.0%)
+
+[GRAPH 2/2] paragraph=2 title='Arena (1989 film)'
+  source unit: u_0fe912c007aea12d97f4e6492143ccab74c9856c2bf98b3b90982dc34fc3e47c
+  text chars:  358
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.576s | model=deepseek-v4-flash
+      tokens:   in=2249 | out=146 | total=2395 | cached=2048 | uncached=201
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 43 / 375 (11.5%)
+    characters text:     43 / 358 (12.0%)
+    characters title:    0 / 17 (0.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  313 chars
+      'is a 1989 American science fiction film directed by Peter Manoogian and starring Paul Satterfield and Claudia Christian. Set in 4038, Satterfield plays Steve Armstrong, the first…'
+    statement density:  2.67 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 9
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      9
+resource nodes:        8
+entity nodes:          8
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Arena> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> .
+  <urn:graphragprov:entity:From%20Beyond> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Best%20Original%20Soundtrack> .
+  <urn:graphragprov:entity:From%20Beyond> <urn:graphragprov:predicate:awardedAt> <urn:graphragprov:entity:Sitges-%20Catalan%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:From%20Beyond> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> "1953-12-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:film%20music> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:numberOfScoredFilms> "more than 85" .
+  <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.770s | model=deepseek-v4-flash
+      tokens:   in=913 | out=193 | total=1106 | cached=384 | uncached=529
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Arena> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> .
+  - <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> "1953-12-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Arena> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> . <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0fe912c007aea12d>
+  FROM <urn:graphragprov:unit:u_84a608f53e8f3f6e>
+  WHERE { <urn:graphragprov:entity:Arena> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Richard%20Band> . <urn:graphragprov:entity:Richard%20Band> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1953-12-28',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Arena (1989 film)', 'Richard Band']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  91b64cf60bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/91b64cf60bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5299
+output tokens:         1493
+total tokens:          6792
+cached input tokens:   4352
+uncached input tokens: 947
+cumulative LLM seconds: 9.224
+
+statement occurrences: 9
+semantic triples:      9
+entity nodes:          8
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ('1953-12-28',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.457s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.096s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.771s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.489s

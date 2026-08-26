@@ -1,0 +1,82 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where was the director of film 10 To 11 born?
+
+Expected answer: Istanbul
+
+Benchmark evidence relations:
+1. 10 to 11 | director | Pelin Esmer
+2. Pelin Esmer | place of birth | Istanbul
+
+Frozen RDF graph:
+<urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:story%20of%20Esmer%E2%80%99s%20uncle%2C%20Mithat%20Esmer> .
+<urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Pelin%20Esmer> .
+<urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:follows> <urn:graphragprov:entity:an%20elderly%20collector%20in%20%C4%B0stanbul%20who%20lives%20in%20a%20rundown%20apartment%20building%20that%20is%20under%20threat%20of%20demolition> .
+<urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+<urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Turkish> .
+<urn:graphragprov:entity:10%20to%2011> <urn:graphragprov:predicate:publicationYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mithat%20Esmer> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:leading%20role> .
+<urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:%C4%B0stanbul> .
+<urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Turkish> .
+<urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:director> .
+<urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+<urn:graphragprov:entity:Pelin%20Esmer> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Istanbul> .

@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          a462608a0bd911eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film A Coney Island Princess?
+  expected:      December 2, 1956
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a462608a0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='A Coney Island Princess'
+  source unit: u_94d1c0e2347a76efb09bc19eabb9d48535d273f876ea77707fc2399e879b3e31
+  text chars:  303
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.292s | model=deepseek-v4-flash
+      tokens:   in=2160 | out=153 | total=2313 | cached=1920 | uncached=240
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 48 / 326 (14.7%)
+    characters text:     48 / 303 (15.8%)
+    characters title:    0 / 23 (0.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  212 chars
+      'and starring Irene Fenwick. It is based on the play" Princess Zim- Zim" by Edward Sheldon. This film marked Fenwick\'s debut for the Famous Players Film Company, and was partly fil…'
+    statement density:  3.07 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=6 title='Dell Henderson'
+  source unit: u_b1dc2efc0db1aaa701036a4bbcfe8ebbf719a9d2d1a1018a93fd296a52e3192c
+  text chars:  195
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.696s | model=deepseek-v4-flash
+      tokens:   in=2149 | out=190 | total=2339 | cached=2048 | uncached=101
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 34 / 209 (16.3%)
+    characters text:     20 / 195 (10.3%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  131 chars
+      ') was a Canadian-American actor, director, and writer. He began his long and prolific film career in the early days of silent film.'
+    statement density:  4.78 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        2
+entity nodes:          2
+literal values:        1
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:A%20Coney%20Island%20Princess> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dell%20Henderson> .
+  <urn:graphragprov:entity:Dell%20Henderson> <urn:graphragprov:predicate:dateOfDeath> "1956-12-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.634s | model=deepseek-v4-flash
+      tokens:   in=633 | out=223 | total=856 | cached=384 | uncached=249
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:A%20Coney%20Island%20Princess> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dell%20Henderson> .
+  - <urn:graphragprov:entity:Dell%20Henderson> <urn:graphragprov:predicate:dateOfDeath> "1956-12-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:A%20Coney%20Island%20Princess> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dell%20Henderson> . <urn:graphragprov:entity:Dell%20Henderson> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_94d1c0e2347a76ef>
+  FROM <urn:graphragprov:unit:u_b1dc2efc0db1aaa7>
+  WHERE { <urn:graphragprov:entity:A%20Coney%20Island%20Princess> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Dell%20Henderson> . <urn:graphragprov:entity:Dell%20Henderson> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1956-12-02',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['A Coney Island Princess', 'Dell Henderson']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  a462608a0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a462608a0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          4942
+output tokens:         566
+total tokens:          5508
+cached input tokens:   4352
+uncached input tokens: 590
+cumulative LLM seconds: 5.622
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          2
+literal values:        1
+predicates:            2
+query attempts:        1
+observed answers:      ('1956-12-02',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.991s
+  graph.reference.measurements [attempt=1]: 0.000s
+  graph.clear_support [attempt=1]: 0.027s
+  graph.materialization [attempt=1]: 0.035s
+  graph.observation [attempt=1]: 0.003s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.635s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.493s

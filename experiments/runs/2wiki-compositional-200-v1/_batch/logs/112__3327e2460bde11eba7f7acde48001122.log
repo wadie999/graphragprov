@@ -1,0 +1,310 @@
+
+H0 one-case execution
+  case:          3327e2460bde11eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of Princess Alexandra Of Greece And Denmark's father?
+  expected:      Thessaloniki
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/3327e2460bde11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Princess Alexandra of Greece and Denmark'
+  source unit: u_f72793912485e55f6277e49e93803e6b2b8d1b19bb5985ab892086c7077d0dd2
+  text chars:  822
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.525s | model=deepseek-v4-flash
+      tokens:   in=2271 | out=295 | total=2566 | cached=1920 | uncached=351
+    [LLM graph.reference #2] sending...
+      provider: 0.586s | model=deepseek-v4-flash
+      tokens:   in=911 | out=8 | total=919 | cached=0 | uncached=911
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    0
+    initially rejected: 2
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'father' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "George I",
+                "segment": "text"
+              }
+            ],
+            "value": "George I"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "father",
+                "segment": "text"
+              }
+            ],
+            "value": "father"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Grand Duchess Alexandra Georgievna of Russia",
+                "segment": "text"
+              }
+            ],
+            "value": "Grand Duchess Alexandra Georgievna of Russia"
+          }
+        }
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'Thessaloniki' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Thessaloniki",
+                "segment": "text"
+              }
+            ],
+            "value": "Thessaloniki"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Thessaloniki",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "George I",
+                "segment": "text"
+              }
+            ],
+            "value": "George I"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 0
+  extraction attempt: REJECTED
+    stage:  response_validation
+    error:  EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    [LLM graph.reference #3] sending...
+      provider: 2.211s | model=deepseek-v4-flash
+      tokens:   in=2330 | out=301 | total=2631 | cached=2176 | uncached=154
+    [LLM graph.reference #4] sending...
+      provider: 0.717s | model=deepseek-v4-flash
+      tokens:   in=701 | out=8 | total=709 | cached=0 | uncached=701
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'Thessaloniki' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Thessaloniki",
+                "segment": "text"
+              }
+            ],
+            "value": "Thessaloniki"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Thessaloniki",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "King George I",
+                "segment": "text"
+              }
+            ],
+            "value": "George I"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 69 / 862 (8.0%)
+    characters text:     69 / 822 (8.4%)
+    characters title:    0 / 40 (0.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  632 chars
+      "and Queen Olga of Greece, who herself was a daughter of a Russian grand duke, and was also a grandchild of Denmark's King Christian IX and Queen Louise. She was a sister to Consta…"
+    statement density:  1.16 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=2 title='George I of Greece'
+  source unit: u_4c8483cbe21e924d0159f102e0ab254dc8ef61801a236017c6ef271f69d0a12b
+  text chars:  1635
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 1.827s | model=deepseek-v4-flash
+      tokens:   in=2452 | out=157 | total=2609 | cached=1920 | uncached=532
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 46 / 1653 (2.8%)
+    characters text:     28 / 1635 (1.7%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           1 / 12 (8.3%)
+    longest uncovered:  1477 chars
+      'George I (Greek: Γεώργιος Α΄, Geórgios I; 24 December 1845 – 18 March 1913) was King of Greece from 1863 until his assassination in 1913. Originally a Danish prince, he was born i…'
+    statement density:  0.60 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        4
+entity nodes:          4
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Thessaloniki> .
+  <urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:George%20I> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.616s | model=deepseek-v4-flash
+      tokens:   in=623 | out=231 | total=854 | cached=384 | uncached=239
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:George%20I> .
+  - <urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Thessaloniki> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:George%20I> . <urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4c8483cbe21e924d>
+  FROM <urn:graphragprov:unit:u_f72793912485e55f>
+  WHERE { <urn:graphragprov:entity:Grand%20Duchess%20Alexandra%20Georgievna%20of%20Russia> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:George%20I> . <urn:graphragprov:entity:George%20I%20of%20Greece> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Thessaloniki',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['George I of Greece', 'Princess Alexandra of Greece and Denmark']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3327e2460bde11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/3327e2460bde11eba7f7acde48001122/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9288
+output tokens:         1000
+total tokens:          10288
+cached input tokens:   6400
+uncached input tokens: 2888
+cumulative LLM seconds: 9.482
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          4
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Thessaloniki',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.874s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.038s
+  graph.materialization [attempt=1]: 0.070s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.616s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.267s

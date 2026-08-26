@@ -1,0 +1,221 @@
+
+H0 one-case execution
+  case:          daa98da60bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where was the husband of Maimu Berg born?
+  expected:      Aravu
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/daa98da60bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Maimu Berg'
+  source unit: u_978352ffa0d8c98f4bc78f061679f96543efad62716e0528cc5967cf80f0be1f
+  text chars:  909
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.343s | model=deepseek-v4-flash
+      tokens:   in=2314 | out=295 | total=2609 | cached=1920 | uncached=394
+    [LLM graph.reference #2] sending...
+      provider: 0.605s | model=deepseek-v4-flash
+      tokens:   in=744 | out=8 | total=752 | cached=0 | uncached=744
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.evidence[0]: quote 'Aravu' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Aravu",
+                "segment": "text"
+              }
+            ],
+            "value": "Aravu"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Vaino Vahing",
+                "segment": "text"
+              }
+            ],
+            "value": "Vaino Vahing"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 29 / 919 (3.2%)
+    characters text:     19 / 909 (2.1%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           1 / 10 (10.0%)
+    longest uncovered:  765 chars
+      'Maimu Berg (born August 27, 1945 in Tallinn) is an Estonian writer, critic, translator, and journalist. She was a member of the Riigikogu, elected in 2011. Berg graduated from sec…'
+    statement density:  1.09 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=4 title='Vaino Vahing'
+  source unit: u_d1673749d28df354a270661f92d554ebbbb90e63266c6c83e3c71bc30a041a9c
+  text chars:  206
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.250s | model=deepseek-v4-flash
+      tokens:   in=2154 | out=1717 | total=3871 | cached=1920 | uncached=234
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 168 / 218 (77.1%)
+    characters text:     156 / 206 (75.7%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  19 chars
+      'in Tartu), was an'
+    statement density:  45.87 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 11
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      11
+resource nodes:        9
+entity nodes:          9
+literal values:        3
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Vaino%20Vahing> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:birthDate> "1940-02-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:deathDate> "2008-03-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Estonian%20Writers%20Union> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:memberSince> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Estonian> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playwright> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:prosaist> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:psychiatrist> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:writer> .
+  <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Aravu> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.249s | model=deepseek-v4-flash
+      tokens:   in=1036 | out=200 | total=1236 | cached=384 | uncached=652
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Vaino%20Vahing> .
+  - <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Aravu> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Vaino%20Vahing> . <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_978352ffa0d8c98f>
+  FROM <urn:graphragprov:unit:u_d1673749d28df354>
+  WHERE { <urn:graphragprov:entity:Maimu%20Berg> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Vaino%20Vahing> . <urn:graphragprov:entity:Vaino%20Vahing> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Aravu',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Maimu Berg', 'Vaino Vahing']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  daa98da60bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/daa98da60bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6248
+output tokens:         2220
+total tokens:          8468
+cached input tokens:   4224
+uncached input tokens: 2024
+cumulative LLM seconds: 11.446
+
+statement occurrences: 11
+semantic triples:      11
+entity nodes:          9
+literal values:        3
+predicates:            8
+query attempts:        1
+observed answers:      ('Aravu',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.205s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.033s
+  graph.materialization [attempt=1]: 0.107s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.250s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.582s

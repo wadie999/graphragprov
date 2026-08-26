@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_f72793912485e55f6277e49e93803e6b2b8d1b19bb5985ab892086c7077d0dd2
+Title: Princess Alexandra of Greece and Denmark
+Text:
+Grand Duchess Alexandra Georgievna of Russia ("née" Princess Alexandra of Greece and Denmark ; 30 August 1870 – 24 September 1891) was the third child and firstborn daughter of King George I and Queen Olga of Greece, who herself was a daughter of a Russian grand duke, and was also a grandchild of Denmark's King Christian IX and Queen Louise. She was a sister to Constantine I of Greece, and thus aunt of three kings and two queens, Constantine's three sons, who all became kings of Greece, and two of his daughters, who were queens, of Romania and (titularly) Croatia, respectively. She was also first cousin of Tsar Nicholas II of Russia, King George V of the United Kingdom, King Christian X of Denmark, and both King Haakon VII and Queen Maud of Norway, as well as a paternal aunt of Prince Philip, Duke of Edinburgh.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Grand Duchess Alexandra Georgievna of Russia",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Grand Duchess Alexandra Georgievna of Russia",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "father",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "father",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "George I",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "George I",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'father' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "George I",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "George I",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "placeOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Thessaloniki",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Thessaloniki",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Thessaloniki",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].predicate.evidence[0]: quote 'Thessaloniki' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

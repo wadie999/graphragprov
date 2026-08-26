@@ -1,0 +1,213 @@
+
+H0 one-case execution
+  case:          110b4ae60bdd11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the performer of song Her Town Too?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/110b4ae60bdd11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Her Town Too'
+  source unit: u_1fa574d6ff27715cb7b56252fe9c6623c7e355cc1f56bdc0a60f26660aa77450
+  text chars:  2193
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.110s | model=deepseek-v4-flash
+      tokens:   in=2591 | out=433 | total=3024 | cached=1920 | uncached=671
+    [LLM graph.reference #2] sending...
+      provider: 0.635s | model=deepseek-v4-flash
+      tokens:   in=1020 | out=8 | total=1028 | cached=0 | uncached=1020
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "American"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "countryOfCitizenship"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Taylor",
+                "segment": "text"
+              }
+            ],
+            "value": "James Taylor"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 2
+  coverage:
+    characters combined: 58 / 2205 (2.6%)
+    characters text:     58 / 2193 (2.6%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           2 / 17 (11.8%)
+    longest uncovered:  2058 chars
+      'on Taylor\'s 1981 album " Dad Loves His Work". It was also released as a single in 1981, peaking at #11 on the "Billboard" Hot 100. The song had entered the Hot 100 chart at #38, m…'
+    statement density:  0.91 / 1000 chars
+    title reliance:      0 / 2 (0.0%)
+
+[GRAPH 2/2] paragraph=5 title='James Taylor'
+  source unit: u_b631bb902f1284449a81f00d1b53a05ff04cf79f3ab41d8fc8c4df0374ec03d9
+  text chars:  1132
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.096s | model=deepseek-v4-flash
+      tokens:   in=2370 | out=144 | total=2514 | cached=1920 | uncached=450
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 20 / 1144 (1.7%)
+    characters text:     8 / 1132 (0.7%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           1 / 12 (8.3%)
+    longest uncovered:  1098 chars
+      'singer-songwriter and guitarist. A five-time Grammy Award winner, he was inducted into the Rock and Roll Hall of Fame in 2000. He is one of the best-selling music artists of all t…'
+    statement density:  0.87 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      3
+resource nodes:        4
+entity nodes:          4
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:J.%20D.%20Souther> .
+  <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> .
+  <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.438s | model=deepseek-v4-flash
+      tokens:   in=642 | out=195 | total=837 | cached=384 | uncached=258
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> .
+  - <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> . <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1fa574d6ff27715c>
+  FROM <urn:graphragprov:unit:u_b631bb902f128444>
+  WHERE { <urn:graphragprov:entity:Her%20Town%20Too> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:James%20Taylor> . <urn:graphragprov:entity:James%20Taylor> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Her Town Too', 'James Taylor']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  110b4ae60bdd11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/110b4ae60bdd11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6623
+output tokens:         780
+total tokens:          7403
+cached input tokens:   4224
+uncached input tokens: 2399
+cumulative LLM seconds: 6.279
+
+statement occurrences: 3
+semantic triples:      3
+entity nodes:          4
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.845s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.080s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.438s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.269s

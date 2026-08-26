@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_4eb9240bba5d56fa93975f479530976bce4fdc7f01fdcccd07ec6598ac31edf3
+Title: Eugène de Beauharnais
+Text:
+Eugène Rose de Beauharnais, Duke of Leuchtenberg (3 September 1781 – 21 February 1824) was the first child and only son of Alexandre de Beauharnais and Joséphine Tascher de la Pagerie, first wife of Napoleon I. He was born in Paris, France, and became the stepson and adopted child (but not the heir to the imperial throne) of Napoleon I. His biological father was executed during the revolutionary Reign of Terror. He commanded the Army of Italy and was Viceroy of Italy under his stepfather. Historians consider him one of the ablest of Napoleon's relatives.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Eugénie de Beauharnais",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Eugénie de Beauharnais",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "father",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "father",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Eugène de Beauharnais",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Eugène de Beauharnais",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].subject.evidence[0]: quote 'Eugénie de Beauharnais' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

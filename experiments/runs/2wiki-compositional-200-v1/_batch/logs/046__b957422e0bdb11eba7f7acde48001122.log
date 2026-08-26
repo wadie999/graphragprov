@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          b957422e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      When did Matilda Amissah-Arthur's husband die?
+  expected:      29 June 2018
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b957422e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Kwesi Amissah-Arthur'
+  source unit: u_b5eedc89310b0d46b513a44f7edb723a1e76152f633e57dbc7d14651892f36c4
+  text chars:  650
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.206s | model=deepseek-v4-flash
+      tokens:   in=2270 | out=173 | total=2443 | cached=1920 | uncached=350
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 32 / 670 (4.8%)
+    characters text:     12 / 650 (1.8%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  546 chars
+      ") was a Ghanaian economist, academic and politician who was the fifth Vice-President of Ghana's 4th Republic, in office from 6 August 2012 until 7 January 2017, under President Jo…"
+    statement density:  1.49 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='Matilda Amissah-Arthur'
+  source unit: u_e7629e482a1779b544f7fca2a4a14358d2ae776a5236ee5683f4a027ccc25033
+  text chars:  825
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.363s | model=deepseek-v4-flash
+      tokens:   in=2321 | out=164 | total=2485 | cached=1920 | uncached=401
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 52 / 847 (6.1%)
+    characters text:     30 / 825 (3.6%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           1 / 8 (12.5%)
+    longest uncovered:  656 chars
+      '. She has been installed as a queen mother of Logba-Adzakoe in 2016, with the stool name of Unandze Afan Eshi ( Mamaga Afeamenyo I). Her father was the Director of Social Welfare…'
+    statement density:  1.18 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        2
+entity nodes:          2
+literal values:        1
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Kwesi%20Amissah-Arthur> <urn:graphragprov:predicate:dateOfDeath> "2018-06-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Matilda%20Amissah-Arthur> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Kwesi%20Amissah-Arthur> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.721s | model=deepseek-v4-flash
+      tokens:   in=646 | out=196 | total=842 | cached=384 | uncached=262
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Matilda%20Amissah-Arthur> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Kwesi%20Amissah-Arthur> .
+  - <urn:graphragprov:entity:Kwesi%20Amissah-Arthur> <urn:graphragprov:predicate:dateOfDeath> "2018-06-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Matilda%20Amissah-Arthur> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:dateOfDeath> ?answer }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b5eedc89310b0d46>
+  FROM <urn:graphragprov:unit:u_e7629e482a1779b5>
+  WHERE { <urn:graphragprov:entity:Matilda%20Amissah-Arthur> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:dateOfDeath> ?answer }
+
+GraphDB execution:
+  observed answers: ('2018-06-29',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Kwesi Amissah-Arthur', 'Matilda Amissah-Arthur']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b957422e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b957422e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5237
+output tokens:         533
+total tokens:          5770
+cached input tokens:   4224
+uncached input tokens: 1013
+cumulative LLM seconds: 5.290
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          2
+literal values:        1
+predicates:            2
+query attempts:        1
+observed answers:      ('2018-06-29',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.573s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.069s
+  graph.materialization [attempt=1]: 0.090s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.722s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.476s

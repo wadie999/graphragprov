@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          daeb2fcc0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of Princess Clotilde Of Saxe-Coburg And Gotha's husband?
+  expected:      Pressburg
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/daeb2fcc0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Princess Clotilde of Saxe-Coburg and Gotha'
+  source unit: u_bfcae5b2512def542c80f07b37b8c6b726dca04457753dced704d21dc533b0ba
+  text chars:  419
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.837s | model=deepseek-v4-flash
+      tokens:   in=2242 | out=179 | total=2421 | cached=1920 | uncached=322
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 88 / 461 (19.1%)
+    characters text:     46 / 419 (11.0%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  371 chars
+      'Princess Marie Adelheid Amalie "Clotilde" of Saxe-Coburg and Gotha, full German name: "Marie Adelheid Amalie Clotilde, Prinzessin von Sachsen-Coburg und Gotha, Herzogin zu Sachsen…'
+    statement density:  2.17 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=3 title='Archduke Joseph Karl of Austria'
+  source unit: u_b3e7edb7c1af119ffd95ff90664e2ddc40e6b28202c9b27bead2277083ddfbd1
+  text chars:  1069
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.740s | model=deepseek-v4-flash
+      tokens:   in=2378 | out=156 | total=2534 | cached=1920 | uncached=458
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 43 / 1100 (3.9%)
+    characters text:     12 / 1069 (1.1%)
+    characters title:    31 / 31 (100.0%)
+    sentences:           1 / 8 (12.5%)
+    longest uncovered:  1011 chars
+      '– 13 June 1905 in Fiume) was a member of the Habsburg dynasty. He was the second son of Archduke Joseph, Palatine of Hungary (7th son of Leopold II, Holy Roman Emperor) and Duches…'
+    statement density:  0.91 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Pressburg> .
+  <urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.075s | model=deepseek-v4-flash
+      tokens:   in=667 | out=276 | total=943 | cached=384 | uncached=283
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> .
+  - <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Pressburg> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> . <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b3e7edb7c1af119f>
+  FROM <urn:graphragprov:unit:u_bfcae5b2512def54>
+  WHERE { <urn:graphragprov:entity:Princess%20Clotilde%20of%20Saxe-Coburg%20and%20Gotha> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> . <urn:graphragprov:entity:Archduke%20Joseph%20Karl%20of%20Austria> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Pressburg',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Archduke Joseph Karl of Austria', 'Princess Clotilde of Saxe-Coburg and Gotha']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  daeb2fcc0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/daeb2fcc0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5287
+output tokens:         611
+total tokens:          5898
+cached input tokens:   4224
+uncached input tokens: 1063
+cumulative LLM seconds: 5.652
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Pressburg',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 3.580s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.047s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 2.076s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.508s

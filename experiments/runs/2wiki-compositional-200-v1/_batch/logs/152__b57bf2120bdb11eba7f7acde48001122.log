@@ -1,0 +1,170 @@
+
+H0 one-case execution
+  case:          b57bf2120bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where did the director of film Anne Against The World die?
+  expected:      Los Angeles
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b57bf2120bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Anne Against the World'
+  source unit: u_9efa2658782198cd50e1437f0bc349ea499f638ed14d809791f79f1efc04eb71
+  text chars:  104
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.927s | model=deepseek-v4-flash
+      tokens:   in=2099 | out=716 | total=2815 | cached=1920 | uncached=179
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 87 / 126 (69.0%)
+    characters text:     87 / 104 (83.7%)
+    characters title:    0 / 22 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  6 chars
+      'is a'
+    statement density:  39.68 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Duke Worne'
+  source unit: u_fd25af02520b428ddef6ff80d7f278c33f9b023ed163986611523276f9f63b26
+  text chars:  423
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.351s | model=deepseek-v4-flash
+      tokens:   in=2239 | out=149 | total=2388 | cached=1920 | uncached=319
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 28 / 433 (6.5%)
+    characters text:     18 / 423 (4.3%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  255 chars
+      'Howard "Duke" Worne (December 14, 1888 – October 13, 1933) was an American director and actor of the silent era. He directed 74 films between 1919 and 1931. He also appeared in 27…'
+    statement density:  2.31 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 6
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      6
+resource nodes:        6
+entity nodes:          6
+literal values:        1
+predicates:            6
+
+N-Triples:
+  <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Duke%20Worne> .
+  <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:drama%20film> .
+  <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:publicationYear> "1929"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Boris%20Karloff> .
+  <urn:graphragprov:entity:Duke%20Worne> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.618s | model=deepseek-v4-flash
+      tokens:   in=804 | out=181 | total=985 | cached=384 | uncached=420
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Duke%20Worne> .
+  - <urn:graphragprov:entity:Duke%20Worne> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Los%20Angeles> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9efa2658782198cd>
+  FROM <urn:graphragprov:unit:u_fd25af02520b428d>
+  WHERE { <urn:graphragprov:entity:Anne%20Against%20the%20World> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Los Angeles',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Anne Against the World', 'Duke Worne']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b57bf2120bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b57bf2120bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5142
+output tokens:         1046
+total tokens:          6188
+cached input tokens:   4224
+uncached input tokens: 918
+cumulative LLM seconds: 6.895
+
+statement occurrences: 6
+semantic triples:      6
+entity nodes:          6
+literal values:        1
+predicates:            6
+query attempts:        1
+observed answers:      ('Los Angeles',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 5.283s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.619s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.487s

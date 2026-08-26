@@ -1,0 +1,216 @@
+
+H0 one-case execution
+  case:          690398040bdb11eba7f7acde48001122
+  hops:          2
+  question:      Where did the performer of song Only People (Song) die?
+  expected:      New York
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/690398040bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=8 title='Only People'
+  source unit: u_add371585dab47c8c35439b51510f70e1b91af7cc0cd84ad604161a5d244f20c
+  text chars:  25
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.752s | model=deepseek-v4-flash
+      tokens:   in=2078 | out=8 | total=2086 | cached=1920 | uncached=158
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    0
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     0
+  extraction attempt: REJECTED
+    stage:  response_validation
+    error:  EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: EmptyReferenceExtraction: gold supporting paragraph produced zero validated grounded statements; H0 reference construction requires at least one grounded statement per supporting source
+    [LLM graph.reference #2] sending...
+      provider: 1.367s | model=deepseek-v4-flash
+      tokens:   in=2137 | out=146 | total=2283 | cached=2048 | uncached=89
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 23 / 36 (63.9%)
+    characters text:     12 / 25 (48.0%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  12 chars
+      'Only People'
+    statement density:  27.78 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/3] paragraph=1 title='John Lennon'
+  source unit: u_5cfd76a81abc65d8f28aa5559c23d99b63db3b15f9491360620a76ab4174a09a
+  text chars:  2186
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.400s | model=deepseek-v4-flash
+      tokens:   in=2601 | out=148 | total=2749 | cached=1920 | uncached=681
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 39 / 2197 (1.8%)
+    characters text:     28 / 2186 (1.3%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           2 / 18 (11.1%)
+    longest uncovered:  1364 chars
+      'John Winston Ono Lennon (born John Winston Lennon, 9 October 19408 December 1980) was an English singer, songwriter and peace activist who gained worldwide fame as the founder, co…'
+    statement density:  0.46 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 3/3] paragraph=9 title='Only People (song)'
+  source unit: u_be9b9b001e453f0499c3999478d5220a30b105a99564fa97fd322790995f2b44
+  text chars:  372
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 5.945s | model=deepseek-v4-flash
+      tokens:   in=2184 | out=1329 | total=3513 | cached=1920 | uncached=264
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 245 / 390 (62.8%)
+    characters text:     227 / 372 (61.0%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  49 chars
+      'that in an interview with Playboy Magazine that'
+    statement density:  23.08 / 1000 chars
+    title reliance:      7 / 9 (77.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 11
+  whole-source attempts: 4
+  whole-source retries: 1
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      11
+resource nodes:        10
+entity nodes:          10
+literal values:        2
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Only%20People> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:disambiguation%20page> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:said> <urn:graphragprov:entity:that%20%22It%20was%20a%20good%20lick%2C%20but%20I%20couldn%27t%20get%20the%20words%20to%20make%20sense.%22> .
+  <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:said> <urn:graphragprov:entity:that%20it%20failed%20as%20a%20song> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:Gimme%20Some%20Truth> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:John%20Lennon> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:publicationYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:revolvesAround> <urn:graphragprov:entity:Lennon%27s%20and%20Ono%27s%20personal%20philosophy> .
+  <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Lennon> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.912s | model=deepseek-v4-flash
+      tokens:   in=1135 | out=213 | total=1348 | cached=384 | uncached=751
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:John%20Lennon> .
+  - <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:New%20York%20City> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:John%20Lennon> . <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5cfd76a81abc65d8>
+  FROM <urn:graphragprov:unit:u_add371585dab47c8>
+  FROM <urn:graphragprov:unit:u_be9b9b001e453f04>
+  WHERE { <urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:John%20Lennon> . <urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('New York City',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['John Lennon', 'Only People (song)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  690398040bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/690398040bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10135
+output tokens:         1844
+total tokens:          11979
+cached input tokens:   8192
+uncached input tokens: 1943
+cumulative LLM seconds: 12.376
+
+statement occurrences: 11
+semantic triples:      11
+entity nodes:          10
+literal values:        2
+predicates:            8
+query attempts:        1
+observed answers:      ('New York City',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.472s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.094s
+  graph.materialization [attempt=1]: 0.086s
+  graph.observation [attempt=1]: 0.011s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.913s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.516s

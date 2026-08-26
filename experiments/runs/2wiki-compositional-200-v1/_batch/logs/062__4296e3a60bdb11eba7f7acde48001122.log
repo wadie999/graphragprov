@@ -1,0 +1,534 @@
+
+H0 one-case execution
+  case:          4296e3a60bdb11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the composer of film The Amazing Mr. Bickford?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4296e3a60bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='The Amazing Mr. Bickford'
+  source unit: u_c7f47c2cb0bda7d342011faed374c5b6e1278c24f944b5a7d3581f5a015ece19
+  text chars:  231
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.910s | model=deepseek-v4-flash
+      tokens:   in=2141 | out=1188 | total=3329 | cached=1920 | uncached=221
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 158 / 255 (62.0%)
+    characters text:     158 / 231 (68.4%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  18 chars
+      '. It was released'
+    statement density:  31.37 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='Frank Zappa'
+  source unit: u_5842c218621c34f3904187a19beacf2bd0b683d16121f3d47f0e3acf75a82f64
+  text chars:  2965
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 14.966s | model=deepseek-v4-flash
+      tokens:   in=2807 | out=3590 | total=6397 | cached=1920 | uncached=887
+    [LLM graph.reference #3] sending...
+      provider: 4.380s | model=deepseek-v4-flash
+      tokens:   in=2052 | out=891 | total=2943 | cached=0 | uncached=2052
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 4
+
+    initial rejection #13
+      validator:
+        response.statements[13].object.evidence[0]: quote 'feature-length films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "feature-length films",
+                "segment": "text"
+              }
+            ],
+            "value": "feature-length films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #18
+      validator:
+        response.statements[18].predicate.evidence[0]: quote 'ranked number 36 on VH1\'s "100 Greatest Artists of Hard Rock"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "VH1's \"100 Greatest Artists of Hard Rock\"",
+                "segment": "text"
+              }
+            ],
+            "value": "VH1's \"100 Greatest Artists of Hard Rock\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ranked number 36 on VH1's \"100 Greatest Artists of Hard Rock\"",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedOnList"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #19
+      validator:
+        response.statements[19].predicate.evidence[0]: quote 'ranked him at number 71 on its list of the "100 Greatest Artists of All Time"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Rolling Stone\" magazine ranked him at number 71 on its list of the \"100 Greatest Artists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Rolling Stone's \"100 Greatest Artists of All Time\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ranked him at number 71 on its list of the \"100 Greatest Artists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedOnList"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    initial rejection #20
+      validator:
+        response.statements[20].predicate.evidence[0]: quote 'ranked him at number 22 on its list of the "100 Greatest Guitarists of All Time"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Rolling Stone\" magazine ranked him at number 22 on its list of the \"100 Greatest Guitarists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Rolling Stone's \"100 Greatest Guitarists of All Time\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ranked him at number 22 on its list of the \"100 Greatest Guitarists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedOnList"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     4
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote 'feature-length films' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "feature-length films",
+                "segment": "text"
+              }
+            ],
+            "value": "feature-length films"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'ranked number 36 on VH1\'s "100 Greatest Artists of Hard Rock"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "VH1's \"100 Greatest Artists of Hard Rock\"",
+                "segment": "text"
+              }
+            ],
+            "value": "VH1's \"100 Greatest Artists of Hard Rock\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ranked number 36 on VH1's \"100 Greatest Artists of Hard Rock\"",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedOnList"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'ranked him at number 71 on its list of the "100 Greatest Artists of All Time"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Rolling Stone\" magazine ranked him at number 71 on its list of the \"100 Greatest Artists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Rolling Stone's \"100 Greatest Artists of All Time\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ranked him at number 71 on its list of the \"100 Greatest Artists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedOnList"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+    remaining rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'ranked him at number 22 on its list of the "100 Greatest Guitarists of All Time"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "\"Rolling Stone\" magazine ranked him at number 22 on its list of the \"100 Greatest Guitarists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "Rolling Stone's \"100 Greatest Guitarists of All Time\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ranked him at number 22 on its list of the \"100 Greatest Guitarists of All Time\"",
+                "segment": "text"
+              }
+            ],
+            "value": "rankedOnList"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Frank Zappa",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Frank Vincent Zappa",
+                "segment": "text"
+              }
+            ],
+            "value": "Frank Zappa"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 309 / 2976 (10.4%)
+    characters text:     298 / 2965 (10.1%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           4 / 20 (20.0%)
+    longest uncovered:  1986 chars
+      ". He is considered one of the most innovative and stylistically diverse rock musicians of his era. As a self- taught composer and performer, Zappa's diverse musical influences led…"
+    statement density:  5.71 / 1000 chars
+    title reliance:      17 / 17 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 25
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 0
+  remaining rejections: 4
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      25
+resource nodes:        22
+entity nodes:          22
+literal values:        3
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Grammy%20Lifetime%20Achievement%20Award> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Rock%20and%20Roll%20Hall%20of%20Fame> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:birthDate> "1940-12-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:deathDate> "1993-12-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:designer> <urn:graphragprov:entity:album%20covers> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:music%20videos> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz%20fusion> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:musique%20concr%C3%A8te> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:orchestral> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rock> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:the%20Mothers%20of%20Invention> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:bandleader> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:composer> .
+  <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:multi-instrumentalist%20musician> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:animator> <urn:graphragprov:entity:Bruce%20Bickford> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:orchestral%20pieces> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:video> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:notReleasedOn> <urn:graphragprov:entity:DVD> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:publicationYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:releaseFormat> <urn:graphragprov:entity:direct-to-video> .
+  <urn:graphragprov:entity:orchestral%20pieces> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.689s | model=deepseek-v4-flash
+      tokens:   in=1698 | out=185 | total=1883 | cached=384 | uncached=1314
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Frank%20Zappa> .
+  - <urn:graphragprov:entity:Frank%20Zappa> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5842c218621c34f3>
+  FROM <urn:graphragprov:unit:u_c7f47c2cb0bda7d3>
+  WHERE { <urn:graphragprov:entity:The%20Amazing%20Mr.%20Bickford> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Frank Zappa', 'The Amazing Mr. Bickford']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4296e3a60bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/4296e3a60bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8698
+output tokens:         5854
+total tokens:          14552
+cached input tokens:   4224
+uncached input tokens: 4474
+cumulative LLM seconds: 26.945
+
+statement occurrences: 25
+semantic triples:      25
+entity nodes:          22
+literal values:        3
+predicates:            16
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.268s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.064s
+  graph.materialization [attempt=1]: 0.067s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.689s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.289s

@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          387e8f080bdc11eba7f7acde48001122
+  hops:          2
+  question:      Who is the father of the director of film Danger: Diabolik?
+  expected:      Eugenio Bava
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/387e8f080bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Danger: Diabolik'
+  source unit: u_d95bee8a33141dc48a013286117b76c5bc5d66e79c6c9561137cb6b4fe81dc71
+  text chars:  1728
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.544s | model=deepseek-v4-flash
+      tokens:   in=2478 | out=298 | total=2776 | cached=1920 | uncached=558
+    [LLM graph.reference #2] sending...
+      provider: 0.774s | model=deepseek-v4-flash
+      tokens:   in=903 | out=8 | total=911 | cached=0 | uncached=903
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'father' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Eugenio Bava",
+                "segment": "text"
+              }
+            ],
+            "value": "Eugenio Bava"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "father",
+                "segment": "text"
+              }
+            ],
+            "value": "father"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Mario Bava",
+                "segment": "text"
+              }
+            ],
+            "value": "Mario Bava"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 34 / 1744 (1.9%)
+    characters text:     34 / 1728 (2.0%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           1 / 12 (8.3%)
+    longest uncovered:  1651 chars
+      ', based on the Italian comic series "Diabolik" by Angela and Luciana Giussani. The film is about a criminal named Diabolik (John Phillip Law), who plans large-scale heists for his…'
+    statement density:  0.57 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=9 title='Mario Bava'
+  source unit: u_b497f69662a34903ac46b79d2a8d236ffa296b100c79c566a102e3fa201ba2fb
+  text chars:  3263
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.504s | model=deepseek-v4-flash
+      tokens:   in=2901 | out=165 | total=3066 | cached=1920 | uncached=981
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 84 / 3273 (2.6%)
+    characters text:     74 / 3263 (2.3%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           1 / 10 (10.0%)
+    longest uncovered:  2742 chars
+      ", the younger Bava followed his father into the film industry, and eventually earned a reputation as one of Italy's foremost cameramen, lighting and providing the special effects…"
+    statement density:  0.31 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eugenio%20Bava> .
+  <urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Bava> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.777s | model=deepseek-v4-flash
+      tokens:   in=609 | out=176 | total=785 | cached=384 | uncached=225
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Mario%20Bava> .
+  - <urn:graphragprov:entity:Mario%20Bava> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eugenio%20Bava> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:father> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b497f69662a34903>
+  FROM <urn:graphragprov:unit:u_d95bee8a33141dc4>
+  WHERE { <urn:graphragprov:entity:Danger%3A%20Diabolik> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:father> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Eugenio Bava',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Danger: Diabolik', 'Mario Bava']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  387e8f080bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/387e8f080bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6891
+output tokens:         647
+total tokens:          7538
+cached input tokens:   4224
+uncached input tokens: 2667
+cumulative LLM seconds: 6.600
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Eugenio Bava',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.829s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.050s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.778s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.456s

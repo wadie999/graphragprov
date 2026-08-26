@@ -1,0 +1,171 @@
+
+H0 one-case execution
+  case:          0019b5f20bdc11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Society Lawyer is from?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/0019b5f20bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Society Lawyer'
+  source unit: u_a554c093a351569f994a370235061edc36d93f9aac6681cf483eb408e95308c2
+  text chars:  168
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.339s | model=deepseek-v4-flash
+      tokens:   in=2115 | out=834 | total=2949 | cached=1920 | uncached=195
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 107 / 182 (58.8%)
+    characters text:     107 / 168 (63.7%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  17 chars
+      '. It is a milder'
+    statement density:  32.97 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=6 title='Edwin L. Marin'
+  source unit: u_cbed32ecb9ba3756a07e1aa00ce1413db870bab7fa7bc13517fef89b5929fbaf
+  text chars:  697
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.653s | model=deepseek-v4-flash
+      tokens:   in=2300 | out=150 | total=2450 | cached=1920 | uncached=380
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 22 / 711 (3.1%)
+    characters text:     8 / 697 (1.1%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           1 / 8 (12.5%)
+    longest uncovered:  633 chars
+      'film director who directed 58 films between 1932 and 1951, working with Randolph Scott, Anna May Wong, John Wayne, Peter Lorre, George Raft, Bela Lugosi, Judy Garland, Eddie Canto…'
+    statement density:  1.41 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 7
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      7
+resource nodes:        7
+entity nodes:          7
+literal values:        1
+predicates:            6
+
+N-Triples:
+  <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Penthouse> .
+  <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Edwin%20L.%20Marin> .
+  <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:crime%20film> .
+  <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:publicationYear> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Virginia%20Bruce> .
+  <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Walter%20Pidgeon> .
+  <urn:graphragprov:entity:Edwin%20L.%20Marin> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.905s | model=deepseek-v4-flash
+      tokens:   in=827 | out=211 | total=1038 | cached=384 | uncached=443
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Edwin%20L.%20Marin> .
+  - <urn:graphragprov:entity:Edwin%20L.%20Marin> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Edwin%20L.%20Marin> . <urn:graphragprov:entity:Edwin%20L.%20Marin> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_a554c093a351569f>
+  FROM <urn:graphragprov:unit:u_cbed32ecb9ba3756>
+  WHERE { <urn:graphragprov:entity:Society%20Lawyer> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Edwin%20L.%20Marin> . <urn:graphragprov:entity:Edwin%20L.%20Marin> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Edwin L. Marin', 'Society Lawyer']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  0019b5f20bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/0019b5f20bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5242
+output tokens:         1195
+total tokens:          6437
+cached input tokens:   4224
+uncached input tokens: 1018
+cumulative LLM seconds: 7.898
+
+statement occurrences: 7
+semantic triples:      7
+entity nodes:          7
+literal values:        1
+predicates:            6
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 5.997s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.068s
+  graph.materialization [attempt=1]: 0.083s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.906s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.472s

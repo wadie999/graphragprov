@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_d95bee8a33141dc48a013286117b76c5bc5d66e79c6c9561137cb6b4fe81dc71
+Title: Danger: Diabolik
+Text:
+Danger: Diabolik  is a 1968 action film directed and co-written by Mario Bava, based on the Italian comic series "Diabolik" by Angela and Luciana Giussani. The film is about a criminal named Diabolik (John Phillip Law), who plans large-scale heists for his girlfriend Eva Kant (Marisa Mell). Diabolik is pursued by Inspector Ginko (Michel Piccoli), who blackmails the gangster Ralph Valmont (Adolfo Celi) into catching Diabolik for him. An adaptation of the comics was originally envisioned by producer Tonino Cervi, who hired director Seth Holt and began producing the film as an international co-production with a cast that included Jean Sorel, Elsa Martinelli and Gilbert Roland. Appalled with the quality of the footage that had been shot, distributor Dino De Laurentiis took over production duties and restarted filming from scratch. Working from a new screenplay and under creative pressure from De Laurentiis, Bava directed the film on a reduced budget, with established actors taking smaller roles. The film was produced in tandem with De Laurentiis' other comic book adaptation of that year, "Barbarella", with both films sharing several cast and crew members. Upon its theatrical release, "Danger: Diabolik" performed below De Laurentiis' expectations at the box office, and received negative reviews from "The New York Times" and "Variety". With the re-evaluation of Bava's filmography, retrospective reception of the film has been more positive, with critics praising its visuals, the performances of Law and Mell, and the score by Ennio Morricone. In 2008, it was chosen by "Empire" magazine as one of "The 500 Greatest Movies of All Time". A new adaptation of "Diabolik" by the Manetti Bros. was announced in 2018.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Mario Bava",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Mario Bava",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "father",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "father",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Eugenio Bava",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Eugenio Bava",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].predicate.evidence[0]: quote 'father' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

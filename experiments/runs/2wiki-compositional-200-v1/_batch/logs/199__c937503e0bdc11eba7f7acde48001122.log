@@ -1,0 +1,173 @@
+
+H0 one-case execution
+  case:          c937503e0bdc11eba7f7acde48001122
+  hops:          2
+  question:      When is Geneviève Élisabeth Disdéri's husband's birthday?
+  expected:      28 March 1819
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/c937503e0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Geneviève Élisabeth Disdéri'
+  source unit: u_67dedade97e92d3f3d9e3ed49231a7aeb605cf65dc2e632b491b9858cb0b852c
+  text chars:  817
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.602s | model=deepseek-v4-flash
+      tokens:   in=2314 | out=342 | total=2656 | cached=1920 | uncached=394
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 68 / 844 (8.1%)
+    characters text:     41 / 817 (5.0%)
+    characters title:    27 / 27 (100.0%)
+    sentences:           2 / 7 (28.6%)
+    longest uncovered:  650 chars
+      ', partnering with him in their Brest daguerrotype studio from the late 1840s. After her husband left for Paris in 1852, Geneviève continued to run the atelier alone. She is rememb…'
+    statement density:  2.37 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=5 title='André-Adolphe-Eugène Disdéri'
+  source unit: u_0bfaf78bd3e8452006b9f9a955a3082d12ea3964b5d1b4dc48173d54bcec1dde
+  text chars:  368
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.860s | model=deepseek-v4-flash
+      tokens:   in=2246 | out=1116 | total=3362 | cached=1920 | uncached=326
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 119 / 396 (30.1%)
+    characters text:     119 / 368 (32.3%)
+    characters title:    0 / 28 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  80 chars
+      '," a small photographic image which was mounted on a card. Disdéri, a brilliant'
+    statement density:  17.68 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 9
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      9
+resource nodes:        7
+entity nodes:          7
+literal values:        3
+predicates:            6
+
+N-Triples:
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:dateOfBirth> "1819-03-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:dateOfDeath> "1889-10-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:inventorOf> <urn:graphragprov:entity:carte%20de%20visite> .
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:daguerreotypist> .
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:photographer> .
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:showman> .
+  <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:dateOfBirth> "c.1817" .
+  <urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.179s | model=deepseek-v4-flash
+      tokens:   in=1146 | out=323 | total=1469 | cached=384 | uncached=762
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> .
+  - <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:dateOfBirth> "1819-03-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> . <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0bfaf78bd3e84520>
+  FROM <urn:graphragprov:unit:u_67dedade97e92d3f>
+  WHERE { <urn:graphragprov:entity:Genevi%C3%A8ve%20%C3%89lisabeth%20Disd%C3%A9ri> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> . <urn:graphragprov:entity:Andr%C3%A9-Adolphe-Eug%C3%A8ne%20Disd%C3%A9ri> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('c.1817', '1819-03-28')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['André-Adolphe-Eugène Disdéri', 'Geneviève Élisabeth Disdéri']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  c937503e0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/c937503e0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5706
+output tokens:         1781
+total tokens:          7487
+cached input tokens:   4224
+uncached input tokens: 1482
+cumulative LLM seconds: 9.642
+
+statement occurrences: 9
+semantic triples:      9
+entity nodes:          7
+literal values:        3
+predicates:            6
+query attempts:        1
+observed answers:      ('c.1817', '1819-03-28')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.468s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.049s
+  graph.materialization [attempt=1]: 0.127s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.180s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.443s

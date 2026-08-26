@@ -1,0 +1,173 @@
+
+H0 one-case execution
+  case:          d83f916a0bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of birth of the director of film Berlin: Symphony Of A Metropolis?
+  expected:      28 December 1887
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/d83f916a0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Berlin: Symphony of a Metropolis'
+  source unit: u_3464009dee33a9560abb41fb9b3720c32e379f9c07b67fd95b7411592e849649
+  text chars:  3710
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.309s | model=deepseek-v4-flash
+      tokens:   in=2898 | out=159 | total=3057 | cached=1920 | uncached=978
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 58 / 3742 (1.5%)
+    characters text:     58 / 3710 (1.6%)
+    characters title:    0 / 32 (0.0%)
+    sentences:           1 / 19 (5.3%)
+    longest uncovered:  3584 chars
+      ", co-written by Carl Mayer and Karl Freund. Composer Edmund Meisel was commissioned to write an orchestral score for its original release. The film is an example of the 'city symp…"
+    statement density:  0.27 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=7 title='Walter Ruttmann'
+  source unit: u_37f880db8d6bf418b91fed1763a0721998319190abdb604fcd37b434353a1e0d
+  text chars:  251
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.242s | model=deepseek-v4-flash
+      tokens:   in=2171 | out=1144 | total=3315 | cached=1920 | uncached=251
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 153 / 266 (57.5%)
+    characters text:     138 / 251 (55.0%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  37 chars
+      'was an early German practitioner of'
+    statement density:  30.08 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 9
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      9
+resource nodes:        9
+entity nodes:          9
+literal values:        1
+predicates:            7
+
+N-Triples:
+  <urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Walter%20Ruttmann> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:dateOfBirth> "1887-12-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:experimental%20film> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedOn> <urn:graphragprov:entity:Wochenende> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Hans%20Richter> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Oskar%20Fischinger> .
+  <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Viking%20Eggeling> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.818s | model=deepseek-v4-flash
+      tokens:   in=957 | out=237 | total=1194 | cached=384 | uncached=573
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Walter%20Ruttmann> .
+  - <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:dateOfBirth> "1887-12-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Walter%20Ruttmann> . <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3464009dee33a956>
+  FROM <urn:graphragprov:unit:u_37f880db8d6bf418>
+  WHERE { <urn:graphragprov:entity:Berlin%3A%20Symphony%20of%20a%20Metropolis> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Walter%20Ruttmann> . <urn:graphragprov:entity:Walter%20Ruttmann> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1887-12-28',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Berlin: Symphony of a Metropolis', 'Walter Ruttmann']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  d83f916a0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/d83f916a0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6026
+output tokens:         1540
+total tokens:          7566
+cached input tokens:   4224
+uncached input tokens: 1802
+cumulative LLM seconds: 9.369
+
+statement occurrences: 9
+semantic triples:      9
+entity nodes:          9
+literal values:        1
+predicates:            7
+query attempts:        1
+observed answers:      ('1887-12-28',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 7.557s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.054s
+  graph.materialization [attempt=1]: 0.116s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.818s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.553s

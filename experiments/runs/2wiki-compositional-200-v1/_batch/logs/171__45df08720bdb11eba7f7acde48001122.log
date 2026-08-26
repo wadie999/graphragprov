@@ -1,0 +1,181 @@
+
+H0 one-case execution
+  case:          45df08720bdb11eba7f7acde48001122
+  hops:          2
+  question:      When was the director of film 5 År – Som Vi Så Dem born?
+  expected:      11 April 1910
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/45df08720bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='5 år – som vi så dem'
+  source unit: u_5b540de80da49d96bbad0431b1962770e415db02a8325a64878f0984d734b5b8
+  text chars:  400
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.059s | model=deepseek-v4-flash
+      tokens:   in=2207 | out=1974 | total=4181 | cached=1920 | uncached=287
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 299 / 420 (71.2%)
+    characters text:     279 / 400 (69.8%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  55 chars
+      '5 år – som vi så dem( Five Years, As We Saw Them) is a'
+    statement density:  30.95 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[GRAPH 2/2] paragraph=5 title='Per G. Jonson'
+  source unit: u_5f8b9c1989a54785aaac983325bd35decb785c90712afb3eb14468619f418f22
+  text chars:  99
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.362s | model=deepseek-v4-flash
+      tokens:   in=2328 | out=589 | total=2917 | cached=1920 | uncached=408
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 60 / 112 (53.6%)
+    characters text:     47 / 99 (47.5%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  26 chars
+      '– 16 October 1975) was a'
+    statement density:  35.71 / 1000 chars
+    title reliance:      4 / 4 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 17
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      17
+resource nodes:        15
+entity nodes:          15
+literal values:        2
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Norwegians%27%20efforts%20outside%20Norway%20during%20the%20Second%20World%20War%20II> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Bredo%20Lind> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Per%20G.%20Jonson> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Crown%20Prince%20Olav> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:King%20Haakon%20VII> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:narrator> <urn:graphragprov:entity:Ola%20Isene> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:publicationYear> "1947"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Hans%20Jacob%20Nilsen> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Hartvig%20Kiran> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Lars%20Nordrum> .
+  <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Reidar%20Lunde> .
+  <urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:dateOfBirth> "1910-04-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Norwegian> .
+  <urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:cinematographer> .
+  <urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:ski%20jumper> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.840s | model=deepseek-v4-flash
+      tokens:   in=1692 | out=271 | total=1963 | cached=384 | uncached=1308
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Per%20G.%20Jonson> .
+  - <urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:dateOfBirth> "1910-04-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Per%20G.%20Jonson> . <urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5b540de80da49d96>
+  FROM <urn:graphragprov:unit:u_5f8b9c1989a54785>
+  WHERE { <urn:graphragprov:entity:5%20%C3%A5r%20%E2%80%93%20som%20vi%20s%C3%A5%20dem> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Per%20G.%20Jonson> . <urn:graphragprov:entity:Per%20G.%20Jonson> <urn:graphragprov:predicate:dateOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1910-04-11',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['5 år – som vi så dem', 'Per G. Jonson']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  45df08720bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/45df08720bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6227
+output tokens:         2834
+total tokens:          9061
+cached input tokens:   4224
+uncached input tokens: 2003
+cumulative LLM seconds: 14.261
+
+statement occurrences: 17
+semantic triples:      17
+entity nodes:          15
+literal values:        2
+predicates:            10
+query attempts:        1
+observed answers:      ('1910-04-11',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 12.428s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.841s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.543s

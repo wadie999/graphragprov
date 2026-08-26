@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          b67b491a0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the composer of song Evil Woman (Electric Light Orchestra Song)?
+  expected:      British
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b67b491a0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Jeff Lynne'
+  source unit: u_2a04580a673d2822065487b34e5fb0afdb2ab21ada71f9fa58dab37058cc7dd3
+  text chars:  1841
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.380s | model=deepseek-v4-flash
+      tokens:   in=2553 | out=146 | total=2699 | cached=1920 | uncached=633
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 24 / 1851 (1.3%)
+    characters text:     14 / 1841 (0.8%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 15 (13.3%)
+    longest uncovered:  1692 chars
+      'songwriter, singer, record producer, and multi-instrumentalist who co-founded the rock band Electric Light Orchestra (ELO). The group formed in 1970 as an offshoot of the Move, of…'
+    statement density:  0.54 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=5 title='Evil Woman (Electric Light Orchestra song)'
+  source unit: u_896a3859b1eeb096b7718a15535df5e419c3f3e8e39fb7b1b06f0e1ab0631285
+  text chars:  180
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.681s | model=deepseek-v4-flash
+      tokens:   in=2135 | out=158 | total=2293 | cached=1920 | uncached=215
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 62 / 222 (27.9%)
+    characters text:     20 / 180 (11.1%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  122 chars
+      'and recorded by Electric Light Orchestra (ELO). It was first released on the band\'s fifth album, 1975\'s "Face the Music".'
+    statement density:  4.50 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Evil%20Woman%20%28Electric%20Light%20Orchestra%20song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.531s | model=deepseek-v4-flash
+      tokens:   in=618 | out=237 | total=855 | cached=384 | uncached=234
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Evil%20Woman%20%28Electric%20Light%20Orchestra%20song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> .
+  - <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:British> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Evil%20Woman%20%28Electric%20Light%20Orchestra%20song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> . <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2a04580a673d2822>
+  FROM <urn:graphragprov:unit:u_896a3859b1eeb096>
+  WHERE { <urn:graphragprov:entity:Evil%20Woman%20%28Electric%20Light%20Orchestra%20song%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Jeff%20Lynne> . <urn:graphragprov:entity:Jeff%20Lynne> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('British',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Evil Woman (Electric Light Orchestra song)', 'Jeff Lynne']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b67b491a0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b67b491a0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5306
+output tokens:         541
+total tokens:          5847
+cached input tokens:   4224
+uncached input tokens: 1082
+cumulative LLM seconds: 5.592
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('British',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.066s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.051s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.531s
+  graphdb.semantic [attempt=1]: 0.007s
+  provenance.execution [attempt=1]: 0.477s

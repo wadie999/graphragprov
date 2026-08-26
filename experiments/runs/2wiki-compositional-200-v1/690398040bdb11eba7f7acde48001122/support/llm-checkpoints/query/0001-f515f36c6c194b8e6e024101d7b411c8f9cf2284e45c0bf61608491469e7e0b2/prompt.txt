@@ -1,0 +1,81 @@
+EXPERIMENT TASK — WRITE SPARQL FOR 2WIKI QUESTION
+
+Prompt version: twowiki-sparql-evidence-first-v1
+
+Construct the SPARQL SELECT query that represents the 2WikiMultiHopQA question
+over the frozen RDF graph below.
+
+The benchmark evidence relations describe the intended semantic dependency
+chain. They are supervision, not RDF statements. The frozen RDF graph is the
+only graph that may be queried.
+
+Step 1 — select graph evidence
+
+For every benchmark evidence relation:
+
+1. Locate the exact RDF triple or triples in the frozen graph that represent
+   that relation.
+
+2. Copy those RDF triples verbatim into `matched_triples`.
+
+3. Preserve subject, predicate, object, and predicate direction exactly.
+
+Step 2 — compile selected evidence into SPARQL
+
+Build the WHERE clause only from the selected graph evidence.
+
+Keep entities explicitly named by the natural-language question as constants.
+
+Intermediate entities that connect benchmark evidence relations must normally
+be represented by shared variables rather than copied as constants from the
+benchmark supervision.
+
+Replace the final answer position with `?answer`.
+
+The same intermediate entity must use the same variable wherever it joins
+selected triples.
+
+SPARQL requirements:
+
+- project the final result as ?answer;
+- derive ?answer from graph patterns;
+- use only RDF terms present in the frozen graph;
+- include an explicit WHERE clause;
+- do not use FROM, GRAPH, SERVICE, or update operations;
+- do not manufacture the expected answer using VALUES, BIND, FILTER, or an
+  answer constant;
+- do not use SELECT DISTINCT;
+- preserve the orientation of every selected RDF triple.
+
+Return only one valid JSON object with exactly these fields:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Every item in `matched_triples` must be copied exactly from one complete line
+of the frozen RDF graph.
+
+Question: Where did the performer of song Only People (Song) die?
+
+Expected answer: New York
+
+Benchmark evidence relations:
+1. Only People | performer | John Lennon
+2. John Lennon | place of death | New York
+
+Frozen RDF graph:
+<urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:New%20York%20City> .
+<urn:graphragprov:entity:Only%20People> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:disambiguation%20page> .
+<urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:said> <urn:graphragprov:entity:that%20%22It%20was%20a%20good%20lick%2C%20but%20I%20couldn%27t%20get%20the%20words%20to%20make%20sense.%22> .
+<urn:graphragprov:entity:John%20Lennon> <urn:graphragprov:predicate:said> <urn:graphragprov:entity:that%20it%20failed%20as%20a%20song> .
+<urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:includedOn> <urn:graphragprov:entity:Gimme%20Some%20Truth> .
+<urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+<urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:John%20Lennon> .
+<urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:publicationYear> "1973"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:revolvesAround> <urn:graphragprov:entity:Lennon%27s%20and%20Ono%27s%20personal%20philosophy> .
+<urn:graphragprov:entity:Only%20People%20%28song%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20Lennon> .

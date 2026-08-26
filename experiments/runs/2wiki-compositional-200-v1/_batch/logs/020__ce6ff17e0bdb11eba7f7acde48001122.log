@@ -1,0 +1,213 @@
+
+H0 one-case execution
+  case:          ce6ff17e0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film On Borrowed Time?
+  expected:      13 February 1946
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/ce6ff17e0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='On Borrowed Time'
+  source unit: u_1403694309b83a47e8fe2ffbb34c7dbfecedc7619e702a8cf426b780c33e08de
+  text chars:  968
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.756s | model=deepseek-v4-flash
+      tokens:   in=2326 | out=317 | total=2643 | cached=1920 | uncached=406
+    [LLM graph.reference #2] sending...
+      provider: 1.025s | model=deepseek-v4-flash
+      tokens:   in=765 | out=8 | total=773 | cached=0 | uncached=765
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote '13 February 1946' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "13 February 1946",
+                "segment": "text"
+              }
+            ],
+            "value": "1946-02-13"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "13 February 1946",
+                "segment": "text"
+              }
+            ],
+            "value": "dateOfDeath"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harold S. Bucquet",
+                "segment": "text"
+              }
+            ],
+            "value": "Harold S. Bucquet"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 41 / 984 (4.2%)
+    characters text:     41 / 968 (4.2%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           3 / 10 (30.0%)
+    longest uncovered:  599 chars
+      '. The story is a retelling of a Greek fable in which Death is tricked into climbing a pear tree which had been blessed by Saint Polycarp to trap anyone who was trying to steal an…'
+    statement density:  1.02 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=9 title='Harold S. Bucquet'
+  source unit: u_906af988f76aeaddce8b08d780da3f30eea15973b0502cdab8759027dc4a9766
+  text chars:  349
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.729s | model=deepseek-v4-flash
+      tokens:   in=2198 | out=171 | total=2369 | cached=1920 | uncached=278
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 33 / 366 (9.0%)
+    characters text:     16 / 349 (4.6%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           1 / 6 (16.7%)
+    longest uncovered:  298 chars
+      ') was an English film director. He directed 26 films between 1936 and 1945. His 1937 film "Torture Money" won an Academy Award for the Best Short Subject (Two-Reel). He was born i…'
+    statement density:  2.73 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        2
+entity nodes:          2
+literal values:        1
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harold%20S.%20Bucquet> .
+  <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:dateOfDeath> "1946-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.838s | model=deepseek-v4-flash
+      tokens:   in=640 | out=233 | total=873 | cached=384 | uncached=256
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harold%20S.%20Bucquet> .
+  - <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:dateOfDeath> "1946-02-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harold%20S.%20Bucquet> . <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1403694309b83a47>
+  FROM <urn:graphragprov:unit:u_906af988f76aeadd>
+  WHERE { <urn:graphragprov:entity:On%20Borrowed%20Time> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Harold%20S.%20Bucquet> . <urn:graphragprov:entity:Harold%20S.%20Bucquet> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1946-02-13',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Harold S. Bucquet', 'On Borrowed Time']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  ce6ff17e0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/ce6ff17e0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5929
+output tokens:         729
+total tokens:          6658
+cached input tokens:   4224
+uncached input tokens: 1705
+cumulative LLM seconds: 7.348
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          2
+literal values:        1
+predicates:            2
+query attempts:        1
+observed answers:      ('1946-02-13',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 5.517s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.046s
+  graph.materialization [attempt=1]: 0.049s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.839s
+  graphdb.semantic [attempt=1]: 0.008s
+  provenance.execution [attempt=1]: 0.493s

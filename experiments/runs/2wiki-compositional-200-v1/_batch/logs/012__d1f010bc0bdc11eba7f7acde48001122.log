@@ -1,0 +1,167 @@
+
+H0 one-case execution
+  case:          d1f010bc0bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of Thomas Barnwall Martin's father?
+  expected:      6 January 1834
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/d1f010bc0bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Thomas Barnwall Martin'
+  source unit: u_29d292785c3bc56a4c7cca5738b006f0fabd197e0b8c483a3a29843eb54b8d00
+  text chars:  1124
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.744s | model=deepseek-v4-flash
+      tokens:   in=2339 | out=302 | total=2641 | cached=1920 | uncached=419
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 60 / 1146 (5.2%)
+    characters text:     38 / 1124 (3.4%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           4 / 13 (30.8%)
+    longest uncovered:  517 chars
+      ', humanitarian and Member of Parliament for Galway County, by his first wife. Following an unhappy conclusion to a love affair with the daughter of a local chandler, Thomas left h…'
+    statement density:  1.75 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=6 title='Richard Martin (Irish politician)'
+  source unit: u_9633e7777abbe2bd6f6e5cd96399070803cf18da5285138c5498a58304d31465
+  text chars:  330
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.464s | model=deepseek-v4-flash
+      tokens:   in=2184 | out=163 | total=2347 | cached=1920 | uncached=264
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 28 / 363 (7.7%)
+    characters text:     14 / 330 (4.2%)
+    characters title:    14 / 33 (42.4%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  274 chars
+      '), was an Irish politician and campaigner against cruelty to animals. He was known as "Humanity Dick", a nickname bestowed on him by King George IV. He succeeded in getting the pi…'
+    statement density:  2.75 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      3
+resource nodes:        2
+entity nodes:          2
+literal values:        2
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Richard%20Martin> <urn:graphragprov:predicate:dateOfDeath> "1850-10-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Thomas%20Barnwall%20Martin> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Richard%20Martin> .
+  <urn:graphragprov:entity:Richard%20Martin> <urn:graphragprov:predicate:dateOfDeath> "1834-01-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.598s | model=deepseek-v4-flash
+      tokens:   in=672 | out=205 | total=877 | cached=384 | uncached=288
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Thomas%20Barnwall%20Martin> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Richard%20Martin> .
+  - <urn:graphragprov:entity:Richard%20Martin> <urn:graphragprov:predicate:dateOfDeath> "1834-01-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Thomas%20Barnwall%20Martin> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Richard%20Martin> . <urn:graphragprov:entity:Richard%20Martin> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_29d292785c3bc56a>
+  FROM <urn:graphragprov:unit:u_9633e7777abbe2bd>
+  WHERE { <urn:graphragprov:entity:Thomas%20Barnwall%20Martin> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Richard%20Martin> . <urn:graphragprov:entity:Richard%20Martin> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1850-10-30', '1834-01-06')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Richard Martin (Irish politician)', 'Thomas Barnwall Martin']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  d1f010bc0bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/d1f010bc0bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5195
+output tokens:         670
+total tokens:          5865
+cached input tokens:   4224
+uncached input tokens: 971
+cumulative LLM seconds: 5.807
+
+statement occurrences: 3
+semantic triples:      3
+entity nodes:          2
+literal values:        2
+predicates:            2
+query attempts:        1
+observed answers:      ('1850-10-30', '1834-01-06')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.212s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.064s
+  graph.materialization [attempt=1]: 0.083s
+  graph.observation [attempt=1]: 0.011s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.599s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.271s

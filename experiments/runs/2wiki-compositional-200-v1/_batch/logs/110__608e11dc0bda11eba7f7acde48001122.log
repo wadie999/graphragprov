@@ -1,0 +1,171 @@
+
+H0 one-case execution
+  case:          608e11dc0bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film Tarzan'S Secret Treasure?
+  expected:      May 1, 1991
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/608e11dc0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title="Tarzan's Secret Treasure"
+  source unit: u_3366ee137e68128f1bb10cd5e831408a619d2f1777317fb5b3b4ec6919ebb1f6
+  text chars:  455
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 1.783s | model=deepseek-v4-flash
+      tokens:   in=2204 | out=153 | total=2357 | cached=1920 | uncached=284
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 49 / 479 (10.2%)
+    characters text:     49 / 455 (10.8%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           1 / 4 (25.0%)
+    longest uncovered:  382 chars
+      '. Based on the character created by Edgar Rice Burroughs, it is the fifth in the MGM "Tarzan" series to star Johnny Weissmuller and Maureen O\'Sullivan. Original prints of the film…'
+    statement density:  2.09 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Richard Thorpe'
+  source unit: u_9befa9fc3e77b0e5e39efc116e3358a022bb684a3b7d2572e515b5832e83bc85
+  text chars:  160
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.981s | model=deepseek-v4-flash
+      tokens:   in=2147 | out=1039 | total=3186 | cached=1920 | uncached=227
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 155 / 174 (89.1%)
+    characters text:     141 / 160 (88.1%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  9 chars
+      ') was an'
+    statement density:  34.48 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 7
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      7
+resource nodes:        6
+entity nodes:          6
+literal values:        2
+predicates:            7
+
+N-Triples:
+  <urn:graphragprov:entity:Tarzan%27s%20Secret%20Treasure> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Richard%20Thorpe> .
+  <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Rollo%20Smolt%20Thorpe> .
+  <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:dateOfBirth> "1896-02-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:dateOfDeath> "1991-05-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:long%20career%20at%20Metro-%20Goldwyn-%20Mayer> .
+  <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.418s | model=deepseek-v4-flash
+      tokens:   in=879 | out=219 | total=1098 | cached=384 | uncached=495
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Tarzan%27s%20Secret%20Treasure> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Richard%20Thorpe> .
+  - <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:dateOfDeath> "1991-05-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Tarzan%27s%20Secret%20Treasure> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Richard%20Thorpe> . <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3366ee137e68128f>
+  FROM <urn:graphragprov:unit:u_9befa9fc3e77b0e5>
+  WHERE { <urn:graphragprov:entity:Tarzan%27s%20Secret%20Treasure> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Richard%20Thorpe> . <urn:graphragprov:entity:Richard%20Thorpe> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1991-05-01',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Richard Thorpe', "Tarzan's Secret Treasure"]
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  608e11dc0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/608e11dc0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5230
+output tokens:         1411
+total tokens:          6641
+cached input tokens:   4224
+uncached input tokens: 1006
+cumulative LLM seconds: 8.182
+
+statement occurrences: 7
+semantic triples:      7
+entity nodes:          6
+literal values:        2
+predicates:            7
+query attempts:        1
+observed answers:      ('1991-05-01',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 6.768s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.041s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.419s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.372s

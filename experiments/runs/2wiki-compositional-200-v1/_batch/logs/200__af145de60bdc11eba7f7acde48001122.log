@@ -1,0 +1,224 @@
+
+H0 one-case execution
+  case:          af145de60bdc11eba7f7acde48001122
+  hops:          2
+  question:      What nationality is the director of film Boss Level?
+  expected:      American
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/af145de60bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Boss Level'
+  source unit: u_9821462e132c6b2b919ac2d8656c2514a0014a766aee8ce20cae2b8862d614fc
+  text chars:  143
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.209s | model=deepseek-v4-flash
+      tokens:   in=2099 | out=838 | total=2937 | cached=1920 | uncached=179
+    [LLM graph.reference #2] sending...
+      provider: 0.574s | model=deepseek-v4-flash
+      tokens:   in=537 | out=8 | total=545 | cached=0 | uncached=537
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'written by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Joe Carnahan",
+                "segment": "text"
+              }
+            ],
+            "value": "Joe Carnahan"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "written by",
+                "segment": "text"
+              }
+            ],
+            "value": "writtenBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Boss Level",
+                "segment": "text"
+              }
+            ],
+            "value": "Boss Level"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 101 / 153 (66.0%)
+    characters text:     101 / 143 (70.6%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  16 chars
+      'is an upcoming'
+    statement density:  32.68 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 2/2] paragraph=0 title='Joe Carnahan'
+  source unit: u_5be41f97706b3d3373a08b6219081b43285128285012064783ff443616edb81e
+  text chars:  397
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.465s | model=deepseek-v4-flash
+      tokens:   in=2212 | out=1257 | total=3469 | cached=1920 | uncached=292
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 124 / 409 (30.3%)
+    characters text:     112 / 397 (28.2%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  206 chars
+      'best known for his films" Blood, Guts, Bullets and OctaneNarcSmokin\' Aces The A- Team", and" The Grey". He also wrote and directed several episodes for the NBC television series"…'
+    statement density:  22.00 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 14
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      14
+resource nodes:        14
+entity nodes:          14
+literal values:        1
+predicates:            8
+
+N-Triples:
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:birthDate> "1969-05-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:independent> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Leah%20Carnahan> .
+  <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Matthew%20Michael%20Carnahan> .
+  <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Joe%20Carnahan> .
+  <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:science%20fiction%20action%20film> .
+  <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Frank%20Grillo> .
+  <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mel%20Gibson> .
+  <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Naomi%20Watts> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.541s | model=deepseek-v4-flash
+      tokens:   in=1130 | out=171 | total=1301 | cached=384 | uncached=746
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Joe%20Carnahan> .
+  - <urn:graphragprov:entity:Joe%20Carnahan> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:American> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5be41f97706b3d33>
+  FROM <urn:graphragprov:unit:u_9821462e132c6b2b>
+  WHERE { <urn:graphragprov:entity:Boss%20Level> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('American',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Boss Level', 'Joe Carnahan']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  af145de60bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/af145de60bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5978
+output tokens:         2274
+total tokens:          8252
+cached input tokens:   4224
+uncached input tokens: 1754
+cumulative LLM seconds: 11.789
+
+statement occurrences: 14
+semantic triples:      14
+entity nodes:          14
+literal values:        1
+predicates:            8
+query attempts:        1
+observed answers:      ('American',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.255s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.038s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.542s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.587s

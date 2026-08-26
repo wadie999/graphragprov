@@ -1,0 +1,212 @@
+
+H0 one-case execution
+  case:          aab7892c0bdb11eba7f7acde48001122
+  hops:          2
+  question:      What is the place of birth of the performer of song Beautiful Loser (Song)?
+  expected:      Detroit
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/aab7892c0bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Bob Seger'
+  source unit: u_adb2fd0ef6536b72428241d5ed4504e6d0a5952fe1781a65d64dff30cd99b1bc
+  text chars:  2157
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.347s | model=deepseek-v4-flash
+      tokens:   in=2602 | out=148 | total=2750 | cached=1920 | uncached=682
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 21 / 2166 (1.0%)
+    characters text:     12 / 2157 (0.6%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           1 / 13 (7.7%)
+    longest uncovered:  2035 chars
+      'artist, he performed and recorded as Bob Seger and the Last Heard and Bob Seger System throughout the 1960s, breaking through with his first album, "Ramblin\' Gamblin\' Man" (which…'
+    statement density:  0.46 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[GRAPH 2/2] paragraph=2 title='Beautiful Loser (song)'
+  source unit: u_94645c24beac38187b9e85ce2beb9dc39b58bf84ce559c26c48b091fd98319df
+  text chars:  345
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 2.185s | model=deepseek-v4-flash
+      tokens:   in=2174 | out=289 | total=2463 | cached=1920 | uncached=254
+    [LLM graph.reference #3] sending...
+      provider: 0.663s | model=deepseek-v4-flash
+      tokens:   in=589 | out=8 | total=597 | cached=0 | uncached=589
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.evidence[0]: quote 'Detroit' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Detroit",
+                "segment": "text"
+              }
+            ],
+            "value": "Detroit"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "American",
+                "segment": "text"
+              }
+            ],
+            "value": "placeOfBirth"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bob Seger",
+                "segment": "text"
+              }
+            ],
+            "value": "Bob Seger"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 42 / 367 (11.4%)
+    characters text:     20 / 345 (5.8%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  263 chars
+      '. It was the title track on his 1975 studio album "Beautiful Loser". The single just missed inclusion on the US Top 100, but became more widely known when it was included on Seger…'
+    statement density:  2.72 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> .
+  <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Detroit> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.690s | model=deepseek-v4-flash
+      tokens:   in=606 | out=206 | total=812 | cached=384 | uncached=222
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> .
+  - <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Detroit> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> . <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_94645c24beac3818>
+  FROM <urn:graphragprov:unit:u_adb2fd0ef6536b72>
+  WHERE { <urn:graphragprov:entity:Beautiful%20Loser%20%28song%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Bob%20Seger> . <urn:graphragprov:entity:Bob%20Seger> <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Detroit',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Beautiful Loser (song)', 'Bob Seger']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  aab7892c0bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/aab7892c0bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5971
+output tokens:         651
+total tokens:          6622
+cached input tokens:   4224
+uncached input tokens: 1747
+cumulative LLM seconds: 6.885
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Detroit',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 5.201s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.070s
+  graph.materialization [attempt=1]: 0.064s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.691s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.454s

@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_acb20a0b3e8ae37fff82d0cfd12c1a45134b8db6b4fae035aa6f3a5cf3af1132
+Title: Mehboob Khan
+Text:
+Mehboob Khan (born Mehboob Khan Ramzan Khan; 9 September 1907 – 28 May 1964) was a pioneer producer-director of Indian cinema, best known for directing the social epic "Mother India" (1957), which won the Filmfare Awards for Best Film and Best Director, two National Film Awards, and was a nominee for the Academy Award for Best Foreign Language Film. He set up his production company – Mehboob Productions, and later a film studio – Mehboob Studios in Bandra, Mumbai in 1954. He also created the dacoit film genre with "Aurat" (1940) and "Mother India", and is also known for other blockbusters including the romantic drama "Andaz" (1949), the swashbuckling musical "Aan" (1951), and the melodrama "Amar" (1954).
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Mehboob Khan",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Mehboob Khan",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "placeOfDeath",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "died",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Mumbai",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Mumbai",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'died' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Mehboob Khan",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Mehboob Khan",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "director",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Al Hilal",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Al Hilal",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].object.evidence[0]: quote 'Al Hilal' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

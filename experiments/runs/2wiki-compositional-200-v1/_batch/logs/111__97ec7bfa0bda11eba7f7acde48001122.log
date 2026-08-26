@@ -1,0 +1,180 @@
+
+H0 one-case execution
+  case:          97ec7bfa0bda11eba7f7acde48001122
+  hops:          2
+  question:      When did the director of film 13 Rue Madeleine die?
+  expected:      February 11, 1985
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/97ec7bfa0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='13 Rue Madeleine'
+  source unit: u_cdf061c5018c7f8d4567272289ad73ea1ed93ebff687f29e6569a03e587b4152
+  text chars:  215
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.284s | model=deepseek-v4-flash
+      tokens:   in=2139 | out=1144 | total=3283 | cached=1920 | uncached=219
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 155 / 231 (67.1%)
+    characters text:     155 / 215 (72.1%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  14 chars
+      'World War II'
+    statement density:  34.63 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 2/2] paragraph=3 title='Henry Hathaway'
+  source unit: u_88925dae2610d799e4c6dd4979ff6dc1f8c6647bfe4e0cc86a101a3ca902491d
+  text chars:  230
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.252s | model=deepseek-v4-flash
+      tokens:   in=2233 | out=1119 | total=3352 | cached=2048 | uncached=185
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 119 / 244 (48.8%)
+    characters text:     105 / 230 (45.7%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  36 chars
+      '. He is best known as a director of'
+    statement density:  32.79 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 16
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      16
+resource nodes:        15
+entity nodes:          15
+literal values:        2
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:dateOfDeath> "1985-02-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:Gary%20Cooper> .
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Westerns> .
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:John%20Wayne> .
+  <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Randolph%20Scott> .
+  <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Henry%20Hathaway> .
+  <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:spy%20film> .
+  <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:publicationYear> "1947"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Annabella> .
+  <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:James%20Cagney> .
+  <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Richard%20Conte> .
+  <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:titleRefersTo> <urn:graphragprov:entity:Le%20Havre%20address> .
+  <urn:graphragprov:entity:Le%20Havre%20address> <urn:graphragprov:predicate:locationOf> <urn:graphragprov:entity:Gestapo%20headquarters> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.908s | model=deepseek-v4-flash
+      tokens:   in=1281 | out=217 | total=1498 | cached=384 | uncached=897
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Henry%20Hathaway> .
+  - <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:dateOfDeath> "1985-02-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Henry%20Hathaway> . <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_88925dae2610d799>
+  FROM <urn:graphragprov:unit:u_cdf061c5018c7f8d>
+  WHERE { <urn:graphragprov:entity:13%20Rue%20Madeleine> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Henry%20Hathaway> . <urn:graphragprov:entity:Henry%20Hathaway> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1985-02-11',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['13 Rue Madeleine', 'Henry Hathaway']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  97ec7bfa0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/97ec7bfa0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5653
+output tokens:         2480
+total tokens:          8133
+cached input tokens:   4352
+uncached input tokens: 1301
+cumulative LLM seconds: 12.445
+
+statement occurrences: 16
+semantic triples:      16
+entity nodes:          15
+literal values:        2
+predicates:            11
+query attempts:        1
+observed answers:      ('1985-02-11',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.541s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.030s
+  graph.materialization [attempt=1]: 0.037s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.909s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.254s

@@ -1,0 +1,167 @@
+
+H0 one-case execution
+  case:          b720ca300bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of James Bradley (Author)'s father?
+  expected:      January 11, 1994
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b720ca300bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='James Bradley (author)'
+  source unit: u_fd8d7c2e74fa3d865c4d017ae2acae1e530213e1ddae6abd7906e7ea78fb95eb
+  text chars:  803
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.719s | model=deepseek-v4-flash
+      tokens:   in=2266 | out=305 | total=2571 | cached=1920 | uncached=346
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 60 / 825 (7.3%)
+    characters text:     38 / 803 (4.7%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           2 / 5 (40.0%)
+    longest uncovered:  350 chars
+      ", the Marine Corps announced after an investigation, that John Bradley was not in Rosenthal's photograph of six Marines raising the second (and larger) flag on Mount Suribachi on…"
+    statement density:  2.42 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=8 title='John Bradley (United States Navy)'
+  source unit: u_210308968a838466524b72a107310ca6ead8dce0507f29494f7bc892c84cb2ea
+  text chars:  1088
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.508s | model=deepseek-v4-flash
+      tokens:   in=2360 | out=167 | total=2527 | cached=1920 | uncached=440
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 28 / 1121 (2.5%)
+    characters text:     16 / 1088 (1.5%)
+    characters title:    12 / 33 (36.4%)
+    sentences:           1 / 8 (12.5%)
+    longest uncovered:  1026 chars
+      ') was a United States Navy Hospital corpsman who was awarded the Navy Cross for extraordinary heroism in combat on February 21, 1945, while assigned to a U.S. Marine Corps rifle c…'
+    statement density:  0.89 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      3
+resource nodes:        2
+entity nodes:          2
+literal values:        2
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:dateOfDeath> "1994-01-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:James%20Bradley%20%28author%29> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:John%20Bradley> .
+  <urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:dateOfDeath> "2016-06-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.454s | model=deepseek-v4-flash
+      tokens:   in=680 | out=217 | total=897 | cached=384 | uncached=296
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:James%20Bradley%20%28author%29> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:John%20Bradley> .
+  - <urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:dateOfDeath> "1994-01-11"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:James%20Bradley%20%28author%29> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:John%20Bradley> . <urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_210308968a838466>
+  FROM <urn:graphragprov:unit:u_fd8d7c2e74fa3d86>
+  WHERE { <urn:graphragprov:entity:James%20Bradley%20%28author%29> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:John%20Bradley> . <urn:graphragprov:entity:John%20Bradley> <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2016-06-23', '1994-01-11')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['James Bradley (author)', 'John Bradley (United States Navy)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  b720ca300bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/b720ca300bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5306
+output tokens:         689
+total tokens:          5995
+cached input tokens:   4224
+uncached input tokens: 1082
+cumulative LLM seconds: 5.682
+
+statement occurrences: 3
+semantic triples:      3
+entity nodes:          2
+literal values:        2
+predicates:            2
+query attempts:        1
+observed answers:      ('2016-06-23', '1994-01-11')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.232s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.061s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.455s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.789s

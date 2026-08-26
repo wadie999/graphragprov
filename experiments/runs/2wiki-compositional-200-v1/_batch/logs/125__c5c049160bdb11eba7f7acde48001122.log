@@ -1,0 +1,213 @@
+
+H0 one-case execution
+  case:          c5c049160bdb11eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Moodu Pani is from?
+  expected:      India
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/c5c049160bdb11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Moodu Pani'
+  source unit: u_6583f396de8833c0ef195680b05ca0fde3b9ffd3ae44e0989e9d3c852f67e373
+  text chars:  1658
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.378s | model=deepseek-v4-flash
+      tokens:   in=2505 | out=297 | total=2802 | cached=1920 | uncached=585
+    [LLM graph.reference #2] sending...
+      provider: 1.279s | model=deepseek-v4-flash
+      tokens:   in=945 | out=174 | total=1119 | cached=0 | uncached=945
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'directed by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Balu Mahendra",
+                "segment": "text"
+              }
+            ],
+            "value": "Balu Mahendra"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "directed by",
+                "segment": "text"
+              }
+            ],
+            "value": "director"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Moodu Pani",
+                "segment": "text"
+              }
+            ],
+            "value": "Moodu Pani"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 2
+  coverage:
+    characters combined: 37 / 1668 (2.2%)
+    characters text:     37 / 1658 (2.2%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           1 / 15 (6.7%)
+    longest uncovered:  1555 chars
+      '. Starring his then wife Shoba and Pratap K. Pothen in the lead roles, with N. Viswanathan, Ganthimathi, Mohan and Bhanu Chander in supporting roles, it is based on two novels: "I…'
+    statement density:  1.20 / 1000 chars
+    title reliance:      0 / 2 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Balu Mahendra'
+  source unit: u_d39e967689ee5463c29c2399d9028d640cfbb2d2e2c007f8bbf2f74ca7360fd2
+  text chars:  1590
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 1.201s | model=deepseek-v4-flash
+      tokens:   in=2470 | out=153 | total=2623 | cached=1920 | uncached=550
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 27 / 1603 (1.7%)
+    characters text:     27 / 1590 (1.7%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           2 / 15 (13.3%)
+    longest uncovered:  994 chars
+      'and gained admission to the Film and Television Institute of India( FTII) to pursue a course in motion picture photography. Upon completion of his diploma, he entered Malayalam ci…'
+    statement density:  0.62 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Balu%20Mahendra> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Moodu%20Pani> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Balu%20Mahendra> .
+  <urn:graphragprov:entity:Balu%20Mahendra> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.448s | model=deepseek-v4-flash
+      tokens:   in=648 | out=175 | total=823 | cached=384 | uncached=264
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Moodu%20Pani> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Balu%20Mahendra> .
+  - <urn:graphragprov:entity:Balu%20Mahendra> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Moodu%20Pani> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6583f396de8833c0>
+  FROM <urn:graphragprov:unit:u_d39e967689ee5463>
+  WHERE { <urn:graphragprov:entity:Moodu%20Pani> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('India',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Balu Mahendra', 'Moodu Pani']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  c5c049160bdb11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/c5c049160bdb11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6568
+output tokens:         799
+total tokens:          7367
+cached input tokens:   4224
+uncached input tokens: 2344
+cumulative LLM seconds: 6.306
+
+statement occurrences: 3
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('India',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.861s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.032s
+  graph.materialization [attempt=1]: 0.036s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.449s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.428s

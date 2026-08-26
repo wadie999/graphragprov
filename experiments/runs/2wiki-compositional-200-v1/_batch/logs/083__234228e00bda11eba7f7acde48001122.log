@@ -1,0 +1,166 @@
+
+H0 one-case execution
+  case:          234228e00bda11eba7f7acde48001122
+  hops:          2
+  question:      What is the award that the composer of film Journey Beyond Three Seas received?
+  expected:      Sangeet Natak Akademi Award
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/234228e00bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=0 title='Journey Beyond Three Seas'
+  source unit: u_d62957c2df14d8cf9e97d01e2243f15c36c02fbcfa9350222b8fe1d29f0bcaa6
+  text chars:  870
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.218s | model=deepseek-v4-flash
+      tokens:   in=2310 | out=154 | total=2464 | cached=1920 | uncached=390
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 44 / 895 (4.9%)
+    characters text:     44 / 870 (5.1%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           2 / 6 (33.3%)
+    longest uncovered:  522 chars
+      'is a 1957 Indian-Soviet film, jointly directed by Khwaja Ahmad Abbas and Vasili Pronin. It was made in two version, Hindi and Russian, and is based on the travelogues of Russian t…'
+    statement density:  1.12 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[GRAPH 2/2] paragraph=8 title='Anil Biswas (composer)'
+  source unit: u_f92799a009055a43ff88d2f17e1ee468f1af389f07db7ec2b4bae9bd787e525c
+  text chars:  1357
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.888s | model=deepseek-v4-flash
+      tokens:   in=2456 | out=168 | total=2624 | cached=1920 | uncached=536
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 56 / 1379 (4.1%)
+    characters text:     34 / 1357 (2.5%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           1 / 6 (16.7%)
+    longest uncovered:  1223 chars
+      'Anil Krishna Biswas (अनिल कृष्ण विश्वास / অনিল বিশ্বাস; 7 July 1914 – 31 May 2003) was an noted Indian film music director and playback singer from 1935 to 1965, who apart from be…'
+    statement density:  0.73 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 2
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        4
+entity nodes:          4
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Anil%20Biswas> .
+  <urn:graphragprov:entity:Anil%20Biswas%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Sangeet%20Natak%20Akademi%20Award> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.517s | model=deepseek-v4-flash
+      tokens:   in=644 | out=205 | total=849 | cached=384 | uncached=260
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Anil%20Biswas> .
+  - <urn:graphragprov:entity:Anil%20Biswas%20%28composer%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Sangeet%20Natak%20Akademi%20Award> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:awardReceived> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_d62957c2df14d8cf>
+  FROM <urn:graphragprov:unit:u_f92799a009055a43>
+  WHERE { <urn:graphragprov:entity:Journey%20Beyond%20Three%20Seas> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:awardReceived> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  234228e00bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/234228e00bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5410
+output tokens:         527
+total tokens:          5937
+cached input tokens:   4224
+uncached input tokens: 1186
+cumulative LLM seconds: 5.623
+
+statement occurrences: 2
+semantic triples:      2
+entity nodes:          4
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.109s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.037s
+  graph.materialization [attempt=1]: 0.089s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.518s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.449s

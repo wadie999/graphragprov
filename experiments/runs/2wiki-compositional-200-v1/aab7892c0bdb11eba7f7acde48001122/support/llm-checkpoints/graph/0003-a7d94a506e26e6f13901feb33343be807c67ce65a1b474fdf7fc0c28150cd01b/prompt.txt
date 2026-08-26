@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_94645c24beac38187b9e85ce2beb9dc39b58bf84ce559c26c48b091fd98319df
+Title: Beautiful Loser (song)
+Text:
+"Beautiful Loser" is a song written and recorded by American rock artist Bob Seger. It was the title track on his 1975 studio album "Beautiful Loser". The single just missed inclusion on the US Top 100, but became more widely known when it was included on Seger's breakout album, "'Live' Bullet" (1976), where it was paired with "Travelin' Man".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Bob Seger",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Bob Seger",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "placeOfBirth",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Detroit",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Detroit",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].object.evidence[0]: quote 'Detroit' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

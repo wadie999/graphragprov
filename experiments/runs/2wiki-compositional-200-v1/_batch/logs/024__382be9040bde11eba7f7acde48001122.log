@@ -1,0 +1,213 @@
+
+H0 one-case execution
+  case:          382be9040bde11eba7f7acde48001122
+  hops:          2
+  question:      Where was the father of Eugénie De Beauharnais born?
+  expected:      Paris
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/382be9040bde11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Eugénie de Beauharnais'
+  source unit: u_a2240b218479e363a12d02c9954dff7c69943a7dd0da0345503b96909ae21805
+  text chars:  356
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.042s | model=deepseek-v4-flash
+      tokens:   in=2194 | out=345 | total=2539 | cached=1920 | uncached=274
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 89 / 378 (23.5%)
+    characters text:     67 / 356 (18.8%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  142 chars
+      'and Princess Augusta of Bavaria, and a member of the House of Beauharnais. In 1826 she married Constantine, Prince of Hohenzollern-Hechingen.'
+    statement density:  5.29 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=9 title='Eugène de Beauharnais'
+  source unit: u_4eb9240bba5d56fa93975f479530976bce4fdc7f01fdcccd07ec6598ac31edf3
+  text chars:  560
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.030s | model=deepseek-v4-flash
+      tokens:   in=2262 | out=313 | total=2575 | cached=1920 | uncached=342
+    [LLM graph.reference #3] sending...
+      provider: 0.712s | model=deepseek-v4-flash
+      tokens:   in=672 | out=8 | total=680 | cached=0 | uncached=672
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].subject.evidence[0]: quote 'Eugénie de Beauharnais' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Eugène de Beauharnais",
+                "segment": "title"
+              }
+            ],
+            "value": "Eugène de Beauharnais"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "father",
+                "segment": "text"
+              }
+            ],
+            "value": "father"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Eugénie de Beauharnais",
+                "segment": "text"
+              }
+            ],
+            "value": "Eugénie de Beauharnais"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 1
+  coverage:
+    characters combined: 33 / 581 (5.7%)
+    characters text:     12 / 560 (2.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           1 / 5 (20.0%)
+    longest uncovered:  329 chars
+      ', France, and became the stepson and adopted child (but not the heir to the imperial throne) of Napoleon I. His biological father was executed during the revolutionary Reign of Te…'
+    statement density:  1.72 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.496s | model=deepseek-v4-flash
+      tokens:   in=689 | out=203 | total=892 | cached=384 | uncached=305
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> .
+  - <urn:graphragprov:entity:Eug%C3%A8ne%20de%20Beauharnais> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Paris> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4eb9240bba5d56fa>
+  FROM <urn:graphragprov:unit:u_a2240b218479e363>
+  WHERE { <urn:graphragprov:entity:Eug%C3%A9nie%20de%20Beauharnais> <urn:graphragprov:predicate:father> ?father . ?father <urn:graphragprov:predicate:placeOfBirth> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Paris',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Eugène de Beauharnais', 'Eugénie de Beauharnais']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  382be9040bde11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/382be9040bde11eba7f7acde48001122/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5817
+output tokens:         869
+total tokens:          6686
+cached input tokens:   4224
+uncached input tokens: 1593
+cumulative LLM seconds: 8.281
+
+statement occurrences: 3
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('Paris',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 6.791s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.052s
+  graph.materialization [attempt=1]: 0.073s
+  graph.observation [attempt=1]: 0.009s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.497s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.462s

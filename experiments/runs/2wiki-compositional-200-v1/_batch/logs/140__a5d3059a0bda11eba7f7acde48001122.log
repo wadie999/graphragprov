@@ -1,0 +1,167 @@
+
+H0 one-case execution
+  case:          a5d3059a0bda11eba7f7acde48001122
+  hops:          2
+  question:      Which country Newcome Cappe's wife is from?
+  expected:      British
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a5d3059a0bda11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Newcome Cappe'
+  source unit: u_48387e07cab944b75fe2b28aa60f643f168b306d92c7c94147c57f0d1b667288
+  text chars:  268
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.517s | model=deepseek-v4-flash
+      tokens:   in=2136 | out=295 | total=2431 | cached=1920 | uncached=216
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 50 / 281 (17.8%)
+    characters text:     37 / 268 (13.8%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  151 chars
+      'unitarian divine. He served as the pastor of the York Unitarian Chapel, located in York, England. Cappe published various sermons and after his death'
+    statement density:  7.12 / 1000 chars
+    title reliance:      1 / 2 (50.0%)
+
+[GRAPH 2/2] paragraph=7 title='Catharine Cappe'
+  source unit: u_d5f95cacc17d5f27dcc4895043ed52515a832e3e06493e42ba5f9c588b998081
+  text chars:  116
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.491s | model=deepseek-v4-flash
+      tokens:   in=2132 | out=150 | total=2282 | cached=1920 | uncached=212
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 22 / 131 (16.8%)
+    characters text:     7 / 116 (6.0%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  73 chars
+      'Catherine Cappe or Catherine Harrison( 3 June 1744 – 27 July 1821) was a'
+    statement density:  7.63 / 1000 chars
+    title reliance:      1 / 1 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Catharine%20Cappe> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:British> .
+  <urn:graphragprov:entity:Newcome%20Cappe> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Catharine%20Cappe> .
+  <urn:graphragprov:entity:Catharine%20Cappe> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:British> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.455s | model=deepseek-v4-flash
+      tokens:   in=644 | out=201 | total=845 | cached=384 | uncached=260
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Newcome%20Cappe> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Catharine%20Cappe> .
+  - <urn:graphragprov:entity:Catharine%20Cappe> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:British> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Newcome%20Cappe> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Catharine%20Cappe> . <urn:graphragprov:entity:Catharine%20Cappe> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_48387e07cab944b7>
+  FROM <urn:graphragprov:unit:u_d5f95cacc17d5f27>
+  WHERE { <urn:graphragprov:entity:Newcome%20Cappe> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Catharine%20Cappe> . <urn:graphragprov:entity:Catharine%20Cappe> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('British',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Catharine Cappe', 'Newcome Cappe']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  a5d3059a0bda11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/a5d3059a0bda11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          4912
+output tokens:         646
+total tokens:          5558
+cached input tokens:   4224
+uncached input tokens: 688
+cumulative LLM seconds: 5.464
+
+statement occurrences: 3
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('British',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.013s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.081s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.456s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.517s

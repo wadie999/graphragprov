@@ -1,0 +1,167 @@
+
+H0 one-case execution
+  case:          ba413fca0bd911eba7f7acde48001122
+  hops:          2
+  question:      Which country the director of film Meesaya Murukku is from?
+  expected:      India
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/ba413fca0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=3 title='Meesaya Murukku'
+  source unit: u_97b0c6f239826f9bfbe372a62c62aaa917b09616eb7a921fb3cfa4498dec5115
+  text chars:  455
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 2.961s | model=deepseek-v4-flash
+      tokens:   in=2214 | out=303 | total=2517 | cached=1920 | uncached=294
+  extraction: ACCEPTED
+  statements: 2
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    2
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     2
+  coverage:
+    characters combined: 46 / 470 (9.8%)
+    characters text:     46 / 455 (10.1%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           1 / 4 (25.0%)
+    longest uncovered:  347 chars
+      ', in their directorial debut. Adhi of the musical duo stars as the lead along with Aathmika as the female lead, while Vivek, RJ Vigneshkanth, and Vijayalakshmi play supporting rol…'
+    statement density:  4.26 / 1000 chars
+    title reliance:      0 / 2 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Hiphop Tamizha'
+  source unit: u_5ba0f14c9a3ed0be7205bf7a2a88634f3f5bf432b31e99e1aeabd244dc761494
+  text chars:  722
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.612s | model=deepseek-v4-flash
+      tokens:   in=2282 | out=152 | total=2434 | cached=1920 | uncached=362
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 20 / 736 (2.7%)
+    characters text:     20 / 722 (2.8%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           1 / 9 (11.1%)
+    longest uncovered:  694 chars
+      'musical duo based in Chennai, Tamil Nadu. The duo consists of Adhithya "Adhi" Venkatapathy and R. Jeeva. Hiphop Tamizha are credited with being the pioneers of Tamil hip hop in In…'
+    statement density:  1.36 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 3
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      2
+resource nodes:        3
+entity nodes:          3
+literal values:        0
+predicates:            2
+
+N-Triples:
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.813s | model=deepseek-v4-flash
+      tokens:   in=656 | out=207 | total=863 | cached=384 | uncached=272
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hiphop%20Tamizha> .
+  - <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:India> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hiphop%20Tamizha> . <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5ba0f14c9a3ed0be>
+  FROM <urn:graphragprov:unit:u_97b0c6f239826f9b>
+  WHERE { <urn:graphragprov:entity:Meesaya%20Murukku> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Hiphop%20Tamizha> . <urn:graphragprov:entity:Hiphop%20Tamizha> <urn:graphragprov:predicate:countryOfCitizenship> ?answer . }
+
+GraphDB execution:
+  observed answers: ('India',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Hiphop Tamizha', 'Meesaya Murukku']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  ba413fca0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/ba413fca0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5152
+output tokens:         662
+total tokens:          5814
+cached input tokens:   4224
+uncached input tokens: 928
+cumulative LLM seconds: 6.386
+
+statement occurrences: 3
+semantic triples:      2
+entity nodes:          3
+literal values:        0
+predicates:            2
+query attempts:        1
+observed answers:      ('India',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 4.580s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.003s
+  query.reference.generation [attempt=1]: 1.814s
+  graphdb.semantic [attempt=1]: 0.008s
+  provenance.execution [attempt=1]: 0.536s

@@ -1,0 +1,185 @@
+
+H0 one-case execution
+  case:          00198f320bdc11eba7f7acde48001122
+  hops:          2
+  question:      What is the date of death of the director of film Relax Freddie?
+  expected:      19 November 2005
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/00198f320bdc11eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=2 title='Relax Freddie'
+  source unit: u_e54b000d0dd700654d345737ba946b26bed94297dd323d1ae3f750c7ebe4c674
+  text chars:  138
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.048s | model=deepseek-v4-flash
+      tokens:   in=2119 | out=852 | total=2971 | cached=1920 | uncached=199
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 108 / 151 (71.5%)
+    characters text:     108 / 138 (78.3%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  10 chars
+      '. It is a'
+    statement density:  39.74 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=1 title='Erik Balling'
+  source unit: u_21dc9d494bef5ecec8b75b431f9c27b71a78a1c29077d4fba6cc0fc7bc50b90b
+  text chars:  522
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.644s | model=deepseek-v4-flash
+      tokens:   in=2283 | out=2194 | total=4477 | cached=2048 | uncached=235
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 315 / 534 (59.0%)
+    characters text:     303 / 522 (58.0%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  46 chars
+      'at the 1957 Cannes Film Festival, and for an'
+    statement density:  28.09 / 1000 chars
+    title reliance:      10 / 15 (66.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      21
+resource nodes:        16
+entity nodes:          16
+literal values:        5
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:Den%20k%C3%A6re%20familie> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20Balling> .
+  <urn:graphragprov:entity:Den%20k%C3%A6re%20familie> <urn:graphragprov:predicate:enteredInto> <urn:graphragprov:entity:3rd%20Moscow%20International%20Film%20Festival> .
+  <urn:graphragprov:entity:Den%20k%C3%A6re%20familie> <urn:graphragprov:predicate:publicationYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:birthDate> "1924-11-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Henning%20Bahs> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Huset%20p%C3%A5%20Christianshavn> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Matador> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Olsen%20Gang> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:dateOfDeath> "2005-11-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Danish> .
+  <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:TV%20and%20film%20director> .
+  <urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20Balling> .
+  <urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Golden%20Palm> .
+  <urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Oscar%20as%20Best%20Foreign%20Language%20Film> .
+  <urn:graphragprov:entity:Qivitoq> <urn:graphragprov:predicate:publicationYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20Balling> .
+  <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy%20film> .
+  <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Danish> .
+  <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:publicationYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:sequelTo> <urn:graphragprov:entity:Strike%20first%20Freddy> .
+  <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Morten%20Grunwald> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.574s | model=deepseek-v4-flash
+      tokens:   in=1550 | out=183 | total=1733 | cached=384 | uncached=1166
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Erik%20Balling> .
+  - <urn:graphragprov:entity:Erik%20Balling> <urn:graphragprov:predicate:dateOfDeath> "2005-11-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_21dc9d494bef5ece>
+  FROM <urn:graphragprov:unit:u_e54b000d0dd70065>
+  WHERE { <urn:graphragprov:entity:Relax%20Freddie> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:dateOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2005-11-19',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Erik Balling', 'Relax Freddie']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  00198f320bdc11eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/00198f320bdc11eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5952
+output tokens:         3229
+total tokens:          9181
+cached input tokens:   4352
+uncached input tokens: 1600
+cumulative LLM seconds: 14.266
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          16
+literal values:        5
+predicates:            13
+query attempts:        1
+observed answers:      ('2005-11-19',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 12.699s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.037s
+  graph.materialization [attempt=1]: 0.048s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.575s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.290s

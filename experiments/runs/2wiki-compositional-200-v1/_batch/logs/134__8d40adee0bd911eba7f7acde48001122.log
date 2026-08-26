@@ -1,0 +1,177 @@
+
+H0 one-case execution
+  case:          8d40adee0bd911eba7f7acde48001122
+  hops:          2
+  question:      Where was the place of death of the director of film Heaven On Earth (1927 American Film)?
+  expected:      Hollywood
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/experiments/cohorts/2wiki-compositional-200-v1.json
+  artifacts:     /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/8d40adee0bd911eba7f7acde48001122/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=8 title='Phil Rosen'
+  source unit: u_b6ebfe21ce031960963ed10718abfc9eeff8556fd4f63f76cdc3c91f84ef5ddc
+  text chars:  417
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.879s | model=deepseek-v4-flash
+      tokens:   in=2186 | out=1681 | total=3867 | cached=1920 | uncached=266
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 218 / 427 (51.1%)
+    characters text:     208 / 417 (49.9%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  71 chars
+      ', German Empire( now, Malbork, Poland), grew up in Machias, Maine, and'
+    statement density:  28.10 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[GRAPH 2/2] paragraph=7 title='Heaven on Earth (1927 American film)'
+  source unit: u_e2fca001a622e7cd52748a9bfee983abc8e0884b1dfdd29bfe6e8a7dee90b342
+  text chars:  275
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 1.516s | model=deepseek-v4-flash
+      tokens:   in=2278 | out=149 | total=2427 | cached=1920 | uncached=358
+  extraction: ACCEPTED
+  statements: 1
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    1
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     1
+  coverage:
+    characters combined: 36 / 311 (11.6%)
+    characters text:     36 / 275 (13.1%)
+    characters title:    0 / 36 (0.0%)
+    sentences:           1 / 3 (33.3%)
+    longest uncovered:  200 chars
+      'and written by Harvey Gates. The film stars Renée Adorée, Conrad Nagel, Gwen Lee, Julia Swayne Gordon, Marcia Manon and Pat Hartigan. The film was released on March 5, 1927, by Me…'
+    statement density:  3.22 / 1000 chars
+    title reliance:      0 / 1 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 13
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      13
+resource nodes:        12
+entity nodes:          12
+literal values:        2
+predicates:            12
+
+N-Triples:
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Marienburg> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:bornOn> "1888-05-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:causeOfDeath> <urn:graphragprov:entity:heart%20attack> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:California> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:diedOn> "1951-10-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:directed> <urn:graphragprov:entity:142%20films> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:American%20Society%20of%20Cinematographers> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cinematographer> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20director> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+  <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Joyzelle%20Joyner> .
+  <urn:graphragprov:entity:Heaven%20on%20Earth> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Phil%20Rosen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.532s | model=deepseek-v4-flash
+      tokens:   in=1103 | out=174 | total=1277 | cached=384 | uncached=719
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Heaven%20on%20Earth> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Phil%20Rosen> .
+  - <urn:graphragprov:entity:Phil%20Rosen> <urn:graphragprov:predicate:placeOfDeath> <urn:graphragprov:entity:Hollywood> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Heaven%20on%20Earth> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b6ebfe21ce031960>
+  FROM <urn:graphragprov:unit:u_e2fca001a622e7cd>
+  WHERE { <urn:graphragprov:entity:Heaven%20on%20Earth> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:placeOfDeath> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Hollywood',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Heaven on Earth (1927 American film)', 'Phil Rosen']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  8d40adee0bd911eba7f7acde48001122
+result:                /home/wadie/graphragprov/experiments/runs/2wiki-compositional-200-v1/8d40adee0bd911eba7f7acde48001122/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          5567
+output tokens:         2004
+total tokens:          7571
+cached input tokens:   4224
+uncached input tokens: 1343
+cumulative LLM seconds: 10.926
+
+statement occurrences: 13
+semantic triples:      13
+entity nodes:          12
+literal values:        2
+predicates:            12
+query attempts:        1
+observed answers:      ('Hollywood',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.400s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.046s
+  graph.materialization [attempt=1]: 0.057s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.533s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.530s

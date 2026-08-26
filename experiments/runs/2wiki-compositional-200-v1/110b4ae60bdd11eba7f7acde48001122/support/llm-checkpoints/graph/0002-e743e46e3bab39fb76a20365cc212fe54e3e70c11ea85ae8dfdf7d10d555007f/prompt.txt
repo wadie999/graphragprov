@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_1fa574d6ff27715cb7b56252fe9c6623c7e355cc1f56bdc0a60f26660aa77450
+Title: Her Town Too
+Text:
+"Her Town Too" is a song written by James Taylor, J. D. Souther, and Waddy Wachtel, first released as a duet between Taylor and Souther on Taylor's 1981 album " Dad Loves His Work". It was also released as a single in 1981, peaking at #11 on the "Billboard" Hot 100. The song had entered the Hot 100 chart at #38, making it one of the few songs to enter the chart in the Top 40 but not reach the Top 10. As of 2014, it is Taylor's last single to reach the Top 40 of the "Billboard" Hot 100. " Her Town Too" also reached #5 on the "Billboard" Adult Contemporary chart and #21 on the Mainstream Rock chart. The subject of "Her Town Too" is the aftermath of a breakup of a long term relationship. Taylor has called it "a tender, well-meaning song about how difficult it was to be friends" with both parties after the breakup. Since Taylor's marriage to Carly Simon was breaking up at the time, there was speculation that the song was about their relationship. However, Taylor has stated that the song was about "the ex-wife of a mutual friend." Author Sheila Weller has written that the subject was Betsy Asher, who had recently divorced from Taylor's longtime manager and producer Peter Asher. Taylor has said of the song that it "showed a maturity in song structure that had been developing since I wrote 'Your Smiling Face' for "JT "Your Smiling Face and "JT" had been issued four years earlier, in 1977. Taylor also claimed that the song had "a relentless bolero quality. The Rolling Stone Album Guide" called it a "gently incisive divorce song" that was "among [Taylor's] finest pieces of writing. Rolling Stone" critic Don Shewey notes that despite the song's worthy ambitions, the narrative never quite reaches a resolution, and thus the song "comes across as merely a catchy, mindless ditty. Montreal Gazette" critic John Griffin praised the song's "mellifluous melody" and the way lyrics such as "she always figured that they were her friends but maybe they can live without her" resonates with people who have had friendships with one or the other partner disintegrate after a relationship ends. " Her Town Too" was later released on the 2000 compilation album "Greatest Hits Volume 2".
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 2,
+    "statement": {
+      "subject": {
+        "value": "James Taylor",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Taylor",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "countryOfCitizenship",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "American",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "American",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[2].predicate.evidence[0]: quote 'American' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.
