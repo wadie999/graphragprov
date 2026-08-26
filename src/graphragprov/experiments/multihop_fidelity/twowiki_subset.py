@@ -10,6 +10,8 @@ from typing import Any, cast
 
 from graphragprov.config import twowiki_dataset_path
 
+TWOWIKI_TYPES = ("bridge_comparison", "comparison", "compositional", "inference")
+
 
 def read_case_ids(path: Path) -> tuple[str, ...]:
     """Read one non-empty, duplicate-free case ID per non-comment line."""
@@ -29,8 +31,15 @@ def read_case_ids(path: Path) -> tuple[str, ...]:
     return ids
 
 
-def build_twowiki_subset(*, dataset: Path, case_ids: tuple[str, ...]) -> list[dict[str, Any]]:
-    """Return exact source rows ordered by the frozen cohort ID file."""
+def build_twowiki_subset(
+    *, dataset: Path, case_ids: tuple[str, ...], required_type: str | None = None
+) -> list[dict[str, Any]]:
+    """Return exact source rows ordered by the frozen cohort ID file.
+
+    When ``required_type`` is provided, every requested case must have that
+    exact 2Wiki reasoning type. The function validates rather than silently
+    dropping mismatched cases so that the frozen cohort remains authoritative.
+    """
 
     raw = cast(object, json.loads(dataset.read_text(encoding="utf-8")))
 
@@ -59,14 +68,31 @@ def build_twowiki_subset(*, dataset: Path, case_ids: tuple[str, ...]) -> list[di
     if missing:
         raise KeyError(f"2Wiki cases not found: {', '.join(missing)}")
 
+    if required_type is not None:
+        mismatched = [
+            (case_id, rows_by_id[case_id].get("type"))
+            for case_id in case_ids
+            if rows_by_id[case_id].get("type") != required_type
+        ]
+
+        if mismatched:
+            details = ", ".join(f"{case_id}={actual_type!r}" for case_id, actual_type in mismatched)
+
+            raise ValueError(
+                f"2Wiki cohort requires type {required_type!r}; mismatched cases: {details}"
+            )
+
     return [rows_by_id[case_id] for case_id in case_ids]
 
 
-def write_twowiki_subset(*, dataset: Path, case_ids_file: Path, output: Path) -> tuple[str, ...]:
+def write_twowiki_subset(
+    *, dataset: Path, case_ids_file: Path, output: Path, required_type: str | None = None
+) -> tuple[str, ...]:
     """Write a deterministic subset cache and return its ordered case IDs."""
 
     case_ids = read_case_ids(case_ids_file)
-    rows = build_twowiki_subset(dataset=dataset, case_ids=case_ids)
+
+    rows = build_twowiki_subset(dataset=dataset, case_ids=case_ids, required_type=required_type)
 
     output.parent.mkdir(parents=True, exist_ok=True)
 
@@ -79,18 +105,27 @@ def write_twowiki_subset(*, dataset: Path, case_ids_file: Path, output: Path) ->
 
 def parse_arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Build a reduced 2Wiki JSON cache from a frozen case-ID cohort."
+        description=("Build a reduced 2Wiki JSON cache from a frozen case-ID cohort.")
     )
 
     parser.add_argument("--case-ids-file", type=Path, required=True)
+
     parser.add_argument("--dataset-path", type=Path)
+
     parser.add_argument("--output", type=Path, required=True)
+
+    parser.add_argument(
+        "--required-type",
+        choices=TWOWIKI_TYPES,
+        help=("Require every selected case to have this exact 2Wiki reasoning type."),
+    )
 
     args = parser.parse_args(argv)
 
     args.dataset_path = (args.dataset_path or twowiki_dataset_path()).expanduser().resolve()
 
     args.case_ids_file = args.case_ids_file.expanduser().resolve()
+
     args.output = args.output.expanduser().resolve()
 
     return args
@@ -100,10 +135,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parse_arguments(argv)
 
     case_ids = write_twowiki_subset(
-        dataset=args.dataset_path, case_ids_file=args.case_ids_file, output=args.output
+        dataset=args.dataset_path,
+        case_ids_file=args.case_ids_file,
+        output=args.output,
+        required_type=args.required_type,
     )
 
-    print(f"wrote {len(case_ids)} 2Wiki cases to {args.output}")
+    type_suffix = f" type={args.required_type}" if args.required_type is not None else ""
+
+    print(f"wrote {len(case_ids)} 2Wiki cases to {args.output}{type_suffix}")
 
     return 0
 
