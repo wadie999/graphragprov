@@ -27,6 +27,7 @@ from graphragprov.experiments.multihop_fidelity.run_one import (
     _print_plan,
     _write_json,
     _write_or_validate_configuration,
+    ensure_result_artifact_target,
 )
 from graphragprov.experiments.multihop_fidelity.runner import H0CaseFailure, run_twowiki_h0_case
 from graphragprov.experiments.multihop_fidelity.telemetry import ExperimentTelemetryRecorder
@@ -127,13 +128,12 @@ def main() -> None:
 
     root = arguments.artifacts / case.case_id / arguments.query_scope.value
     result_path = root / "result.json"
-
-    if result_path.is_file():
-        raise SystemExit(
-            "result artifact already exists: "
-            f"{result_path}. Choose a fresh --artifacts directory for a new scientific run."
+    try:
+        ensure_result_artifact_target(
+            result_path, reuse_llm_checkpoints=arguments.reuse_llm_checkpoints
         )
-
+    except (FileExistsError, ValueError) as error:
+        raise SystemExit(str(error)) from error
     root.mkdir(parents=True, exist_ok=True)
     run_configuration = _run_configuration_payload(
         case_id=case.case_id, dataset_path=dataset_path, arguments=arguments

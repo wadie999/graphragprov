@@ -540,11 +540,12 @@ def main() -> None:
     root = arguments.artifacts / case.case_id / arguments.query_scope.value
     result_path = root / "result.json"
 
-    if result_path.is_file():
-        raise SystemExit(
-            "result artifact already exists: "
-            f"{result_path}. Choose a fresh --artifacts directory for a new scientific run."
+    try:
+        ensure_result_artifact_target(
+            result_path, reuse_llm_checkpoints=arguments.reuse_llm_checkpoints
         )
+    except (FileExistsError, ValueError) as error:
+        raise SystemExit(str(error)) from error
 
     root.mkdir(parents=True, exist_ok=True)
     run_configuration = _run_configuration_payload(
@@ -712,6 +713,52 @@ def _build_run_artifact(
         },
         "outcome": outcome.to_dict(),
     }
+
+
+def read_result_artifact_status(path: Path) -> str:
+    """Read and validate the outcome status stored in one result artifact."""
+
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise ValueError(f"cannot read result artifact: {path}") from error
+
+    if not isinstance(payload, dict):
+        raise ValueError(f"result artifact root must be a JSON object: {path}")
+
+    outcome = payload.get("outcome")
+
+    if not isinstance(outcome, dict):
+        raise ValueError(f"result artifact must contain an outcome object: {path}")
+
+    status = outcome.get("status")
+
+    if status not in {"complete", "operational_failure"}:
+        raise ValueError(f"result artifact contains unknown outcome status: {path}")
+
+    return str(status)
+
+
+def ensure_result_artifact_target(path: Path, *, reuse_llm_checkpoints: bool) -> None:
+    """Reject unsafe overwrites while allowing explicit failure resumption."""
+
+    if not path.is_file():
+        return
+
+    status = read_result_artifact_status(path)
+
+    if reuse_llm_checkpoints and status == "operational_failure":
+        return
+
+    if status == "complete":
+        raise FileExistsError(
+            "completed result artifact already exists: "
+            f"{path}. Choose a fresh --artifacts directory for a new scientific run."
+        )
+
+    raise FileExistsError(
+        f"failed result artifact already exists: {path}. Use --reuse-llm-checkpoints to resume it."
+    )
 
 
 def _write_json(path: Path, value: object) -> None:

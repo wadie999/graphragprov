@@ -74,3 +74,57 @@ def test_run_batch_passes_worker_module_and_records_it(
 
     assert summary["worker_module"] == worker_module
     assert summary["query_scope"] == "support"
+
+
+def test_resume_skips_complete_result_but_retries_operational_failure(
+    tmp_path: Path, monkeypatch: MonkeyPatch
+) -> None:
+    arguments = _arguments(tmp_path)
+    arguments.resume = True
+
+    jobs = (
+        Job(1, "complete-case", frozenset({"source-a"})),
+        Job(2, "failed-case", frozenset({"source-b"})),
+    )
+
+    complete_result = arguments.artifacts / "complete-case" / "support" / "result.json"
+    failed_result = arguments.artifacts / "failed-case" / "support" / "result.json"
+
+    complete_result.parent.mkdir(parents=True, exist_ok=True)
+    failed_result.parent.mkdir(parents=True, exist_ok=True)
+
+    complete_result.write_text(json.dumps({"outcome": {"status": "complete"}}), encoding="utf-8")
+
+    failed_result.write_text(
+        json.dumps({"outcome": {"status": "operational_failure"}}), encoding="utf-8"
+    )
+
+    async def fake_run_parallel(
+        args: argparse.Namespace, received_jobs: tuple[Job, ...], logs: Path, *, worker_module: str
+    ) -> list[dict[str, object]]:
+        assert args is arguments
+
+        # Complete case is skipped.
+        # Failed case is the only case scheduled again.
+        assert received_jobs == (jobs[1],)
+
+        return [{"index": 2, "case_id": "failed-case", "status": "completed"}]
+
+    monkeypatch.setattr(run_many_module, "_run_parallel", fake_run_parallel)
+
+    exit_code = run_batch(
+        args=arguments,
+        jobs=jobs,
+        worker_module=("graphragprov.experiments.multihop_fidelity.run_one_twowiki"),
+    )
+
+    assert exit_code == 0
+
+    summary = json.loads(
+        (arguments.artifacts / "_batch" / "summary.json").read_text(encoding="utf-8")
+    )
+
+    assert summary["cases"] == [
+        {"case_id": "complete-case", "index": 1, "status": "skipped"},
+        {"case_id": "failed-case", "index": 2, "status": "completed"},
+    ]

@@ -15,6 +15,7 @@ from typing import NamedTuple
 from graphragprov.benchmarks.musique import iter_cases
 from graphragprov.config import musique_dataset_path
 from graphragprov.experiments.multihop_fidelity.config import QueryScope
+from graphragprov.experiments.multihop_fidelity.run_one import read_result_artifact_status
 from graphragprov.providers.deepseek import DEFAULT_DEEPSEEK_MODEL, DEFAULT_DEEPSEEK_TIMEOUT_SECONDS
 
 
@@ -266,11 +267,22 @@ def run_batch(*, args: argparse.Namespace, jobs: tuple[Job, ...], worker_module:
         result = args.artifacts / job.case_id / args.query_scope / "result.json"
 
         if args.resume and result.is_file():
-            _say(f"SKIP  {job.ordinal:03d}/{len(jobs)} case={job.case_id} result exists")
+            result_status = read_result_artifact_status(result)
 
-            results.append({"index": job.ordinal, "case_id": job.case_id, "status": "skipped"})
-        else:
-            runnable.append(job)
+            if result_status == "complete":
+                _say(
+                    f"SKIP  {job.ordinal:03d}/{len(jobs)} case={job.case_id} complete result exists"
+                )
+
+                results.append({"index": job.ordinal, "case_id": job.case_id, "status": "skipped"})
+                continue
+
+            _say(
+                f"RETRY {job.ordinal:03d}/{len(jobs)} "
+                f"case={job.case_id} prior result={result_status}"
+            )
+
+        runnable.append(job)
 
     _say(
         f"cases={len(jobs)} "
