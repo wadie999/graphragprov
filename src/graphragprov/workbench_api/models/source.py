@@ -20,3 +20,5 @@ class SourceUnitView(BaseModel):
     title: str
     text: str
     statement_count: int
+    extraction_prompt: str | None = None
+    extraction_response: str | None = None

@@ -11,6 +11,7 @@ from graphragprov.workbench_api.services.execution import QueryExecutor
 from graphragprov.workbench_api.services.planner import QueryPlanner
 from graphragprov.workbench_api.services.snapshots import SnapshotService
 from graphragprov.workbench_api.services.store import WorkbenchStore
+from graphragprov.workbench_api.services.user_workspace import UserWorkspaceService
 from graphragprov.workbench_api.services.workspace import GraphWorkspaceManager
 
 
@@ -22,24 +23,68 @@ class Services:
     planner: QueryPlanner
     executor: QueryExecutor
     store: WorkbenchStore
+    user_workspace: UserWorkspaceService
 
 
-def build_services(config: WorkbenchConfig) -> Services:
-    catalog = ExperimentCatalog(config)
-    store = WorkbenchStore(config.state_dir)
+def build_services(
+    config: WorkbenchConfig,
+) -> Services:
+    catalog = ExperimentCatalog(
+        config
+    )
+
+    store = WorkbenchStore(
+        config.state_dir
+    )
+
     graphdb = GraphDBClient(
         base_url=config.graphdb.base_url,
-        repository=config.graphdb.repository or "",
-        timeout_seconds=config.graphdb.timeout_seconds,
+        repository=(
+            config.graphdb.repository
+            or ""
+        ),
+        timeout_seconds=(
+            config.graphdb.timeout_seconds
+        ),
     )
-    npcs = NPCSClient(base_url=config.npcs.base_url, timeout_seconds=config.npcs.timeout_seconds)
-    workspace = GraphWorkspaceManager(graphdb)
-    snapshots = SnapshotService(catalog, BenchmarkService())
+
+    npcs = NPCSClient(
+        base_url=config.npcs.base_url,
+        timeout_seconds=(
+            config.npcs.timeout_seconds
+        ),
+    )
+
+    workspace = GraphWorkspaceManager(
+        graphdb
+    )
+
+    user_workspace = UserWorkspaceService(
+        config.state_dir,
+        config.planner,
+        workspace,
+    )
+
+    snapshots = SnapshotService(
+        catalog,
+        BenchmarkService(),
+        user_workspace,
+    )
+
     return Services(
         config=config,
         catalog=catalog,
         snapshots=snapshots,
-        planner=QueryPlanner(config.planner, store),
-        executor=QueryExecutor(workspace, npcs, store),
+        planner=QueryPlanner(
+            config.planner,
+            store,
+        ),
+        executor=QueryExecutor(
+            workspace,
+            npcs,
+            store,
+            config.planner,
+        ),
         store=store,
+        user_workspace=user_workspace,
     )

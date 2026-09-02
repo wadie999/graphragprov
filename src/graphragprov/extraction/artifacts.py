@@ -103,15 +103,29 @@ def load_grounded_extraction_outcome(
     raise ValueError("no complete grounded extraction outcome is stored")
 
 
-def save_grounded_extraction_run(run: GroundedExtractionRun, directory: Path) -> None:
-    """Save one complete validated extraction run."""
+def save_grounded_extraction_run(
+    run: GroundedExtractionRun,
+    directory: Path,
+    *,
+    expected_prompt: str | None = None,
+) -> None:
+    """Save one complete validated extraction run.
+
+    By default, artifacts are bound to the repository's standard extraction
+    prompt for the source. Callers that intentionally use another deterministic
+    prompt may provide it explicitly; exact prompt matching remains enforced.
+    """
 
     run.extraction.validate_against(run.source)
 
     coverage = measure_source_coverage(source=run.source, extraction=run.extraction)
 
     _save_common_artifacts(
-        source=run.source, prompt=run.prompt, response=run.response, directory=directory
+        source=run.source,
+        prompt=run.prompt,
+        response=run.response,
+        directory=directory,
+        expected_prompt=expected_prompt,
     )
 
     (directory / _EXTRACTION_FILENAME).write_text(run.extraction.to_json() + "\n", encoding="utf-8")
@@ -148,14 +162,25 @@ def save_grounded_extraction_failure(failure: GroundedExtractionFailure, directo
     (directory / _COVERAGE_FILENAME).unlink(missing_ok=True)
 
 
-def load_grounded_extraction_run(source: SourceUnit, directory: Path) -> GroundedExtractionRun:
-    """Load and validate one successful extraction artifact."""
+def load_grounded_extraction_run(
+    source: SourceUnit,
+    directory: Path,
+    *,
+    expected_prompt: str | None = None,
+) -> GroundedExtractionRun:
+    """Load and validate one successful extraction artifact.
+
+    ``expected_prompt`` must match the prompt used when the artifact was saved.
+    Omitting it preserves the standard source-only prompt contract.
+    """
 
     _require_files(
         directory, _SOURCE_FILENAME, _PROMPT_FILENAME, _RESPONSE_FILENAME, _EXTRACTION_FILENAME
     )
 
-    prompt, response = _load_common_artifacts(source, directory)
+    prompt, response = _load_common_artifacts(
+        source, directory, expected_prompt=expected_prompt
+    )
 
     try:
         extraction = ExtractionResult.from_json(
@@ -255,11 +280,16 @@ def _write_coverage_artifact(*, directory: Path, payload: dict[str, object]) -> 
 
 
 def _save_common_artifacts(
-    *, source: SourceUnit, prompt: str, response: str, directory: Path
+    *,
+    source: SourceUnit,
+    prompt: str,
+    response: str,
+    directory: Path,
+    expected_prompt: str | None = None,
 ) -> None:
-    expected_prompt = build_extraction_prompt(source)
+    prompt_contract = expected_prompt or build_extraction_prompt(source)
 
-    if prompt != expected_prompt:
+    if prompt != prompt_contract:
         raise ValueError("extraction prompt does not match the current source and prompt version")
 
     directory.mkdir(parents=True, exist_ok=True)
@@ -275,7 +305,12 @@ def _save_common_artifacts(
     (directory / _RESPONSE_FILENAME).write_text(response, encoding="utf-8")
 
 
-def _load_common_artifacts(source: SourceUnit, directory: Path) -> tuple[str, str]:
+def _load_common_artifacts(
+    source: SourceUnit,
+    directory: Path,
+    *,
+    expected_prompt: str | None = None,
+) -> tuple[str, str]:
     try:
         source_data = json.loads((directory / _SOURCE_FILENAME).read_text(encoding="utf-8"))
     except json.JSONDecodeError as error:
@@ -288,7 +323,9 @@ def _load_common_artifacts(source: SourceUnit, directory: Path) -> tuple[str, st
 
     prompt = (directory / _PROMPT_FILENAME).read_text(encoding="utf-8")
 
-    if prompt != build_extraction_prompt(source):
+    prompt_contract = expected_prompt or build_extraction_prompt(source)
+
+    if prompt != prompt_contract:
         raise ValueError("cached prompt does not match the current source and prompt version")
 
     response = (directory / _RESPONSE_FILENAME).read_text(encoding="utf-8")

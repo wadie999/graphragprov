@@ -27,6 +27,11 @@ class QueryRunRequest(BaseModel):
     origin: Literal["manual", "natural_language"] = "manual"
 
 
+class InteractiveQueryRequest(BaseModel):
+    question: str = Field(min_length=1)
+    max_turns: int = Field(default=5, ge=1, le=10)
+
+
 class ProvenanceFactor(BaseModel):
     token: str
     occurrence_id: str | None

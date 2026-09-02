@@ -1,5 +1,12 @@
 """Public workbench API models."""
 
+from graphragprov.workbench_api.models.authoring import (
+    GraphBuildRequest,
+    WorkspaceCaseCreate,
+    WorkspaceExperimentCreate,
+    WorkspaceSourceInput,
+    WorkspaceSourcesUpdate,
+)
 from graphragprov.workbench_api.models.benchmark import BenchmarkRecord, ReasoningStep
 from graphragprov.workbench_api.models.catalog import (
     CaseList,
@@ -8,9 +15,7 @@ from graphragprov.workbench_api.models.catalog import (
     ExperimentSummary,
 )
 from graphragprov.workbench_api.models.execution import (
-    ProvenanceAnswer,
-    ProvenanceDerivation,
-    ProvenanceFactor,
+    InteractiveQueryRequest,
     QueryPlan,
     QueryPlanRequest,
     QueryRunRequest,
@@ -21,10 +26,10 @@ from graphragprov.workbench_api.models.graph import (
     GraphSnapshot,
     StatementOccurrence,
 )
-from graphragprov.workbench_api.models.metrics import MetricCollection, MetricObservation
-from graphragprov.workbench_api.models.run import QueryRun, RunError
+from graphragprov.workbench_api.models.metrics import MetricCollection
+from graphragprov.workbench_api.models.run import QueryAttemptView, QueryRun
 from graphragprov.workbench_api.models.snapshot import CaseSnapshot
-from graphragprov.workbench_api.models.source import EvidenceSpan, SourceUnitView
+from graphragprov.workbench_api.models.source import SourceUnitView
 from graphragprov.workbench_api.models.system import Capabilities, Health
 
 __all__ = [
@@ -33,24 +38,25 @@ __all__ = [
     "CaseList",
     "CaseSnapshot",
     "CaseSummary",
-    "EvidenceSpan",
     "ExperimentList",
     "ExperimentSummary",
+    "GraphBuildRequest",
     "GraphEdge",
     "GraphNode",
     "GraphSnapshot",
     "Health",
+    "InteractiveQueryRequest",
     "MetricCollection",
-    "MetricObservation",
-    "ProvenanceAnswer",
-    "ProvenanceDerivation",
-    "ProvenanceFactor",
+    "QueryAttemptView",
     "QueryPlan",
     "QueryPlanRequest",
     "QueryRun",
     "QueryRunRequest",
     "ReasoningStep",
-    "RunError",
     "SourceUnitView",
     "StatementOccurrence",
+    "WorkspaceCaseCreate",
+    "WorkspaceExperimentCreate",
+    "WorkspaceSourceInput",
+    "WorkspaceSourcesUpdate",
 ]

@@ -38,30 +38,24 @@ def list_cases(experiment_id: str, svc: ServiceDep) -> CaseList:
     return CaseList(experiment_id=experiment_id, items=items, total=len(items))
 
 
-@router.get("/experiments/{experiment_id}/cases/{case_id}", response_model=CaseSummary)
+@router.get(
+    "/experiments/{experiment_id}/cases/{case_id}",
+    response_model=CaseSummary,
+)
 def get_case(experiment_id: str, case_id: str, svc: ServiceDep) -> CaseSummary:
     try:
-        snapshot = svc.snapshots.snapshot_for(experiment_id, case_id)
+        return svc.snapshots.case(experiment_id, case_id)
     except (KeyError, ValueError) as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
-    return CaseSummary(
-        experiment_id=experiment_id,
-        case_id=case_id,
-        snapshot_id=snapshot.snapshot_id,
-        question=snapshot.benchmark.question,
-        expected_answer=snapshot.benchmark.expected_answers[0]
-        if snapshot.benchmark.expected_answers
-        else "",
-        hop_count=snapshot.benchmark.hop_count,
-        artifact_status=snapshot.artifact_status,
-        graph_available=snapshot.graph is not None,
-        provenance_available=snapshot.reference_run is not None
-        and bool(snapshot.reference_run.provenance),
-    )
 
 
 @router.get("/experiments/{experiment_id}/metrics", response_model=MetricCollection)
-def get_experiment_metrics(experiment_id: str, svc: ServiceDep) -> MetricCollection:
+def get_experiment_metrics(
+    experiment_id: str,
+    svc: ServiceDep,
+) -> MetricCollection:
+    if svc.user_workspace.owns_experiment(experiment_id):
+        return MetricCollection(items=())
     try:
         return experiment_metrics(svc.catalog, experiment_id)
     except KeyError as error:
