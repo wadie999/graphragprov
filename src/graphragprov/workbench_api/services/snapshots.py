@@ -27,14 +27,9 @@ class SnapshotService:
         items: list[ExperimentSummary] = []
 
         for experiment in self._catalog.experiments():
-            locators = self._catalog.cases(
-                experiment.experiment_id
-            )
+            locators = self._catalog.cases(experiment.experiment_id)
 
-            available = sum(
-                locator.result_path.exists()
-                for locator in locators
-            )
+            available = sum(locator.result_path.exists() for locator in locators)
 
             items.append(
                 ExperimentSummary(
@@ -47,105 +42,44 @@ class SnapshotService:
                 )
             )
 
-        items.extend(
-            self._user_workspace.experiments()
-        )
+        items.extend(self._user_workspace.experiments())
 
         return tuple(items)
 
-    def cases(
-        self,
-        experiment_id: str,
-    ) -> tuple[CaseSummary, ...]:
-        if self._user_workspace.owns_experiment(
-            experiment_id
-        ):
-            return self._user_workspace.cases(
-                experiment_id
-            )
+    def cases(self, experiment_id: str) -> tuple[CaseSummary, ...]:
+        if self._user_workspace.owns_experiment(experiment_id):
+            return self._user_workspace.cases(experiment_id)
 
-        return tuple(
-            self._case_summary(locator)
-            for locator in self._catalog.cases(
-                experiment_id
-            )
-        )
+        return tuple(self._case_summary(locator) for locator in self._catalog.cases(experiment_id))
 
-    def case(
-        self,
-        experiment_id: str,
-        case_id: str,
-    ) -> CaseSummary:
-        for item in self.cases(
-            experiment_id
-        ):
+    def case(self, experiment_id: str, case_id: str) -> CaseSummary:
+        for item in self.cases(experiment_id):
             if item.case_id == case_id:
                 return item
 
-        raise KeyError(
-            f"unknown case: {experiment_id}/{case_id}"
-        )
+        raise KeyError(f"unknown case: {experiment_id}/{case_id}")
 
-    def snapshot(
-        self,
-        snapshot_id: str,
-    ) -> CaseSnapshot:
-        if snapshot_id.startswith(
-            "workspace-"
-        ):
-            return self._user_workspace.snapshot(
-                snapshot_id
-            )
+    def snapshot(self, snapshot_id: str) -> CaseSnapshot:
+        if snapshot_id.startswith("workspace-"):
+            return self._user_workspace.snapshot(snapshot_id)
 
-        return self._snapshot(
-            self._catalog.locate_snapshot(
-                snapshot_id
-            )
-        )
+        return self._snapshot(self._catalog.locate_snapshot(snapshot_id))
 
-    def snapshot_for(
-        self,
-        experiment_id: str,
-        case_id: str,
-    ) -> CaseSnapshot:
-        if self._user_workspace.owns_experiment(
-            experiment_id
-        ):
-            return self._user_workspace.snapshot_for(
-                experiment_id,
-                case_id,
-            )
+    def snapshot_for(self, experiment_id: str, case_id: str) -> CaseSnapshot:
+        if self._user_workspace.owns_experiment(experiment_id):
+            return self._user_workspace.snapshot_for(experiment_id, case_id)
 
-        return self._snapshot(
-            self._catalog.locate(
-                experiment_id,
-                case_id,
-            )
-        )
+        return self._snapshot(self._catalog.locate(experiment_id, case_id))
 
-    def artifact(
-        self,
-        snapshot_id: str,
-    ) -> ArtifactCase:
-        if snapshot_id.startswith(
-            "workspace-"
-        ):
-            return self._user_workspace.artifact(
-                snapshot_id
-            )
+    def artifact(self, snapshot_id: str) -> ArtifactCase:
+        if snapshot_id.startswith("workspace-"):
+            return self._user_workspace.artifact(snapshot_id)
 
-        locator = self._catalog.locate_snapshot(
-            snapshot_id
-        )
+        locator = self._catalog.locate_snapshot(snapshot_id)
 
-        return self._catalog.read(
-            locator
-        )
+        return self._catalog.read(locator)
 
-    def _case_summary(
-        self,
-        locator: CaseLocator,
-    ) -> CaseSummary:
+    def _case_summary(self, locator: CaseLocator) -> CaseSummary:
         if not locator.result_path.exists():
             return CaseSummary(
                 experiment_id=locator.experiment.experiment_id,
@@ -161,9 +95,7 @@ class SnapshotService:
                 provenance_available=False,
             )
 
-        artifact = self._catalog.read(
-            locator
-        )
+        artifact = self._catalog.read(locator)
 
         return CaseSummary(
             experiment_id=locator.experiment.experiment_id,
@@ -176,23 +108,13 @@ class SnapshotService:
             hop_count=artifact.hop_count,
             artifact_status=artifact.status,
             graph_available=artifact.observation is not None,
-            provenance_available=(
-                artifact.final_provenance is not None
-            ),
+            provenance_available=(artifact.final_provenance is not None),
         )
 
-    def _snapshot(
-        self,
-        locator: CaseLocator,
-    ) -> CaseSnapshot:
-        artifact = self._catalog.read(
-            locator
-        )
+    def _snapshot(self, locator: CaseLocator) -> CaseSnapshot:
+        artifact = self._catalog.read(locator)
 
-        graph = project_graph(
-            locator.snapshot_id,
-            artifact,
-        )
+        graph = project_graph(locator.snapshot_id, artifact)
 
         return CaseSnapshot(
             snapshot_id=locator.snapshot_id,
@@ -203,20 +125,9 @@ class SnapshotService:
             artifact_status=artifact.status,
             failure_stage=artifact.failure_stage,
             failure_message=artifact.failure_message,
-            benchmark=self._benchmarks.record(
-                locator.experiment,
-                artifact,
-            ),
-            sources=project_sources(
-                artifact
-            ),
+            benchmark=self._benchmarks.record(locator.experiment, artifact),
+            sources=project_sources(artifact),
             graph=graph,
-            metrics=project_metrics(
-                artifact
-            ),
-            reference_run=project_reference_run(
-                locator.snapshot_id,
-                artifact,
-                graph,
-            ),
+            metrics=project_metrics(artifact),
+            reference_run=project_reference_run(locator.snapshot_id, artifact, graph),
         )

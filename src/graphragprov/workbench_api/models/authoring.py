@@ -19,10 +19,7 @@ class WorkspaceSourceInput(BaseModel):
 
 
 class WorkspaceSourcesUpdate(BaseModel):
-    sources: tuple[WorkspaceSourceInput, ...] = Field(
-        min_length=1,
-        max_length=64,
-    )
+    sources: tuple[WorkspaceSourceInput, ...] = Field(min_length=1, max_length=64)
 
 
 class GraphBuildRequest(BaseModel):
@@ -34,9 +31,7 @@ class GraphBuildRequest(BaseModel):
         question = self.question.strip() if self.question is not None else None
 
         if self.mode == "question_conditioned" and not question:
-            raise ValueError(
-                "question-conditioned construction requires a question"
-            )
+            raise ValueError("question-conditioned construction requires a question")
 
         self.question = question
         return self

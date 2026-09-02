@@ -38,10 +38,7 @@ def list_cases(experiment_id: str, svc: ServiceDep) -> CaseList:
     return CaseList(experiment_id=experiment_id, items=items, total=len(items))
 
 
-@router.get(
-    "/experiments/{experiment_id}/cases/{case_id}",
-    response_model=CaseSummary,
-)
+@router.get("/experiments/{experiment_id}/cases/{case_id}", response_model=CaseSummary)
 def get_case(experiment_id: str, case_id: str, svc: ServiceDep) -> CaseSummary:
     try:
         return svc.snapshots.case(experiment_id, case_id)
@@ -50,10 +47,7 @@ def get_case(experiment_id: str, case_id: str, svc: ServiceDep) -> CaseSummary:
 
 
 @router.get("/experiments/{experiment_id}/metrics", response_model=MetricCollection)
-def get_experiment_metrics(
-    experiment_id: str,
-    svc: ServiceDep,
-) -> MetricCollection:
+def get_experiment_metrics(experiment_id: str, svc: ServiceDep) -> MetricCollection:
     if svc.user_workspace.owns_experiment(experiment_id):
         return MetricCollection(items=())
     try:

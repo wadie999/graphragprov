@@ -104,10 +104,7 @@ def load_grounded_extraction_outcome(
 
 
 def save_grounded_extraction_run(
-    run: GroundedExtractionRun,
-    directory: Path,
-    *,
-    expected_prompt: str | None = None,
+    run: GroundedExtractionRun, directory: Path, *, expected_prompt: str | None = None
 ) -> None:
     """Save one complete validated extraction run.
 
@@ -163,10 +160,7 @@ def save_grounded_extraction_failure(failure: GroundedExtractionFailure, directo
 
 
 def load_grounded_extraction_run(
-    source: SourceUnit,
-    directory: Path,
-    *,
-    expected_prompt: str | None = None,
+    source: SourceUnit, directory: Path, *, expected_prompt: str | None = None
 ) -> GroundedExtractionRun:
     """Load and validate one successful extraction artifact.
 
@@ -178,9 +172,7 @@ def load_grounded_extraction_run(
         directory, _SOURCE_FILENAME, _PROMPT_FILENAME, _RESPONSE_FILENAME, _EXTRACTION_FILENAME
     )
 
-    prompt, response = _load_common_artifacts(
-        source, directory, expected_prompt=expected_prompt
-    )
+    prompt, response = _load_common_artifacts(source, directory, expected_prompt=expected_prompt)
 
     try:
         extraction = ExtractionResult.from_json(
@@ -306,10 +298,7 @@ def _save_common_artifacts(
 
 
 def _load_common_artifacts(
-    source: SourceUnit,
-    directory: Path,
-    *,
-    expected_prompt: str | None = None,
+    source: SourceUnit, directory: Path, *, expected_prompt: str | None = None
 ) -> tuple[str, str]:
     try:
         source_data = json.loads((directory / _SOURCE_FILENAME).read_text(encoding="utf-8"))

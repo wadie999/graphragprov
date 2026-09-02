@@ -14,23 +14,14 @@ OccurrenceProjection = tuple[tuple[str, ...], StatementOccurrence]
 EvidenceRole = Literal["subject", "predicate", "object"]
 
 
-def project_occurrences(
-    artifact: ArtifactCase,
-) -> list[OccurrenceProjection]:
+def project_occurrences(artifact: ArtifactCase) -> list[OccurrenceProjection]:
     result: list[OccurrenceProjection] = []
 
     for run in artifact.extraction_runs:
         for statement in run.extraction.statements:
             subject, predicate, object_value = rdf_triple(statement)
-            triple_signature = signature(
-                subject,
-                predicate,
-                object_value,
-            )
-            token = occurrence_token(
-                unit_id=run.source.unit_id,
-                statement=statement,
-            )
+            triple_signature = signature(subject, predicate, object_value)
+            token = occurrence_token(unit_id=run.source.unit_id, statement=statement)
 
             result.append(
                 (
@@ -38,23 +29,11 @@ def project_occurrences(
                     StatementOccurrence(
                         occurrence_id=stable_id("o", token),
                         token=token,
-                        semantic_edge_id=stable_id(
-                            "e",
-                            "\0".join(triple_signature),
-                        ),
+                        semantic_edge_id=stable_id("e", "\0".join(triple_signature)),
                         source_id=run.source.unit_id,
-                        subject_evidence=_spans(
-                            statement.subject.evidence,
-                            "subject",
-                        ),
-                        predicate_evidence=_spans(
-                            statement.predicate.evidence,
-                            "predicate",
-                        ),
-                        object_evidence=_spans(
-                            statement.object.evidence,
-                            "object",
-                        ),
+                        subject_evidence=_spans(statement.subject.evidence, "subject"),
+                        predicate_evidence=_spans(statement.predicate.evidence, "predicate"),
+                        object_evidence=_spans(statement.object.evidence, "object"),
                     ),
                 )
             )
@@ -62,17 +41,10 @@ def project_occurrences(
     return result
 
 
-def _spans(
-    spans: tuple[TextSpan, ...],
-    role: EvidenceRole,
-) -> tuple[EvidenceSpan, ...]:
+def _spans(spans: tuple[TextSpan, ...], role: EvidenceRole) -> tuple[EvidenceSpan, ...]:
     return tuple(
         EvidenceSpan(
-            segment=span.segment.value,
-            start=span.start,
-            end=span.end,
-            quote=span.quote,
-            role=role,
+            segment=span.segment.value, start=span.start, end=span.end, quote=span.quote, role=role
         )
         for span in spans
     )

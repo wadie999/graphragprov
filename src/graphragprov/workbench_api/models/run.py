@@ -27,12 +27,7 @@ class QueryAttemptView(BaseModel):
 class QueryRun(BaseModel):
     run_id: str
     snapshot_id: str
-    origin: Literal[
-        "reference",
-        "manual",
-        "natural_language",
-        "interactive",
-    ]
+    origin: Literal["reference", "manual", "natural_language", "interactive"]
 
     question: str | None
     semantic_sparql: str

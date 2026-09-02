@@ -11,24 +11,12 @@ from graphragprov.extraction.run import GroundedExtractionRun
 
 def extraction_run(data: dict[str, Any]) -> GroundedExtractionRun:
     source_data = _object(data.get("source"), "source")
-    extraction_data = _object(
-        data.get("extraction"),
-        "extraction",
-    )
+    extraction_data = _object(data.get("extraction"), "extraction")
 
     source = SourceUnit(
-        unit_id=_string(
-            source_data.get("unit_id"),
-            "source.unit_id",
-        ),
-        title=_string(
-            source_data.get("title"),
-            "source.title",
-        ),
-        text=_string(
-            source_data.get("text"),
-            "source.text",
-        ),
+        unit_id=_string(source_data.get("unit_id"), "source.unit_id"),
+        title=_string(source_data.get("title"), "source.title"),
+        text=_string(source_data.get("text"), "source.text"),
     )
 
     extraction = ExtractionResult.from_dict(extraction_data)
@@ -42,25 +30,15 @@ def extraction_run(data: dict[str, Any]) -> GroundedExtractionRun:
     )
 
 
-def _object(
-    value: object,
-    name: str,
-) -> dict[str, Any]:
+def _object(value: object, name: str) -> dict[str, Any]:
     if not isinstance(value, dict):
-        raise ValueError(
-            f"artifact field {name} must be an object"
-        )
+        raise ValueError(f"artifact field {name} must be an object")
 
     return cast(dict[str, Any], value)
 
 
-def _string(
-    value: object,
-    name: str,
-) -> str:
+def _string(value: object, name: str) -> str:
     if not isinstance(value, str):
-        raise ValueError(
-            f"artifact field {name} must be a string"
-        )
+        raise ValueError(f"artifact field {name} must be a string")
 
     return value
