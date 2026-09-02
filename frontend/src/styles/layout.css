@@ -1,0 +1,510 @@
+.app-shell {
+  display: grid;
+
+  grid-template-columns:
+    var(--sidebar)
+    minmax(0, 1fr);
+
+  height: 100vh;
+
+  overflow: hidden;
+}
+
+.left-rail {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    );
+
+  border-right:
+    1px solid
+    var(--line);
+
+  height: 100vh;
+
+  overflow: hidden;
+}
+
+.workspace {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  height: 100vh;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  padding:
+    14px
+    18px
+    12px;
+}
+
+.workspace-header {
+  flex: 0 0 auto;
+
+  min-width: 0;
+}
+
+.loading-screen,
+.empty-workspace {
+  color: var(--muted);
+
+  display: grid;
+
+  height: 100%;
+
+  place-content: center;
+
+  text-align: center;
+}
+
+.empty-workspace strong {
+  color: var(--ink);
+
+  font-size: 16px;
+
+  margin-bottom: 6px;
+}
+
+.empty-workspace span {
+  font-size: 12px;
+}
+
+.case-header {
+  margin-bottom: 8px;
+}
+
+.case-kicker {
+  color: var(--muted);
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.02em;
+}
+
+.case-header h1,
+.authoring-header h1 {
+  font-size:
+    clamp(
+      20px,
+      1.7vw,
+      28px
+    );
+
+  letter-spacing: -0.03em;
+
+  line-height: 1.15;
+
+  margin:
+    4px
+    0
+    9px;
+}
+
+.case-heading-row {
+  align-items: flex-start;
+
+  display: flex;
+
+  gap: 12px;
+
+  justify-content: space-between;
+}
+
+.case-facts {
+  display: grid;
+
+  gap: 7px;
+
+  grid-template-columns:
+    140px
+    72px
+    165px
+    105px
+    minmax(
+      260px,
+      1fr
+    );
+}
+
+.workspace-facts {
+  grid-template-columns:
+    150px
+    170px
+    95px
+    110px
+    minmax(
+      260px,
+      1fr
+    );
+}
+
+.fact,
+.evidence-chain {
+  background:
+    var(--surface);
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius: 10px;
+
+  min-width: 0;
+
+  padding:
+    7px
+    10px;
+}
+
+.fact span,
+.evidence-chain > span {
+  color: var(--muted);
+
+  display: block;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  margin-bottom: 3px;
+
+  text-transform: uppercase;
+}
+
+.fact strong {
+  display: block;
+
+  font-size: 12px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.evidence-chain > div {
+  display: flex;
+
+  gap: 10px;
+
+  overflow-x: auto;
+
+  scrollbar-width: thin;
+}
+
+.reasoning-step {
+  flex: 0 0 auto;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+.no-ground-truth {
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+.metrics-strip {
+  display: flex;
+
+  gap: 7px;
+
+  margin-bottom: 7px;
+}
+
+.metrics-strip > div {
+  background:
+    var(--surface-soft);
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius: 8px;
+
+  padding:
+    5px
+    9px;
+}
+
+.metrics-strip span {
+  color: var(--muted);
+
+  font-size: 9px;
+
+  margin-right: 6px;
+}
+
+.metrics-strip strong {
+  font-size: 11px;
+}
+
+.error-banner {
+  background:
+    var(--red-soft);
+
+  border:
+    1px solid
+    #f5caca;
+
+  border-radius: 9px;
+
+  color: var(--red);
+
+  font-size: 12px;
+
+  margin:
+    5px
+    0;
+
+  padding:
+    7px
+    10px;
+}
+
+/* -------------------------------------------------- */
+/* Workspace case authoring                           */
+/* -------------------------------------------------- */
+
+/*
+ * The whole authoring screen scrolls internally.
+ *
+ * This deliberately differs from the normal
+ * inspection workbench, which remains fixed.
+ *
+ * It means:
+ * - one paragraph produces a compact natural layout;
+ * - adding many paragraphs simply makes this area scroll;
+ * - the action buttons always remain reachable.
+ */
+.authoring-shell {
+  flex: 1;
+
+  min-height: 0;
+
+  overflow-x: hidden;
+
+  overflow-y: auto;
+
+  padding-right: 4px;
+
+  scrollbar-width: thin;
+}
+
+.authoring-header {
+  align-items: flex-start;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+.authoring-header p {
+  color: var(--muted);
+
+  font-size: 12px;
+
+  margin: 0;
+
+  max-width: 760px;
+}
+
+.authoring-controls {
+  align-items: center;
+
+  display: flex;
+
+  gap: 15px;
+
+  margin-bottom: 10px;
+
+  padding:
+    9px
+    12px;
+}
+
+.construction-mode {
+  align-items: center;
+
+  display: flex;
+
+  flex: 0 0 auto;
+
+  gap: 12px;
+}
+
+.construction-mode > span {
+  color: var(--muted);
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  text-transform: uppercase;
+}
+
+.construction-mode label {
+  align-items: center;
+
+  display: flex;
+
+  font-size: 11px;
+
+  gap: 5px;
+}
+
+.construction-question {
+  border:
+    1px solid
+    var(--line-strong);
+
+  border-radius: 8px;
+
+  flex: 1;
+
+  min-width: 0;
+
+  outline: 0;
+
+  padding:
+    7px
+    9px;
+}
+
+/*
+ * Do not give the paragraph list its own scroll area.
+ * It grows naturally inside the authoring screen.
+ */
+.paragraph-editor-list {
+  overflow: visible;
+
+  padding-right: 0;
+}
+
+.paragraph-editor {
+  margin-bottom: 9px;
+
+  padding: 11px;
+}
+
+.paragraph-editor-title {
+  align-items: center;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-bottom: 7px;
+}
+
+.paragraph-editor-title strong {
+  font-size: 11px;
+}
+
+.paragraph-editor > input,
+.paragraph-editor > textarea {
+  border:
+    1px solid
+    var(--line);
+
+  border-radius: 8px;
+
+  display: block;
+
+  outline: 0;
+
+  padding:
+    8px
+    9px;
+
+  width: 100%;
+}
+
+.paragraph-editor > input {
+  font-weight: 700;
+
+  margin-bottom: 7px;
+}
+
+.paragraph-editor > textarea {
+  line-height: 1.5;
+
+  min-height: 120px;
+
+  resize: vertical;
+}
+
+/*
+ * Natural document flow:
+ * actions appear directly after the final paragraph.
+ *
+ * No forced bottom positioning and no hidden footer.
+ */
+.authoring-actions {
+  align-items: center;
+
+  background:
+    var(--bg);
+
+  border-top:
+    1px solid
+    var(--line);
+
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 4px;
+
+  padding:
+    10px
+    0
+    8px;
+}
+
+.authoring-actions > div {
+  display: flex;
+
+  gap: 8px;
+}
+
+@media (
+  max-width: 1100px
+) {
+  :root {
+    --sidebar: 235px;
+  }
+
+  .case-facts,
+  .workspace-facts {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          90px,
+          1fr
+        )
+      );
+  }
+
+  .evidence-chain {
+    grid-column:
+      1 / -1;
+  }
+}

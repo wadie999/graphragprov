@@ -1,0 +1,41 @@
+[server]
+host = "127.0.0.1"
+port = 8080
+frontend_dev_port = 5173
+
+[storage]
+state_dir = ".workbench"
+frontend_dist = "frontend/dist"
+
+[services.graphdb]
+base_url = "http://localhost:7200"
+repository = "graphragprov"
+timeout_seconds = 30
+
+[services.npcs]
+base_url = "http://localhost:8002"
+timeout_seconds = 30
+
+[planner]
+model = "deepseek-v4-flash"
+max_tokens = 4096
+timeout_seconds = 60
+api_key_env = "DEEPSEEK_API_KEY"
+
+[[experiments]]
+id = "2wiki-compositional-200-v2"
+label = "2Wiki C200-v2"
+benchmark = "twowiki"
+path = "experiments/runs/2wiki-compositional-200-v2"
+scope = "support"
+cohort_path = "experiments/cohorts/2wiki-compositional-200-v1.txt"
+dataset_path = "experiments/cohorts/2wiki-compositional-200-v1.json"
+
+[[experiments]]
+id = "musique-answerable-200-v2"
+label = "MuSiQue C200-v2"
+benchmark = "musique"
+path = "experiments/runs/musique-answerable-200-v2"
+scope = "support"
+cohort_path = "experiments/cohorts/musique-answerable-200-v2.txt"
+dataset_path = "external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl"

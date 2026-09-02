@@ -25,11 +25,10 @@ def build_tuple_qa_prompt(
     if hop_count <= 0:
         raise ValueError("QA hop count must be positive")
 
-    metadata = [
-        f"Question: {question}",
-        f"Expected reasoning depth: {hop_count} hops",
-        f"Maximum SPARQL turns: {configuration.max_turns}",
-    ]
+    metadata = [f"Question: {question}", f"Maximum SPARQL turns: {configuration.max_turns}"]
+
+    if configuration.decomposition_visibility in {"hop_count", "gold_decomposition"}:
+        metadata.append(f"Expected reasoning depth: {hop_count} hops")
 
     if configuration.decomposition_visibility == "gold_decomposition":
         if not decomposition:
@@ -49,62 +48,74 @@ def build_tuple_qa_prompt(
 
     return "\n".join(
         [
-            "You are a multi-turn graph-only SPARQL question-answering agent.",
+            ("You are a multi-turn graph-only SPARQL question-answering agent."),
             "",
             *metadata,
             "",
             *context_lines,
             "",
-            "You may issue several SPARQL queries before producing a final answer query.",
+            ("You may issue several SPARQL queries before producing a final answer query."),
             "",
             "Every SPARQL query you produce will be:",
-            "1. restricted by the backend to the configured graph scope;",
+            ("1. restricted by the backend to the configured graph scope;"),
             "2. executed against GraphDB;",
-            "3. rewritten by NPCS for semiring provenance;",
+            ("3. rewritten by NPCS for semiring provenance;"),
             "4. executed again with provenance;",
-            "5. returned to you as feedback on the next turn.",
+            ("5. returned to you as feedback on the next turn."),
             "",
             "Choose one query purpose:",
             "",
-            '- "inspection": explore entities, predicates, types, '
-            "or graph structure. The run must continue afterward.",
+            (
+                '- "inspection": explore entities, '
+                "predicates, types, or graph structure. "
+                "The run must continue afterward."
+            ),
             "",
-            '- "candidate": test a plausible reasoning path or '
-            "candidate answer. The run must continue afterward so "
-            "you can validate or refine it.",
+            (
+                '- "candidate": test a plausible reasoning '
+                "path or candidate answer. The run must "
+                "continue afterward so you can validate "
+                "or refine it."
+            ),
             "",
-            '- "final": issue the query that you consider sufficient '
-            "to answer the question. A successful provenance-decoded "
-            "result may terminate the run.",
+            (
+                '- "final": issue the query that you '
+                "consider sufficient to answer the question. "
+                "A successful provenance-decoded result "
+                "may terminate the run."
+            ),
             "",
             "SPARQL requirements:",
-            "- Return one complete read-only SPARQL SELECT query.",
-            "- Inspection and candidate queries may expose any meaningful variables.",
-            "- A final query must expose the answer as ?answer.",
-            "- Do not include FROM, FROM NAMED, GRAPH, SERVICE, or update operations.",
-            "- Dataset scope is controlled exclusively by the backend.",
-            "- Do not invent entities, predicates, triples, or facts.",
-            "- Generic inspection queries are allowed when exact IRIs are not yet known.",
+            ("- Return one complete read-only SPARQL SELECT query."),
+            ("- Inspection and candidate queries may expose any meaningful variables."),
+            ("- A final query must expose the answer as ?answer."),
+            ("- Do not include FROM, FROM NAMED, GRAPH, SERVICE, or update operations."),
+            ("- Dataset scope is controlled exclusively by the backend."),
+            ("- Do not invent entities, predicates, triples, or facts."),
+            ("- Generic inspection queries are allowed when exact IRIs are not yet known."),
             "",
-            "Do not declare the question unanswerable merely because an early query failed.",
+            ("Do not declare the question unanswerable merely because an early query failed."),
             "",
-            "Return status ambiguous or unanswerable only when you are "
-            "ready to terminate the run without another query.",
+            (
+                "Return status ambiguous or unanswerable "
+                "only when you are ready to terminate the "
+                "run without another query."
+            ),
             "",
-            "Return exactly one JSON object with these fields:",
+            ("Return exactly one JSON object with these fields:"),
             "{",
-            '  "status": "query | ambiguous | unanswerable",',
-            '  "purpose": "inspection | candidate | final | null",',
-            '  "sparql": "complete SELECT query or null",',
-            '  "rationale": "short explicit explanation",',
-            '  "assumptions": ["explicit assumption", "..."]',
+            ('  "status": "query | ambiguous | unanswerable",'),
+            ('  "purpose": "inspection | candidate | final | null",'),
+            ('  "sparql": "complete SELECT query or null",'),
+            ('  "rationale": "short explicit explanation",'),
+            ('  "assumptions": ["explicit assumption", "..."]'),
             "}",
             "",
             "Rules for null values:",
-            '- When status is "query", purpose and sparql must not be null.',
-            '- When status is "ambiguous" or "unanswerable", purpose and sparql must be null.',
+            ('- When status is "query", purpose and sparql must not be null.'),
+            ('- When status is "ambiguous" or "unanswerable", purpose and sparql must be null.'),
             "",
-            "Do not add Markdown fences or additional fields.",
+            ("Do not add Markdown fences or additional fields."),
         ]
     )
 
@@ -124,12 +135,19 @@ def _build_context_lines(
         return [
             "ORACLE TUPLE CONTEXT",
             "",
-            "The RDF tuples below were extracted from the benchmark's gold supporting paragraphs.",
+            (
+                "The RDF tuples below were extracted "
+                "from the benchmark's gold supporting "
+                "paragraphs."
+            ),
             "",
-            "This oracle context is provided to evaluate whether the "
-            "graph extractor constructed enough semantic information.",
+            (
+                "This oracle context is provided to "
+                "evaluate whether the graph extractor "
+                "constructed enough semantic information."
+            ),
             "",
-            "The tuples may still contain extraction or identity errors.",
+            ("The tuples may still contain extraction or identity errors."),
             "",
             "Semantic RDF triples:",
             *tuple_lines,
@@ -142,10 +160,13 @@ def _build_context_lines(
         return [
             "NO INITIAL TUPLES",
             "",
-            "No extracted tuples are included in this prompt.",
+            ("No extracted tuples are included in this prompt."),
             "",
-            "Discover the relevant graph structure through inspection "
-            "and candidate SPARQL queries.",
+            (
+                "Discover the relevant graph structure "
+                "through inspection and candidate "
+                "SPARQL queries."
+            ),
         ]
 
     raise NotImplementedError("hybrid prompt context is not implemented")
