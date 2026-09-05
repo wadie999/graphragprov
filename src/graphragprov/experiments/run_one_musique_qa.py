@@ -13,7 +13,7 @@ from typing import Literal
 from graphragprov.benchmarks.musique import MusiqueCase, collect_musique_source_units, select_cases
 from graphragprov.config import musique_dataset_path
 from graphragprov.graphdb import GraphDBClient
-from graphragprov.npcs import NPCSClient
+from graphragprov.npcs import SparqlProvClient
 from graphragprov.provenance import SourceRegistry
 from graphragprov.providers.deepseek import DEFAULT_DEEPSEEK_MODEL, deepseek_generator
 from graphragprov.qaagent import QAAgentConfiguration, QAAgentRunResult, run_tuple_qa_agent
@@ -40,7 +40,7 @@ def run_musique_case_qa(
     model: str = DEFAULT_DEEPSEEK_MODEL,
     max_tokens: int = _DEFAULT_MAX_TOKENS,
     graphdb: GraphDBClient | None = None,
-    npcs: NPCSClient | None = None,
+    npcs: SparqlProvClient | None = None,
     generate_response: GenerateResponse | None = None,
     provenance_registry: SourceRegistry | None = None,
     event_sink: QARunEventSink | None = None,
@@ -98,7 +98,7 @@ def run_musique_case_qa(
     try:
         resolved_graphdb = graphdb if graphdb is not None else GraphDBClient.from_environment()
 
-        resolved_npcs = npcs if npcs is not None else NPCSClient.from_environment()
+        resolved_npcs = npcs if npcs is not None else SparqlProvClient.from_environment()
     except ValueError as error:
         raise RuntimeError(f"QA infrastructure is not configured: {error}") from error
 

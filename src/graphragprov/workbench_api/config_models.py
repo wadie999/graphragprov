@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-BenchmarkName = Literal["musique", "twowiki"]
+BenchmarkName = Literal["musique", "twowiki", "custom"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -42,6 +42,6 @@ class WorkbenchConfig:
     port: int
     frontend_dev_port: int
     graphdb: ServiceConfig
-    npcs: ServiceConfig
+    sparqlprov: ServiceConfig
     planner: PlannerConfig
     experiments: tuple[ExperimentConfig, ...]

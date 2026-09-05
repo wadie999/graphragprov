@@ -39,7 +39,7 @@ from graphragprov.extraction.run import (
 )
 from graphragprov.graphdb import GraphDBClient
 from graphragprov.metrics import SourceCoverageMeasurements, measure_source_coverage
-from graphragprov.npcs import NPCSClient
+from graphragprov.npcs import SparqlProvClient
 from graphragprov.providers.deepseek import (
     DEFAULT_DEEPSEEK_MODEL,
     DEFAULT_DEEPSEEK_TIMEOUT_SECONDS,
@@ -554,7 +554,7 @@ def main() -> None:
     _write_or_validate_configuration(root / "run-config.json", run_configuration)
 
     graphdb = GraphDBClient.from_environment()
-    npcs = NPCSClient.from_environment()
+    npcs = SparqlProvClient.from_environment()
 
     _print_plan(
         case_id=case.case_id,
@@ -646,7 +646,7 @@ def main() -> None:
         raise SystemExit(1)
 
 
-def _preflight(*, graphdb: GraphDBClient, npcs: NPCSClient) -> None:
+def _preflight(*, graphdb: GraphDBClient, npcs: SparqlProvClient) -> None:
     graphdb.query("SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }")
     npcs.rewrite("SELECT ?s WHERE { ?s ?p ?o }")
     _print("preflight: GraphDB OK; NPCS OK")
@@ -691,7 +691,7 @@ def _build_run_artifact(
     graph_generate: CheckpointedGenerateResponse,
     query_generate: CheckpointedGenerateResponse,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
 ) -> dict[str, object]:
     return {
         "format": RUN_ARTIFACT_FORMAT,
@@ -778,7 +778,7 @@ def _print_plan(
     arguments: RunOneArguments,
     root: Path,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
 ) -> None:
     _print("")
     _print("H0 one-case execution")

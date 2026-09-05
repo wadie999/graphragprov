@@ -17,6 +17,6 @@ def health() -> Health:
 def capabilities(svc: ServiceDep) -> Capabilities:
     return Capabilities(
         graph_queries=bool(svc.config.graphdb.base_url),
-        provenance_rewrite=bool(svc.config.npcs.base_url),
+        provenance_rewrite=bool(svc.config.sparqlprov.base_url),
         natural_language_planner=svc.planner.available,
     )

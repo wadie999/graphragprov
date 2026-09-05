@@ -5,8 +5,7 @@ x-app: &app
     GRAPHRAGPROV_WORKBENCH_CONFIG: /app/workbench.toml
     GRAPHRAGPROV_HOST: 0.0.0.0
     GRAPHRAGPROV_GRAPHDB_URL: http://graphdb:7200
-    GRAPHRAGPROV_NPCS_URL: http://sparqlprov:3000
-    GRAPHRAGPROV_NPCS_BACKEND: rust
+    GRAPHRAGPROV_SPARQLPROV_URL: http://sparqlprov:3000
     GRAPHRAGPROV_STATE_DIR: /app/.workbench
   volumes: &mounts
     - workbench-state:/app/.workbench
@@ -18,6 +17,8 @@ x-app: &app
         create_host_path: false
     - ./experiments:/app/experiments:ro
     - ./runs:/app/runs:ro
+    - ./external/benchmarks:/app/external/benchmarks:ro
+
 
 services:
   graphdb:
@@ -40,7 +41,9 @@ services:
     restart: unless-stopped
 
   sparqlprov:
-    build: ./services/sparql-prov
+    build:
+      context: ./services/sparql-prov
+      dockerfile: ../../deploy/sparqlprov.Dockerfile
     restart: unless-stopped
 
   init:

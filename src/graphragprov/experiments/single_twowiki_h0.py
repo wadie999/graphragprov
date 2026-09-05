@@ -31,7 +31,7 @@ from graphragprov.experiments.multihop_fidelity.twowiki_query import (
     twowiki_execution_feedback,
 )
 from graphragprov.graphdb import GraphDBClient, materialize_grounded_extractions
-from graphragprov.npcs import NPCSClient
+from graphragprov.npcs import SparqlProvClient
 from graphragprov.provenance import SourceRegistry
 from graphragprov.providers.deepseek import (
     DEFAULT_DEEPSEEK_MODEL,
@@ -105,7 +105,7 @@ def main() -> None:
     root.mkdir(parents=True, exist_ok=True)
 
     graphdb = GraphDBClient.from_environment()
-    npcs = NPCSClient.from_environment()
+    npcs = SparqlProvClient.from_environment()
 
     _preflight(graphdb=graphdb, npcs=npcs)
 
@@ -427,7 +427,7 @@ def _support_feedback(
     )
 
 
-def _preflight(*, graphdb: GraphDBClient, npcs: NPCSClient) -> None:
+def _preflight(*, graphdb: GraphDBClient, npcs: SparqlProvClient) -> None:
     graphdb.query("SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }")
 
     npcs.rewrite("SELECT ?s WHERE { ?s ?p ?o }")

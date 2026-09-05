@@ -58,7 +58,7 @@ from graphragprov.graphdb import (
     GraphMaterializationSummary,
     materialize_grounded_extractions,
 )
-from graphragprov.npcs import NPCSClient
+from graphragprov.npcs import SparqlProvClient
 from graphragprov.provenance import SourceRegistry
 from graphragprov.qaagent import (
     QAAgentObservation,
@@ -270,7 +270,7 @@ def run_h0_case(
     graph_generate_response: GenerateResponse,
     query_generate_response: GenerateResponse,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
     telemetry: ExperimentTelemetryRecorder,
     progress_sink: H0ProgressSink | None = None,
 ) -> H0CaseOutcome:
@@ -333,7 +333,7 @@ def run_twowiki_h0_case(
     graph_generate_response: GenerateResponse,
     query_generate_response: GenerateResponse,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
     telemetry: ExperimentTelemetryRecorder,
     progress_sink: H0ProgressSink | None = None,
 ) -> H0CaseOutcome:
@@ -407,7 +407,7 @@ def _run_reference_h0_case(
     graph_generate_response: GenerateResponse,
     query_generate_response: GenerateResponse,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
     telemetry: ExperimentTelemetryRecorder,
     progress_sink: H0ProgressSink | None = None,
 ) -> H0CaseOutcome:

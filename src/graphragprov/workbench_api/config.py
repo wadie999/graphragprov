@@ -16,18 +16,30 @@ from graphragprov.workbench_api.config_models import (
 )
 
 CONFIG_ENV = "GRAPHRAGPROV_WORKBENCH_CONFIG"
+CONFIG_PATH_ENV = "GRAPHRAGPROV_CONFIG"
+GRAPHDB_URL_ENV = "GRAPHRAGPROV_GRAPHDB_URL"
+SPARQLPROV_URL_ENV = "GRAPHRAGPROV_SPARQLPROV_URL"
 
 
 def load_config(path: Path | None = None) -> WorkbenchConfig:
-    config_path = (path or Path(os.getenv(CONFIG_ENV, "workbench.toml"))).resolve()
+    configured_path = os.getenv(
+        CONFIG_ENV,
+        os.getenv(CONFIG_PATH_ENV, "workbench.toml"),
+    )
 
+    config_path = (path or Path(configured_path)).resolve()
     data = tomllib.loads(config_path.read_text(encoding="utf-8"))
     root = config_path.parent
 
-    experiments = tuple(_experiment(root, item) for item in data.get("experiments", []))
+    experiments = tuple(
+        _experiment(root, item)
+        for item in data.get("experiments", [])
+    )
 
     if not experiments:
-        raise ValueError("workbench configuration requires at least one experiment")
+        raise ValueError(
+            "workbench configuration requires at least one experiment"
+        )
 
     server = _table(data, "server")
     storage = _table(data, "storage")
@@ -36,28 +48,74 @@ def load_config(path: Path | None = None) -> WorkbenchConfig:
 
     return WorkbenchConfig(
         root=root,
-        state_dir=_resolve(root, storage.get("state_dir", ".workbench")),
-        frontend_dist=_resolve(root, storage.get("frontend_dist", "frontend/dist")),
-        host=str(server.get("host", "127.0.0.1")),
+        state_dir=_resolve(
+            root,
+            os.getenv(
+                "GRAPHRAGPROV_STATE_DIR",
+                str(storage.get("state_dir", ".workbench")),
+            ),
+        ),
+        frontend_dist=_resolve(
+            root,
+            storage.get("frontend_dist", "frontend/dist"),
+        ),
+        host=os.getenv(
+            "GRAPHRAGPROV_HOST",
+            str(server.get("host", "127.0.0.1")),
+        ),
         port=_int(server.get("port", 8080), "server.port"),
-        frontend_dev_port=_int(server.get("frontend_dev_port", 5173), "server.frontend_dev_port"),
-        graphdb=_service(_nested(services, "graphdb"), require_repository=True),
-        npcs=_service(_nested(services, "npcs"), require_repository=False),
+        frontend_dev_port=_int(
+            server.get("frontend_dev_port", 5173),
+            "server.frontend_dev_port",
+        ),
+        graphdb=_service(
+            _nested(services, "graphdb"),
+            env_var=GRAPHDB_URL_ENV,
+            require_repository=True,
+        ),
+        sparqlprov=_service(
+            _nested(services, "sparqlprov"),
+            env_var=SPARQLPROV_URL_ENV,
+            require_repository=False,
+        ),
         planner=PlannerConfig(
-            model=str(planner.get("model", "deepseek-v4-flash")),
-            max_tokens=_int(planner.get("max_tokens", 4096), "planner.max_tokens"),
-            timeout_seconds=_float(planner.get("timeout_seconds", 60.0), "planner.timeout_seconds"),
-            api_key_env=str(planner.get("api_key_env", "DEEPSEEK_API_KEY")),
+            model=str(
+                planner.get("model", "deepseek-v4-flash")
+            ),
+            max_tokens=_int(
+                planner.get("max_tokens", 4096),
+                "planner.max_tokens",
+            ),
+            timeout_seconds=_float(
+                planner.get("timeout_seconds", 60.0),
+                "planner.timeout_seconds",
+            ),
+            api_key_env=str(
+                planner.get("api_key_env", "DEEPSEEK_API_KEY")
+            ),
         ),
         experiments=experiments,
     )
 
 
-def _experiment(root: Path, item: dict[str, object]) -> ExperimentConfig:
+def _experiment(
+    root: Path,
+    item: dict[str, object],
+) -> ExperimentConfig:
     benchmark = str(item["benchmark"])
 
-    if benchmark not in {"musique", "twowiki"}:
+    if benchmark not in {"musique", "twowiki", "custom"}:
         raise ValueError(f"unsupported benchmark: {benchmark}")
+
+    cohort_path = _optional_path(
+        root,
+        item.get("cohort_path"),
+    )
+
+    if cohort_path is not None and not cohort_path.is_file():
+        raise ValueError(
+            f"configured cohort file does not exist: {cohort_path}"
+        )
 
     return ExperimentConfig(
         experiment_id=str(item["id"]),
@@ -65,21 +123,41 @@ def _experiment(root: Path, item: dict[str, object]) -> ExperimentConfig:
         benchmark=cast(BenchmarkName, benchmark),
         path=_resolve(root, item["path"]),
         scope=str(item.get("scope", "support")),
-        cohort_path=_optional_path(root, item.get("cohort_path")),
-        dataset_path=_optional_path(root, item.get("dataset_path")),
+        cohort_path=cohort_path,
+        dataset_path=_optional_path(
+            root,
+            item.get("dataset_path"),
+        ),
     )
 
 
-def _service(data: dict[str, object], *, require_repository: bool) -> ServiceConfig:
+def _service(
+    data: dict[str, object],
+    *,
+    env_var: str,
+    require_repository: bool,
+) -> ServiceConfig:
     repository = data.get("repository")
 
     if require_repository and not repository:
-        raise ValueError("GraphDB repository must be configured")
+        raise ValueError(
+            "GraphDB repository must be configured"
+        )
 
     return ServiceConfig(
-        base_url=str(data.get("base_url", "")),
-        timeout_seconds=_float(data.get("timeout_seconds", 30.0), "service.timeout_seconds"),
-        repository=(str(repository) if repository else None),
+        base_url=os.getenv(
+            env_var,
+            str(data.get("base_url", "")),
+        ),
+        timeout_seconds=_float(
+            data.get("timeout_seconds", 30.0),
+            "service.timeout_seconds",
+        ),
+        repository=(
+            str(repository)
+            if repository
+            else None
+        ),
     )
 
 
@@ -112,14 +190,20 @@ def _resolve(root: Path, value: object) -> Path:
     return (root / path).resolve()
 
 
-def _optional_path(root: Path, value: object) -> Path | None:
+def _optional_path(
+    root: Path,
+    value: object,
+) -> Path | None:
     if value in {None, ""}:
         return None
 
     return _resolve(root, value)
 
 
-def _table(data: dict[str, object], key: str) -> dict[str, object]:
+def _table(
+    data: dict[str, object],
+    key: str,
+) -> dict[str, object]:
     value = data.get(key, {})
 
     if not isinstance(value, dict):
@@ -128,12 +212,16 @@ def _table(data: dict[str, object], key: str) -> dict[str, object]:
     return cast(dict[str, object], value)
 
 
-def _nested(data: dict[str, object], key: str) -> dict[str, object]:
+def _nested(
+    data: dict[str, object],
+    key: str,
+) -> dict[str, object]:
     return _table(data, key)
 
 
 __all__ = [
     "CONFIG_ENV",
+    "CONFIG_PATH_ENV",
     "ExperimentConfig",
     "PlannerConfig",
     "ServiceConfig",
