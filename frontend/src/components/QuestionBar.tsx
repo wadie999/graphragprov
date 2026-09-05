@@ -1,4 +1,4 @@
-import { Play, Sparkles } from "lucide-react";
+import { Play } from "lucide-react";
 
 import type { QueryMode } from "../api/types";
 
@@ -16,12 +16,12 @@ export function QuestionBar(props: {
 }) {
   return (
     <div className="question-bar">
-      <label>
-        <Sparkles size={16} />
+      <label htmlFor="workbench-question">
+        
         Question
       </label>
 
-      <input
+      <input id="workbench-question"
         value={props.question}
         onChange={(event) =>
           props.onQuestion(

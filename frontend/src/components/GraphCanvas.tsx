@@ -160,6 +160,21 @@ export function GraphCanvas(props: {
 
     renderer.current = sigma;
 
+    const camera = sigma.getCamera();
+    const syncLabelSizes = () => {
+      const scale = Math.min(
+        2.5,
+        Math.max(0.8, 1 / Math.sqrt(camera.getState().ratio)),
+      );
+      sigma.setSettings({
+        labelSize: GRAPH_VISUAL.labels.nodeSize * scale,
+        edgeLabelSize: GRAPH_VISUAL.labels.edgeSize * scale,
+      });
+    };
+
+    camera.on("updated", syncLabelSizes);
+    syncLabelSizes();
+
     sigma.on(
       "enterEdge",
       ({ edge }) => {
@@ -215,6 +230,7 @@ export function GraphCanvas(props: {
     );
 
     return () => {
+      camera.off("updated", syncLabelSizes);
       sigma.kill();
 
       renderer.current = null;
