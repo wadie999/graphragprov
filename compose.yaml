@@ -1,0 +1,79 @@
+x-app: &app
+  image: graphragprov-app:local
+  build: .
+  environment: &environment
+    GRAPHRAGPROV_WORKBENCH_CONFIG: /app/workbench.toml
+    GRAPHRAGPROV_HOST: 0.0.0.0
+    GRAPHRAGPROV_GRAPHDB_URL: http://graphdb:7200
+    GRAPHRAGPROV_SPARQLPROV_URL: http://sparqlprov:3000
+    GRAPHRAGPROV_STATE_DIR: /app/.workbench
+  volumes: &mounts
+    - workbench-state:/app/.workbench
+    - type: bind
+      source: ${GRAPHRAGPROV_CONFIG:-./workbench.toml}
+      target: /app/workbench.toml
+      read_only: true
+      bind:
+        create_host_path: false
+    - ./experiments:/app/experiments:ro
+    - ./runs:/app/runs:ro
+    - ./external/benchmarks:/app/external/benchmarks:ro
+
+
+services:
+  graphdb:
+    image: ontotext/graphdb:11.3.1
+    environment:
+      GDB_JAVA_OPTS: >-
+        -Xms512m -Xmx${GRAPHDB_HEAP:-2g}
+        -Dgraphdb.home=/opt/graphdb/home
+        -Dgraphdb.license.file=/run/graphdb.license
+    ports:
+      - "127.0.0.1:${GRAPHDB_PORT:-7200}:7200"
+    volumes:
+      - graphdb-data:/opt/graphdb/home
+      - type: bind
+        source: ${GRAPHDB_LICENSE_PATH:-./secrets/graphdb.license}
+        target: /run/graphdb.license
+        read_only: true
+        bind:
+          create_host_path: false
+    restart: unless-stopped
+
+  sparqlprov:
+    build:
+      context: ./services/sparql-prov
+      dockerfile: ../../deploy/sparqlprov.Dockerfile
+    restart: unless-stopped
+
+  init:
+    <<: *app
+    command: ["python", "deploy/bootstrap.py"]
+    depends_on:
+      graphdb:
+        condition: service_started
+      sparqlprov:
+        condition: service_started
+    restart: "no"
+
+  app:
+    <<: *app
+    environment:
+      <<: *environment
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${GRAPHRAGPROV_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/v1/system/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 6
+    restart: unless-stopped
+
+volumes:
+  graphdb-data:
+  workbench-state:

@@ -49,6 +49,12 @@ def parse_provenance_polynomial(value: str) -> ProvenancePolynomial:
     are preserved because provenance multiplicity may be meaningful.
     """
 
+    if value.startswith(("(⊕", "(⊗", "(⊖")):
+        from graphragprov.provenance.sparqlprov_polynomial import parse_sparqlprov_polynomial
+
+        derivations = parse_sparqlprov_polynomial(value)
+        return ProvenancePolynomial(tuple(sorted(tuple(sorted(d)) for d in derivations)))
+
     parser = _PolynomialParser(value)
     derivations = parser.parse()
 

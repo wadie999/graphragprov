@@ -8,9 +8,8 @@ from dataclasses import dataclass
 from typing import Literal
 
 from graphragprov.graphdb import GraphDBClient
-from graphragprov.npcs import NPCSClient
-
-PROVENANCE_VARIABLE = "finalprovennacevariable"
+from graphragprov.npcs import SparqlProvClient
+from graphragprov.npcs.client import rewrite_query
 
 ProvenanceQueryStage = Literal["original_completed", "rewritten", "rewritten_completed"]
 
@@ -25,16 +24,19 @@ class ProvenanceQueryExecution:
     original_result: dict[str, object]
     rewritten_query: str
     rewritten_result: dict[str, object]
+    provenance_variable: str
 
     def to_dict(self) -> dict[str, object]:
         """Return a JSON-serializable execution record."""
 
-        return {
+        payload = {
             "original_query": self.original_query,
             "original_result": self.original_result,
             "rewritten_query": self.rewritten_query,
             "rewritten_result": self.rewritten_result,
         }
+        payload["provenance_variable"] = self.provenance_variable
+        return payload
 
     def to_json(self) -> str:
         """Serialize the complete execution record deterministically."""
@@ -46,7 +48,7 @@ def execute_provenance_query(
     *,
     sparql: str,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
     event_sink: ProvenanceQueryEventSink | None = None,
 ) -> ProvenanceQueryExecution:
     """Execute an original query and its NPCS rewrite against GraphDB."""
@@ -62,7 +64,8 @@ def execute_provenance_query(
         {"original_query": sparql, "original_result": original_result},
     )
 
-    rewritten_query = npcs.rewrite(sparql)
+    rewrite = rewrite_query(npcs, sparql)
+    rewritten_query = rewrite.sparql
 
     _emit(event_sink, "rewritten", {"rewritten_query": rewritten_query})
 
@@ -79,6 +82,7 @@ def execute_provenance_query(
         original_result=original_result,
         rewritten_query=rewritten_query,
         rewritten_result=rewritten_result,
+        provenance_variable=rewrite.provenance_variable,
     )
 
 
@@ -103,10 +107,10 @@ def extract_provenance_polynomial(execution: ProvenanceQueryExecution) -> str:
     if not isinstance(row, dict):
         raise ValueError("rewritten query binding must be an object")
 
-    provenance = row.get(PROVENANCE_VARIABLE)
+    provenance = row.get(execution.provenance_variable)
 
     if not isinstance(provenance, dict):
-        raise ValueError(f"rewritten query binding has no {PROVENANCE_VARIABLE!r} value")
+        raise ValueError(f"rewritten query binding has no {execution.provenance_variable!r} value")
 
     value = provenance.get("value")
 

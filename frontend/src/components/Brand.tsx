@@ -1,10 +1,16 @@
-import { Network } from "lucide-react";
-
 export function Brand() {
   return (
     <div className="brand">
-      <span className="brand-mark"><Network size={20} /></span>
-      <span><strong>GraphRAGProv</strong><small>Research Workbench</small></span>
+      <img
+        src="/graphragprov-logo.png"
+        alt="GraphRAGProv"
+        style={{
+          display: "block",
+          width: "100%",
+          maxWidth: 230,
+          height: "auto",
+        }}
+      />
     </div>
   );
 }

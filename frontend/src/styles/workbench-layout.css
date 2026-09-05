@@ -1,0 +1,228 @@
+/* Question / answer above execution / provenance. */
+.execution-dock {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+  overflow: auto;
+}
+
+.execution-dock .execution-body,
+.execution-dock .result-stack {
+  display: contents;
+}
+
+.execution-dock .question-bar {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "label label"
+    "input ask"
+    "mode mode";
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #cbd0d6;
+  border-radius: 3px;
+}
+
+.question-bar > label {
+  grid-area: label;
+  color: #30363d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.question-bar > input {
+  grid-area: input;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #8b949e;
+  border-radius: 2px;
+  background: #fff;
+  color: #17212b;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.question-bar > input:focus-visible {
+  outline: 2px solid #475569;
+  outline-offset: 2px;
+}
+
+.question-bar > .primary-button {
+  grid-area: ask;
+  align-self: stretch;
+  padding: 10px 16px;
+  background: #263442;
+  border: 1px solid #263442;
+  border-radius: 3px;
+  color: white;
+  font-size: 13px;
+}
+
+.question-bar > .query-mode-switch {
+  grid-area: mode;
+  justify-self: start;
+  background: #f4f4f3;
+  border-radius: 3px;
+}
+
+.question-bar .query-mode-switch button {
+  font-size: 12px;
+  border-radius: 2px;
+}
+
+.execution-dock .answer-card {
+  grid-column: 2;
+  grid-row: 1;
+  overflow: auto;
+}
+
+.execution-dock .query-section {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.execution-dock .result-stack > :not(.answer-card) {
+  grid-column: 2;
+  grid-row: 2;
+  min-height: 0;
+  overflow: auto;
+}
+
+.execution-dock .query-section,
+.execution-dock .result-card,
+.execution-dock .code-panel {
+  border-radius: 3px;
+}
+
+@media (max-width: 900px) {
+  .execution-dock {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(4, auto);
+  }
+
+  .execution-dock .question-bar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .execution-dock .answer-card {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .execution-dock .query-section {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .execution-dock .result-stack > :not(.answer-card) {
+    grid-column: 1;
+    grid-row: 4;
+  }
+}
+
+/* Keep both query editors visible. */
+.execution-dock .query-section {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.query-section .query-toolbar {
+  flex: 0 0 auto;
+}
+
+.query-section .query-stack {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.query-stack .code-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.code-panel .code-title {
+  flex: 0 0 28px;
+}
+
+.code-panel > .cm-theme {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.code-panel .cm-editor {
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+
+.code-panel .cm-scroller {
+  overflow: auto;
+}
+
+.query-dialog {
+  width: 92vw;
+  max-width: 1600px;
+  height: 85vh;
+  max-height: 92vh;
+  padding: 0;
+  border: 1px solid #8b949e;
+  border-radius: 4px;
+  background: white;
+  color: #17212b;
+}
+
+.query-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.query-dialog::backdrop {
+  background: rgb(15 23 42 / 45%);
+}
+
+.query-dialog-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #cbd0d6;
+}
+
+.query-dialog-header > span {
+  flex: 1;
+  font-size: 12px;
+  color: #52606d;
+}
+
+.query-dialog-editor,
+.query-dialog-editor > .cm-theme {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.query-dialog-editor .cm-editor {
+  flex: 1;
+  min-height: 0;
+  font-size: 16px;
+}
+
+.query-dialog-editor .cm-scroller {
+  overflow: auto;
+}

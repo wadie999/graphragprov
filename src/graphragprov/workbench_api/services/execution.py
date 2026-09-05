@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from uuid import uuid4
 
-from graphragprov.npcs import NPCSClient
+from graphragprov.npcs import SparqlProvClient
 from graphragprov.provenance import SourceRegistry
 from graphragprov.providers.deepseek import deepseek_generator
 from graphragprov.qaagent import (
@@ -30,7 +30,7 @@ class QueryExecutor:
     def __init__(
         self,
         workspace: GraphWorkspaceManager,
-        npcs: NPCSClient,
+        npcs: SparqlProvClient,
         store: WorkbenchStore,
         planner_config: PlannerConfig,
     ) -> None:

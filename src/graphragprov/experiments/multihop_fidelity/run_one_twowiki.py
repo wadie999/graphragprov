@@ -32,7 +32,7 @@ from graphragprov.experiments.multihop_fidelity.run_one import (
 from graphragprov.experiments.multihop_fidelity.runner import H0CaseFailure, run_twowiki_h0_case
 from graphragprov.experiments.multihop_fidelity.telemetry import ExperimentTelemetryRecorder
 from graphragprov.graphdb import GraphDBClient
-from graphragprov.npcs import NPCSClient
+from graphragprov.npcs import SparqlProvClient
 from graphragprov.providers.deepseek import (
     DEFAULT_DEEPSEEK_MODEL,
     DEFAULT_DEEPSEEK_TIMEOUT_SECONDS,
@@ -141,7 +141,7 @@ def main() -> None:
     _write_or_validate_configuration(root / "run-config.json", run_configuration)
 
     graphdb = GraphDBClient.from_environment()
-    npcs = NPCSClient.from_environment()
+    npcs = SparqlProvClient.from_environment()
 
     _print_plan(
         case_id=case.case_id,

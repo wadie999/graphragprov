@@ -30,8 +30,8 @@ export const GRAPH_VISUAL = {
     forceNodeLabelsBelow: 48,
     forceEdgeLabelsBelow: 40,
 
-    nodeSize: 11,
-    edgeSize: 9,
+    nodeSize: 14,
+    edgeSize: 12,
 
     nodeColor: "#1f2937",
     edgeColor: "#5f6b7c",

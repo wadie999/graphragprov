@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import Literal, cast
 
 from graphragprov.graphdb import GraphDBClient
-from graphragprov.npcs import NPCSClient
+from graphragprov.npcs import SparqlProvClient
 from graphragprov.provenance import SourceRegistry, decode_provenance_polynomial
 from graphragprov.qaagent.config import QAAgentConfiguration
 from graphragprov.qaagent.observation import QAAgentObservation, observe_semantic_triples
@@ -16,11 +16,7 @@ from graphragprov.qaagent.prompt import build_tuple_qa_prompt
 from graphragprov.qaagent.response import QAAgentDecision, parse_qa_agent_response
 from graphragprov.qaagent.scope import compile_scoped_select_query
 from graphragprov.qaagent.trace import QAAnswerProvenance, QAQueryAttempt, QAQueryPurpose
-from graphragprov.query.execution import (
-    PROVENANCE_VARIABLE,
-    ProvenanceQueryStage,
-    execute_provenance_query,
-)
+from graphragprov.query.execution import ProvenanceQueryStage, execute_provenance_query
 
 GenerateQAResponse = Callable[[str], str]
 
@@ -84,7 +80,7 @@ def run_tuple_qa_agent(
     query_source_unit_ids: Iterable[str] | None = None,
     prompt_source_unit_ids: Iterable[str] | None = None,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
     registry: SourceRegistry,
     generate_response: GenerateQAResponse,
     expected_answer: str | None = None,
@@ -277,7 +273,7 @@ def execute_qa_query_attempt(
     semantic_sparql: str,
     scoped_sparql: str,
     graphdb: GraphDBClient,
-    npcs: NPCSClient,
+    npcs: SparqlProvClient,
     registry: SourceRegistry,
     event_sink: QAAgentEventSink | None = None,
 ) -> QAQueryAttempt:
@@ -334,7 +330,10 @@ def execute_qa_query_attempt(
             )
 
         answer_provenances = tuple(
-            _decode_answer_provenance(binding, registry=registry) for binding in rewritten_bindings
+            _decode_answer_provenance(
+                binding, registry=registry, provenance_variable=execution.provenance_variable
+            )
+            for binding in rewritten_bindings
         )
     except Exception as error:
         return QAQueryAttempt(
@@ -466,19 +465,22 @@ def _query_attempt_feedback(attempt: QAQueryAttempt) -> dict[str, object]:
 
 
 def _decode_answer_provenance(
-    binding: dict[str, object], *, registry: SourceRegistry
+    binding: dict[str, object],
+    *,
+    registry: SourceRegistry,
+    provenance_variable: str,
 ) -> QAAnswerProvenance:
-    provenance_binding = binding.get(PROVENANCE_VARIABLE)
+    provenance_binding = binding.get(provenance_variable)
 
     if not isinstance(provenance_binding, dict):
-        raise ValueError(f"rewritten result binding has no {PROVENANCE_VARIABLE!r} value")
+        raise ValueError(f"rewritten result binding has no {provenance_variable!r} value")
 
     polynomial = provenance_binding.get("value")
 
     if not isinstance(polynomial, str) or not polynomial.strip():
         raise ValueError("result provenance polynomial must be a non-empty string")
 
-    result_binding = {name: value for name, value in binding.items() if name != PROVENANCE_VARIABLE}
+    result_binding = {name: value for name, value in binding.items() if name != provenance_variable}
 
     if not result_binding:
         raise ValueError("rewritten result contains provenance without a semantic result binding")

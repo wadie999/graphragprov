@@ -9,18 +9,11 @@ from typing import Any, cast
 
 from rdflib import Literal, URIRef
 
-from graphragprov.benchmarks.musique import (
-    collect_musique_source_units,
-    load_case,
-)
+from graphragprov.benchmarks.musique import collect_musique_source_units, load_case
 from graphragprov.config import musique_dataset_path
 from graphragprov.domain import SourceUnit
 from graphragprov.extraction import ExtractionResult, parse_extraction_response
-from graphragprov.rdf import (
-    rdf_triple,
-    serialize_extraction_trig_star,
-    unit_graph_iri,
-)
+from graphragprov.rdf import rdf_triple, serialize_extraction_trig_star, unit_graph_iri
 
 
 def configure_rdf_parser(parser: argparse.ArgumentParser) -> None:

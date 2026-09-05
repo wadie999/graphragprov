@@ -1,5 +1,15 @@
-"""NPCS provenance-query rewriting integration."""
+from graphragprov.npcs.client import (
+    QueryRewriter,
+    RewriteResult,
+    SparqlProvClient,
+    SparqlProvError,
+    rewrite_query,
+)
 
-from graphragprov.npcs.client import NPCSClient, NPCSError
-
-__all__ = ["NPCSClient", "NPCSError"]
+__all__ = [
+    "QueryRewriter",
+    "RewriteResult",
+    "SparqlProvClient",
+    "SparqlProvError",
+    "rewrite_query",
+]
