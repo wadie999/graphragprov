@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_905be3ab13a25a80c5897c365ecda23e3472f163354fc09efbf1fd081fa9e2f2
+Title: Nanjing
+Text:
+Nanjing ( listen; Chinese: 南京, "Southern Capital") is the city situated in the heartland of lower Yangtze River region in China, which has long been a major centre of culture, education, research, politics, economy, transport networks and tourism. It is the capital city of Jiangsu province of People's Republic of China and the second largest city in East China, with a total population of 8,216,100, and legally the capital of Republic of China which lost the mainland during the civil war. The city whose name means "Southern Capital" has a prominent place in Chinese history and culture, having served as the capitals of various Chinese dynasties, kingdoms and republican governments dating from the 3rd century AD to 1949. Prior to the advent of pinyin romanization, Nanjing's city name was spelled as Nanking or Nankin. Nanjing has a number of other names, and some historical names are now used as names of districts of the city, and among them there is the name Jiangning (江寧), whose former character Jiang (江, River) is the former part of the name Jiangsu and latter character Ning (寧, simplified form 宁, Peace) is the short name of Nanjing. When being the capital of a state, for instance, ROC, Jing (京) is adopted as the abbreviation of Nanjing. Although as a city located in southern part of China becoming Chinese national capital as early as in Jin dynasty, the name Nanjing was designated to the city in Ming dynasty, about a thousand years later. Nanjing is particularly known as Jinling (金陵, literally meaning Gold Mountain) and the old name has been used since the Warring States Period in Zhou Dynasty.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 11,
+    "statement": {
+      "subject": {
+        "value": "Jiangning",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Jiangning",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "nameComposedOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "former character Jiang (江, River) is the former part of the name Jiangsu and latter character Ning (寧, simplified form 宁, Peace) is the short name of Nanjing",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Jiang and Ning",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Jiang (江, River) ... Ning (寧, simplified form 宁, Peace)",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[11].object.evidence[0]: quote 'Jiang (江, River) ... Ning (寧, simplified form 宁, Peace)' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

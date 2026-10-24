@@ -1,0 +1,160 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the oldest college in the state that contains Borough House Plantation?
+
+Expected answer: College of Charles Towne
+
+Gold decomposition:
+1. question='What state is Borough House Plantation located?'; answer='South Carolina'; support_paragraph=9
+2. question='What is the oldest college in #1 ?'; answer='College of Charles Towne'; support_paragraph=3
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Anderson%20Place> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Borough%20House> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Hillcrest%20Plantation> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:constructionMethod> <urn:graphragprov:entity:pis%C3%A9%20%28rammed%20earth%29> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:constructionStartYear> "1821"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:hasBuilding> <urn:graphragprov:entity:main%20house> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:hasBuilding> <urn:graphragprov:entity:six%20buildings> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:homeOf> <urn:graphragprov:entity:Richard%20H.%20Anderson> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:National%20Historic%20Landmark> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:historic%20plantation> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:High%20Hills%20of%20Santee> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Stateburg> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:Sumter> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:South%20Carolina%20Highway%20261> .
+<urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:notedFor> <urn:graphragprov:entity:largest%20assemblage%20of%20high-style%20pis%C3%A9%20%28rammed%20earth%29%20structures%20in%20the%20United%20States> .
+<urn:graphragprov:entity:Richard%20H.%20Anderson> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Confederate%20Army> .
+<urn:graphragprov:entity:Richard%20H.%20Anderson> <urn:graphragprov:predicate:militaryRank> <urn:graphragprov:entity:General> .
+<urn:graphragprov:entity:Charles%20Towne> <urn:graphragprov:predicate:grew> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Charles%20Towne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:college> .
+<urn:graphragprov:entity:Charles%20Towne%20Library%20Society> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:well-born%20young%20men> .
+<urn:graphragprov:entity:Charles%20Towne%20Library%20Society> <urn:graphragprov:predicate:foundedInYear> "1748"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Charles%20Towne%20Library%20Society> <urn:graphragprov:predicate:helpedEstablish> <urn:graphragprov:entity:College%20of%20Charles%20Towne> .
+<urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:foundedInYear> "1770"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:oldestCollegeIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:oldestMunicipallySupportedCollegeIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:transitionToStateOwnershipYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:benevolent%20societies> <urn:graphragprov:predicate:formedBy> <urn:graphragprov:entity:different%20ethnic%20groups> .
+<urn:graphragprov:entity:first%20theatre%20building%20in%20America> <urn:graphragprov:predicate:builtInYear> "1736"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:first%20theatre%20building%20in%20America> <urn:graphragprov:predicate:locatedOnSiteOf> <urn:graphragprov:entity:today%27s%20Dock%20Street%20Theatre> .

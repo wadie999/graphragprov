@@ -1,0 +1,193 @@
+
+H0 one-case execution
+  case:          2hop__78756_198548
+  hops:          2
+  question:      Who is the spouse of the person who voices Smokey the bear?
+  expected:      Katharine Ross
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__78756_198548/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Smokey Bear'
+  source unit: u_bfe627f5a77c375173082f034c5c69bbef435e2abebdc05a8f4a97b2eaa3b442
+  text chars:  571
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.699s | model=deepseek-v4-flash
+      tokens:   in=2240 | out=2717 | total=4957 | cached=2048 | uncached=192
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 479 / 582 (82.3%)
+    characters text:     479 / 571 (83.9%)
+    characters title:    0 / 11 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  33 chars
+      ', simultaneously giving Smokey a'
+    statement density:  32.65 / 1000 chars
+    title reliance:      0 / 19 (0.0%)
+
+[GRAPH 2/2] paragraph=16 title='Murder in Texas'
+  source unit: u_b68dce43a3a99b3caa7882826d3922c9655bfe8c2b729b4a5bda53ebd0f6bcd6
+  text chars:  316
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.803s | model=deepseek-v4-flash
+      tokens:   in=2397 | out=1444 | total=3841 | cached=2048 | uncached=349
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 215 / 331 (65.0%)
+    characters text:     200 / 316 (63.3%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  35 chars
+      'in two parts on Sunday and Monday'
+    statement density:  30.21 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 29
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      29
+resource nodes:        27
+entity nodes:          27
+literal values:        4
+predicates:            18
+
+N-Triples:
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:true%20story> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Hale> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:firstAiredOn> "1981-05-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20film> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:publicationYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Andy%20Griffith> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Farrah%20Fawcett> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Katharine%20Ross> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sam%20Elliott> .
+  <urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20McGreevey> .
+  <urn:graphragprov:entity:Forest%20Service> <urn:graphragprov:predicate:launched> <urn:graphragprov:entity:new%20series%20of%20public%20service%20announcements> .
+  <urn:graphragprov:entity:Forest%20Service> <urn:graphragprov:predicate:launchedOn> "2008-06"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:George%20Walsh> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:KNX> .
+  <urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:diedOn> "1992-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:personality> .
+  <urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Washington%2C%20D.C.> .
+  <urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:Smokey> .
+  <urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:WMAL> .
+  <urn:graphragprov:entity:Patrick%20Warburton> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:anonymous%20park%20ranger> .
+  <urn:graphragprov:entity:Sam%20Elliott> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:visualDesign> <urn:graphragprov:entity:new%20visual%20design> .
+  <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Gene%20Moss> .
+  <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:George%20Walsh> .
+  <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Jack%20Angel> .
+  <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Jim%20Cummings> .
+  <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Roger%20C.%20Carmel> .
+  <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Sam%20Elliott> .
+  <urn:graphragprov:entity:new%20series%20of%20public%20service%20announcements> <urn:graphragprov:predicate:voicedBy> <urn:graphragprov:entity:Sam%20Elliott> .
+  <urn:graphragprov:entity:new%20visual%20design> <urn:graphragprov:predicate:intendedFor> <urn:graphragprov:entity:young%20adults> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.182s | model=deepseek-v4-flash
+      tokens:   in=2195 | out=165 | total=2360 | cached=640 | uncached=1555
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Sam%20Elliott> .
+  - <urn:graphragprov:entity:Sam%20Elliott> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Katharine%20Ross> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> ?person . ?person <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b68dce43a3a99b3c>
+  FROM <urn:graphragprov:unit:u_bfe627f5a77c3751>
+  WHERE { <urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> ?person . ?person <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__78756_198548
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__78756_198548/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6832
+output tokens:         4326
+total tokens:          11158
+cached input tokens:   4736
+uncached input tokens: 2096
+cumulative LLM seconds: 22.684
+
+statement occurrences: 29
+semantic triples:      29
+entity nodes:          27
+literal values:        4
+predicates:            18
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.514s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.183s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.481s

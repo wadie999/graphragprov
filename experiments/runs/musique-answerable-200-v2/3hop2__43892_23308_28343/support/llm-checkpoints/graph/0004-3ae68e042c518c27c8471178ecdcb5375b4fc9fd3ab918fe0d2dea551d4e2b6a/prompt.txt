@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_d43adfc725c444ef5a0ceb24f796f1bb1fed11feda114672bdc1d9ce2b5e495d
+Title: War on Terror
+Text:
+The origins of al-Qaeda can be traced to the Soviet war in Afghanistan (December 1979 – February 1989). The United States, United Kingdom, Saudi Arabia, Pakistan, and the People's Republic of China supported the Islamist Afghan mujahadeen guerillas against the military forces of the Soviet Union and the Democratic Republic of Afghanistan. A small number of "Afghan Arab" volunteers joined the fight against the Soviets, including Osama bin Laden, but there is no evidence they received any external assistance. In May 1996 the group World Islamic Front for Jihad Against Jews and Crusaders (WIFJAJC), sponsored by bin Laden (and later re-formed as al-Qaeda), started forming a large base of operations in Afghanistan, where the Islamist extremist regime of the Taliban had seized power earlier in the year. In February 1998, Osama bin Laden signed a fatwā, as head of al-Qaeda, declaring war on the West and Israel, later in May of that same year al-Qaeda released a video declaring war on the U.S. and the West.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "al-Qaeda",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "al-Qaeda",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "originsTracedTo",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "origins ... can be traced to",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Soviet war in Afghanistan",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Soviet war in Afghanistan",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'origins ... can be traced to' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

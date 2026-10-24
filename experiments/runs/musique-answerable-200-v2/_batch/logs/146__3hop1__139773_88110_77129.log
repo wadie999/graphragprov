@@ -1,0 +1,357 @@
+
+H0 one-case execution
+  case:          3hop1__139773_88110_77129
+  hops:          3
+  question:      What was the first OS to support the Hyper-V protocol, developed by the company that the letters MS stand for, in the network where The Rachel Maddow Show is found?
+  expected:      Windows 8
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__139773_88110_77129/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=15 title='The Rachel Maddow Show'
+  source unit: u_4852dff2bdfd2b719e9e52e5c201ab05e6479e5d2585dfade1fb7398faf34469
+  text chars:  405
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.953s | model=deepseek-v4-flash
+      tokens:   in=2274 | out=1369 | total=3643 | cached=1920 | uncached=354
+    [LLM graph.reference #2] sending...
+      provider: 0.802s | model=deepseek-v4-flash
+      tokens:   in=630 | out=8 | total=638 | cached=0 | uncached=630
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote '9:00 pm ET' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "9:00 pm ET",
+                "segment": "text"
+              }
+            ],
+            "value": "9:00 pm ET"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "9:00 pm ET",
+                "segment": "text"
+              }
+            ],
+            "value": "airTime"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Rachel Maddow Show",
+                "segment": "title"
+              }
+            ],
+            "value": "The Rachel Maddow Show"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 293 / 427 (68.6%)
+    characters text:     271 / 405 (66.9%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  37 chars
+      ', running in the 9:00 pm ET timeslot'
+    statement density:  18.74 / 1000 chars
+    title reliance:      7 / 8 (87.5%)
+
+[GRAPH 2/3] paragraph=8 title='MSNBC'
+  source unit: u_67f5683a7a49489b0101e8ce34ce0e1be8be73c0e29598a0b2fdd866da32ae83
+  text chars:  926
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 11.588s | model=deepseek-v4-flash
+      tokens:   in=2490 | out=2646 | total=5136 | cached=1920 | uncached=570
+    [LLM graph.reference #4] sending...
+      provider: 2.088s | model=deepseek-v4-flash
+      tokens:   in=962 | out=354 | total=1316 | cached=256 | uncached=706
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 2
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote "founded ... under a partnership between Microsoft and General Electric's NBC unit" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Microsoft",
+                "segment": "text"
+              }
+            ],
+            "value": "Microsoft"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "founded ... under a partnership between Microsoft and General Electric's NBC unit",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "MSNBC",
+                "segment": "title"
+              }
+            ],
+            "value": "MSNBC"
+          }
+        }
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote "founded ... under a partnership between Microsoft and General Electric's NBC unit" does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "General Electric's NBC unit",
+                "segment": "text"
+              }
+            ],
+            "value": "General Electric's NBC unit"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "founded ... under a partnership between Microsoft and General Electric's NBC unit",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "MSNBC",
+                "segment": "title"
+              }
+            ],
+            "value": "MSNBC"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 18
+  coverage:
+    characters combined: 535 / 931 (57.5%)
+    characters text:     530 / 926 (57.2%)
+    characters title:    5 / 5 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  96 chars
+      'that provides news coverage and political commentary from NBC News on current events. MSNBC is'
+    statement density:  19.33 / 1000 chars
+    title reliance:      8 / 18 (44.4%)
+
+[GRAPH 3/3] paragraph=0 title='Hyper-V'
+  source unit: u_01404835f0935910c3786f5c5b91ac8d933d29add8fb69b0d695c8f2d8617de2
+  text chars:  445
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 6.642s | model=deepseek-v4-flash
+      tokens:   in=2612 | out=1459 | total=4071 | cached=2048 | uncached=564
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 383 / 452 (84.7%)
+    characters text:     383 / 445 (86.1%)
+    characters title:    0 / 7 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  12 chars
+      ', Hyper - V'
+    statement density:  22.12 / 1000 chars
+    title reliance:      0 / 10 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 36
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 3
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      36
+resource nodes:        36
+entity nodes:          36
+literal values:        5
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:applicableTo> <urn:graphragprov:entity:client%20editions%20of%20Windows%20NT> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:canCreate> <urn:graphragprov:entity:virtual%20machines> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:codename> <urn:graphragprov:entity:Viridian> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:formerlyKnownAs> <urn:graphragprov:entity:Windows%20Server%20Virtualization> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:native%20hypervisor> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:hardware%20virtualization%20component> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:superseded> <urn:graphragprov:entity:Windows%20Virtual%20PC> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:supersededIn> <urn:graphragprov:entity:Windows%208> .
+  <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:supportedPlatform> <urn:graphragprov:entity:x86-64%20systems%20running%20Windows> .
+  <urn:graphragprov:entity:server%20computer%20running%20Hyper-V> <urn:graphragprov:predicate:canBeConfiguredTo> <urn:graphragprov:entity:expose%20individual%20virtual%20machines%20to%20one%20or%20more%20networks> .
+  <urn:graphragprov:entity:Rachel%20Maddow> <urn:graphragprov:predicate:gainedPublicProfileVia> <urn:graphragprov:entity:frequent%20appearances%20as%20a%20progressive%20pundit%20on%20programs%20aired%20by%20MSNBC> .
+  <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:TRMS> .
+  <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:airDays> "Monday through Friday" .
+  <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:MSNBC> .
+  <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:her%20former%20radio%20show> .
+  <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:debutedOn> "2008-09-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:hostedBy> <urn:graphragprov:entity:Rachel%20Maddow> .
+  <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:daily%20news%20and%20opinion%20television%20program> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:General%20Electric%27s%20NBC%20unit> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Microsoft> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:foundedInYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:NBC%27s%20headquarters%20in%20New%20York%20City> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:news%20cable%20and%20satellite%20television%20network> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:namingDerivedFrom> <urn:graphragprov:entity:partnership%20between%20Microsoft%20and%20General%20Electric%27s%20NBC%20unit> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:NBCUniversal%20News%20Group> .
+  <urn:graphragprov:entity:Microsoft> <urn:graphragprov:predicate:divestedStakesIn> <urn:graphragprov:entity:MSNBC%20channel> .
+  <urn:graphragprov:entity:Microsoft> <urn:graphragprov:predicate:divestedStakesIn> <urn:graphragprov:entity:msnbc.com> .
+  <urn:graphragprov:entity:Microsoft> <urn:graphragprov:predicate:divestmentYear> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Microsoft> <urn:graphragprov:predicate:divestmentYear> "2012-07"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:NBCUniversal> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Comcast> .
+  <urn:graphragprov:entity:NBCUniversal%20News%20Group> <urn:graphragprov:predicate:unitOf> <urn:graphragprov:entity:NBCUniversal%20Television%20Group> .
+  <urn:graphragprov:entity:NBCUniversal%20Television%20Group> <urn:graphragprov:predicate:divisionOf> <urn:graphragprov:entity:NBCUniversal> .
+  <urn:graphragprov:entity:general%20news%20site> <urn:graphragprov:predicate:rebrandedAs> <urn:graphragprov:entity:NBCNews.com> .
+  <urn:graphragprov:entity:msnbc.com> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Microsoft%20campus%20in%20Redmond%2C%20Washington> .
+  <urn:graphragprov:entity:new%20msnbc.com> <urn:graphragprov:predicate:createdAs> <urn:graphragprov:entity:online%20home%20of%20the%20cable%20channel> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.153s | model=deepseek-v4-flash
+      tokens:   in=2714 | out=281 | total=2995 | cached=640 | uncached=2074
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:MSNBC> .
+  - <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Microsoft> .
+  - <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:supersededIn> <urn:graphragprov:entity:Windows%208> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:MSNBC> . <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Microsoft> . <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:supersededIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_01404835f0935910>
+  FROM <urn:graphragprov:unit:u_4852dff2bdfd2b71>
+  FROM <urn:graphragprov:unit:u_67f5683a7a49489b>
+  WHERE { <urn:graphragprov:entity:The%20Rachel%20Maddow%20Show> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:MSNBC> . <urn:graphragprov:entity:MSNBC> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Microsoft> . <urn:graphragprov:entity:Microsoft%20Hyper-V> <urn:graphragprov:predicate:supersededIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Windows 8',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Hyper-V', 'MSNBC', 'The Rachel Maddow Show']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__139773_88110_77129
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__139773_88110_77129/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11682
+output tokens:         6117
+total tokens:          17799
+cached input tokens:   6784
+uncached input tokens: 4898
+cumulative LLM seconds: 30.225
+
+statement occurrences: 36
+semantic triples:      36
+entity nodes:          36
+literal values:        5
+predicates:            29
+query attempts:        1
+observed answers:      ('Windows 8',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 28.090s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.069s
+  graph.materialization [attempt=1]: 0.073s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.154s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.460s

@@ -1,0 +1,187 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where is the embassy in the only communist country whose military branch helping the Old West's inadequate local police was unprepared for invasion of the country conquered by the Pact?
+
+Expected answer: Alfredo Stroessner's Paraguay
+
+Gold decomposition:
+1. question='Which country did the Pact conquer?'; answer='Czechoslovakia'; support_paragraph=6
+2. question="Which military branch helped the Old West's inadequate local police?"; answer='The Army'; support_paragraph=16
+3. question='What #2 was unprepared for the invasion of #1 ?'; answer='Yugoslavia'; support_paragraph=5
+4. question='#3 was the only communist country to have an embassy where?'; answer="Alfredo Stroessner's Paraguay"; support_paragraph=0
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offered> <urn:graphragprov:entity:Alexander%20Dub%C4%8Dek> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredHelpTo> <urn:graphragprov:entity:Alexander%20Dub%C4%8Dek> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredOnNotice> "three hours notice" .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredToFly> <urn:graphragprov:entity:Prague> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredToFlyIfNeeded> <urn:graphragprov:entity:help> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredToFlyOnNotice> "three hours notice" .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredToFlyToPrague> <urn:graphragprov:entity:Prague> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredToFlyToPragueIfNeeded> <urn:graphragprov:entity:help> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:offeredToFlyToPragueOnNotice> "three hours notice" .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Ivan%20Go%C5%A1njak> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Rade%20Hamovi%C4%87> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:removedGenerals> <urn:graphragprov:entity:Ivan%20Go%C5%A1njak> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:removedGenerals> <urn:graphragprov:entity:Rade%20Hamovi%C4%87> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:removedGeneralsIn> "1969-04"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:removedGeneralsInAftermath> <urn:graphragprov:entity:invasion%20of%20Czechoslovakia> .
+<urn:graphragprov:entity:Josip%20Broz%20Tito> <urn:graphragprov:predicate:removedGeneralsInAftermathOfInvasion> <urn:graphragprov:entity:invasion%20of%20Czechoslovakia> .
+<urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:unpreparedForInvasion> <urn:graphragprov:entity:invasion%20of%20Yugoslavia> .
+<urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:unpreparedForInvasionOf> <urn:graphragprov:entity:Yugoslavia> .
+<urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:unpreparedForInvasionOfYugoslavia> <urn:graphragprov:entity:Yugoslavia> .
+<urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:wasUnpreparedFor> <urn:graphragprov:entity:invasion%20of%20Yugoslavia> .
+<urn:graphragprov:entity:invasion%20of%20Czechoslovakia> <urn:graphragprov:predicate:occurredIn> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:invasion%20of%20Czechoslovakia> <urn:graphragprov:predicate:occurredInYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:American%20Old%20West> <urn:graphragprov:predicate:hadPolicingQuality> "very poor quality" .
+<urn:graphragprov:entity:Pinkerton%20Agency> <urn:graphragprov:predicate:hadNumbersExceeding> <urn:graphragprov:entity:United%20States%20Army> .
+<urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:businessmen> .
+<urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:federal%20government> .
+<urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:individuals> .
+<urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:local%20governments> .
+<urn:graphragprov:entity:Pinkerton%20National%20Detective%20Agency> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:private%20contractor> .
+<urn:graphragprov:entity:Public%20organizations> <urn:graphragprov:predicate:supplementedBy> <urn:graphragprov:entity:private%20contractors> .
+<urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:assisted> <urn:graphragprov:entity:poorly%20resourced%20sheriffs> .
+<urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:assisted> <urn:graphragprov:entity:temporarily%20organized%20posses> .
+<urn:graphragprov:entity:The%20Army> <urn:graphragprov:predicate:providedPolicing> <urn:graphragprov:entity:American%20Old%20West> .
+<urn:graphragprov:entity:Chile> <urn:graphragprov:predicate:wasUnder> <urn:graphragprov:entity:Pinochet> .
+<urn:graphragprov:entity:Guatemala> <urn:graphragprov:predicate:wasUnder> <urn:graphragprov:entity:Kjell%20Eugenio%20Laugerud%20Garc%C3%ADa> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:hadDiplomaticRelationsWith> <urn:graphragprov:entity:right-wing%2C%20anti-Communist%20governments> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:hadNeutralStanceToward> <urn:graphragprov:entity:anti-communist%20countries> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:hadNeutrality> <urn:graphragprov:entity:neutrality> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:communist%20country> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:providedArmsSuppliesTo> <urn:graphragprov:entity:Guatemala> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:providedArmsSuppliesTo> <urn:graphragprov:entity:staunchly%20anti-Communist%20regimes> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:providedMilitaryAidTo> <urn:graphragprov:entity:Guatemala> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:providedMilitaryAidTo> <urn:graphragprov:entity:staunchly%20anti-Communist%20regimes> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:severedDiplomaticRelationsWith> <urn:graphragprov:entity:Chile> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:severedDiplomaticRelationsWith> <urn:graphragprov:entity:Chile%20after%20Salvador%20Allende%20was%20overthrown> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:wasOnlyCommunistCountryAllowedToHaveEmbassyIn> <urn:graphragprov:entity:Alfredo%20Stroessner%27s%20Paraguay> .
+<urn:graphragprov:entity:People%27s%20Republic%20of%20Albania> <urn:graphragprov:predicate:didNotParticipateIn> <urn:graphragprov:entity:invasion> .
+<urn:graphragprov:entity:Socialist%20Republic%20of%20Romania> <urn:graphragprov:predicate:didNotParticipateIn> <urn:graphragprov:entity:invasion> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:armedForces> <urn:graphragprov:entity:Communist%20armed%20forces> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:People%27s%20Republic%20of%20Albania> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Socialist%20Republic%20of%20Romania> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Pact> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:invaded> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:invasionDate> "1968-08"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:militaryAction> <urn:graphragprov:entity:invasion> .
+<urn:graphragprov:entity:Warsaw%20Pact> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:invasion> .

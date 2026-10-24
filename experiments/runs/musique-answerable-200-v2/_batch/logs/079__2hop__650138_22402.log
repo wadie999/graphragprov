@@ -1,0 +1,205 @@
+
+H0 one-case execution
+  case:          2hop__650138_22402
+  hops:          2
+  question:      How many students attend the school where Max Huber attended?
+  expected:      nearly 25,000
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__650138_22402/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=16 title='Max Huber (statesman)'
+  source unit: u_65961be2ffe7813077aaefa1e6b8d9616083f66ffe40eaa0cc47213b7ca85e83
+  text chars:  715
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 17.738s | model=deepseek-v4-flash
+      tokens:   in=2279 | out=4212 | total=6491 | cached=1920 | uncached=359
+  extraction: ACCEPTED
+  statements: 26
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    26
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     26
+  coverage:
+    characters combined: 530 / 736 (72.0%)
+    characters text:     521 / 715 (72.9%)
+    characters title:    9 / 21 (42.9%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  30 chars
+      "and he served as the Court's"
+    statement density:  35.33 / 1000 chars
+    title reliance:      22 / 26 (84.6%)
+
+[GRAPH 2/2] paragraph=1 title='Switzerland'
+  source unit: u_3ed9478d0e16c63ea6ed222141dfd8cb55360c7e00aab1715ecd30f34bf62802
+  text chars:  669
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.612s | model=deepseek-v4-flash
+      tokens:   in=2550 | out=2163 | total=4713 | cached=1920 | uncached=630
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 330 / 680 (48.5%)
+    characters text:     319 / 669 (47.7%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  141 chars
+      ', ten of which are maintained at cantonal level and usually offer a range of non-technical subjects. The first university in Switzerland was'
+    statement density:  22.06 / 1000 chars
+    title reliance:      2 / 15 (13.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 41
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      41
+resource nodes:        23
+entity nodes:          23
+literal values:        15
+predicates:            28
+
+N-Triples:
+  <urn:graphragprov:entity:EPFL> <urn:graphragprov:predicate:formerlyAssociatedWith> <urn:graphragprov:entity:University%20of%20Lausanne> .
+  <urn:graphragprov:entity:EPFL> <urn:graphragprov:predicate:foundedInYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:EPFL> <urn:graphragprov:predicate:hasInternationalReputation> "excellent international reputation" .
+  <urn:graphragprov:entity:EPFL> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Lausanne> .
+  <urn:graphragprov:entity:EPFL> <urn:graphragprov:predicate:sponsoredBy> <urn:graphragprov:entity:federal%20government> .
+  <urn:graphragprov:entity:ETHZ> <urn:graphragprov:predicate:foundedInYear> "1855"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:ETHZ> <urn:graphragprov:predicate:hasInternationalReputation> "excellent international reputation" .
+  <urn:graphragprov:entity:ETHZ> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Z%C3%BCrich> .
+  <urn:graphragprov:entity:ETHZ> <urn:graphragprov:predicate:sponsoredBy> <urn:graphragprov:entity:federal%20government> .
+  <urn:graphragprov:entity:Switzerland> <urn:graphragprov:predicate:hasUniversity> <urn:graphragprov:entity:University%20of%20Zurich> .
+  <urn:graphragprov:entity:Switzerland> <urn:graphragprov:predicate:hasUniversityCount> "12"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Basel> <urn:graphragprov:predicate:foundedInYear> "1460"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:University%20of%20Basel> <urn:graphragprov:predicate:hasFaculty> <urn:graphragprov:entity:medicine> .
+  <urn:graphragprov:entity:University%20of%20Zurich> <urn:graphragprov:predicate:isBiggestUniversityIn> <urn:graphragprov:entity:Switzerland> .
+  <urn:graphragprov:entity:University%20of%20Zurich> <urn:graphragprov:predicate:studentCount> "nearly 25,000" .
+  <urn:graphragprov:entity:Island%20of%20Palmas%20Case> <urn:graphragprov:predicate:between> <urn:graphragprov:entity:Netherlands> .
+  <urn:graphragprov:entity:Island%20of%20Palmas%20Case> <urn:graphragprov:predicate:between> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Island%20of%20Palmas%20Case> <urn:graphragprov:predicate:decidedInYear> "1928"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Island%20of%20Palmas%20Case> <urn:graphragprov:predicate:heardAt> <urn:graphragprov:entity:Permanent%20Court%20of%20Arbitration> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:advised> <urn:graphragprov:entity:Swiss%20Defence%20and%20Foreign%20Affairs%20ministries> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:arbitratorIn> <urn:graphragprov:entity:Island%20of%20Palmas%20Case> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:couldNotTeachDueTo> <urn:graphragprov:entity:World%20War%20I> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Berlin> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Lausanne> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Zurich> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:judgeOf> <urn:graphragprov:entity:Permanent%20Court%20of%20International%20Justice> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:judgePeriodEnd> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:judgePeriodStart> "1922"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:presidencyPeriodEnd> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:presidencyPeriodEnd> "1944"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:presidencyPeriodStart> "1925"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:presidencyPeriodStart> "1928"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:presidentOf> <urn:graphragprov:entity:International%20Committee%20of%20the%20Red%20Cross> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:presidentOf> <urn:graphragprov:entity:Permanent%20Court%20of%20International%20Justice> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:retainedTitleUntil> "1921"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:taughtAt> <urn:graphragprov:entity:University%20of%20Zurich> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:taughtSubject> <urn:graphragprov:entity:canon%20law> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:taughtSubject> <urn:graphragprov:entity:constitutional%20law> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:taughtSubject> <urn:graphragprov:entity:international%20law> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:workPeriodEnd> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:workPeriodStart> "1902"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.776s | model=deepseek-v4-flash
+      tokens:   in=2807 | out=166 | total=2973 | cached=640 | uncached=2167
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:University%20of%20Zurich> .
+  - <urn:graphragprov:entity:University%20of%20Zurich> <urn:graphragprov:predicate:studentCount> "nearly 25,000" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:educatedAt> ?school . ?school <urn:graphragprov:predicate:studentCount> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3ed9478d0e16c63e>
+  FROM <urn:graphragprov:unit:u_65961be2ffe78130>
+  WHERE { <urn:graphragprov:entity:Max%20Huber> <urn:graphragprov:predicate:educatedAt> ?school . ?school <urn:graphragprov:predicate:studentCount> ?answer . }
+
+GraphDB execution:
+  observed answers: ('nearly 25,000',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Max Huber (statesman)', 'Switzerland']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__650138_22402
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__650138_22402/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7636
+output tokens:         6541
+total tokens:          14177
+cached input tokens:   4480
+uncached input tokens: 3156
+cumulative LLM seconds: 29.126
+
+statement occurrences: 41
+semantic triples:      41
+entity nodes:          23
+literal values:        15
+predicates:            28
+query attempts:        1
+observed answers:      ('nearly 25,000',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 27.363s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.031s
+  graph.materialization [attempt=1]: 0.102s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.777s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.477s

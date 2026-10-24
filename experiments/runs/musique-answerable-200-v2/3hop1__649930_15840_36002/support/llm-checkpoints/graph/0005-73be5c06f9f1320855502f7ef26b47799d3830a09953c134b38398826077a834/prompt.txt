@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_028f7dc94a31eaeec9848dabe2629f93e0719e7dc69a6fe1a77e2161a3534a8d
+Title: Super Nintendo Entertainment System
+Text:
+To compete with the popular Family Computer in Japan, NEC Home Electronics launched the PC Engine in 1987, and Sega Enterprises followed suit with the Mega Drive in 1988. The two platforms were later launched in North America in 1989 as the TurboGrafx-16 and the Genesis respectively. Both systems were built on 16-bit architectures and offered improved graphics and sound over the 8-bit NES. However, it took several years for Sega's system to become successful. Nintendo executives were in no rush to design a new system, but they reconsidered when they began to see their dominance in the market slipping.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 21,
+    "statement": {
+      "subject": {
+        "value": "Nintendo executives",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Nintendo executives",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "sawDominanceSlipping",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "saw their dominance in the market slipping",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "true",
+        "datatype": "boolean",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "saw their dominance in the market slipping",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[21].predicate.evidence[0]: quote 'saw their dominance in the market slipping' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,598 @@
+
+H0 one-case execution
+  case:          3hop1__649930_15840_36002
+  hops:          3
+  question:      What were the Genesis' advantages over the platform of Colorful Dragon?
+  expected:      built on 16-bit architectures and offered improved graphics and sound
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__649930_15840_36002/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=4 title='Colorful Dragon'
+  source unit: u_62e13019bf2f42021126479eb874ed6f0e6d88ea48f2ff39e2fca2398d2b0233
+  text chars:  248
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.748s | model=deepseek-v4-flash
+      tokens:   in=2218 | out=1399 | total=3617 | cached=2048 | uncached=170
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 152 / 263 (57.8%)
+    characters text:     137 / 248 (55.2%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  30 chars
+      'the game for distribution in'
+    statement density:  38.02 / 1000 chars
+    title reliance:      7 / 10 (70.0%)
+
+[GRAPH 2/3] paragraph=14 title='Nintendo Entertainment System'
+  source unit: u_1f8b303145f242b2959c45604e2b3c0b38a69808e9342cf408355c7f1d875ea9
+  text chars:  678
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 12.173s | model=deepseek-v4-flash
+      tokens:   in=2437 | out=2911 | total=5348 | cached=2048 | uncached=389
+    [LLM graph.reference #3] sending...
+      provider: 3.851s | model=deepseek-v4-flash
+      tokens:   in=1371 | out=685 | total=2056 | cached=256 | uncached=1115
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 4
+
+    initial rejection #5
+      validator:
+        response.statements[5].predicate.evidence[0]: quote 'also known as the Family Computer' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Family Computer",
+                "segment": "text"
+              }
+            ],
+            "value": "Family Computer"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "also known as the Family Computer",
+                "segment": "text"
+              }
+            ],
+            "value": "alsoKnownAs"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'released in Japan ... on July 15, 1983' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "July 15, 1983",
+                "segment": "text"
+              }
+            ],
+            "value": "1983-07-15"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released in Japan ... on July 15, 1983",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+    initial rejection #12
+      validator:
+        response.statements[12].predicate.evidence[0]: quote 'released in Europe during 1986' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1986",
+                "segment": "text"
+              }
+            ],
+            "value": "1986"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released in Europe during 1986",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+    initial rejection #13
+      validator:
+        response.statements[13].predicate.evidence[0]: quote 'released in Europe' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Europe",
+                "segment": "text"
+              }
+            ],
+            "value": "Europe"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released in Europe",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseRegion"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     4
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'also known as the Family Computer' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Family Computer",
+                "segment": "text"
+              }
+            ],
+            "value": "Family Computer"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "also known as the Family Computer",
+                "segment": "text"
+              }
+            ],
+            "value": "alsoKnownAs"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'released in Japan as the Family Computer ... on July 15, 1983' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "July 15, 1983",
+                "segment": "text"
+              }
+            ],
+            "value": "1983-07-15"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released in Japan as the Family Computer ... on July 15, 1983",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'released in Europe during 1986' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1986",
+                "segment": "text"
+              }
+            ],
+            "value": "1986"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released in Europe during 1986",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+    remaining rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'released in Europe' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Europe",
+                "segment": "text"
+              }
+            ],
+            "value": "Europe"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "released in Europe",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseRegion"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo Entertainment System",
+                "segment": "title"
+              }
+            ],
+            "value": "Nintendo Entertainment System"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 16
+  coverage:
+    characters combined: 379 / 707 (53.6%)
+    characters text:     350 / 678 (51.6%)
+    characters title:    29 / 29 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  76 chars
+      'as the Family Computer (Japanese: ファミリーコンピュータ, Hepburn: Famirī Konpyūta?) ('
+    statement density:  22.63 / 1000 chars
+    title reliance:      16 / 16 (100.0%)
+
+[GRAPH 3/3] paragraph=3 title='Super Nintendo Entertainment System'
+  source unit: u_028f7dc94a31eaeec9848dabe2629f93e0719e7dc69a6fe1a77e2161a3534a8d
+  text chars:  608
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 13.573s | model=deepseek-v4-flash
+      tokens:   in=2576 | out=3164 | total=5740 | cached=2048 | uncached=528
+    [LLM graph.reference #5] sending...
+      provider: 1.177s | model=deepseek-v4-flash
+      tokens:   in=668 | out=8 | total=676 | cached=0 | uncached=668
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 1
+
+    initial rejection #21
+      validator:
+        response.statements[21].predicate.evidence[0]: quote 'saw their dominance in the market slipping' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "boolean",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "saw their dominance in the market slipping",
+                "segment": "text"
+              }
+            ],
+            "value": "true"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "saw their dominance in the market slipping",
+                "segment": "text"
+              }
+            ],
+            "value": "sawDominanceSlipping"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nintendo executives",
+                "segment": "text"
+              }
+            ],
+            "value": "Nintendo executives"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 21
+  coverage:
+    characters combined: 240 / 643 (37.3%)
+    characters text:     240 / 608 (39.5%)
+    characters title:    0 / 35 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  63 chars
+      'when they began to see their dominance in the market slipping.'
+    statement density:  32.66 / 1000 chars
+    title reliance:      0 / 21 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 47
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 5
+  corrected valid: 0
+  remaining rejections: 4
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      47
+resource nodes:        29
+entity nodes:          29
+literal values:        6
+predicates:            26
+
+N-Triples:
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Genesis> .
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:bitArchitecture> <urn:graphragprov:entity:16-bit> .
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:improvedOver> <urn:graphragprov:entity:NES> .
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:launchYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:launchYearInRegion> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:launchedInRegion> <urn:graphragprov:entity:North%20America> .
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:offeredImprovedGraphics> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:offeredImprovedSound> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:NEC%20Home%20Electronics> <urn:graphragprov:predicate:launched> <urn:graphragprov:entity:PC%20Engine> .
+  <urn:graphragprov:entity:NES> <urn:graphragprov:predicate:bitArchitecture> <urn:graphragprov:entity:8-bit> .
+  <urn:graphragprov:entity:Nintendo%20executives> <urn:graphragprov:predicate:reconsidered> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:TurboGrafx-16> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:bitArchitecture> <urn:graphragprov:entity:16-bit> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:improvedOver> <urn:graphragprov:entity:NES> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:launchYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:launchYearInRegion> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:launchedInRegion> <urn:graphragprov:entity:North%20America> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:offeredImprovedGraphics> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:PC%20Engine> <urn:graphragprov:predicate:offeredImprovedSound> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Sega%20Enterprises> <urn:graphragprov:predicate:launched> <urn:graphragprov:entity:Mega%20Drive> .
+  <urn:graphragprov:entity:Sega%27s%20system> <urn:graphragprov:predicate:becameSuccessful> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:FC> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:NES> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Famicom> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Hyundai%20Comboy> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:bitArchitecture> <urn:graphragprov:entity:8-bit> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:developer> <urn:graphragprov:entity:Nintendo> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:SK%20Hynix> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20video%20game%20console> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:knownInRegion> <urn:graphragprov:entity:South%20Korea> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:manufacturer> <urn:graphragprov:entity:Nintendo> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseDate> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseDate> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseRegion> <urn:graphragprov:entity:Australia> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseRegion> <urn:graphragprov:entity:Japan> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseRegion> <urn:graphragprov:entity:North%20America> .
+  <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Super%20Nintendo%20Entertainment%20System> .
+  <urn:graphragprov:entity:Bunch%20Games> <urn:graphragprov:predicate:licensee> <urn:graphragprov:entity:Colorful%20Dragon> .
+  <urn:graphragprov:entity:Bunch%20Games> <urn:graphragprov:predicate:publicationRegion> <urn:graphragprov:entity:North%20America> .
+  <urn:graphragprov:entity:Bunch%20Games> <urn:graphragprov:predicate:publicationYear> "1990"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bunch%20Games> <urn:graphragprov:predicate:publishedAs> <urn:graphragprov:entity:Tagin%27%20Dragon> .
+  <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:developer> <urn:graphragprov:entity:Sachen> .
+  <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:maze%20game> .
+  <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:platform> <urn:graphragprov:entity:Nintendo%20Entertainment%20System> .
+  <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:publicationRegion> <urn:graphragprov:entity:Asia> .
+  <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:publisher> <urn:graphragprov:entity:Sachen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.628s | model=deepseek-v4-flash
+      tokens:   in=3050 | out=541 | total=3591 | cached=640 | uncached=2410
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:platform> <urn:graphragprov:entity:Nintendo%20Entertainment%20System> .
+  - <urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:NES> .
+  - <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Genesis> .
+  - <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:bitArchitecture> <urn:graphragprov:entity:16-bit> .
+  - <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:improvedOver> <urn:graphragprov:entity:NES> .
+  - <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:offeredImprovedGraphics> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  - <urn:graphragprov:entity:Mega%20Drive> <urn:graphragprov:predicate:offeredImprovedSound> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:platform> ?platform . ?platform <urn:graphragprov:predicate:abbreviatedAs> ?abbr . ?genesis <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Genesis> . ?genesis <urn:graphragprov:predicate:bitArchitecture> ?bit . ?genesis <urn:graphragprov:predicate:improvedOver> ?abbr . ?genesis <urn:graphragprov:predicate:offeredImprovedGraphics> ?graphics . ?genesis <urn:graphragprov:predicate:offeredImprovedSound> ?sound . BIND(CONCAT(STR(?bit), " and offered improved graphics and sound") AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_028f7dc94a31eaee>
+  FROM <urn:graphragprov:unit:u_1f8b303145f242b2>
+  FROM <urn:graphragprov:unit:u_62e13019bf2f4202>
+  WHERE { <urn:graphragprov:entity:Colorful%20Dragon> <urn:graphragprov:predicate:platform> ?platform . ?platform <urn:graphragprov:predicate:abbreviatedAs> ?abbr . ?genesis <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Genesis> . ?genesis <urn:graphragprov:predicate:bitArchitecture> ?bit . ?genesis <urn:graphragprov:predicate:improvedOver> ?abbr . ?genesis <urn:graphragprov:predicate:offeredImprovedGraphics> ?graphics . ?genesis <urn:graphragprov:predicate:offeredImprovedSound> ?sound . BIND(CONCAT(STR(?bit), " and offered improved graphics and sound") AS ?answer) }
+
+GraphDB execution:
+  observed answers: ('16-bit and offered improved graphics and sound',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__649930_15840_36002
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__649930_15840_36002/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12320
+output tokens:         8708
+total tokens:          21028
+cached input tokens:   7040
+uncached input tokens: 5280
+cumulative LLM seconds: 42.150
+
+statement occurrences: 47
+semantic triples:      47
+entity nodes:          29
+literal values:        6
+predicates:            26
+query attempts:        1
+observed answers:      ('16-bit and offered improved graphics and sound',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 38.547s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.083s
+  graph.materialization [attempt=1]: 0.097s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 3.629s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.457s

@@ -1,0 +1,178 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When is Celebrity Big Brother coming to the network which, along with ABC and the network which hosts Westinghouse Playhouse, is the other major broadcaster based in NY?
+
+Expected answer: February 7, 2018
+
+Gold decomposition:
+1. question='What network hosts Westinghouse Playhouse?'; answer='NBC'; support_paragraph=15
+2. question='Along with ABC and #1 , what other major broadcaster is based in New York?'; answer='CBS'; support_paragraph=3
+3. question='when is celebrity big brother coming to #2'; answer='February 7, 2018'; support_paragraph=16
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:NBC> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:The%20Nanette%20Fabray%20Show> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Westinghouse%20Playhouse%20Starring%20Nanette%20Fabray%20and%20Wendell%20Corey> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Yes%2C%20Yes%20Nanette> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:endDate> "1961-07"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sitcom> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:ranInSyndication> <urn:graphragprov:entity:Yes%2C%20Yes%20Nanette> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:ranUnderTitle> <urn:graphragprov:entity:Yes%2C%20Yes%20Nanette> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Nanette%20Fabray> .
+<urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:startDate> "1961-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> .
+<urn:graphragprov:entity:AMC> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:Bravo> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> .
+<urn:graphragprov:entity:Comedy%20Central> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:Food%20Network> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:Fox%20News> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:HBO> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:MTV> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:NBC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:NBC> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> .
+<urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20broadcast%20service> .
+<urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:operatedBy> <urn:graphragprov:entity:City%20of%20New%20York> .
+<urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:original%20Emmy%20Award-winning%20shows> .
+<urn:graphragprov:entity:Showtime> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:original%20Emmy%20Award-winning%20shows> <urn:graphragprov:predicate:covering> <urn:graphragprov:entity:music%20and%20culture%20in%20city%20neighborhoods%20and%20city%20government> .
+<urn:graphragprov:entity:television%20industry> <urn:graphragprov:predicate:developedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:television%20industry> <urn:graphragprov:predicate:significantEmployerIn> <urn:graphragprov:entity:city%27s%20economy> .
+<urn:graphragprov:entity:Big%20Brother> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20reality%20television%20series> .
+<urn:graphragprov:entity:Big%20Brother%209> <urn:graphragprov:predicate:airedInYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Big%20Brother%209> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:U.S.%20Big%20Brother%20season> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:CBS> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airingOutsideUsualSeason> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airingSeason> <urn:graphragprov:entity:2017-18%20network%20television%20season> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Big%20Brother%3A%20Celebrity%20Edition> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:conclusionDate> "2018-02-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Allison%20Grodner> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Rich%20Meehan> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:hostedBy> <urn:graphragprov:entity:Julie%20Chen> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:spin%20-%20off%20series> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:premiereDate> "2018-02-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Fly%20on%20the%20Wall%20Entertainment> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Endemol%20Shine%20North%20America> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonNumber> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:spinOffFrom> <urn:graphragprov:entity:Big%20Brother> .

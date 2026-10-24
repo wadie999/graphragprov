@@ -1,0 +1,296 @@
+
+H0 one-case execution
+  case:          3hop2__92991_38242_76291
+  hops:          3
+  question:      When did the party that had majorities in Congress prior to the 1954 elections, take control of the organization that determines the rules of the US house and US senate?
+  expected:      January 2015
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__92991_38242_76291/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=6 title='Standing Rules of the United States Senate'
+  source unit: u_d150dcb87414f2bcb442285d66467e3b26e066c910101f8ee927afa1dc5b1942
+  text chars:  299
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.325s | model=deepseek-v4-flash
+      tokens:   in=2240 | out=753 | total=2993 | cached=2048 | uncached=192
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 270 / 341 (79.2%)
+    characters text:     270 / 299 (90.3%)
+    characters title:    0 / 42 (0.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  6 chars
+      'that'
+    statement density:  14.66 / 1000 chars
+    title reliance:      0 / 5 (0.0%)
+
+[GRAPH 2/3] paragraph=8 title='Dwight D. Eisenhower'
+  source unit: u_61915bf35a0344795ead25367dadcc6db7219e66041faaa7a20d9263bf3ca52c
+  text chars:  668
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.317s | model=deepseek-v4-flash
+      tokens:   in=2387 | out=1181 | total=3568 | cached=2048 | uncached=339
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 419 / 688 (60.9%)
+    characters text:     419 / 668 (62.7%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  79 chars
+      'As the 1954 congressional elections approached, and it became evident that the'
+    statement density:  11.63 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 3/3] paragraph=15 title='2014 United States Senate elections'
+  source unit: u_03702665607c765fb0fe81a0bfe63c8dc14fe655761cf5dbdb5c172af2af8098
+  text chars:  362
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.692s | model=deepseek-v4-flash
+      tokens:   in=2433 | out=1208 | total=3641 | cached=2048 | uncached=385
+    [LLM graph.reference #4] sending...
+      provider: 1.835s | model=deepseek-v4-flash
+      tokens:   in=792 | out=351 | total=1143 | cached=384 | uncached=408
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 2
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2015",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2015"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "started in",
+                "segment": "text"
+              }
+            ],
+            "value": "startedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "114th Congress",
+                "segment": "text"
+              }
+            ],
+            "value": "114th Congress"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2007",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2007"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "had not controlled the Senate since",
+                "segment": "text"
+              }
+            ],
+            "value": "hadNotControlledSince"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 264 / 397 (66.5%)
+    characters text:     264 / 362 (72.9%)
+    characters title:    0 / 35 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  28 chars
+      'to obtain a majority. They'
+    statement density:  20.15 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 21
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      21
+resource nodes:        18
+entity nodes:          18
+literal values:        6
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeated> "five Democratic incumbents" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedSeats> "nine Democratic-held seats" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:hadNotControlledSince> "2007-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:heldAllSeats> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGain> "at least six seats" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:Eisenhower> <urn:graphragprov:predicate:articulatedPosition> <urn:graphragprov:entity:moderate%2C%20progressive%20Republican> .
+  <urn:graphragprov:entity:Eisenhower> <urn:graphragprov:predicate:blamed> <urn:graphragprov:entity:Old%20Guard> .
+  <urn:graphragprov:entity:Eisenhower> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:build%20up%20a%20strong%20progressive%20Republican%20Party%20in%20this%20country> .
+  <urn:graphragprov:entity:Eisenhower> <urn:graphragprov:predicate:statedCondition> <urn:graphragprov:entity:Republican%20Party> .
+  <urn:graphragprov:entity:Eisenhower> <urn:graphragprov:predicate:threatened> <urn:graphragprov:entity:right%20wing> .
+  <urn:graphragprov:entity:Eisenhower> <urn:graphragprov:predicate:tookUpCharge> <urn:graphragprov:entity:stop%20suspected%20efforts%20by%20the%20right%20wing%20to%20take%20control%20of%20the%20GOP> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:hadMajorityIn> <urn:graphragprov:entity:both%20houses> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:hadThinMajority> <urn:graphragprov:entity:both%20houses> .
+  <urn:graphragprov:entity:Each%20House> <urn:graphragprov:predicate:mayDetermine> <urn:graphragprov:entity:the%20rules%20of%20its%20proceedings> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:adoptedBy> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:governs> <urn:graphragprov:entity:its%20procedure> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20Senate> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:parliamentary%20procedures> .
+  <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:powerToEstablishRulesDerivesFrom> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.937s | model=deepseek-v4-flash
+      tokens:   in=1925 | out=205 | total=2130 | cached=640 | uncached=1285
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  - <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> . <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_03702665607c765f>
+  FROM <urn:graphragprov:unit:u_61915bf35a034479>
+  FROM <urn:graphragprov:unit:u_d150dcb87414f2bc>
+  WHERE { <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> . <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2015-01',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['2014 United States Senate elections']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__92991_38242_76291
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__92991_38242_76291/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9777
+output tokens:         3698
+total tokens:          13475
+cached input tokens:   7168
+uncached input tokens: 2609
+cumulative LLM seconds: 19.106
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          18
+literal values:        6
+predicates:            20
+query attempts:        1
+observed answers:      ('2015-01',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 17.185s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.081s
+  graph.materialization [attempt=1]: 0.088s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.938s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.483s

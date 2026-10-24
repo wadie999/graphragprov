@@ -1,0 +1,181 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Among the top five largest urban areas in the state where Infest's performer was formed, where does Veoh's headquarters city rank?
+
+Expected answer: third-largest
+
+Gold decomposition:
+1. question='Infest >> performer'; answer='Papa Roach'; support_paragraph=14
+2. question='What city was #1 formed in?'; answer='California'; support_paragraph=4
+3. question='Veoh >> headquarters location'; answer='San Diego'; support_paragraph=10
+4. question='In the top five largest urban areas in #2 , where does #3 rank?'; answer='third-largest'; support_paragraph=5
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Los%20Angeles%20metropolitan%20area> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> .
+<urn:graphragprov:entity:Riverside%E2%80%93San%20Bernardino> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> .
+<urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:landArea> "372.1"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:landAreaInSquareKilometers> "963.7"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:landAreaUnit> <urn:graphragprov:entity:square%20miles> .
+<urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:population> "1307402"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:populationCensusYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:San%20Diego%20metropolitan%20area> <urn:graphragprov:predicate:populationCensusYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:San%20Diego%20metropolitan%20area> <urn:graphragprov:predicate:totalPopulation> "3095313"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:extendsBeyond> <urn:graphragprov:entity:administrative%20city%20limits> .
+<urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:rankInState> <urn:graphragprov:entity:third-largest> .
+<urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:rankedAfter> <urn:graphragprov:entity:Los%20Angeles%20metropolitan%20area> .
+<urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:rankedAfter> <urn:graphragprov:entity:San%20Francisco%20metropolitan%20area> .
+<urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:totalPopulation> "2956746"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:San%20Francisco%20metropolitan%20area> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> .
+<urn:graphragprov:entity:Ben%20Luther> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:trombonist> .
+<urn:graphragprov:entity:Dave%20Buckner> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:drummer> .
+<urn:graphragprov:entity:Jacoby%20Shaddix> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:lead%20vocalist> .
+<urn:graphragprov:entity:Jerry%20Horton> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:guitarist> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:formedInYear> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Ben%20Luther> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Dave%20Buckner> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Jacoby%20Shaddix> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Jerry%20Horton> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Will%20James> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rock%20band> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Vacaville%2C%20California> .
+<urn:graphragprov:entity:Will%20James> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:bassist> .
+<urn:graphragprov:entity:Qlipso> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Israeli%20start-up> .
+<urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:allowsUsersTo> <urn:graphragprov:entity:find%20and%20watch%20major%20studio%20content%2C%20independent%20productions%20and%20user-generated%20material> .
+<urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:San%20Diego%2C%20California> .
+<urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Internet%20television%20company> .
+<urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Qlipso> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:awardNomination> <urn:graphragprov:entity:Best%20New%20Artist> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:bestSellingAlbumOf> <urn:graphragprov:entity:Papa%20Roach> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:certification> <urn:graphragprov:entity:3%C3%97%20Platinum> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:certificationDate> "2001-07-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:chartedOn> <urn:graphragprov:entity:Billboard%20200> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:nu%20metal> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rap%20metal> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major-label%20debut> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Papa%20Roach> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:publicationDate> "2000-04-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:DreamWorks%20Records> .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:sales> "more than seven million" .
+<urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:salesInUS> "three million" .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rock%20band> .
+<urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .

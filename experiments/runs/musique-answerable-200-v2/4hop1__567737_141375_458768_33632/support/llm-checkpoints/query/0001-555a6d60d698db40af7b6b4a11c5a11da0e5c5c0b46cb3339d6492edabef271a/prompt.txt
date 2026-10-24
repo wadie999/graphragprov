@@ -1,0 +1,172 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What day is the feast held in the city containing the headquarters of the company, that owns the record label that released Study in Brown?
+
+Expected answer: May 4
+
+Gold decomposition:
+1. question='Study in Brown >> record label'; answer='EmArcy Records'; support_paragraph=19
+2. question='What company is #1 part of?'; answer='Universal Music Group'; support_paragraph=11
+3. question='#2 >> headquarters location'; answer='Santa Monica'; support_paragraph=5
+4. question='What day is the #3 Feast held on?'; answer='May 4'; support_paragraph=15
+
+Frozen RDF graph:
+<urn:graphragprov:entity:EMI> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .
+<urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Santa%20Monica%2C%20California> .
+<urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reissue%20record%20label> .
+<urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:EMI> .
+<urn:graphragprov:entity:Brown> <urn:graphragprov:predicate:performedOn> <urn:graphragprov:entity:Cherokee> .
+<urn:graphragprov:entity:Brown%27s%20solo%20on%20Cherokee> <urn:graphragprov:predicate:acclaimed> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Brown%27s%20solo%20on%20Cherokee> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:solo> .
+<urn:graphragprov:entity:George%27s%20Dilemma> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Ulcer%20Department> .
+<urn:graphragprov:entity:Lands%20End> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Harold%20Land> .
+<urn:graphragprov:entity:Lands%20End> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:jazz%20standard> .
+<urn:graphragprov:entity:Sandu> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Brown> .
+<urn:graphragprov:entity:Sandu> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:jazz%20standard> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Clifford%20Brown> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Max%20Roach> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:containsSong> <urn:graphragprov:entity:Cherokee> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:containsSong> <urn:graphragprov:entity:George%27s%20Dilemma> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:containsSong> <urn:graphragprov:entity:Lands%20End> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:containsSong> <urn:graphragprov:entity:Sandu> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:publicationYear> "1955"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Study%20in%20Brown> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:EmArcy%20Records> .
+<urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:explorer> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Kecheek> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:inhabitedBy> <urn:graphragprov:entity:Tongva%20people> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedBy> <urn:graphragprov:entity:Juan%20Cresp%C3%AD> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedInHonorOf> <urn:graphragprov:entity:feast%20day%20of%20Saint%20Monica> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedInLanguage> <urn:graphragprov:entity:Tongva%20language> .
+<urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedOnAccountOf> <urn:graphragprov:entity:pair%20of%20springs> .
+<urn:graphragprov:entity:feast%20day%20of%20Saint%20Monica> <urn:graphragprov:predicate:heldOn> <urn:graphragprov:entity:May%204> .
+<urn:graphragprov:entity:pair%20of%20springs> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Kuruvungna%20Springs> .
+<urn:graphragprov:entity:pair%20of%20springs> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Serra%20Springs> .
+<urn:graphragprov:entity:pair%20of%20springs> <urn:graphragprov:predicate:reminiscentOf> <urn:graphragprov:entity:tears%20that%20Saint%20Monica%20shed%20over%20her%20son%27s%20early%20impiety> .
+<urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedNear> <urn:graphragprov:entity:present%20day%20intersection%20of%20Barrington%20and%20Ohio%20Avenues> .
+<urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedOn> "1769-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:firstNonIndigenousGroupToSetFootIn> <urn:graphragprov:entity:Santa%20Monica> .
+<urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:foundedInYear> "1954"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:jazz> .
+<urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:jazz%20record%20label> .
+<urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:nameEtymology> <urn:graphragprov:entity:MRC> .
+<urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:nameOrigin> <urn:graphragprov:entity:Mercury%20Record%20Company> .
+<urn:graphragprov:entity:EmArcy%20Records> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .

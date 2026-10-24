@@ -1,0 +1,184 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the town WLUJ is licensed in become the capital of the state where The Poor Boob's screenwriter was born?
+
+Expected answer: 1839
+
+Gold decomposition:
+1. question='The Poor Boob >> screenwriter'; answer='Margaret Mayo'; support_paragraph=18
+2. question='#1 >> place of birth'; answer='Illinois'; support_paragraph=5
+3. question='What town is WLUJ liscensed in?'; answer='Springfield'; support_paragraph=9
+4. question='when did #3 become the capital of #2'; answer='1839'; support_paragraph=11
+
+Frozen RDF graph:
+<urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20radio%20station> .
+<urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:licensedIn> <urn:graphragprov:entity:Springfield> .
+<urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Cornerstone%20Community%20Radio> .
+<urn:graphragprov:entity:Abraham%20Lincoln%20and%20his%20associates> <urn:graphragprov:predicate:nicknamed> <urn:graphragprov:entity:Long%20Nine> .
+<urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:becameCountySeatInYear> "1821"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:countySeatOf> <urn:graphragprov:entity:Sangamon%20County> .
+<urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:John%20C.%20Calhoun> .
+<urn:graphragprov:entity:John%20C.%20Calhoun> <urn:graphragprov:predicate:senatorOf> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalFromYear> "1809"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois%20Territory> .
+<urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalThroughYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Long%20Nine> <urn:graphragprov:predicate:combinedHeight> "54 feet (16 m)" .
+<urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:capitalDesignationDueTo> <urn:graphragprov:entity:Abraham%20Lincoln%20and%20his%20associates> .
+<urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinBuiltInYear> "1820"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinLocatedAt> <urn:graphragprov:entity:northwest%20corner%20of%20Second%20Street%20and%20Jefferson%20Street> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:Sangamon%20River> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:originalName> <urn:graphragprov:entity:Calhoun> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedAfter> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedInYear> "1832"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledBy> <urn:graphragprov:entity:trappers%20and%20traders> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledByPeopleFrom> <urn:graphragprov:entity:Kentucky%2C%20Virginia%2C%20and%20North%20Carolina> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledInYear> "1818"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:soughtToEmulate> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+<urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:comparableTo> <urn:graphragprov:entity:modern-day%20Silicon%20Valley> .
+<urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:industrial%20innovation%2C%20concentrated%20prosperity%2C%20and%20the%20celebrated%20Springfield%20Armory> .
+<urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalFromYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois> .
+<urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalToYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Donald%20Crisp> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Paramount%20Pictures> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20comedy%20film> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:publicationYear> "1919"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:releaseDate> "1919-03-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Bryant%20Washburn> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jay%20Dwiggins> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Raymond%20Hatton> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Richard%20Rosson> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Theodore%20Roberts> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wanda%20Hawley> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Gardner%20Hunting> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Margaret%20Mayo> .
+<urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Z.%20Wall%20Covington> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Lillian%20Elizabeth%20Slatten> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Brownsville%2C%20Illinois> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:bornOn> "1882-11-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:diedOn> "1951-02-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playwright> .
+<urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .

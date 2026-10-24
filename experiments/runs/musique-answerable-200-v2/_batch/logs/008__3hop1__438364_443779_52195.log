@@ -1,0 +1,314 @@
+
+H0 one-case execution
+  case:          3hop1__438364_443779_52195
+  hops:          3
+  question:      Who is the president of the newly declared independent country that is part of the Commission of Truth and Friendship with the country where Kotamadya is located?
+  expected:      Francisco Guterres
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__438364_443779_52195/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=14 title='Kotamadya'
+  source unit: u_50444dc10c77466194daeb8caa607a2bdfb0c4135d5a13b063799175a82d2bf6
+  text chars:  535
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.303s | model=deepseek-v4-flash
+      tokens:   in=2302 | out=2100 | total=4402 | cached=1920 | uncached=382
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 331 / 544 (60.8%)
+    characters text:     322 / 535 (60.2%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  42 chars
+      '" in Indonesia isn\'t simply a city, it is'
+    statement density:  27.57 / 1000 chars
+    title reliance:      6 / 15 (40.0%)
+
+[GRAPH 2/3] paragraph=16 title='Indonesia–Timor Leste Commission of Truth and Friendship'
+  source unit: u_30c9ca4ee81f2cc549a41bfc13d9fdfe9714d8b35b8b97dbabde940257c53c29
+  text chars:  820
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.282s | model=deepseek-v4-flash
+      tokens:   in=2493 | out=2116 | total=4609 | cached=1920 | uncached=573
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 431 / 876 (49.2%)
+    characters text:     375 / 820 (45.7%)
+    characters title:    56 / 56 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  160 chars
+      ', providing the first acknowledgement by the government of Indonesia of the human rights violations committed by state institutions in Timor. The commission is'
+    statement density:  14.84 / 1000 chars
+    title reliance:      12 / 13 (92.3%)
+
+[GRAPH 3/3] paragraph=13 title='East Timor'
+  source unit: u_c52f25dca3d1e10b194b147abca8d9eaa71400c4f8738842037e226f363205d9
+  text chars:  1719
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 28.163s | model=deepseek-v4-flash
+      tokens:   in=3111 | out=6812 | total=9923 | cached=2048 | uncached=1063
+    [LLM graph.reference #4] sending...
+      provider: 0.893s | model=deepseek-v4-flash
+      tokens:   in=1026 | out=8 | total=1034 | cached=0 | uncached=1026
+  extraction: ACCEPTED
+  statements: 48
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    48
+    initially rejected: 1
+
+    initial rejection #48
+      validator:
+        response.statements[48].predicate.evidence[0]: quote '.tp has been phased out' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": ".tp",
+                "segment": "text"
+              }
+            ],
+            "value": ".tp"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": ".tp has been phased out",
+                "segment": "text"
+              }
+            ],
+            "value": "formerInternetTLD"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "East Timor",
+                "segment": "title"
+              }
+            ],
+            "value": "East Timor"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 48
+  coverage:
+    characters combined: 854 / 1729 (49.4%)
+    characters text:     844 / 1719 (49.1%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           3 / 4 (75.0%)
+    longest uncovered:  201 chars
+      'Density 78 / km (202.0 / sq mi) GDP (PPP) 2017 estimate Total $4.567 billion Per capita $5,479 (148th) GDP (nominal) 2014 estimate Total $2.498 billion Per capita $3,330 HDI (2015…'
+    statement density:  27.76 / 1000 chars
+    title reliance:      48 / 48 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 76
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      76
+resource nodes:        64
+entity nodes:          64
+literal values:        10
+predicates:            52
+
+N-Triples:
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> .
+  <urn:graphragprov:entity:Indonesia> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:endorsedBy> <urn:graphragprov:entity:Susilo%20Bambang%20Yudhoyono> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:establishedBy> <urn:graphragprov:entity:East%20Timor> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:establishedBy> <urn:graphragprov:entity:Indonesia> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:establishedIn> "2005-08"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:truth%20commission> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:investigatedEvent> <urn:graphragprov:entity:independence%20referendum%20held%20in%20East%20Timor%20in%201999> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:notableFor> <urn:graphragprov:entity:first%20modern%20truth%20commission%20to%20be%20bilateral> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:investigate%20acts%20of%20violence> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:submittedReportOn> "2008-07-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> <urn:graphragprov:predicate:submittedReportTo> <urn:graphragprov:entity:presidents%20of%20both%20nations> .
+  <urn:graphragprov:entity:Susilo%20Bambang%20Yudhoyono> <urn:graphragprov:predicate:presidentOf> <urn:graphragprov:entity:Indonesia> .
+  <urn:graphragprov:entity:Kota> <urn:graphragprov:predicate:derivedFrom> <urn:graphragprov:entity:Sanskrit%2FPali%20word%20kota> .
+  <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:equivalentTo> <urn:graphragprov:entity:chartered%20community> .
+  <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:equivalentTo> <urn:graphragprov:entity:town> .
+  <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:governmental%20unit> .
+  <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:ledBy> <urn:graphragprov:entity:walikotamadya> .
+  <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Indonesia> .
+  <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:obsolete> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Sanskrit%2FPali%20word%20kota> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:fort> .
+  <urn:graphragprov:entity:kota> <urn:graphragprov:predicate:distinguishedFrom> <urn:graphragprov:entity:other%20communities> .
+  <urn:graphragprov:entity:kota> <urn:graphragprov:predicate:independentOf> <urn:graphragprov:entity:Regency%20%28Indonesia%29> .
+  <urn:graphragprov:entity:kota> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Indonesia> .
+  <urn:graphragprov:entity:kota> <urn:graphragprov:predicate:represents> <urn:graphragprov:entity:same%20governmental%20unit> .
+  <urn:graphragprov:entity:kota> <urn:graphragprov:predicate:sameLevelAs> <urn:graphragprov:entity:Regency%20%28Indonesia%29> .
+  <urn:graphragprov:entity:madya> <urn:graphragprov:predicate:roughlyMeans> <urn:graphragprov:entity:middle> .
+  <urn:graphragprov:entity:other%20communities> <urn:graphragprov:predicate:underJurisdictionOf> <urn:graphragprov:entity:regency> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:administeredBy> <urn:graphragprov:entity:UNTAET> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:administeredFrom> "1999-10-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:annexedBy> <urn:graphragprov:entity:Indonesia> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:annexedOn> "1976-07-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:anthem> <urn:graphragprov:entity:P%C3%A1tria> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:area> "15410"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:callingCode> "+670" .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:capital> <urn:graphragprov:entity:Dili> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:currency> <urn:graphragprov:entity:United%20States%20Dollar> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:demonym> <urn:graphragprov:entity:East%20Timorese> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:demonym> <urn:graphragprov:entity:Maubere> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:demonym> <urn:graphragprov:entity:Timorese> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:drivesOn> <urn:graphragprov:entity:left> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:government> <urn:graphragprov:entity:Unitary%20semi-presidential%20constitutional%20republic> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:independenceDeclared> "1975-11-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:independenceRestored> "2002-05-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:republic> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:internetTLD> <urn:graphragprov:entity:.tl> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:iso3166Code> <urn:graphragprov:entity:TL> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:legislature> <urn:graphragprov:entity:National%20Parliament> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:motto> <urn:graphragprov:entity:Unidade%2C%20Ac%C3%A7%C3%A3o%2C%20Progresso> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Atauru> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Baikeno> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Bekais> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Bunak> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Fataluku> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Galoli> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Habun> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Idalaka> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Kawaimina> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Kemak> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Makalero> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Makasae> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Makuva> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Mambai> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:nationalLanguage> <urn:graphragprov:entity:Tokodede> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:officialLanguage> <urn:graphragprov:entity:Portuguese> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:officialLanguage> <urn:graphragprov:entity:Tetum> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:officialName> <urn:graphragprov:entity:Democratic%20Republic%20of%20Timor%20-%20Leste> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:population> "1167242"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:president> <urn:graphragprov:entity:Francisco%20Guterres> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:primeMinister> <urn:graphragprov:entity:Mari%20Alkatiri> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:recognizedNationalLanguage> <urn:graphragprov:entity:fifteen%20further%20national%20languages> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:Roman%20Catholic> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:other%20religions> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:timezone> <urn:graphragprov:entity:UTC%2B9> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:usesCurrency> <urn:graphragprov:entity:Centavo%20coins> .
+  <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:website> <urn:graphragprov:entity:timor-leste.gov.tl> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.306s | model=deepseek-v4-flash
+      tokens:   in=4609 | out=337 | total=4946 | cached=640 | uncached=3969
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Indonesia> .
+  - <urn:graphragprov:entity:Indonesia> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> .
+  - <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Indonesia%E2%80%93Timor%20Leste%20Commission%20of%20Truth%20and%20Friendship> .
+  - <urn:graphragprov:entity:East%20Timor> <urn:graphragprov:predicate:president> <urn:graphragprov:entity:Francisco%20Guterres> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:locatedIn> ?country . ?country <urn:graphragprov:predicate:memberOf> ?commission . ?newCountry <urn:graphragprov:predicate:memberOf> ?commission . ?newCountry <urn:graphragprov:predicate:president> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_30c9ca4ee81f2cc5>
+  FROM <urn:graphragprov:unit:u_50444dc10c774661>
+  FROM <urn:graphragprov:unit:u_c52f25dca3d1e10b>
+  WHERE { <urn:graphragprov:entity:Kotamadya> <urn:graphragprov:predicate:locatedIn> ?country . ?country <urn:graphragprov:predicate:memberOf> ?commission . ?newCountry <urn:graphragprov:predicate:memberOf> ?commission . ?newCountry <urn:graphragprov:predicate:president> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Francisco Guterres',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['East Timor', 'Indonesia–Timor Leste Commission of Truth and Friendship', 'Kotamadya']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__438364_443779_52195
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__438364_443779_52195/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13541
+output tokens:         11373
+total tokens:          24914
+cached input tokens:   6528
+uncached input tokens: 7013
+cumulative LLM seconds: 52.947
+
+statement occurrences: 76
+semantic triples:      76
+entity nodes:          64
+literal values:        10
+predicates:            52
+query attempts:        1
+observed answers:      ('Francisco Guterres',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 50.665s
+  graph.reference.measurements [attempt=1]: 0.011s
+  graph.clear_support [attempt=1]: 0.086s
+  graph.materialization [attempt=1]: 0.149s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.307s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.537s

@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_4852dff2bdfd2b719e9e52e5c201ab05e6479e5d2585dfade1fb7398faf34469
+Title: The Rachel Maddow Show
+Text:
+The Rachel Maddow Show (also abbreviated TRMS) is a daily news and opinion television program that airs on MSNBC, running in the 9:00 pm ET timeslot Monday through Friday. It is hosted by Rachel Maddow, who gained a public profile via her frequent appearances as a progressive pundit on programs aired by MSNBC. It is based on her former radio show of the same name. The show debuted on September 8, 2008.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "The Rachel Maddow Show",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "The Rachel Maddow Show",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "airTime",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "9:00 pm ET",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "9:00 pm ET",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "9:00 pm ET",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].predicate.evidence[0]: quote '9:00 pm ET' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

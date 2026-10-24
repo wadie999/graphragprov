@@ -1,0 +1,195 @@
+
+H0 one-case execution
+  case:          2hop__130508_32379
+  hops:          2
+  question:      What is the oldest college in the state that contains Borough House Plantation?
+  expected:      College of Charles Towne
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__130508_32379/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=9 title='Borough House Plantation'
+  source unit: u_adf23076e0629d3b97c48186117250f51323350e029396197bd0706ecf962ad6
+  text chars:  623
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 12.012s | model=deepseek-v4-flash
+      tokens:   in=2263 | out=2632 | total=4895 | cached=1920 | uncached=343
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 415 / 647 (64.1%)
+    characters text:     391 / 623 (62.8%)
+    characters title:    24 / 24 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  60 chars
+      ', north of its intersection with U.S. Route 76/US Route 378'
+    statement density:  27.82 / 1000 chars
+    title reliance:      16 / 18 (88.9%)
+
+[GRAPH 2/2] paragraph=3 title='Charleston, South Carolina'
+  source unit: u_ba2f1021084f0484c17727ee0b01235fce43d32ee5007f0a8bfebe3b7f10aad0
+  text chars:  773
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.246s | model=deepseek-v4-flash
+      tokens:   in=2532 | out=1915 | total=4447 | cached=1920 | uncached=612
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 376 / 799 (47.1%)
+    characters text:     376 / 773 (48.6%)
+    characters title:    0 / 26 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  124 chars
+      'who wanted to share the financial cost to keep up with the scientific and philosophical issues of the day. This group also'
+    statement density:  16.27 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 31
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      31
+resource nodes:        28
+entity nodes:          28
+literal values:        6
+predicates:            22
+
+N-Triples:
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Anderson%20Place> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Borough%20House> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Hillcrest%20Plantation> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:constructionMethod> <urn:graphragprov:entity:pis%C3%A9%20%28rammed%20earth%29> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:constructionStartYear> "1821"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:hasBuilding> <urn:graphragprov:entity:main%20house> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:hasBuilding> <urn:graphragprov:entity:six%20buildings> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:homeOf> <urn:graphragprov:entity:Richard%20H.%20Anderson> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:National%20Historic%20Landmark> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:historic%20plantation> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:High%20Hills%20of%20Santee> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Stateburg> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:Sumter> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:South%20Carolina%20Highway%20261> .
+  <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:notedFor> <urn:graphragprov:entity:largest%20assemblage%20of%20high-style%20pis%C3%A9%20%28rammed%20earth%29%20structures%20in%20the%20United%20States> .
+  <urn:graphragprov:entity:Richard%20H.%20Anderson> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Confederate%20Army> .
+  <urn:graphragprov:entity:Richard%20H.%20Anderson> <urn:graphragprov:predicate:militaryRank> <urn:graphragprov:entity:General> .
+  <urn:graphragprov:entity:Charles%20Towne> <urn:graphragprov:predicate:grew> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Charles%20Towne> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:college> .
+  <urn:graphragprov:entity:Charles%20Towne%20Library%20Society> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:well-born%20young%20men> .
+  <urn:graphragprov:entity:Charles%20Towne%20Library%20Society> <urn:graphragprov:predicate:foundedInYear> "1748"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Charles%20Towne%20Library%20Society> <urn:graphragprov:predicate:helpedEstablish> <urn:graphragprov:entity:College%20of%20Charles%20Towne> .
+  <urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:foundedInYear> "1770"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:oldestCollegeIn> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:oldestMunicipallySupportedCollegeIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:transitionToStateOwnershipYear> "1970"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:benevolent%20societies> <urn:graphragprov:predicate:formedBy> <urn:graphragprov:entity:different%20ethnic%20groups> .
+  <urn:graphragprov:entity:first%20theatre%20building%20in%20America> <urn:graphragprov:predicate:builtInYear> "1736"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:first%20theatre%20building%20in%20America> <urn:graphragprov:predicate:locatedOnSiteOf> <urn:graphragprov:entity:today%27s%20Dock%20Street%20Theatre> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.718s | model=deepseek-v4-flash
+      tokens:   in=2461 | out=209 | total=2670 | cached=640 | uncached=1821
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  - <urn:graphragprov:entity:College%20of%20Charles%20Towne> <urn:graphragprov:predicate:oldestCollegeIn> <urn:graphragprov:entity:South%20Carolina> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> . ?answer <urn:graphragprov:predicate:oldestCollegeIn> <urn:graphragprov:entity:South%20Carolina> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_adf23076e0629d3b>
+  FROM <urn:graphragprov:unit:u_ba2f1021084f0484>
+  WHERE { <urn:graphragprov:entity:Borough%20House%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> . ?answer <urn:graphragprov:predicate:oldestCollegeIn> <urn:graphragprov:entity:South%20Carolina> . }
+
+GraphDB execution:
+  observed answers: ('College of Charles Towne',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Borough House Plantation', 'Charleston, South Carolina']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__130508_32379
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__130508_32379/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7256
+output tokens:         4756
+total tokens:          12012
+cached input tokens:   4480
+uncached input tokens: 2776
+cumulative LLM seconds: 21.976
+
+statement occurrences: 31
+semantic triples:      31
+entity nodes:          28
+literal values:        6
+predicates:            22
+query attempts:        1
+observed answers:      ('College of Charles Towne',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.268s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.718s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.569s

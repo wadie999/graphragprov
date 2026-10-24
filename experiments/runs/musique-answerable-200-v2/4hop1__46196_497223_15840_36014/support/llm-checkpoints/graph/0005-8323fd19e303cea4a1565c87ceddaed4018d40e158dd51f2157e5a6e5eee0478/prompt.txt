@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_1f8b303145f242b2959c45604e2b3c0b38a69808e9342cf408355c7f1d875ea9
+Title: Nintendo Entertainment System
+Text:
+The Nintendo Entertainment System (also abbreviated as NES) is an 8-bit home video game console that was developed and manufactured by Nintendo. It was initially released in Japan as the Family Computer (Japanese: ファミリーコンピュータ, Hepburn: Famirī Konpyūta?) (also known by the portmanteau abbreviation Famicom (ファミコン, Famikon?) and abbreviated as FC) on July 15, 1983, and was later released in North America during 1985, in Europe during 1986, and Australia in 1987. In South Korea, it was known as the Hyundai Comboy (현대 컴보이 Hyeondae Keomboi) and was distributed by SK Hynix which then was known as Hyundai Electronics. It was succeeded by the Super Nintendo Entertainment System.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Nintendo Entertainment System",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Nintendo Entertainment System",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "alsoKnownAs",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "also known as",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Family Computer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Family Computer",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].predicate.evidence[0]: quote 'also known as' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

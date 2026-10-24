@@ -1,0 +1,320 @@
+
+H0 one-case execution
+  case:          3hop2__89854_92991_76291
+  hops:          3
+  question:      When did the majority party in the House of Representatives gain control of the body which determines rules of the US House and US Senate?
+  expected:      January 2015
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__89854_92991_76291/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=17 title='114th United States Congress'
+  source unit: u_0d76c6ab5795c1df747bf2795f2411cdbf06f692eb28638711c0e92147c16727
+  text chars:  667
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 64.058s | model=deepseek-v4-flash
+      tokens:   in=2313 | out=16384 | total=18697 | cached=2048 | uncached=265
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #2] sending...
+      provider: 9.853s | model=deepseek-v4-flash
+      tokens:   in=2358 | out=2391 | total=4749 | cached=2304 | uncached=54
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 501 / 695 (72.1%)
+    characters text:     473 / 667 (70.9%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  42 chars
+      'of the United States federal government,'
+    statement density:  23.02 / 1000 chars
+    title reliance:      10 / 16 (62.5%)
+
+[GRAPH 2/3] paragraph=19 title='Standing Rules of the United States Senate'
+  source unit: u_d150dcb87414f2bcb442285d66467e3b26e066c910101f8ee927afa1dc5b1942
+  text chars:  299
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 3.987s | model=deepseek-v4-flash
+      tokens:   in=2449 | out=789 | total=3238 | cached=2048 | uncached=401
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 262 / 341 (76.8%)
+    characters text:     220 / 299 (73.6%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  41 chars
+      'The Standing Rules of the Senate are the'
+    statement density:  14.66 / 1000 chars
+    title reliance:      3 / 5 (60.0%)
+
+[GRAPH 3/3] paragraph=4 title='2014 United States Senate elections'
+  source unit: u_03702665607c765fb0fe81a0bfe63c8dc14fe655761cf5dbdb5c172af2af8098
+  text chars:  362
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 8.977s | model=deepseek-v4-flash
+      tokens:   in=2553 | out=1900 | total=4453 | cached=2048 | uncached=505
+    [LLM graph.reference #5] sending...
+      provider: 2.150s | model=deepseek-v4-flash
+      tokens:   in=817 | out=334 | total=1151 | cached=0 | uncached=817
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 2
+
+    initial rejection #3
+      validator:
+        response.statements[3].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Senate",
+                "segment": "text"
+              }
+            ],
+            "value": "Senate"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "had not controlled",
+                "segment": "text"
+              }
+            ],
+            "value": "lastControlled"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+    initial rejection #4
+      validator:
+        response.statements[4].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2007",
+                "segment": "text"
+              }
+            ],
+            "value": "2007-01"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "since January 2007",
+                "segment": "text"
+              }
+            ],
+            "value": "lastControlledUntil"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 13
+  coverage:
+    characters combined: 311 / 397 (78.3%)
+    characters text:     311 / 362 (85.9%)
+    characters title:    0 / 35 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  14 chars
+      '. Republicans'
+    statement density:  32.75 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 34
+  whole-source attempts: 4
+  whole-source retries: 1
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      34
+resource nodes:        20
+entity nodes:          20
+literal values:        11
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startDate> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeatedIncumbents> <urn:graphragprov:entity:Democratic%20incumbents> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeatedIncumbentsCount> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedSeats> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedSeatsFrom> <urn:graphragprov:entity:Democratic> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:heldAllSeats> <urn:graphragprov:entity:seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:lastControlled> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:lastControlledUntil> "2007-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainOf> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainOfSeats> <urn:graphragprov:entity:seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainToObtainMajority> <urn:graphragprov:entity:majority> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:beganWithLargestRepublicanMajoritySince> <urn:graphragprov:entity:71st%20Congress> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:composedOf> <urn:graphragprov:entity:United%20States%20House%20of%20Representatives> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:composedOf> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:duringPresidencyOf> <urn:graphragprov:entity:Barack%20Obama> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:endDate> "2017-01-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:hadSeatsInHouse> "248"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:hadSeatsInSenate> "54"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:meeting%20of%20the%20legislative%20branch> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:metIn> <urn:graphragprov:entity:Washington%2C%20D.C.> .
+  <urn:graphragprov:entity:114th%20United%20States%20Congress> <urn:graphragprov:predicate:startDate> "2015-01-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2014%20elections> <urn:graphragprov:predicate:gaveControlOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:2014%20elections> <urn:graphragprov:predicate:gaveControlOf> <urn:graphragprov:entity:both%20houses%20of%20Congress> .
+  <urn:graphragprov:entity:71st%20Congress> <urn:graphragprov:predicate:existedInPeriod> "1929-1931" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:firstTimeSince> <urn:graphragprov:entity:109th%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:both%20houses%20of%20Congress> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20United%20States%20Senate> <urn:graphragprov:predicate:adoptedBy> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20United%20States%20Senate> <urn:graphragprov:predicate:governsProcedureOf> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20United%20States%20Senate> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:parliamentary%20procedures> .
+  <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:mayDetermineRulesOfItsProceedings> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:powerToEstablishRulesDerivesFrom> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.184s | model=deepseek-v4-flash
+      tokens:   in=2630 | out=261 | total=2891 | cached=640 | uncached=1990
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:Senate> .
+  - <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  - <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startDate> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:Senate> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> ?congress . ?congress <urn:graphragprov:predicate:startDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_03702665607c765f>
+  FROM <urn:graphragprov:unit:u_0d76c6ab5795c1df>
+  FROM <urn:graphragprov:unit:u_d150dcb87414f2bc>
+  WHERE { <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:Senate> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> ?congress . ?congress <urn:graphragprov:predicate:startDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2015-01',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['114th United States Congress', '2014 United States Senate elections']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__89854_92991_76291
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__89854_92991_76291/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13120
+output tokens:         22059
+total tokens:          35179
+cached input tokens:   9088
+uncached input tokens: 4032
+cumulative LLM seconds: 91.209
+
+statement occurrences: 34
+semantic triples:      34
+entity nodes:          20
+literal values:        11
+predicates:            29
+query attempts:        1
+observed answers:      ('2015-01',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 89.040s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.075s
+  graph.materialization [attempt=1]: 0.137s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.185s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.515s

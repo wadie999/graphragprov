@@ -1,0 +1,109 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_69ef3cc987c08eab2298d8714ef5dcba2a9b06bee01d9159613adb8f688a96dd
+Title: WEKL
+Text:
+WEKL, known on-air as "102.3 K-Love", is a Contemporary Christian radio station in the United States, licensed by the Federal Communications Commission (FCC) to Augusta, Georgia, broadcasting on 102.3 MHz with an ERP of 1.5 kW. Its studios are located at the Augusta Corporate Center with the market’s other iHeartMedia owned sister stations in Augusta, and the transmitter is located in Augusta near Fort Gordon.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 4,
+    "statement": {
+      "subject": {
+        "value": "WEKL",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "WEKL",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "broadcastFrequency",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "broadcasting on 102.3 MHz",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "102.3 MHz",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "102.3 MHz",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[4].predicate.evidence[0]: quote 'broadcasting on 102.3 MHz' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 5,
+    "statement": {
+      "subject": {
+        "value": "WEKL",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "WEKL",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "effectiveRadiatedPower",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "ERP of 1.5 kW",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1.5 kW",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "1.5 kW",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[5].predicate.evidence[0]: quote 'ERP of 1.5 kW' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

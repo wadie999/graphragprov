@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_24abbf134c20f7d9cbd82cf1e4c65b99b9f6e8820f65516d05063ce1585a9b5c
+Title: Pope John XXIII
+Text:
+Following the death of Pope Pius XII on 9 October 1958, Roncalli watched the live funeral on his last full day in Venice on 11 October. His journal was specifically concerned with the funeral and the abused state of the late pontiff's corpse. Roncalli left Venice for the conclave in Rome well aware that he was papabile,[b] and after eleven ballots, was elected to succeed the late Pius XII, so it came as no surprise to him, though he had arrived at the Vatican with a return train ticket to Venice.[citation needed]
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 10,
+    "statement": {
+      "subject": {
+        "value": "Pope John XXIII",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Pope John XXIII",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "electionBallots",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "eleven ballots",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "eleven",
+        "datatype": "integer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "eleven",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[10].object.value must use canonical integer notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

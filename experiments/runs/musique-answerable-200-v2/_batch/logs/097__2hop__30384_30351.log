@@ -1,0 +1,228 @@
+
+H0 one-case execution
+  case:          2hop__30384_30351
+  hops:          2
+  question:      Who did Hay work for after being hired by his other notable influence regarding resource distribution other than Max Weber?
+  expected:      the Austrian government
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__30384_30351/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=12 title='Friedrich Hayek'
+  source unit: u_bf8a4e08292a88f1a68741f3117f24f0856b7db1fab7ffea33d9909428a1e284
+  text chars:  503
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.564s | model=deepseek-v4-flash
+      tokens:   in=2237 | out=973 | total=3210 | cached=1920 | uncached=317
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 409 / 518 (79.0%)
+    characters text:     409 / 503 (81.3%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  36 chars
+      '(see economic calculation problem).'
+    statement density:  11.58 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/2] paragraph=10 title='Friedrich Hayek'
+  source unit: u_f28901e43744d4cb8f1930a881c4d68764d3e3a0de4ca6b4bd057e0992778fd5
+  text chars:  644
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.862s | model=deepseek-v4-flash
+      tokens:   in=2370 | out=1467 | total=3837 | cached=1920 | uncached=450
+    [LLM graph.reference #3] sending...
+      provider: 1.545s | model=deepseek-v4-flash
+      tokens:   in=634 | out=165 | total=799 | cached=0 | uncached=634
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'working for' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "the Austrian government",
+                "segment": "text"
+              }
+            ],
+            "value": "the Austrian government"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "working for",
+                "segment": "text"
+              }
+            ],
+            "value": "workedFor"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hayek",
+                "segment": "text"
+              }
+            ],
+            "value": "Hayek"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 10
+  coverage:
+    characters combined: 378 / 659 (57.4%)
+    characters text:     378 / 644 (58.7%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  58 chars
+      "'s work on the explanatory strategy of social science and"
+    statement density:  15.17 / 1000 chars
+    title reliance:      0 / 10 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 16
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      16
+resource nodes:        11
+entity nodes:          11
+literal values:        4
+predicates:            9
+
+N-Triples:
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:argued> "centrally planned economies require determining distribution of resources" .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:argued> "efficient exchange and use of resources can be maintained only through the price mechanism in free markets" .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:argued> "planners will never have enough information to carry out allocation reliably" .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Ludwig%20von%20Mises> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Max%20Weber> .
+  <urn:graphragprov:entity:Max%20Weber> <urn:graphragprov:predicate:proposed> "efficient exchange and use of resources can be maintained only through the price mechanism in free markets" .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:Ludwig%20von%20Mises> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Carl%20Menger> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Friedrich%20von%20Wieser> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:research%20assistant> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:New%20York%20University> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedDuring> "1923-1924" .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedFor> <urn:graphragprov:entity:Prof.%20Jeremiah%20Jenks> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedFor> <urn:graphragprov:entity:the%20Austrian%20government> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedOn> <urn:graphragprov:entity:macroeconomic%20data%20on%20the%20American%20economy%20and%20the%20operations%20of%20the%20US%20Federal%20Reserve> .
+  <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedOn> <urn:graphragprov:entity:the%20legal%20and%20economic%20details%20of%20the%20Treaty%20of%20Saint%20Germain> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.371s | model=deepseek-v4-flash
+      tokens:   in=1607 | out=322 | total=1929 | cached=640 | uncached=967
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Ludwig%20von%20Mises> .
+  - <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Max%20Weber> .
+  - <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:hiredBy> <urn:graphragprov:entity:Ludwig%20von%20Mises> .
+  - <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedFor> <urn:graphragprov:entity:the%20Austrian%20government> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> ?influence . FILTER(?influence != <urn:graphragprov:entity:Max%20Weber>) <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:hiredBy> ?influence . <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedFor> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_bf8a4e08292a88f1>
+  FROM <urn:graphragprov:unit:u_f28901e43744d4cb>
+  WHERE { <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:influencedBy> ?influence . FILTER(?influence != <urn:graphragprov:entity:Max%20Weber>) <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:hiredBy> ?influence . <urn:graphragprov:entity:Hayek> <urn:graphragprov:predicate:workedFor> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Prof. Jeremiah Jenks', 'the Austrian government')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__30384_30351
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__30384_30351/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6848
+output tokens:         2927
+total tokens:          9775
+cached input tokens:   4480
+uncached input tokens: 2368
+cumulative LLM seconds: 16.343
+
+statement occurrences: 16
+semantic triples:      16
+entity nodes:          11
+literal values:        4
+predicates:            9
+query attempts:        1
+observed answers:      ('Prof. Jeremiah Jenks', 'the Austrian government')
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.979s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.056s
+  graph.materialization [attempt=1]: 0.077s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.372s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.447s

@@ -1,0 +1,241 @@
+
+H0 one-case execution
+  case:          3hop1__41865_55331_34700
+  hops:          3
+  question:      Who sent naval ships to the body of water that joins the Atlantic and the sea where the Rhine ends?
+  expected:      Caesar
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__41865_55331_34700/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=19 title='Rhine'
+  source unit: u_4c42626352bc07dc9eb6a4238dffab17723304ac28b552170e1d6fcbd4b3e153
+  text chars:  668
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.309s | model=deepseek-v4-flash
+      tokens:   in=2324 | out=2267 | total=4591 | cached=1920 | uncached=404
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 403 / 673 (59.9%)
+    characters text:     398 / 668 (59.6%)
+    characters title:    5 / 5 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  76 chars
+      'The Rhine (Romansh: Rein, German: Rhein, French: le Rhin, Dutch: Rijn) is a'
+    statement density:  22.29 / 1000 chars
+    title reliance:      13 / 15 (86.7%)
+
+[GRAPH 2/3] paragraph=17 title='North Sea'
+  source unit: u_da4ce9eed54713800337efb4b04a97254e73ebe6c5215e131e21ab3dd47a3338
+  text chars:  657
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.621s | model=deepseek-v4-flash
+      tokens:   in=2466 | out=2772 | total=5238 | cached=1920 | uncached=546
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 343 / 666 (51.5%)
+    characters text:     343 / 657 (52.2%)
+    characters title:    0 / 9 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  63 chars
+      '. In the southwest, beyond the Straits of Dover, the North Sea'
+    statement density:  30.03 / 1000 chars
+    title reliance:      0 / 20 (0.0%)
+
+[GRAPH 3/3] paragraph=7 title='Roman Republic'
+  source unit: u_874fd127f5fce43e4eaae01890c4c173eda61e1162f32256129682afb032623c
+  text chars:  530
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 9.488s | model=deepseek-v4-flash
+      tokens:   in=2614 | out=2048 | total=4662 | cached=2048 | uncached=566
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 433 / 544 (79.6%)
+    characters text:     433 / 530 (81.7%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  36 chars
+      'to meet several new demands. Under'
+    statement density:  25.74 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 49
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      49
+resource nodes:        45
+entity nodes:          45
+literal values:        5
+predicates:            28
+
+N-Triples:
+  <urn:graphragprov:entity:Cologne> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:Cologne> <urn:graphragprov:predicate:population> "more than 1,050,000" .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:averageDischarge> "about 2,900 m3/s" .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:beginsIn> <urn:graphragprov:entity:Swiss%20Alps> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:emptiesInto> <urn:graphragprov:entity:North%20Sea> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:flowsThrough> <urn:graphragprov:entity:Rhineland> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Franco-German%20border> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Swiss-Austrian%20border> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Swiss-German%20border> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Swiss-Liechtenstein%20border> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:European%20river> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:length> "about 1,230 km" .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Netherlands> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Swiss%20canton%20of%20Graub%C3%BCnden> .
+  <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:rank> <urn:graphragprov:entity:second-longest%20river%20in%20Central%20and%20Western%20Europe> .
+  <urn:graphragprov:entity:Caesar> <urn:graphragprov:predicate:assembledInvasionFleet> <urn:graphragprov:entity:invasion%20fleet> .
+  <urn:graphragprov:entity:Pompey> <urn:graphragprov:predicate:raisedLargeFleet> <urn:graphragprov:entity:large%20fleet> .
+  <urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:declinedInSize> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:declinedInSizeFollowing> <urn:graphragprov:entity:subjugation%20of%20the%20Mediterranean> .
+  <urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:underwentUpgradingAndRevitalisation> <urn:graphragprov:entity:short-term%20upgrading%20and%20revitalisation> .
+  <urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:upgradedIn> <urn:graphragprov:entity:late%20Republic> .
+  <urn:graphragprov:entity:civil%20war> <urn:graphragprov:predicate:followed> <urn:graphragprov:entity:the%20events%20described> .
+  <urn:graphragprov:entity:invasion%20fleet> <urn:graphragprov:predicate:assembledIn> <urn:graphragprov:entity:English%20Channel> .
+  <urn:graphragprov:entity:invasion%20fleet> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:invasion%20of%20Britannia> .
+  <urn:graphragprov:entity:large%20fleet> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:clearing%20the%20sea%20of%20Cilician%20pirates> .
+  <urn:graphragprov:entity:large%20fleet> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:Mediterranean%20Sea> .
+  <urn:graphragprov:entity:ships> <urn:graphragprov:predicate:constructedOrPressedIntoService> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:ships> <urn:graphragprov:predicate:constructedOrPressedIntoServiceFrom> <urn:graphragprov:entity:Greek%20cities> .
+  <urn:graphragprov:entity:ships> <urn:graphragprov:predicate:count> "1000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:English%20Channel> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Atlantic%20Ocean> .
+  <urn:graphragprov:entity:Kattegat> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Denmark> .
+  <urn:graphragprov:entity:Kattegat> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Sweden> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:becomes> <urn:graphragprov:entity:English%20Channel> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Belgium> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Denmark> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Netherlands> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Norway> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Shetland%20Islands> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:boundedBy> <urn:graphragprov:entity:Orkney%20Islands> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:boundedBy> <urn:graphragprov:entity:east%20coast%20of%20Great%20Britain> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:boundedBy> <urn:graphragprov:entity:northern%20and%20central%20European%20mainland> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Atlantic%20Ocean> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Baltic%20Sea> .
+  <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Norwegian%20Sea> .
+  <urn:graphragprov:entity:Norwegian%20Sea> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:north-eastern%20part%20of%20the%20Atlantic> .
+  <urn:graphragprov:entity:Skagerrak> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Denmark> .
+  <urn:graphragprov:entity:Skagerrak> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Norway> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.236s | model=deepseek-v4-flash
+      tokens:   in=3031 | out=372 | total=3403 | cached=640 | uncached=2391
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:emptiesInto> <urn:graphragprov:entity:North%20Sea> .
+  - <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:becomes> <urn:graphragprov:entity:English%20Channel> .
+  - <urn:graphragprov:entity:invasion%20fleet> <urn:graphragprov:predicate:assembledIn> <urn:graphragprov:entity:English%20Channel> .
+  - <urn:graphragprov:entity:Caesar> <urn:graphragprov:predicate:assembledInvasionFleet> <urn:graphragprov:entity:invasion%20fleet> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:emptiesInto> <urn:graphragprov:entity:North%20Sea> . <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:becomes> <urn:graphragprov:entity:English%20Channel> . <urn:graphragprov:entity:invasion%20fleet> <urn:graphragprov:predicate:assembledIn> <urn:graphragprov:entity:English%20Channel> . ?answer <urn:graphragprov:predicate:assembledInvasionFleet> <urn:graphragprov:entity:invasion%20fleet> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_4c42626352bc07dc>
+  FROM <urn:graphragprov:unit:u_874fd127f5fce43e>
+  FROM <urn:graphragprov:unit:u_da4ce9eed5471380>
+  WHERE { <urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:emptiesInto> <urn:graphragprov:entity:North%20Sea> . <urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:becomes> <urn:graphragprov:entity:English%20Channel> . <urn:graphragprov:entity:invasion%20fleet> <urn:graphragprov:predicate:assembledIn> <urn:graphragprov:entity:English%20Channel> . ?answer <urn:graphragprov:predicate:assembledInvasionFleet> <urn:graphragprov:entity:invasion%20fleet> . }
+
+GraphDB execution:
+  observed answers: ('Caesar',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['North Sea', 'Rhine', 'Roman Republic']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__41865_55331_34700
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__41865_55331_34700/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10435
+output tokens:         7459
+total tokens:          17894
+cached input tokens:   6528
+uncached input tokens: 3907
+cumulative LLM seconds: 33.654
+
+statement occurrences: 49
+semantic triples:      49
+entity nodes:          45
+literal values:        5
+predicates:            28
+query attempts:        1
+observed answers:      ('Caesar',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 31.434s
+  graph.reference.measurements [attempt=1]: 0.010s
+  graph.clear_support [attempt=1]: 0.054s
+  graph.materialization [attempt=1]: 0.155s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.238s
+  graphdb.semantic [attempt=1]: 0.021s
+  provenance.execution [attempt=1]: 0.575s

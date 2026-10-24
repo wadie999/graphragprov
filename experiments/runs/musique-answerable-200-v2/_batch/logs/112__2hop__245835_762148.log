@@ -1,0 +1,190 @@
+
+H0 one-case execution
+  case:          2hop__245835_762148
+  hops:          2
+  question:      Who is part of the group performing Ask the Fish?
+  expected:      Vince Herman
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__245835_762148/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=19 title='Ask the Fish'
+  source unit: u_5ad4efced4268928a55706f07d69318605874c6906cddcc0f6bf794391d9a913
+  text chars:  203
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.099s | model=deepseek-v4-flash
+      tokens:   in=2168 | out=1009 | total=3177 | cached=1920 | uncached=248
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 120 / 215 (55.8%)
+    characters text:     108 / 203 (53.2%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  46 chars
+      '. It was originally released in 1995, but was'
+    statement density:  32.56 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/2] paragraph=10 title='Vince Herman'
+  source unit: u_d0d674b53823d4bd0abb69786ac9d70bc54c1ba1468b7313f8c3931a5aa5622b
+  text chars:  1077
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 12.284s | model=deepseek-v4-flash
+      tokens:   in=2429 | out=2813 | total=5242 | cached=2048 | uncached=381
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 553 / 1089 (50.8%)
+    characters text:     541 / 1077 (50.2%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           8 / 9 (88.9%)
+    longest uncovered:  149 chars
+      '. Often when finishing the first jam of the night he tells the crowd "I feel a hell of a lot more like I do now than I did a few minutes ago". Vince'
+    statement density:  17.45 / 1000 chars
+    title reliance:      8 / 19 (42.1%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 26
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      26
+resource nodes:        17
+entity nodes:          17
+literal values:        8
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:live%20album> .
+  <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Leftover%20Salmon> .
+  <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:publicationYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:reissuedBy> <urn:graphragprov:entity:Bert%20Records> .
+  <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:reissuedBy> <urn:graphragprov:entity:Hollywood%20Records> .
+  <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:reissuedInYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:reissuedInYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Great%20American%20Taxi> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Tim%20Carbone> .
+  <urn:graphragprov:entity:Great%20American%20Taxi> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:Todd%20Snider> .
+  <urn:graphragprov:entity:Great%20American%20Taxi> <urn:graphragprov:predicate:performedFor> <urn:graphragprov:entity:Moonalice> .
+  <urn:graphragprov:entity:Great%20American%20Taxi> <urn:graphragprov:predicate:performedWith> <urn:graphragprov:entity:Peter%20Rowan> .
+  <urn:graphragprov:entity:Great%20American%20Taxi> <urn:graphragprov:predicate:releasedDebutAlbumInYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Great%20American%20Taxi> <urn:graphragprov:predicate:touredExtensively> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Leftover%20Salmon> <urn:graphragprov:predicate:dissolvedInYear> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leftover%20Salmon> <urn:graphragprov:predicate:foundedInYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Leftover%20Salmon> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Left%20Hand%20String%20Band> .
+  <urn:graphragprov:entity:Leftover%20Salmon> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Salmonheads> .
+  <urn:graphragprov:entity:Leftover%20Salmon> <urn:graphragprov:predicate:performsOccasionally> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Great%20American%20Taxi> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:guitarist> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:songwriter> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:leftBandInYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Leftover%20Salmon> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:residesIn> <urn:graphragprov:entity:Oregon> .
+  <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:touredWith> <urn:graphragprov:entity:Great%20American%20Taxi> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.601s | model=deepseek-v4-flash
+      tokens:   in=2080 | out=174 | total=2254 | cached=640 | uncached=1440
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Leftover%20Salmon> .
+  - <urn:graphragprov:entity:Vince%20Herman> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Leftover%20Salmon> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:performer> ?group . ?answer <urn:graphragprov:predicate:memberOf> ?group . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5ad4efced4268928>
+  FROM <urn:graphragprov:unit:u_d0d674b53823d4bd>
+  WHERE { <urn:graphragprov:entity:Ask%20the%20Fish> <urn:graphragprov:predicate:performer> ?group . ?answer <urn:graphragprov:predicate:memberOf> ?group . }
+
+GraphDB execution:
+  observed answers: ('Vince Herman',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Ask the Fish', 'Vince Herman']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__245835_762148
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__245835_762148/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6677
+output tokens:         3996
+total tokens:          10673
+cached input tokens:   4608
+uncached input tokens: 2069
+cumulative LLM seconds: 18.983
+
+statement occurrences: 26
+semantic triples:      26
+entity nodes:          17
+literal values:        8
+predicates:            19
+query attempts:        1
+observed answers:      ('Vince Herman',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 17.391s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.034s
+  graph.materialization [attempt=1]: 0.054s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.602s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.360s

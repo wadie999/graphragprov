@@ -1,0 +1,179 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Why did Roncalli leave the city where the creator of The Entombment died?
+
+Expected answer: for the conclave in Rome
+
+Gold decomposition:
+1. question='The Entombment >> creator'; answer='Titian'; support_paragraph=7
+2. question='#1 >> place of death'; answer='Venice'; support_paragraph=11
+3. question='Why did Roncalli leave #2 ?'; answer='for the conclave in Rome'; support_paragraph=15
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roncalli> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:arrivedAt> <urn:graphragprov:entity:the%20Vatican> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:awareOf> <urn:graphragprov:entity:that%20he%20was%20papabile> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:the%20conclave%20in%20Rome> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:electedAs> <urn:graphragprov:entity:successor%20of%20Pope%20Pius%20XII> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:electionBallots> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:hadWith> <urn:graphragprov:entity:a%20return%20train%20ticket%20to%20Venice> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Pope> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:left> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:name> <urn:graphragprov:entity:John%20XXIII> .
+<urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:watched> <urn:graphragprov:entity:the%20live%20funeral> .
+<urn:graphragprov:entity:Pope%20Pius%20XII> <urn:graphragprov:predicate:deathDate> "1958-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Philip%20II%20of%20Spain> <urn:graphragprov:predicate:commissioned> <urn:graphragprov:entity:a%20second%20version> .
+<urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Titian> .
+<urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:impressed> <urn:graphragprov:entity:Philip%20II%20of%20Spain> .
+<urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:painting> .
+<urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:church%20of%20I%20Gesuiti> .
+<urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:publicationYear> "1558"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:a%20second%20version> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:basilica%20at%20El%20Escorial> .
+<urn:graphragprov:entity:a%20second%20version> <urn:graphragprov:predicate:publicationYear> "1567"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Michelangelo> <urn:graphragprov:predicate:depictsSelfAs> <urn:graphragprov:entity:Nicodemus> .
+<urn:graphragprov:entity:Michelangelo> <urn:graphragprov:predicate:supports> <urn:graphragprov:entity:the%20body%20of%20Christ> .
+<urn:graphragprov:entity:Michelangelo%27s%20idea> <urn:graphragprov:predicate:in> <urn:graphragprov:entity:his%20unfinished%20Piet%C3%A0> .
+<urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:appearsIn> <urn:graphragprov:entity:The%20Entombment> .
+<urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:bearsTraitsOf> <urn:graphragprov:entity:the%20artist%20himself> .
+<urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Jewish%20elder> .
+<urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:learn%20about%20his%20teachings> .
+<urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:holding%20Christ%20body> .
+<urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:visited> <urn:graphragprov:entity:Jesus> .
+<urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:visitedAt> <urn:graphragprov:entity:night> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:brilliant%20colours> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:broad%20brushwork> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:commissionedBy> <urn:graphragprov:entity:Philip%20II%20of%20Spain> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Titian> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:The%20stone%20sarcophagus> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:inspiredBy> <urn:graphragprov:entity:Michelangelo%27s%20idea> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:painting> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:publicationYear> "1559"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:style> <urn:graphragprov:entity:mature%20style> .
+<urn:graphragprov:entity:The%20stone%20sarcophagus> <urn:graphragprov:predicate:decoratedWith> <urn:graphragprov:entity:depictions%20of%20Cain%20and%20Abel> .
+<urn:graphragprov:entity:The%20stone%20sarcophagus> <urn:graphragprov:predicate:decoratedWith> <urn:graphragprov:entity:the%20Sacrifice%20of%20Isaac> .
+<urn:graphragprov:entity:Titian> <urn:graphragprov:predicate:creatorOf> <urn:graphragprov:entity:The%20Entombment> .
+<urn:graphragprov:entity:depictions%20of%20Cain%20and%20Abel> <urn:graphragprov:predicate:theme> <urn:graphragprov:entity:themes> .
+<urn:graphragprov:entity:his%20unfinished%20Piet%C3%A0> <urn:graphragprov:predicate:date> "1550"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:the%20Sacrifice%20of%20Isaac> <urn:graphragprov:predicate:theme> <urn:graphragprov:entity:themes> .
+<urn:graphragprov:entity:the%20body%20of%20Christ> <urn:graphragprov:predicate:displayedIn> <urn:graphragprov:entity:the%20Cathedral%20in%20Florence> .
+<urn:graphragprov:entity:themes> <urn:graphragprov:predicate:predicted> <urn:graphragprov:entity:the%20sacrifice%20of%20Jesus> .

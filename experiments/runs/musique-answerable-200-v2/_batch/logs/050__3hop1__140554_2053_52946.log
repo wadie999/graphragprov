@@ -1,0 +1,290 @@
+
+H0 one-case execution
+  case:          3hop1__140554_2053_52946
+  hops:          3
+  question:      When is Celebrity Big Brother coming to the network which, along with ABC and the network which hosts Westinghouse Playhouse, is the other major broadcaster based in NY?
+  expected:      February 7, 2018
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__140554_2053_52946/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=15 title='Westinghouse Playhouse'
+  source unit: u_063755ded5888c273a9e4fb00cf980eb200e56265b7c62c82ea6582cafe726a0
+  text chars:  291
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.874s | model=deepseek-v4-flash
+      tokens:   in=2259 | out=1910 | total=4169 | cached=2048 | uncached=211
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 262 / 313 (83.7%)
+    characters text:     240 / 291 (82.5%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  17 chars
+      ', the series was'
+    statement density:  35.14 / 1000 chars
+    title reliance:      11 / 11 (100.0%)
+
+[GRAPH 2/3] paragraph=3 title='New York City'
+  source unit: u_506d54c6e20e71977a3842f260fd71862643db29f663c52320ba7a67191a38ee
+  text chars:  528
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.100s | model=deepseek-v4-flash
+      tokens:   in=2457 | out=2753 | total=5210 | cached=2048 | uncached=409
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 359 / 541 (66.4%)
+    characters text:     359 / 528 (68.0%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  29 chars
+      'the city as well, including'
+    statement density:  36.97 / 1000 chars
+    title reliance:      0 / 20 (0.0%)
+
+[GRAPH 3/3] paragraph=16 title='Celebrity Big Brother (American TV series)'
+  source unit: u_d60217ecd58ddf117e01796258456122982d999ebe4415d41e78059cce529d26
+  text chars:  688
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 12.192s | model=deepseek-v4-flash
+      tokens:   in=2714 | out=2720 | total=5434 | cached=2048 | uncached=666
+    [LLM graph.reference #4] sending...
+      provider: 1.495s | model=deepseek-v4-flash
+      tokens:   in=671 | out=197 | total=868 | cached=0 | uncached=671
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 1
+
+    initial rejection #7
+      validator:
+        response.statements[7].object.value must be a string
+      proposed statement:
+        {
+          "object": {
+            "datatype": "boolean",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "air outside the usual summer television season",
+                "segment": "text"
+              }
+            ],
+            "value": true
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "air outside the usual summer television season",
+                "segment": "text"
+              }
+            ],
+            "value": "airingOutsideUsualSeason"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Celebrity Big Brother (American TV series)",
+                "segment": "title"
+              }
+            ],
+            "value": "Celebrity Big Brother (American TV series)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 572 / 730 (78.4%)
+    characters text:     530 / 688 (77.0%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  42 chars
+      '. CBS announced that the series is set to'
+    statement density:  23.29 / 1000 chars
+    title reliance:      14 / 17 (82.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 48
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      48
+resource nodes:        40
+entity nodes:          40
+literal values:        7
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:The%20Nanette%20Fabray%20Show> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Westinghouse%20Playhouse%20Starring%20Nanette%20Fabray%20and%20Wendell%20Corey> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Yes%2C%20Yes%20Nanette> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:endDate> "1961-07"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sitcom> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:ranInSyndication> <urn:graphragprov:entity:Yes%2C%20Yes%20Nanette> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:ranUnderTitle> <urn:graphragprov:entity:Yes%2C%20Yes%20Nanette> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Nanette%20Fabray> .
+  <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:startDate> "1961-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> .
+  <urn:graphragprov:entity:AMC> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:Bravo> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> .
+  <urn:graphragprov:entity:Comedy%20Central> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:Food%20Network> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:Fox%20News> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:HBO> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:MTV> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:NBC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:NBC> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> .
+  <urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20broadcast%20service> .
+  <urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:operatedBy> <urn:graphragprov:entity:City%20of%20New%20York> .
+  <urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:original%20Emmy%20Award-winning%20shows> .
+  <urn:graphragprov:entity:Showtime> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:original%20Emmy%20Award-winning%20shows> <urn:graphragprov:predicate:covering> <urn:graphragprov:entity:music%20and%20culture%20in%20city%20neighborhoods%20and%20city%20government> .
+  <urn:graphragprov:entity:television%20industry> <urn:graphragprov:predicate:developedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:television%20industry> <urn:graphragprov:predicate:significantEmployerIn> <urn:graphragprov:entity:city%27s%20economy> .
+  <urn:graphragprov:entity:Big%20Brother> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20reality%20television%20series> .
+  <urn:graphragprov:entity:Big%20Brother%209> <urn:graphragprov:predicate:airedInYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Big%20Brother%209> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:U.S.%20Big%20Brother%20season> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:CBS> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airingOutsideUsualSeason> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airingSeason> <urn:graphragprov:entity:2017-18%20network%20television%20season> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Big%20Brother%3A%20Celebrity%20Edition> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:conclusionDate> "2018-02-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Allison%20Grodner> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Rich%20Meehan> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:hostedBy> <urn:graphragprov:entity:Julie%20Chen> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:spin%20-%20off%20series> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:premiereDate> "2018-02-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Fly%20on%20the%20Wall%20Entertainment> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Endemol%20Shine%20North%20America> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonNumber> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:spinOffFrom> <urn:graphragprov:entity:Big%20Brother> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.675s | model=deepseek-v4-flash
+      tokens:   in=3465 | out=657 | total=4122 | cached=640 | uncached=2825
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:NBC> .
+  - <urn:graphragprov:entity:NBC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  - <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  - <urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  - <urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> .
+  - <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:CBS> .
+  - <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:premiereDate> "2018-02-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:airedOn> ?nbc . ?nbc <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?cbs <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?cbs <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> ?cbs . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:premiereDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_063755ded5888c27>
+  FROM <urn:graphragprov:unit:u_506d54c6e20e7197>
+  FROM <urn:graphragprov:unit:u_d60217ecd58ddf11>
+  WHERE { <urn:graphragprov:entity:Westinghouse%20Playhouse> <urn:graphragprov:predicate:airedOn> ?nbc . ?nbc <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?cbs <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?cbs <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major%20American%20broadcast%20network> . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> ?cbs . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:premiereDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2018-02-07',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Celebrity Big Brother (American TV series)', 'New York City', 'Westinghouse Playhouse']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__140554_2053_52946
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__140554_2053_52946/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11566
+output tokens:         8237
+total tokens:          19803
+cached input tokens:   6784
+uncached input tokens: 4782
+cumulative LLM seconds: 37.337
+
+statement occurrences: 48
+semantic triples:      48
+entity nodes:          40
+literal values:        7
+predicates:            27
+query attempts:        1
+observed answers:      ('2018-02-07',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.681s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.075s
+  graph.materialization [attempt=1]: 0.092s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 3.676s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.480s

@@ -1,0 +1,178 @@
+
+H0 one-case execution
+  case:          2hop__175168_110222
+  hops:          2
+  question:      When was the creator of The Painter's Studio born?
+  expected:      10 June 1819
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__175168_110222/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=14 title="The Painter's Studio"
+  source unit: u_cc1ab0f3cefb5eddf5d819763db3a6df890da64e814591e02fe220f4f0e9ab3a
+  text chars:  222
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.253s | model=deepseek-v4-flash
+      tokens:   in=2189 | out=855 | total=3044 | cached=1920 | uncached=269
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 87 / 242 (36.0%)
+    characters text:     67 / 222 (30.2%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  78 chars
+      'g up seven years of my artistic and moral life ("L\'Atelier du peintre") is an'
+    statement density:  24.79 / 1000 chars
+    title reliance:      4 / 6 (66.7%)
+
+[GRAPH 2/2] paragraph=3 title='Gustave Courbet'
+  source unit: u_e441b459b052cf79d008fed9aced38566f0ec6d405a0bd44c322dcaa5cb8499d
+  text chars:  561
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.658s | model=deepseek-v4-flash
+      tokens:   in=2317 | out=1205 | total=3522 | cached=1920 | uncached=397
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 170 / 576 (29.5%)
+    characters text:     155 / 561 (27.6%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 4 (50.0%)
+    longest uncovered:  195 chars
+      'in 19th-century French painting. Committed to painting only what he could see, he rejected academic convention and the Romanticism of the previous generation of visual artists. Hi…'
+    statement density:  13.89 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 14
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      14
+resource nodes:        12
+entity nodes:          12
+literal values:        3
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Mus%C3%A9e%20d%27Orsay> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Paris> .
+  <urn:graphragprov:entity:Paris> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:France> .
+  <urn:graphragprov:entity:The%20Painter%27s%20Studio> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Gustave%20Courbet> .
+  <urn:graphragprov:entity:The%20Painter%27s%20Studio> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:painting> .
+  <urn:graphragprov:entity:The%20Painter%27s%20Studio> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mus%C3%A9e%20d%27Orsay> .
+  <urn:graphragprov:entity:The%20Painter%27s%20Studio> <urn:graphragprov:predicate:publicationYear> "1855"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Jean%20D%C3%A9sir%C3%A9%20Gustave%20Courbet> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:bornOn> "1819-06-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:diedOn> "1877-12-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Cubists> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Impressionists> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:movement> <urn:graphragprov:entity:Realism> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:French> .
+  <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:painter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.309s | model=deepseek-v4-flash
+      tokens:   in=1512 | out=187 | total=1699 | cached=640 | uncached=872
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Painter%27s%20Studio> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Gustave%20Courbet> .
+  - <urn:graphragprov:entity:Gustave%20Courbet> <urn:graphragprov:predicate:bornOn> "1819-06-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Painter%27s%20Studio> <urn:graphragprov:predicate:creator> ?creator . ?creator <urn:graphragprov:predicate:bornOn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_cc1ab0f3cefb5edd>
+  FROM <urn:graphragprov:unit:u_e441b459b052cf79>
+  WHERE { <urn:graphragprov:entity:The%20Painter%27s%20Studio> <urn:graphragprov:predicate:creator> ?creator . ?creator <urn:graphragprov:predicate:bornOn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1819-06-10',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Gustave Courbet', "The Painter's Studio"]
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__175168_110222
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__175168_110222/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6018
+output tokens:         2247
+total tokens:          8265
+cached input tokens:   4480
+uncached input tokens: 1538
+cumulative LLM seconds: 11.220
+
+statement occurrences: 14
+semantic triples:      14
+entity nodes:          12
+literal values:        3
+predicates:            11
+query attempts:        1
+observed answers:      ('1819-06-10',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 9.917s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.080s
+  graph.materialization [attempt=1]: 0.115s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.310s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.489s

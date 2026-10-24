@@ -1,0 +1,271 @@
+
+H0 one-case execution
+  case:          3hop1__465684_160545_60577
+  hops:          3
+  question:      Where did they film The Beach in the country where Bodindecha died?
+  expected:      Ko Phi Phi Leh
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__465684_160545_60577/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=14 title='Bodindecha'
+  source unit: u_67c6885d5c22f8d8334725f89b5a31cdf30211846925de8a1bd9d2649c55e363
+  text chars:  574
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.435s | model=deepseek-v4-flash
+      tokens:   in=2316 | out=2368 | total=4684 | cached=2048 | uncached=268
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 275 / 584 (47.1%)
+    characters text:     265 / 574 (46.2%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  88 chars
+      'in charge of civilian affairs as the "Akkhra Maha Senabodi" () of the "Samuha Nayok" )'
+    statement density:  27.40 / 1000 chars
+    title reliance:      9 / 16 (56.2%)
+
+[GRAPH 2/3] paragraph=16 title='Bang Bon District'
+  source unit: u_ea7aa27fc1e849a3df7da3e180761c5cfef738a9979f5ab8a70edea94bc287d4
+  text chars:  343
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.404s | model=deepseek-v4-flash
+      tokens:   in=2461 | out=1696 | total=4157 | cached=2048 | uncached=413
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 168 / 360 (46.7%)
+    characters text:     151 / 343 (44.0%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  66 chars
+      'Bang Bon (Thai: บางบอน, pronounced [bāːŋ bɔ̄ːn]) is one of the 50'
+    statement density:  33.33 / 1000 chars
+    title reliance:      12 / 12 (100.0%)
+
+[GRAPH 3/3] paragraph=19 title='The Beach (film)'
+  source unit: u_82b816379362114be87539738f39d3cc8d628b1ce34b314c1de293b5b00415b9
+  text chars:  763
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 6.119s | model=deepseek-v4-flash
+      tokens:   in=2623 | out=1330 | total=3953 | cached=2048 | uncached=575
+    [LLM graph.reference #4] sending...
+      provider: 0.784s | model=deepseek-v4-flash
+      tokens:   in=669 | out=8 | total=677 | cached=0 | uncached=669
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'filming of the film' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Ko Phi Phi Leh",
+                "segment": "text"
+              }
+            ],
+            "value": "Ko Phi Phi Leh"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "filming of the film",
+                "segment": "text"
+              }
+            ],
+            "value": "filmedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Beach (film)",
+                "segment": "title"
+              }
+            ],
+            "value": "The Beach (film)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 332 / 779 (42.6%)
+    characters text:     316 / 763 (41.4%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  226 chars
+      ', there was a clear flat area at one end of the beach that was created artificially with an odd layout of trees which was never rectified, and the entire area remained damaged fro…'
+    statement density:  8.99 / 1000 chars
+    title reliance:      2 / 7 (28.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 35
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      33
+resource nodes:        30
+entity nodes:          30
+literal values:        8
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:birthYear> "1777"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:deathYear> "1849"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:political%20and%20military%20figure> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:campaigns%20during%20the%20Siamese-Vietnamese%20Wars> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:putting%20down%20the%20Laotian%20Rebellion> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:reign%20of%20King%20Rama%20III> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Chief%20Minister> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:military%20general> .
+  <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:personalName> <urn:graphragprov:entity:Sing%20Sinhaseni> .
+  <urn:graphragprov:entity:Laotian%20Rebellion> <urn:graphragprov:predicate:endYear> "1828"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Laotian%20Rebellion> <urn:graphragprov:predicate:startYear> "1826"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Lord%20Anouvong%20of%20Vientiane> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Lord> .
+  <urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:endYear> "1834"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:endYear> "1845"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:startYear> "1831"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:startYear> "1841"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:20th%20Century%20Fox> <urn:graphragprov:predicate:alteredLandscapeOf> <urn:graphragprov:entity:Ko%20Phi%20Phi%20Leh> .
+  <urn:graphragprov:entity:20th%20Century%20Fox> <urn:graphragprov:predicate:setAsideFund> <urn:graphragprov:entity:reconstruction%20fund> .
+  <urn:graphragprov:entity:The%20Beach%20%28film%29> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Ko%20Phi%20Phi%20Leh> .
+  <urn:graphragprov:entity:The%20Beach%20%28film%29> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:20th%20Century%20Fox> .
+  <urn:graphragprov:entity:environmentalists> <urn:graphragprov:predicate:believed> <urn:graphragprov:entity:damage%20to%20the%20ecosystem%20was%20permanent> .
+  <urn:graphragprov:entity:environmentalists> <urn:graphragprov:predicate:believed> <urn:graphragprov:entity:restoration%20attempts%20had%20failed> .
+  <urn:graphragprov:entity:environmentalists> <urn:graphragprov:predicate:filedLawsuitAgainst> <urn:graphragprov:entity:20th%20Century%20Fox> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:district> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bangkok> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Thailand> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Bang%20Khae> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Bang%20Khun%20Thian> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Chom%20Thong> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Krathum%20Baen%20District> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Mueang%20Samut%20Sakhon%20District> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Nong%20Khaem%20District> .
+  <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Phasi%20Charoen> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.552s | model=deepseek-v4-flash
+      tokens:   in=2512 | out=380 | total=2892 | cached=640 | uncached=1872
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:birthYear> "1777"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  - <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bangkok> .
+  - <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Thailand> .
+  - <urn:graphragprov:entity:The%20Beach%20%28film%29> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Ko%20Phi%20Phi%20Leh> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:birthYear> ?birthYear . <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bangkok> . <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Thailand> . <urn:graphragprov:entity:The%20Beach%20%28film%29> <urn:graphragprov:predicate:filmedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_67c6885d5c22f8d8>
+  FROM <urn:graphragprov:unit:u_82b816379362114b>
+  FROM <urn:graphragprov:unit:u_ea7aa27fc1e849a3>
+  WHERE { <urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:birthYear> ?birthYear . <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bangkok> . <urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Thailand> . <urn:graphragprov:entity:The%20Beach%20%28film%29> <urn:graphragprov:predicate:filmedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Ko Phi Phi Leh',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Bang Bon District', 'Bodindecha', 'The Beach (film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__465684_160545_60577
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__465684_160545_60577/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10581
+output tokens:         5782
+total tokens:          16363
+cached input tokens:   6784
+uncached input tokens: 3797
+cumulative LLM seconds: 27.293
+
+statement occurrences: 35
+semantic triples:      33
+entity nodes:          30
+literal values:        8
+predicates:            17
+query attempts:        1
+observed answers:      ('Ko Phi Phi Leh',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.756s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.062s
+  graph.materialization [attempt=1]: 0.077s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.553s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.428s

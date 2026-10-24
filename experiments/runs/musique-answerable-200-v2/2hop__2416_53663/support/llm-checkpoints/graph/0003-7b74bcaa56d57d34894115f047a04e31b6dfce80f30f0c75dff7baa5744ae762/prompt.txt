@@ -1,0 +1,333 @@
+Convert one source unit into a rich grounded RDF-style knowledge graph.
+
+The source has two immutable segments: `title` and `text`.
+
+Goals:
+1. extract as many useful explicit atomic facts as possible;
+2. represent them as reusable subject-predicate-object statements;
+3. ground every subject, predicate, and object to exact source substrings.
+
+Do not stop after finding only the facts needed for one downstream question.
+
+Return ONLY:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "...",
+        "datatype": "... optional ...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+RULES
+
+1. ATOMIC FACTS
+Each statement expresses one relation.
+Subjects and entity objects must be reusable entities/concepts, not sentences,
+clauses, explanations, or lists.
+
+Split dimensions:
+"American jazz guitarist" ->
+  nationality -> American
+  occupation -> guitarist
+  genre -> jazz
+
+Split lists:
+"CD and vinyl" -> two statements.
+
+2. ENTITIES VS LITERALS
+Subjects are always entities.
+Objects without `datatype` are entities.
+
+Use literals only for scalar values.
+
+Allowed datatypes:
+string, integer, decimal, boolean, year, yearMonth, date, dateTime
+
+Normalize when the source provides enough precision:
+
+"68,202,492" -> value "68202492", datatype "integer"
+"6 March 2018" -> value "2018-03-06", datatype "date"
+"March 2018" -> value "2018-03", datatype "yearMonth"
+"2018" -> value "2018", datatype "year"
+
+Keep imprecise scalars as strings:
+"the 1950s"
+"around 2018"
+"35 to 40 hours per week"
+
+Never invent missing precision.
+Every `value` is a JSON string.
+
+3. PREDICATES
+Use concise lowerCamelCase relations, normally 1-4 words, e.g.:
+
+instanceOf, nationality, occupation, genre, bornIn, bornOn,
+director, writtenBy, producedBy, starring, locatedIn,
+foundedBy, foundedInYear, publicationYear, headquarteredIn
+
+Predicate evidence should be the shortest exact phrase expressing the relation.
+
+4. LOCAL SUPPORT
+A statement must be supported by one local assertion, normally one clause or
+sentence.
+
+Cross-sentence resolution is allowed only for local identity/coreference:
+pronouns, aliases, abbreviations, omitted subjects, or the title.
+
+Do not combine unrelated fragments to manufacture a relation.
+
+5. EXACT GROUNDING
+Every subject, predicate, and object requires evidence.
+
+Each `quote` must be an exact non-empty substring of its declared segment.
+Preserve capitalization, spelling, punctuation, whitespace, Unicode, etc.
+
+Occurrences are counted independently per segment from left to right.
+Use occurrence 1 unless the same quote appears multiple times.
+
+Evidence roles must be meaningful:
+- subject evidence identifies the subject;
+- predicate evidence expresses the relation;
+- object evidence identifies/expresses the object.
+
+6. TITLE
+Use the title when needed to resolve a local subject/object.
+
+Example:
+Title: "Maria Torres"
+Text: "She founded Lumen Works."
+
+"Maria Torres" may use title evidence "Maria Torres" plus text evidence "She".
+
+Do not automatically make the title entity the subject of every statement.
+
+7. SOURCE BOUNDARY
+Use only explicit information in the supplied title and text.
+
+Do not automatically add inverse, symmetric, transitive, ontology-derived,
+cross-source, or external-world facts.
+
+8. BROAD COVERAGE
+Continue through the whole source.
+
+Extract useful explicit facts about identity, type, nationality, occupation,
+location, people, works, organizations, authorship, direction, production,
+membership, leadership, dates, quantities, genres, formats, and other grounded
+relations.
+
+Do not manufacture facts merely to increase graph size.
+
+Return {"statements": []} only when no useful fully grounded atomic fact exists.
+
+
+EXAMPLE
+
+Title:
+"Example Film"
+
+Text:
+"Example Film is a 2018 French drama film directed by Maria Torres and starring
+John Lee and Anna Smith."
+
+Output:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {"segment": "text", "quote": "film", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "drama film",
+        "evidence": [
+          {"segment": "text", "quote": "drama film", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "publicationYear",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "2018",
+        "datatype": "year",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "French",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {"segment": "text", "quote": "directed by", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Maria Torres",
+        "evidence": [
+          {"segment": "text", "quote": "Maria Torres", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "John Lee",
+        "evidence": [
+          {"segment": "text", "quote": "John Lee", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Anna Smith",
+        "evidence": [
+          {"segment": "text", "quote": "Anna Smith", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+EXPERIMENT TASK — CONSTRUCT MUSIQUE QUESTION GRAPH
+
+We are constructing a grounded RDF graph for one MuSiQue benchmark question.
+
+The question, expected answer, and decomposition are coordination context. They
+help keep entity and predicate choices compatible across supporting paragraphs.
+They are not evidence.
+
+For the CURRENT SOURCE only, return grounded RDF statements using the extraction
+schema below. Reuse semantic names already present in the accepted graph when
+they denote the same thing.
+Extract all useful explicit atomic facts from CURRENT SOURCE.
+
+Do not restrict extraction to facts needed for the question.
+
+However, facts explicitly present in CURRENT SOURCE that are required
+to realize its MuSiQue decomposition hop(s) are mandatory and must not
+be omitted.
+
+Question/answer/decomposition/accepted graph are coordination context,
+not evidence.
+
+Every returned statement must be supported by the CURRENT SOURCE. Python owns
+source identity; never return source IDs.
+
+Question: Where is the river that the engine pumped water from located in the world?
+
+Expected answer: northeastern Africa
+
+Gold decomposition:
+1. question='From what river did the engine pump water?'; answer='Nile River'; support_paragraph=4
+2. question='where is #1 located in the world'; answer='northeastern Africa'; support_paragraph=10
+
+Accepted semantic graph so far:
+Shuman | advocated | solar energy's utilization
+Shuman | built | world’s first solar thermal power station
+Shuman | quotedIn | media
+Shuman’s plant | used | parabolic troughs
+Shuman’s vision and basic design | resurrectedIn | 1970s
+discovery of cheap oil in the 1930s | discouraged | advancement of solar energy
+engine | power | 45–52 kilowatts (60–70 hp)
+engine | pumped | water
+engine | pumpedAmount | more than 22,000 litres (4,800 imp gal; 5,800 US gal) of water per minute
+engine | pumpedFrom | Nile River
+outbreak of World War I | discouraged | advancement of solar energy
+water | pumpedTo | adjacent cotton fields
+world’s first solar thermal power station | builtInYear | 1912-1913
+world’s first solar thermal power station | locatedIn | Maadi, Egypt
+
+CURRENT SOURCE — MuSiQue paragraph 10
+
+{
+  "title": "Nile",
+  "text": "The Nile (Arabic: النيل ‎) is a major north - flowing river in northeastern Africa, and is commonly regarded as the longest river in the world, though some sources cite the Amazon River as the longest. The Nile, which is 6,853 km (4,258 miles) long, is an ``international ''river as its drainage basin covers eleven countries, namely, Tanzania, Uganda, Rwanda, Burundi, the Democratic Republic of the Congo, Kenya, Ethiopia, Eritrea, South Sudan, Republic of the Sudan and Egypt. In particular, the Nile is the primary water source of Egypt and Sudan."
+}

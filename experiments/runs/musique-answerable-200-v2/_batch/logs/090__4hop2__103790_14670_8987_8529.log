@@ -1,0 +1,398 @@
+
+H0 one-case execution
+  case:          4hop2__103790_14670_8987_8529
+  hops:          4
+  question:      A country's military branch, the equivalent of which in the US contains the Air Defense Artillery, was unprepared for the invasion of Ivo Werner's country. When was the word "Slavs" used in the national anthem of the unprepared country?
+  expected:      1943–1992
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop2__103790_14670_8987_8529/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=17 title='Ivo Werner'
+  source unit: u_de739abfb8ed0862caf5bdf8dfd4fe767730653e153699158792bf60c60efff2
+  text chars:  275
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.248s | model=deepseek-v4-flash
+      tokens:   in=2287 | out=1154 | total=3441 | cached=1920 | uncached=367
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 141 / 285 (49.5%)
+    characters text:     131 / 275 (47.6%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  53 chars
+      'who competed for both his native country as well as'
+    statement density:  28.07 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 2/4] paragraph=16 title='United States Army'
+  source unit: u_87283e474593519a63546f377030fff275c16ba4a22dcfa91266ae0d1111bce1
+  text chars:  625
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 62.895s | model=deepseek-v4-flash
+      tokens:   in=2441 | out=16384 | total=18825 | cached=2176 | uncached=265
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #3] sending...
+      provider: 10.644s | model=deepseek-v4-flash
+      tokens:   in=2486 | out=2510 | total=4996 | cached=2432 | uncached=54
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 410 / 643 (63.8%)
+    characters text:     392 / 625 (62.7%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  55 chars
+      '. The army is also divided into major branches such as'
+    statement density:  27.99 / 1000 chars
+    title reliance:      10 / 18 (55.6%)
+
+[GRAPH 3/4] paragraph=14 title='Josip Broz Tito'
+  source unit: u_0dcb856fcaffb09580b430c8b43e27b6ee82762765d98fd2ce6ede6cc059a4d5
+  text chars:  360
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 6.962s | model=deepseek-v4-flash
+      tokens:   in=2579 | out=1587 | total=4166 | cached=2176 | uncached=403
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 212 / 375 (56.5%)
+    characters text:     212 / 360 (58.9%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  51 chars
+      'if Dubček needed help in facing down the Soviets.'
+    statement density:  29.33 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 4/4] paragraph=6 title='Slavs'
+  source unit: u_5521092613d248f5bc5a912bccabcebe95a3b421b81d2fab8191c3f7e767adb6
+  text chars:  200
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 8.087s | model=deepseek-v4-flash
+      tokens:   in=2669 | out=1834 | total=4503 | cached=2176 | uncached=493
+    [LLM graph.reference #6] sending...
+      provider: 0.618s | model=deepseek-v4-flash
+      tokens:   in=1055 | out=8 | total=1063 | cached=1024 | uncached=31
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 3
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.evidence[0]: quote 'national anthem of Yugoslavia (1943–1992)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "national anthem of Yugoslavia (1943–1992)",
+                "segment": "text"
+              }
+            ],
+            "value": "national anthem of Yugoslavia (1943–1992)"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "used in",
+                "segment": "text"
+              }
+            ],
+            "value": "usedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Slavs",
+                "segment": "title"
+              }
+            ],
+            "value": "Slavs"
+          }
+        }
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.evidence[0]: quote 'national anthem of the Federal Republic of Yugoslavia (1992–2003)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "national anthem of the Federal Republic of Yugoslavia (1992–2003)",
+                "segment": "text"
+              }
+            ],
+            "value": "national anthem of the Federal Republic of Yugoslavia (1992–2003)"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "used in",
+                "segment": "text"
+              }
+            ],
+            "value": "usedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Slavs",
+                "segment": "title"
+              }
+            ],
+            "value": "Slavs"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].object.evidence[0]: quote 'national anthem of Serbia and Montenegro (2003–2006)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "national anthem of Serbia and Montenegro (2003–2006)",
+                "segment": "text"
+              }
+            ],
+            "value": "national anthem of Serbia and Montenegro (2003–2006)"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "used in",
+                "segment": "text"
+              }
+            ],
+            "value": "usedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Slavs",
+                "segment": "title"
+              }
+            ],
+            "value": "Slavs"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 156 / 205 (76.1%)
+    characters text:     151 / 200 (75.5%)
+    characters title:    5 / 5 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  21 chars
+      'The word "Slavs" was'
+    statement density:  43.90 / 1000 chars
+    title reliance:      1 / 9 (11.1%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 46
+  whole-source attempts: 5
+  whole-source retries: 1
+  targeted corrections: 1
+  initial rejections: 3
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      46
+resource nodes:        38
+entity nodes:          38
+literal values:        12
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offered> <urn:graphragprov:entity:Alexander%20Dub%C4%8Dek> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredInYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredOn> "three hours notice" .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredToFly> <urn:graphragprov:entity:Prague> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Ivan%20Go%C5%A1njak> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Rade%20Hamovi%C4%87> .
+  <urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removedIn> "1969-04"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:army> .
+  <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Yugoslav> .
+  <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:unpreparedFor> <urn:graphragprov:entity:invasion%20of%20Czechoslovakia> .
+  <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:unpreparedFor> <urn:graphragprov:entity:invasion%20of%20Yugoslavia> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedFrom> "1992"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedUntil> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Serbia%20and%20Montenegro> <urn:graphragprov:predicate:existedFrom> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Serbia%20and%20Montenegro> <urn:graphragprov:predicate:existedUntil> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedIn> <urn:graphragprov:entity:national%20anthem%20of%20the%20Slovak%20Republic%20%281939%E2%80%931945%29> .
+  <urn:graphragprov:entity:Slovak%20Republic> <urn:graphragprov:predicate:existedFrom> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Slovak%20Republic> <urn:graphragprov:predicate:existedUntil> "1945"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:existedFrom> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:existedUntil> "1992"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:activatedBy> <urn:graphragprov:entity:President> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:hasRole> <urn:graphragprov:entity:National%20Guardsmen> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:hasRole> <urn:graphragprov:entity:reserve%20of%20the%20U.S.%20Army> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:state%20soldiers> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:statusAfter1903> <urn:graphragprov:entity:dual%20status> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:statusBefore1903> <urn:graphragprov:entity:state%20soldiers> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:underAuthorityOf> <urn:graphragprov:entity:President> .
+  <urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:underAuthorityOf> <urn:graphragprov:entity:governor%20of%20their%20state%20or%20territory> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Air%20Defense%20Artillery> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Armor> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Army%20National%20Guard> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Army%20Reserve> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Aviation> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Corps%20of%20Engineers> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Infantry> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Regular%20Army> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Signal%20Corps> .
+  <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:army> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:bornOn> "1960-08-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:citizenship> <urn:graphragprov:entity:West%20Germany> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:citizenshipAcquiredOn> "1984"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:immigratedOn> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:West%20Germany> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovakia> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:tennis%20coach> .
+  <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:tennis%20player> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.247s | model=deepseek-v4-flash
+      tokens:   in=3166 | out=540 | total=3706 | cached=640 | uncached=2526
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ivo%20Werner> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovakia> .
+  - <urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Air%20Defense%20Artillery> .
+  - <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:unpreparedFor> <urn:graphragprov:entity:invasion%20of%20Czechoslovakia> .
+  - <urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:unpreparedFor> <urn:graphragprov:entity:invasion%20of%20Yugoslavia> .
+  - <urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedIn> <urn:graphragprov:entity:national%20anthem%20of%20the%20Slovak%20Republic%20%281939%E2%80%931945%29> .
+  - <urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:existedFrom> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  - <urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:existedUntil> "1992"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?person <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovakia> . ?army <urn:graphragprov:predicate:unpreparedFor> ?invasion . ?invasion <urn:graphragprov:predicate:target> ?country . ?country <urn:graphragprov:predicate:existedFrom> ?start . ?country <urn:graphragprov:predicate:existedUntil> ?end . BIND(CONCAT(STR(?start), "–", STR(?end)) AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0dcb856fcaffb095>
+  FROM <urn:graphragprov:unit:u_5521092613d248f5>
+  FROM <urn:graphragprov:unit:u_87283e474593519a>
+  FROM <urn:graphragprov:unit:u_de739abfb8ed0862>
+  WHERE { ?person <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Czechoslovakia> . ?army <urn:graphragprov:predicate:unpreparedFor> ?invasion . ?invasion <urn:graphragprov:predicate:target> ?country . ?country <urn:graphragprov:predicate:existedFrom> ?start . ?country <urn:graphragprov:predicate:existedUntil> ?end . BIND(CONCAT(STR(?start), "–", STR(?end)) AS ?answer) }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop2__103790_14670_8987_8529
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop2__103790_14670_8987_8529/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          16683
+output tokens:         24017
+total tokens:          40700
+cached input tokens:   12544
+uncached input tokens: 4139
+cumulative LLM seconds: 100.701
+
+statement occurrences: 46
+semantic triples:      46
+entity nodes:          38
+literal values:        12
+predicates:            24
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 97.475s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.088s
+  graph.materialization [attempt=1]: 0.105s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 3.248s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.452s

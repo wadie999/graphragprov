@@ -1,0 +1,192 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What was the population in 1900 of the second largest city in the US state having the Library District of the county containing Yuma?
+
+Expected answer: 7,531
+
+Gold decomposition:
+1. question='Yuma >> located in the administrative territorial entity'; answer='Yuma County'; support_paragraph=17
+2. question='Which state is #1 Library District located?'; answer='Arizona'; support_paragraph=12
+3. question='What is the second largest city in #2 ?'; answer='Tucson'; support_paragraph=11
+4. question="What was #3 's population in 1900?"; answer='7,531'; support_paragraph=4
+
+Frozen RDF graph:
+<urn:graphragprov:entity:City%20of%20Tucson> <urn:graphragprov:predicate:population> "535000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:City%20of%20Tucson> <urn:graphragprov:predicate:populationYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Pima%20County> <urn:graphragprov:predicate:population> "1000000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Pima%20County> <urn:graphragprov:predicate:populationYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pima%20County> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:population> "13913"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:population> "20292"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:population> "36818"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:population> "7531"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:populationYear> "1900"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:populationYear> "1910"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:populationYear> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:populationYear> "1940"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:U.S.%20Veterans%20Administration> <urn:graphragprov:predicate:beganConstructionOn> <urn:graphragprov:entity:present%20Veterans%20Hospital> .
+<urn:graphragprov:entity:many%20veterans> <urn:graphragprov:predicate:cameTo> <urn:graphragprov:entity:Tucson> .
+<urn:graphragprov:entity:many%20veterans> <urn:graphragprov:predicate:reasonForComing> <urn:graphragprov:entity:clean%20dry%20air> .
+<urn:graphragprov:entity:veterans> <urn:graphragprov:predicate:hadBeenGassedIn> <urn:graphragprov:entity:World%20War%20I> .
+<urn:graphragprov:entity:veterans> <urn:graphragprov:predicate:needed> <urn:graphragprov:entity:respiratory%20therapy> .
+<urn:graphragprov:entity:Heritage%20Branch%20Library> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:downtown%20Yuma> .
+<urn:graphragprov:entity:Main%20Library> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yuma> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:hasSeatingCapacity> "20"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:hasVolumeCount> "1053"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Carnegie%20library> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sunset%20Park> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:openedOn> "1921-02-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:operatesAs> <urn:graphragprov:entity:Heritage%20Branch%20Library> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:renovationCompletedIn> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:renovationCost> <urn:graphragprov:entity:%244.2%20million> .
+<urn:graphragprov:entity:Yuma%20Carnegie%20Library> <urn:graphragprov:predicate:underwentRenovation> <urn:graphragprov:entity:several%20expansions%20and%20renovations> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:Main%20Library> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Dateland> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Foothills> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Heritage%20Branch%20Library> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Roll> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:San%20Luis> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Somerton> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Wellton> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Yuma%20Carnegie%20Library> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:downtown%20Yuma> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yuma%20County%2C%20Arizona> .
+<urn:graphragprov:entity:Yuma%20County%20Library%20District> <urn:graphragprov:predicate:servesPopulationOf> <urn:graphragprov:entity:Yuma%20County%2C%20Arizona> .
+<urn:graphragprov:entity:Greater%20Tucson%20Metro%20area> <urn:graphragprov:predicate:population> "1 million" .
+<urn:graphragprov:entity:Greater%20Tucson%20Metro%20area> <urn:graphragprov:predicate:populationYear> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tucson%20metropolitan%20area> <urn:graphragprov:predicate:population> "980263"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Tucson%20metropolitan%20area> <urn:graphragprov:predicate:rankedAs> <urn:graphragprov:entity:52nd%20largest%20metropolitan%20area> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:largestCityIn> <urn:graphragprov:entity:Gadsden%20Purchase> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:largestCityIn> <urn:graphragprov:entity:southern%20Arizona> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Arizona%20Sun%20Corridor> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Phoenix> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States%20-%20Mexico%20border> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:population> "520116"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:populationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:rankedAs> <urn:graphragprov:entity:32nd%20largest%20city> .
+<urn:graphragprov:entity:Tucson%2C%20Arizona> <urn:graphragprov:predicate:secondLargestCityIn> <urn:graphragprov:entity:Arizona> .
+<urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Home%20Rule%20Municipality> .
+<urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Colorado> .
+<urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yuma%20County> .
+<urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:mostPopulousCityIn> <urn:graphragprov:entity:Yuma%20County> .
+<urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:population> "3524"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Yuma%2C%20Colorado> <urn:graphragprov:predicate:populationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .

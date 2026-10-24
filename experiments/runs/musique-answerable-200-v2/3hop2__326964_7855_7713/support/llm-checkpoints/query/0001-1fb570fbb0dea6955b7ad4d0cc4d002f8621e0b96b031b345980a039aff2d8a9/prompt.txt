@@ -1,0 +1,180 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: How long had the city considered to be a place that is popular with tourists been the capital city of the location of the Yaxing Coach headquarters?
+
+Expected answer: about 400 years
+
+Gold decomposition:
+1. question='Yaxing Coach >> headquarters location'; answer='Yangzhou'; support_paragraph=9
+2. question='What city is considered to be a place that is popular with tourists?'; answer='Nanjing'; support_paragraph=8
+3. question='How long had #2 been the capital city of #1 ?'; answer='about 400 years'; support_paragraph=16
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalDuration> "about 400 years" .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Danyang%20Prefecture> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalPeriod> "from late Han to early Tang" .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Beiyinyangying%20culture> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Danyang%20Prefecture> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Han%20dynasty> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Hushu%20culture> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Jinling%20Yi> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Kuaiji> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Moling> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Nanjing%20Man> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Qin%20Shi%20Huang> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Shang%20dynasty> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:State%20of%20Chu> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:State%20of%20Yue> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Tang> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Taowu> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Wu%20state> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yangzhou> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yecheng> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yuanfeng> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yuecheng> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Zhang> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Zhonghua%20Gate> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:capital%20city> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangnan> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yangzhou%20region> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Danyang%20prefectures> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Kuaiji> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Yangzhou%20region> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Zhang> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Moling> .
+<urn:graphragprov:entity:Jiangsu%20Yaxing> <urn:graphragprov:predicate:foundedInYear> "1998"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Yangzhou> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bus%20manufacturer> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:China> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangsu> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Asiastar> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yangtse%EF%BC%88Yangzlv%EF%BC%89> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yaxing> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Jiangsu%20Yaxing> .
+<urn:graphragprov:entity:International%20Plum%20Blossom%20Festival> <urn:graphragprov:predicate:attracts> <urn:graphragprov:entity:thousands%20of%20tourists> .
+<urn:graphragprov:entity:International%20Plum%20Blossom%20Festival> <urn:graphragprov:predicate:heldIn> <urn:graphragprov:entity:Plum%20Blossom%20Hill> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:International%20Plum%20Blossom%20Festival> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:Jiangxin%20Zhou%20Fruit%20Festival> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:Linggu%20Temple%20Sweet%20Osmanthus%20Festival> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:Nanjing%20Baima%20Peach%20Blossom%20and%20Kite%20Festival> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:popular%20tourist%20destination> .
+<urn:graphragprov:entity:Plum%20Blossom%20Hill> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:largest%20plum%20collection%20in%20China> .

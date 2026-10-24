@@ -1,0 +1,76 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_299de37d7e8ae75788ff1904dea387d985e22707024f62d7ee6cd69a8ec3d665
+Title: Ken Epp
+Text:
+Epp was a member of the Conservative Party of Canada in the House of Commons of Canada, representing the riding of Edmonton—Sherwood Park since its creation in June 2004. He was previously the MP for Elk Island from 1993 to 2004. He has also been a member of the Canadian Alliance (2000-2003) and the Reform Party of Canada (1993-2000). Epp is a former mathematics instructor at the Northern Alberta Institute of Technology in Edmonton.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 8,
+    "statement": {
+      "subject": {
+        "value": "Ken Epp",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Ken Epp",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "He",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "memberOfPoliticalParty",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "member of the Reform Party of Canada",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Reform Party of Canada",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Reform Party of Canada",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[8].predicate.evidence[0]: quote 'member of the Reform Party of Canada' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

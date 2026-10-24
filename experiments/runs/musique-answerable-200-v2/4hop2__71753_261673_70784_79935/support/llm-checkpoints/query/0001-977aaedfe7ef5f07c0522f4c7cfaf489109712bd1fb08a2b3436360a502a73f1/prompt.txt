@@ -1,0 +1,197 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When was the region that lies to the north of the where Israel is located and the location of Shamal created?
+
+Expected answer: 1930
+
+Gold decomposition:
+1. question='what region of the world is israel located'; answer='Middle East,'; support_paragraph=9
+2. question='shamal >> located on terrain feature'; answer='Persian Gulf'; support_paragraph=7
+3. question='what region lies immediately to the north of #1 and #2'; answer='Kingdom of Saudi Arabia'; support_paragraph=1
+4. question='when was #3 created'; answer='1930'; support_paragraph=4
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Abdulaziz> <urn:graphragprov:predicate:carriedOut> <urn:graphragprov:entity:series%20of%20wars%20of%20conquest> .
+<urn:graphragprov:entity:Abdulaziz> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Al%20Saud> .
+<urn:graphragprov:entity:Al%20Saud> <urn:graphragprov:predicate:becameExpansionist> <urn:graphragprov:entity:aggressively%20expansionist> .
+<urn:graphragprov:entity:Al%20Saud> <urn:graphragprov:predicate:emergedAs> <urn:graphragprov:entity:minor%20tribal%20rulers> .
+<urn:graphragprov:entity:Al%20Saud> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Wahhabi%20Islamic%20movement> .
+<urn:graphragprov:entity:Al%20Saud> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:tribal%20rulers> .
+<urn:graphragprov:entity:Al%20Saud> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Najd> .
+<urn:graphragprov:entity:Al%20Saud> <urn:graphragprov:predicate:territoryFluctuated> <urn:graphragprov:entity:fluctuated> .
+<urn:graphragprov:entity:History%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:history> .
+<urn:graphragprov:entity:History%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:Saudi%20Arabia> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1930"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Najd> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:central%20Arabia> .
+<urn:graphragprov:entity:patchwork%20of%20tribal%20rulers> <urn:graphragprov:predicate:controlled> <urn:graphragprov:entity:most%20of%20the%20area> .
+<urn:graphragprov:entity:region> <urn:graphragprov:predicate:hasHistory> <urn:graphragprov:entity:patchwork%20of%20tribal%20rulers> .
+<urn:graphragprov:entity:series%20of%20wars%20of%20conquest> <urn:graphragprov:predicate:resultedIn> <urn:graphragprov:entity:establishing%20the%20Kingdom%20of%20Saudi%20Arabia> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Red%20Sea> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasAreaUnit> <urn:graphragprov:entity:square%20kilometres> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Oman> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Republic%20of%20Yemen> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:United%20Arab%20Emirates%20%28UAE%29> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCoastlineOn> <urn:graphragprov:entity:Persian%20Gulf> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCoastlineOn> <urn:graphragprov:entity:Red%20Sea> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCultivableAreaPercentage> "less than 1%" .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasGovernmentEstimateArea> "2217949"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasOtherEstimateArea> "2149690"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasOtherEstimateArea> "2240000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationDistribution> "varied greatly among the towns of the eastern and western coastal areas, the densely populated interior oases, and the vast, almost empty deserts" .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:largestCountryOf> <urn:graphragprov:entity:Arabia> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southwest%20Asia> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupies> <urn:graphragprov:entity:Arabian%20Peninsula> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupiesPercentageOf> "80%" .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Egypt> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Jordan> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Lebanon> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Palestinian%20territories%20of%20the%20West%20Bank%20and%20Gaza%20Strip> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Syria> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasEconomicCenter> <urn:graphragprov:entity:Tel%20Aviv> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasEthnicGroup> <urn:graphragprov:entity:Arab> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasEthnicGroup> <urn:graphragprov:entity:Jewish> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasEthnicGroup> <urn:graphragprov:entity:others> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasEthnicPercentage> "20.8"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasEthnicPercentage> "4.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasEthnicPercentage> "74.7"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasProclaimedCapital> <urn:graphragprov:entity:Jerusalem> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasSeatOfGovernment> <urn:graphragprov:entity:Jerusalem> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:northern%20shore%20of%20the%20Red%20Sea> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:southeastern%20shore%20of%20the%20Mediterranean%20Sea> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:population> "8777580"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:populationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:creates> <urn:graphragprov:entity:large%20sandstorms> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:frequency> "once to several times a year" .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:wind> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Iraq> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Kuwait> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Persian%20Gulf%20states> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Saudi%20Arabia> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:occursInSeason> <urn:graphragprov:entity:summer> .
+<urn:graphragprov:entity:Shamal%20%28wind%29> <urn:graphragprov:predicate:occursInSeason> <urn:graphragprov:entity:winter> .
+<urn:graphragprov:entity:large%20sandstorms> <urn:graphragprov:predicate:impact> <urn:graphragprov:entity:Iraq> .
+<urn:graphragprov:entity:sand> <urn:graphragprov:predicate:pickedUpFrom> <urn:graphragprov:entity:Jordan> .
+<urn:graphragprov:entity:sand> <urn:graphragprov:predicate:pickedUpFrom> <urn:graphragprov:entity:Syria> .

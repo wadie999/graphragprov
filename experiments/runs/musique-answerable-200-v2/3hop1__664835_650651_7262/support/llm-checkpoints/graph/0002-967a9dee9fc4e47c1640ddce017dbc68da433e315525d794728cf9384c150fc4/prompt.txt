@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_4493464060cc185143a198627a980a58cfd4f9f054b2548fcfa6cee01445fc0a
+Title: Bokok, Temburong
+Text:
+Bokok is a mukim or subdistrict in the Temburong District of Brunei. It is located in the west of the Temburong District to the south, bordering Mukim Bangar to the north-east, Mukim Amo to the east, Sarawak (Malaysia) to the south and Limbang, Sarawak (Malaysia) to the west. Bokok has a total area of ; as of 2016, it had a total population of 3,583.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 9,
+    "statement": {
+      "subject": {
+        "value": "Bokok",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Bokok",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "hasTotalArea",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "has a total area of",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[9].object.value must not be empty"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

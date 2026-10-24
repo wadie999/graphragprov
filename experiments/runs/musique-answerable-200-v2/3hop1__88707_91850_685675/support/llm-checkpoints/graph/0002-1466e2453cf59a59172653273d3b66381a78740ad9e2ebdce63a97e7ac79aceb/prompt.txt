@@ -1,0 +1,145 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_5c0751e7f1a20d7c344e9beba67358b0a882d449ff442124037feed5cac1e516
+Title: Yankee Stadium
+Text:
+Yankee Stadium is a stadium located in the Concourse neighborhood of the Bronx in New York City. It serves as the home ballpark for the New York Yankees of Major League Baseball (MLB), and is also the home park for New York City FC of Major League Soccer (MLS). The $2.3 billion stadium, built with $1.2 billion in public subsidies, replaced the original Yankee Stadium in 2009. It is located one block north of the original, on the 24 - acre (9.7 ha) former site of Macombs Dam Park; the 8 - acre (3.2 ha) site of the original stadium is now a public park called Heritage Field.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Yankee Stadium",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Yankee Stadium",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "cost",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "$2.3 billion",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "2.3 billion",
+        "datatype": "decimal",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "$2.3 billion",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].object.value must use canonical decimal notation"
+  },
+  {
+    "statement_index": 7,
+    "statement": {
+      "subject": {
+        "value": "Yankee Stadium",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Yankee Stadium",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "builtWithPublicSubsidies",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "built with $1.2 billion in public subsidies",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "1.2 billion",
+        "datatype": "decimal",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "$1.2 billion",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[7].object.value must use canonical decimal notation"
+  },
+  {
+    "statement_index": 11,
+    "statement": {
+      "subject": {
+        "value": "Yankee Stadium",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Yankee Stadium",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "locatedOnSiteOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "located ... on the 24 - acre (9.7 ha) former site of Macombs Dam Park",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Macombs Dam Park",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Macombs Dam Park",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[11].predicate.evidence[0]: quote 'located ... on the 24 - acre (9.7 ha) former site of Macombs Dam Park' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

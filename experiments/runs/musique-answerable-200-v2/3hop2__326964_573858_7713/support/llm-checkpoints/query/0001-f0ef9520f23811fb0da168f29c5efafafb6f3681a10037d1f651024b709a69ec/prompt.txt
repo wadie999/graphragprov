@@ -1,0 +1,185 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: How long had China Sunergy's headquarters location been the capitol city of Yaxing Coach's headquarters location?
+
+Expected answer: about 400 years
+
+Gold decomposition:
+1. question='Yaxing Coach >> headquarters location'; answer='Yangzhou'; support_paragraph=12
+2. question='China Sunergy >> headquarters location'; answer='Nanjing'; support_paragraph=16
+3. question='How long had #2 been the capital city of #1 ?'; answer='about 400 years'; support_paragraph=17
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Fuchai> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Yecheng> .
+<urn:graphragprov:entity:Fuchai> <urn:graphragprov:predicate:foundedIn> "495 BC" .
+<urn:graphragprov:entity:Jinling%20Yi> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:present-day%20Nanjing> .
+<urn:graphragprov:entity:Jinling%20Yi> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Moling> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalOf> <urn:graphragprov:entity:Danyang%20Prefecture> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalOf> <urn:graphragprov:entity:Yangzhou> .
+<urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:wasCapitalOfFor> "about 400 years" .
+<urn:graphragprov:entity:Nanjing%20Man> <urn:graphragprov:predicate:livedIn> "more than 500 thousand years ago" .
+<urn:graphragprov:entity:State%20of%20Chu> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:Jinling%20Yi> .
+<urn:graphragprov:entity:State%20of%20Yue> <urn:graphragprov:predicate:conquered> <urn:graphragprov:entity:Wu> .
+<urn:graphragprov:entity:State%20of%20Yue> <urn:graphragprov:predicate:constructed> <urn:graphragprov:entity:fort%20of%20Yuecheng> .
+<urn:graphragprov:entity:Taibo%20of%20Zhou> <urn:graphragprov:predicate:cameTo> <urn:graphragprov:entity:Jiangnan> .
+<urn:graphragprov:entity:Taibo%20of%20Zhou> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Wu%20state> .
+<urn:graphragprov:entity:Taibo%20of%20Zhou> <urn:graphragprov:predicate:firstStopIn> <urn:graphragprov:entity:Nanjing%20area> .
+<urn:graphragprov:entity:Yecheng> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:today%27s%20Nanjing%20area> .
+<urn:graphragprov:entity:Zun> <urn:graphragprov:predicate:existedIn> "about 5000 years ago" .
+<urn:graphragprov:entity:Zun> <urn:graphragprov:predicate:foundIn> <urn:graphragprov:entity:Beiyinyangying%20culture%20of%20Nanjing> .
+<urn:graphragprov:entity:fort%20of%20Yuecheng> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:present-day%20Zhonghua%20Gate> .
+<urn:graphragprov:entity:Jiangsu%20Yaxing> <urn:graphragprov:predicate:foundedInYear> "1998"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Yangzhou> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bus%20manufacturer> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:China> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangsu> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Asiastar> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yangtse%EF%BC%88Yangzlv%EF%BC%89> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yaxing> .
+<urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Jiangsu%20Yaxing> .
+<urn:graphragprov:entity:CSUN> <urn:graphragprov:predicate:hasManufacturingBaseIn> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:CSUN> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Chinese%20solar%20cells%20and%20module%20manufacturer> .
+<urn:graphragprov:entity:CSUN> <urn:graphragprov:predicate:recognizedAs> <urn:graphragprov:entity:Tier%201%20module%20supplier> .
+<urn:graphragprov:entity:CSUN> <urn:graphragprov:predicate:recognizedBy> <urn:graphragprov:entity:Bloomberg%20New%20Energy%20Finance%20%28BENF%29%20PV%20Module%20Maker%20Tiering%20System> .
+<urn:graphragprov:entity:CSUN> <urn:graphragprov:predicate:recognizedOn> "2014-03-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:CSUN%20%28Turkey%29> <urn:graphragprov:predicate:isInProgressOfBuildingSecondFactoryIn> <urn:graphragprov:entity:Turkey> .
+<urn:graphragprov:entity:CSUN%20%28Turkey%29> <urn:graphragprov:predicate:isInProgressOfBuildingSecondFactoryWithin> "2015"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:CSUN%20%28Turkey%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Istanbul> .
+<urn:graphragprov:entity:CSUN%20%28Turkey%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Tuzla%20Free%20Trade%20Zone> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:annualProduction> "1 GW" .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:annualProduction> "1.2 GW" .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:beganProducingOn> "2007-05-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:hasMajorCustomerBaseIn> <urn:graphragprov:entity:China> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Nanjing> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:solar%20cell%20products%20manufacturer> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:listedOn> <urn:graphragprov:entity:NASDAQ> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:listedOnYear> "2007"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangsu> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Chinese> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:openedFirstInternationalManufacturingBaseIn> <urn:graphragprov:entity:Turkey> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:openedFirstInternationalManufacturingBaseOn> "2013-05-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:produces> <urn:graphragprov:entity:monocrystalline%20silicon%20solar%20cells> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:produces> <urn:graphragprov:entity:multicrystalline%20silicon%20solar%20cells> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:sellsProductsInternationally> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:China%20Sunergy> <urn:graphragprov:predicate:specializesIn> <urn:graphragprov:entity:creating%20solar%20cells%20from%20silicon%20wafers> .
+<urn:graphragprov:entity:Turkey%20factory> <urn:graphragprov:predicate:hasBiggestSolarCellAndModuleCapacity> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Turkey%20factory> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:Turkey%20factory> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Turkey> .

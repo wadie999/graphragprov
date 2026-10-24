@@ -1,0 +1,226 @@
+
+H0 one-case execution
+  case:          3hop1__694534_160088_85460
+  hops:          3
+  question:      What is the average salary of a working person of the same nationality as MacGruder and Loud's creator?
+  expected:      $59,039
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__694534_160088_85460/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=17 title='MacGruder and Loud'
+  source unit: u_a8c432207fa83b43037fc136680c7132fa176818d2dbfac279df9027378dce5b
+  text chars:  595
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.713s | model=deepseek-v4-flash
+      tokens:   in=2288 | out=1336 | total=3624 | cached=2048 | uncached=240
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 144 / 613 (23.5%)
+    characters text:     126 / 595 (21.2%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  128 chars
+      ", according to TVTango.com. The ratings decline was blamed on ABC's repeated changing of the show's timeslot before settling on"
+    statement density:  14.68 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 2/3] paragraph=1 title='Aaron Spelling'
+  source unit: u_4c381a3d83a338787cce33e20899185df88c9f0f50b44a33c926fe987be3b491
+  text chars:  422
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.819s | model=deepseek-v4-flash
+      tokens:   in=2403 | out=2352 | total=4755 | cached=2048 | uncached=355
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 222 / 436 (50.9%)
+    characters text:     208 / 422 (49.3%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  22 chars
+      '(1998–2006). He also'
+    statement density:  38.99 / 1000 chars
+    title reliance:      17 / 17 (100.0%)
+
+[GRAPH 3/3] paragraph=13 title='Household income in the United States'
+  source unit: u_3487ef72fb9a2e1c9cc382120fe571717e25a75ab20b137edca7d378cc31812a
+  text chars:  272
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 6.411s | model=deepseek-v4-flash
+      tokens:   in=2484 | out=1367 | total=3851 | cached=2048 | uncached=436
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 246 / 309 (79.6%)
+    characters text:     209 / 272 (76.8%)
+    characters title:    37 / 37 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      ', this measure was'
+    statement density:  29.13 / 1000 chars
+    title reliance:      7 / 9 (77.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 35
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      35
+resource nodes:        26
+entity nodes:          26
+literal values:        8
+predicates:            23
+
+N-Triples:
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:hasMeasure> <urn:graphragprov:entity:real%20median%20level> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:measure> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:largestTwoYearPercentageIncrease> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:recordHigh> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:source> <urn:graphragprov:entity:Census> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:value> "59039"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:year> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:real%20median%20level> <urn:graphragprov:predicate:adjustedFor> <urn:graphragprov:entity:inflation> .
+  <urn:graphragprov:entity:real%20median%20level> <urn:graphragprov:predicate:definition> <urn:graphragprov:entity:half%20of%20households%20have%20income%20above%20that%20level%20and%20half%20below> .
+  <urn:graphragprov:entity:7th%20Heaven> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:bornOn> "1923-04-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:diedOn> "2006-06-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:film> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:television> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Beverly%20Hills%2C%2090210> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:Charlie%27s%20Angels> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:Charmed> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:Dynasty> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:Hart%20to%20Hart> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:Mod%20Squad> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:Sunset%20Beach> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:The%20Love%20Boat> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:The%20Rookies> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:cancelled> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:debutYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:householdRating> "15.76"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:series> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:network> <urn:graphragprov:entity:ABC> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Aaron%20Spelling%27s%20production%20company> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:rank> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:timeslot> <urn:graphragprov:entity:Monday%20nights%20at%2010%3A00%20p.m.> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.049s | model=deepseek-v4-flash
+      tokens:   in=2617 | out=252 | total=2869 | cached=640 | uncached=1977
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Aaron%20Spelling> .
+  - <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  - <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:value> "59039"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:creator> ?creator . ?creator <urn:graphragprov:predicate:nationality> ?nationality . ?entity <urn:graphragprov:predicate:value> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3487ef72fb9a2e1c>
+  FROM <urn:graphragprov:unit:u_4c381a3d83a33878>
+  FROM <urn:graphragprov:unit:u_a8c432207fa83b43>
+  WHERE { <urn:graphragprov:entity:MacGruder%20and%20Loud> <urn:graphragprov:predicate:creator> ?creator . ?creator <urn:graphragprov:predicate:nationality> ?nationality . ?entity <urn:graphragprov:predicate:value> ?answer . }
+
+GraphDB execution:
+  observed answers: ('59039',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Aaron Spelling', 'Household income in the United States', 'MacGruder and Loud']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__694534_160088_85460
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__694534_160088_85460/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9792
+output tokens:         5307
+total tokens:          15099
+cached input tokens:   6784
+uncached input tokens: 3008
+cumulative LLM seconds: 24.993
+
+statement occurrences: 35
+semantic triples:      35
+entity nodes:          26
+literal values:        8
+predicates:            23
+query attempts:        1
+observed answers:      ('59039',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 22.959s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.063s
+  graph.materialization [attempt=1]: 0.071s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.050s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.468s

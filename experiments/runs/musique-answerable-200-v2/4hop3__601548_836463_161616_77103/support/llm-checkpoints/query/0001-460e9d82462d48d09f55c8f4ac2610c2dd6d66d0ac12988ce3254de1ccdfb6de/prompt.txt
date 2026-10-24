@@ -1,0 +1,183 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the birthplace of the Live and Beyond performer become the capitol of the state Knowles was from?
+
+Expected answer: 1839
+
+Gold decomposition:
+1. question='Live and Beyond >> performer'; answer='Eric Johnson'; support_paragraph=17
+2. question='#1 >> place of birth'; answer='Austin'; support_paragraph=7
+3. question='what state was Knowles from?'; answer='Texas,'; support_paragraph=3
+4. question='when did #2 become the capital of #3'; answer='1839'; support_paragraph=10
+
+Frozen RDF graph:
+<urn:graphragprov:entity:B%27Day%20Anthology%20Video%20Album> <urn:graphragprov:predicate:releasedIn> "2007-04"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Knowles> <urn:graphragprov:predicate:fellOff> <urn:graphragprov:entity:mechanical%20bull> .
+<urn:graphragprov:entity:Knowles> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Texas> .
+<urn:graphragprov:entity:Knowles> <urn:graphragprov:predicate:neverPreviouslyOn> <urn:graphragprov:entity:mechanical%20bull> .
+<urn:graphragprov:entity:Knowles> <urn:graphragprov:predicate:rehearsed> <urn:graphragprov:entity:pole%20dancing> .
+<urn:graphragprov:entity:Knowles> <urn:graphragprov:predicate:sang> <urn:graphragprov:entity:twice%20as%20quickly> .
+<urn:graphragprov:entity:Knowles> <urn:graphragprov:predicate:used> <urn:graphragprov:entity:two%20ballet%20bars> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:coDirector> <urn:graphragprov:entity:Knowles> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:coDirector> <urn:graphragprov:entity:Melina%20Matsoukas> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:music%20video> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:oneOf> <urn:graphragprov:entity:eight%20videos> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:B%27Day%20Anthology%20Video%20Album> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:releasedIn> "2007-04"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:British%20music%20channels> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:black-and-white> .
+<urn:graphragprov:entity:Suga%20Mama> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:two%20weeks> .
+<urn:graphragprov:entity:the%20director> <urn:graphragprov:predicate:shot> <urn:graphragprov:entity:the%20sequence> .
+<urn:graphragprov:entity:the%20man%20operating%20the%20bull> <urn:graphragprov:predicate:programmed> <urn:graphragprov:entity:it> .
+<urn:graphragprov:entity:the%20sequence> <urn:graphragprov:predicate:frameRate> <urn:graphragprov:entity:twelve%20frames%20per%20second> .
+<urn:graphragprov:entity:work> <urn:graphragprov:predicate:completedAt> <urn:graphragprov:entity:4%3A00%20am> .
+<urn:graphragprov:entity:Austin%2C%20Texas> <urn:graphragprov:predicate:adoptedName> <urn:graphragprov:entity:Austin> .
+<urn:graphragprov:entity:Austin%2C%20Texas> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Austin%2C%20Texas> <urn:graphragprov:predicate:becameCapitalOf> <urn:graphragprov:entity:Republic%20of%20Texas> .
+<urn:graphragprov:entity:Austin%2C%20Texas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:capital> .
+<urn:graphragprov:entity:Waterloo> <urn:graphragprov:predicate:firstPermanentSettlementIn> <urn:graphragprov:entity:area> .
+<urn:graphragprov:entity:Waterloo> <urn:graphragprov:predicate:foundedInYear> "1837"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Waterloo> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:village> .
+<urn:graphragprov:entity:Waterloo> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Colorado%20River> .
+<urn:graphragprov:entity:recorded%20history%20of%20Austin%2C%20Texas> <urn:graphragprov:predicate:beganIn> "the 1830s" .
+<urn:graphragprov:entity:settlers> <urn:graphragprov:predicate:arrivedIn> <urn:graphragprov:entity:Central%20Texas> .
+<urn:graphragprov:entity:settlers> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Waterloo> .
+<urn:graphragprov:entity:settlers> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Anglo%20-%20American> .
+<urn:graphragprov:entity:Live%20from%20Austin%2C%20TX%20%28Eric%20Johnson%20album%29> <urn:graphragprov:predicate:containsSong> <urn:graphragprov:entity:Ah%20Via%20Musicom> .
+<urn:graphragprov:entity:Live%20from%20Austin%2C%20TX%20%28Eric%20Johnson%20album%29> <urn:graphragprov:predicate:containsSong> <urn:graphragprov:entity:Jimi%20Hendrix%20covers> .
+<urn:graphragprov:entity:Live%20from%20Austin%2C%20TX%20%28Eric%20Johnson%20album%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:live%20album> .
+<urn:graphragprov:entity:Live%20from%20Austin%2C%20TX%20%28Eric%20Johnson%20album%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Eric%20Johnson> .
+<urn:graphragprov:entity:Live%20from%20Austin%2C%20TX%20%28Eric%20Johnson%20album%29> <urn:graphragprov:predicate:publicationYear> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Live%20from%20Austin%2C%20TX%20%28Eric%20Johnson%20album%29> <urn:graphragprov:predicate:recordedIn> <urn:graphragprov:entity:Austin%20City%20Limits> .
+<urn:graphragprov:entity:Live%20from%20Austin%2C%20TX%20%28Eric%20Johnson%20album%29> <urn:graphragprov:predicate:recordedInYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:containsSong> <urn:graphragprov:entity:Rain> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Bill%20Maddox> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Chris%20Maresh> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Malford%20Milligan> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:World%20of%20Trouble> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:live%20album> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Alien%20Love%20Child> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Eric%20Johnson> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:recordedIn> "2000"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Live%20and%20Beyond> <urn:graphragprov:predicate:recordedIn> <urn:graphragprov:entity:Texas> .
+<urn:graphragprov:entity:Rain> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Grammy%20Award%20for%20Best%20Pop%20Instrumental%20Performance> .
+<urn:graphragprov:entity:Rain> <urn:graphragprov:predicate:nominatedInYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Rain> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Chris%20Maresh> .

@@ -1,0 +1,273 @@
+
+H0 one-case execution
+  case:          3hop1__68802_89752_49923
+  hops:          3
+  question:      How many counties are there in the largest state in the region where the film The Family Stone was set?
+  expected:      sixteen
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__68802_89752_49923/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=7 title='The Family Stone'
+  source unit: u_723638815453e26ca1d7ade15f304693d89ad10ff99bcf9bda6ab1fa5d6802be
+  text chars:  393
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.257s | model=deepseek-v4-flash
+      tokens:   in=2233 | out=1821 | total=4054 | cached=2048 | uncached=185
+    [LLM graph.reference #2] sending...
+      provider: 0.823s | model=deepseek-v4-flash
+      tokens:   in=580 | out=8 | total=588 | cached=512 | uncached=68
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'film' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "film",
+                "segment": "text"
+              }
+            ],
+            "value": "film"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "film",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Family Stone",
+                "segment": "title"
+              }
+            ],
+            "value": "The Family Stone"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 328 / 409 (80.2%)
+    characters text:     312 / 393 (79.4%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  33 chars
+      'with a cherished heirloom ring.'
+    statement density:  29.34 / 1000 chars
+    title reliance:      2 / 12 (16.7%)
+
+[GRAPH 2/3] paragraph=5 title='New England'
+  source unit: u_663251aba93d2da1d2776f01c3b6bca80870ef5db0e559440da89b40f7464a85
+  text chars:  421
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.980s | model=deepseek-v4-flash
+      tokens:   in=2363 | out=1296 | total=3659 | cached=2048 | uncached=315
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 254 / 432 (58.8%)
+    characters text:     243 / 421 (57.7%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  33 chars
+      'of New England, yet is only the'
+    statement density:  20.83 / 1000 chars
+    title reliance:      5 / 9 (55.6%)
+
+[GRAPH 3/3] paragraph=15 title='List of counties in Maine'
+  source unit: u_2b09003f88bc2fba3f15b98ea1ece04a652cedf84f75fb3432512cf561f975a3
+  text chars:  715
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 9.491s | model=deepseek-v4-flash
+      tokens:   in=2528 | out=2191 | total=4719 | cached=2048 | uncached=480
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 483 / 740 (65.3%)
+    characters text:     458 / 715 (64.1%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  65 chars
+      'and the northern counties signed their final official form, the'
+    statement density:  20.27 / 1000 chars
+    title reliance:      2 / 15 (13.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 36
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      36
+resource nodes:        37
+entity nodes:          37
+literal values:        7
+predicates:            32
+
+N-Triples:
+  <urn:graphragprov:entity:Aroostook%20County> <urn:graphragprov:predicate:wasDisputedLandUntil> <urn:graphragprov:entity:treaty%20was%20signed> .
+  <urn:graphragprov:entity:List%20of%20counties%20in%20Maine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:list> .
+  <urn:graphragprov:entity:List%20of%20counties%20in%20Maine> <urn:graphragprov:predicate:lists> <urn:graphragprov:entity:counties%20in%20Maine> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:grantedStatehoodAsPartOf> <urn:graphragprov:entity:Missouri%20Compromise> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:grantedStatehoodOn> "1820-03-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:hasCountyCount> "16"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:state> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:U.S.%20state> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:wasCalled> <urn:graphragprov:entity:District%20of%20Maine> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:wasPartOf> <urn:graphragprov:entity:Massachusetts> .
+  <urn:graphragprov:entity:Webster%20-%20Ashburton%20Treaty> <urn:graphragprov:predicate:signedInYear> "1842"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:nine%20of%20the%20sixteen%20counties> <urn:graphragprov:predicate:hadBordersDefinedWhile> <urn:graphragprov:entity:Maine%20was%20still%20part%20of%20Massachusetts> .
+  <urn:graphragprov:entity:nine%20of%20the%20sixteen%20counties> <urn:graphragprov:predicate:olderThan> <urn:graphragprov:entity:state%20itself> .
+  <urn:graphragprov:entity:northern%20border%20of%20Maine> <urn:graphragprov:predicate:wasDisputedWith> <urn:graphragprov:entity:Britain> .
+  <urn:graphragprov:entity:northern%20border%20of%20Maine> <urn:graphragprov:predicate:wasSettledBy> <urn:graphragprov:entity:Webster%20-%20Ashburton%20Treaty> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:constitutesNearlyHalfOfTotalArea> <urn:graphragprov:entity:New%20England> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:rankByArea> "39th" .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:smallerThan> <urn:graphragprov:entity:Indiana> .
+  <urn:graphragprov:entity:New%20England> <urn:graphragprov:predicate:hasCombinedArea> "186,458 km" .
+  <urn:graphragprov:entity:New%20England> <urn:graphragprov:predicate:hasCombinedArea> "71,991.8 square miles" .
+  <urn:graphragprov:entity:New%20England> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:England> .
+  <urn:graphragprov:entity:New%20England> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:state%20of%20Washington> .
+  <urn:graphragprov:entity:Rhode%20Island> <urn:graphragprov:predicate:isSmallestState> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:remaining%20states> <urn:graphragprov:predicate:areAmongSmallest> <urn:graphragprov:entity:U.S.> .
+  <urn:graphragprov:entity:Stone%20family> <urn:graphragprov:predicate:member> <urn:graphragprov:entity:eldest%20son> .
+  <urn:graphragprov:entity:The%20Family%20Stone> <urn:graphragprov:predicate:plotFollows> <urn:graphragprov:entity:Christmas%20holiday%20misadventures%20of%20the%20Stone%20family> .
+  <urn:graphragprov:entity:The%20Family%20Stone> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:New%20England> .
+  <urn:graphragprov:entity:eldest%20son> <urn:graphragprov:predicate:brings> <urn:graphragprov:entity:his%20uptight%20girlfriend> .
+  <urn:graphragprov:entity:eldest%20son> <urn:graphragprov:predicate:playedBy> <urn:graphragprov:entity:Mulroney> .
+  <urn:graphragprov:entity:her%20sister> <urn:graphragprov:predicate:for> <urn:graphragprov:entity:emotional%20support> .
+  <urn:graphragprov:entity:her%20sister> <urn:graphragprov:predicate:join> <urn:graphragprov:entity:her> .
+  <urn:graphragprov:entity:her%20sister> <urn:graphragprov:predicate:triggering> <urn:graphragprov:entity:further%20complications> .
+  <urn:graphragprov:entity:his%20uptight%20girlfriend> <urn:graphragprov:predicate:begs> <urn:graphragprov:entity:her%20sister> .
+  <urn:graphragprov:entity:his%20uptight%20girlfriend> <urn:graphragprov:predicate:intention> <urn:graphragprov:entity:proposing%20to%20her> .
+  <urn:graphragprov:entity:his%20uptight%20girlfriend> <urn:graphragprov:predicate:overwhelmedBy> <urn:graphragprov:entity:the%20hostile%20reception> .
+  <urn:graphragprov:entity:his%20uptight%20girlfriend> <urn:graphragprov:predicate:playedBy> <urn:graphragprov:entity:Parker> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.474s | model=deepseek-v4-flash
+      tokens:   in=2539 | out=240 | total=2779 | cached=640 | uncached=1899
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Family%20Stone> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:New%20England> .
+  - <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:constitutesNearlyHalfOfTotalArea> <urn:graphragprov:entity:New%20England> .
+  - <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:hasCountyCount> "16"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Family%20Stone> <urn:graphragprov:predicate:setIn> ?region . ?state <urn:graphragprov:predicate:constitutesNearlyHalfOfTotalArea> ?region . ?state <urn:graphragprov:predicate:hasCountyCount> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2b09003f88bc2fba>
+  FROM <urn:graphragprov:unit:u_663251aba93d2da1>
+  FROM <urn:graphragprov:unit:u_723638815453e26c>
+  WHERE { <urn:graphragprov:entity:The%20Family%20Stone> <urn:graphragprov:predicate:setIn> ?region . ?state <urn:graphragprov:predicate:constitutesNearlyHalfOfTotalArea> ?region . ?state <urn:graphragprov:predicate:hasCountyCount> ?answer . }
+
+GraphDB execution:
+  observed answers: ('16',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['List of counties in Maine', 'New England', 'The Family Stone']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__68802_89752_49923
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__68802_89752_49923/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10243
+output tokens:         5556
+total tokens:          15799
+cached input tokens:   7296
+uncached input tokens: 2947
+cumulative LLM seconds: 27.025
+
+statement occurrences: 36
+semantic triples:      36
+entity nodes:          37
+literal values:        7
+predicates:            32
+query attempts:        1
+observed answers:      ('16',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.569s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.088s
+  graph.materialization [attempt=1]: 0.140s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.475s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.563s

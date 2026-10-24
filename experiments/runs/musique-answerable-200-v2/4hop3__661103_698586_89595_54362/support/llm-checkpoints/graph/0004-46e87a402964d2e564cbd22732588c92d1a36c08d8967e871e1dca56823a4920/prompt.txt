@@ -1,0 +1,359 @@
+Convert one source unit into a rich grounded RDF-style knowledge graph.
+
+The source has two immutable segments: `title` and `text`.
+
+Goals:
+1. extract as many useful explicit atomic facts as possible;
+2. represent them as reusable subject-predicate-object statements;
+3. ground every subject, predicate, and object to exact source substrings.
+
+Do not stop after finding only the facts needed for one downstream question.
+
+Return ONLY:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "...",
+        "datatype": "... optional ...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+RULES
+
+1. ATOMIC FACTS
+Each statement expresses one relation.
+Subjects and entity objects must be reusable entities/concepts, not sentences,
+clauses, explanations, or lists.
+
+Split dimensions:
+"American jazz guitarist" ->
+  nationality -> American
+  occupation -> guitarist
+  genre -> jazz
+
+Split lists:
+"CD and vinyl" -> two statements.
+
+2. ENTITIES VS LITERALS
+Subjects are always entities.
+Objects without `datatype` are entities.
+
+Use literals only for scalar values.
+
+Allowed datatypes:
+string, integer, decimal, boolean, year, yearMonth, date, dateTime
+
+Normalize when the source provides enough precision:
+
+"68,202,492" -> value "68202492", datatype "integer"
+"6 March 2018" -> value "2018-03-06", datatype "date"
+"March 2018" -> value "2018-03", datatype "yearMonth"
+"2018" -> value "2018", datatype "year"
+
+Keep imprecise scalars as strings:
+"the 1950s"
+"around 2018"
+"35 to 40 hours per week"
+
+Never invent missing precision.
+Every `value` is a JSON string.
+
+3. PREDICATES
+Use concise lowerCamelCase relations, normally 1-4 words, e.g.:
+
+instanceOf, nationality, occupation, genre, bornIn, bornOn,
+director, writtenBy, producedBy, starring, locatedIn,
+foundedBy, foundedInYear, publicationYear, headquarteredIn
+
+Predicate evidence should be the shortest exact phrase expressing the relation.
+
+4. LOCAL SUPPORT
+A statement must be supported by one local assertion, normally one clause or
+sentence.
+
+Cross-sentence resolution is allowed only for local identity/coreference:
+pronouns, aliases, abbreviations, omitted subjects, or the title.
+
+Do not combine unrelated fragments to manufacture a relation.
+
+5. EXACT GROUNDING
+Every subject, predicate, and object requires evidence.
+
+Each `quote` must be an exact non-empty substring of its declared segment.
+Preserve capitalization, spelling, punctuation, whitespace, Unicode, etc.
+
+Occurrences are counted independently per segment from left to right.
+Use occurrence 1 unless the same quote appears multiple times.
+
+Evidence roles must be meaningful:
+- subject evidence identifies the subject;
+- predicate evidence expresses the relation;
+- object evidence identifies/expresses the object.
+
+6. TITLE
+Use the title when needed to resolve a local subject/object.
+
+Example:
+Title: "Maria Torres"
+Text: "She founded Lumen Works."
+
+"Maria Torres" may use title evidence "Maria Torres" plus text evidence "She".
+
+Do not automatically make the title entity the subject of every statement.
+
+7. SOURCE BOUNDARY
+Use only explicit information in the supplied title and text.
+
+Do not automatically add inverse, symmetric, transitive, ontology-derived,
+cross-source, or external-world facts.
+
+8. BROAD COVERAGE
+Continue through the whole source.
+
+Extract useful explicit facts about identity, type, nationality, occupation,
+location, people, works, organizations, authorship, direction, production,
+membership, leadership, dates, quantities, genres, formats, and other grounded
+relations.
+
+Do not manufacture facts merely to increase graph size.
+
+Return {"statements": []} only when no useful fully grounded atomic fact exists.
+
+
+EXAMPLE
+
+Title:
+"Example Film"
+
+Text:
+"Example Film is a 2018 French drama film directed by Maria Torres and starring
+John Lee and Anna Smith."
+
+Output:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {"segment": "text", "quote": "film", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "drama film",
+        "evidence": [
+          {"segment": "text", "quote": "drama film", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "publicationYear",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "2018",
+        "datatype": "year",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "French",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {"segment": "text", "quote": "directed by", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Maria Torres",
+        "evidence": [
+          {"segment": "text", "quote": "Maria Torres", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "John Lee",
+        "evidence": [
+          {"segment": "text", "quote": "John Lee", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Anna Smith",
+        "evidence": [
+          {"segment": "text", "quote": "Anna Smith", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+EXPERIMENT TASK — CONSTRUCT MUSIQUE QUESTION GRAPH
+
+We are constructing a grounded RDF graph for one MuSiQue benchmark question.
+
+The question, expected answer, and decomposition are coordination context. They
+help keep entity and predicate choices compatible across supporting paragraphs.
+They are not evidence.
+
+For the CURRENT SOURCE only, return grounded RDF statements using the extraction
+schema below. Reuse semantic names already present in the accepted graph when
+they denote the same thing.
+Extract all useful explicit atomic facts from CURRENT SOURCE.
+
+Do not restrict extraction to facts needed for the question.
+
+However, facts explicitly present in CURRENT SOURCE that are required
+to realize its MuSiQue decomposition hop(s) are mandatory and must not
+be omitted.
+
+Question/answer/decomposition/accepted graph are coordination context,
+not evidence.
+
+Every returned statement must be supported by the CURRENT SOURCE. Python owns
+source identity; never return source IDs.
+
+Question: Who burned down the city where Dunn Dunn's recording artist died during the conflict after which occurred the historical period of A Rose for Emily?
+
+Expected answer: Confederate Gen. John Bell Hood
+
+Gold decomposition:
+1. question='Dunn Dunn >> record label'; answer='Shawty Lo'; support_paragraph=5
+2. question='#1 >> place of death'; answer='Atlanta'; support_paragraph=12
+3. question='historical time period of a rose for emily'; answer='After the Civil War'; support_paragraph=8
+4. question='who burned down #2 in #3'; answer='Confederate Gen. John Bell Hood'; support_paragraph=6
+
+Accepted semantic graph so far:
+A Rose for Emily | instanceOf | story
+A Rose for Emily | narrativeStructure | non-linear
+A Rose for Emily | narrator | first-person narrator
+A Rose for Emily | opensWith | a brief first-person account of the funeral of Emily Grierson
+Dunn Dunn | albumType | debut solo album
+Dunn Dunn | artist | Shawty Lo
+Dunn Dunn | fromAlbum | Units in the City
+Dunn Dunn | producer | Born Immaculate
+Dunn Dunn | producer | DJ Pooh
+Dunn Dunn | singleNumber | second
+Dunn Dunn | videoEndsWith | to be continued
+Emily Grierson | ageAtFatherDeath | about the age of 30
+Emily Grierson | father | Emily's father
+Emily Grierson | fatherRefusedMarriage | true
+Emily Grierson | instanceOf | elderly Southern woman
+Emily Grierson | livedAsIfInPast | true
+Emily Grierson | memberOf | family of the antebellum Southern aristocracy
+Emily Grierson | pittedByTownspeople | true
+Emily Grierson | refusedToGiveUpCorpse | true
+Emily's father | died | true
+Emily's father | refusedMarriageForEmily | true
+Foolish | artist | Shawty Lo
+Foolish | singleNumber | third
+Part of Shawty Lo's third single, "Foolish," | isPlayedAtEndOf | Dunn Dunn
+Shawty Lo discography | consistsOf | 15 mixtapes
+Shawty Lo discography | consistsOf | 20 singles
+Shawty Lo discography | consistsOf | one posthumous album
+Shawty Lo discography | consistsOf | one studio album
+Shawty Lo discography | includes | 12 as a featured artist
+Shawty Lo | birthPlace | Atlanta, Georgia
+Shawty Lo | careerStart | D4L
+Shawty Lo | genre | hip hop
+Shawty Lo | instanceOf | recording artist
+Shawty Lo | memberOf | D4L
+Shawty Lo | nationality | American
+family of the antebellum Southern aristocracy | afterEvent | Civil War
+family of the antebellum Southern aristocracy | fellIntoHardTimes | true
+townspeople | attributedCorpseRefusalToGrieving | true
+
+CURRENT SOURCE — MuSiQue paragraph 6
+
+{
+  "title": "Atlanta in the American Civil War",
+  "text": "In 1864, as feared by Jeremy F. Gilmer, Atlanta did indeed become the target of a major Union invasion. The area now covered by metropolitan Atlanta was the scene of several fiercely contested battles, including the Battle of Peachtree Creek, the Battle of Atlanta, Battle of Ezra Church and the Battle of Jonesboro. On September 1, 1864, Confederate Gen. John Bell Hood evacuated Atlanta, after a five - week siege mounted by Union Gen. William Sherman, and ordered all public buildings and possible Confederate assets destroyed."
+}

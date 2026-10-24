@@ -1,0 +1,238 @@
+
+H0 one-case execution
+  case:          2hop__669160_139339
+  hops:          2
+  question:      What was the director of Addicted to Love nominated for?
+  expected:      Academy Award for Best Live Action Short Film
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__669160_139339/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=14 title='Addicted to Love (film)'
+  source unit: u_2480580fb470f91d374cbe19c3aa779f16d3659108ad75c8ae3218114372f8df
+  text chars:  283
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.220s | model=deepseek-v4-flash
+      tokens:   in=2204 | out=1890 | total=4094 | cached=2048 | uncached=156
+    [LLM graph.reference #2] sending...
+      provider: 0.576s | model=deepseek-v4-flash
+      tokens:   in=578 | out=8 | total=586 | cached=0 | uncached=578
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 1
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'written by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Robert Palmer",
+                "segment": "text"
+              }
+            ],
+            "value": "Robert Palmer"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "written by",
+                "segment": "text"
+              }
+            ],
+            "value": "writtenBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Addicted to Love",
+                "segment": "text"
+              }
+            ],
+            "value": "Addicted to Love"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 223 / 306 (72.9%)
+    characters text:     200 / 283 (70.7%)
+    characters title:    23 / 23 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  23 chars
+      '"Addicted to Love", a'
+    statement density:  39.22 / 1000 chars
+    title reliance:      10 / 12 (83.3%)
+
+[GRAPH 2/2] paragraph=9 title='Griffin Dunne'
+  source unit: u_bc494f9839b0a4d17b778d7b40bf4f1cf54d956837fbe07be9f2e070c32e5dab
+  text chars:  413
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 9.628s | model=deepseek-v4-flash
+      tokens:   in=2391 | out=2302 | total=4693 | cached=2048 | uncached=343
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 289 / 426 (67.8%)
+    characters text:     289 / 413 (70.0%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  26 chars
+      'several films including "'
+    statement density:  37.56 / 1000 chars
+    title reliance:      0 / 16 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 28
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      28
+resource nodes:        23
+entity nodes:          23
+literal values:        2
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Addicted%20to%20Love> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Griffin%20Dunne> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:featuredIn> <urn:graphragprov:entity:Neneh%20Cherry> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:romantic%20comedy%20film> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:publicationYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kelly%20Preston> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Matthew%20Broderick> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Meg%20Ryan> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Tch%C3%A9ky%20Karyo> .
+  <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:titleBasedOn> <urn:graphragprov:entity:Addicted%20to%20Love> .
+  <urn:graphragprov:entity:Neneh%20Cherry> <urn:graphragprov:predicate:performed> <urn:graphragprov:entity:Addicted%20to%20Love> .
+  <urn:graphragprov:entity:Amy%20Robinson> <urn:graphragprov:predicate:company> <urn:graphragprov:entity:Double%20Play%20Productions> .
+  <urn:graphragprov:entity:Amy%20Robinson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Amy%20Robinson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Double%20Play%20Productions> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:company> .
+  <urn:graphragprov:entity:Duke%20of%20Groove> <urn:graphragprov:predicate:coWriter> <urn:graphragprov:entity:Griffin%20Dunne> .
+  <urn:graphragprov:entity:Duke%20of%20Groove> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Griffin%20Dunne> .
+  <urn:graphragprov:entity:Duke%20of%20Groove> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Live%20Action%20Short%20Film> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:company> <urn:graphragprov:entity:Double%20Play%20Productions> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Live%20Action%20Short%20Film> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:nominatedInYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:After%20Hours> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:Baby%20It%27s%20You> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:Game%206> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:Running%20on%20Empty> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:producingPartner> <urn:graphragprov:entity:Amy%20Robinson> .
+  <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:sharedNominationWith> <urn:graphragprov:entity:Thom%20Colwell> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.718s | model=deepseek-v4-flash
+      tokens:   in=2288 | out=214 | total=2502 | cached=640 | uncached=1648
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Griffin%20Dunne> .
+  - <urn:graphragprov:entity:Griffin%20Dunne> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Live%20Action%20Short%20Film> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nominatedFor> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2480580fb470f91d>
+  FROM <urn:graphragprov:unit:u_bc494f9839b0a4d1>
+  WHERE { <urn:graphragprov:entity:Addicted%20to%20Love%20%28film%29> <urn:graphragprov:predicate:director> ?director . ?director <urn:graphragprov:predicate:nominatedFor> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Academy Award for Best Live Action Short Film',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Addicted to Love (film)', 'Griffin Dunne']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__669160_139339
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__669160_139339/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7461
+output tokens:         4414
+total tokens:          11875
+cached input tokens:   4736
+uncached input tokens: 2725
+cumulative LLM seconds: 21.143
+
+statement occurrences: 28
+semantic triples:      28
+entity nodes:          23
+literal values:        2
+predicates:            16
+query attempts:        1
+observed answers:      ('Academy Award for Best Live Action Short Film',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 19.433s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.043s
+  graph.materialization [attempt=1]: 0.098s
+  graph.observation [attempt=1]: 0.017s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.719s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.456s

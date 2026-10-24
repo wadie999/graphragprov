@@ -1,0 +1,192 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What was Nintendo's limit on games per developer per year for the platform supporting the video game named after the sports organisation in charge of the Super Bowl halftime show?
+
+Expected answer: five
+
+Gold decomposition:
+1. question='who is in charge of the super bowl halftime show'; answer='The NFL'; support_paragraph=7
+2. question='#1 >> platform'; answer='Nintendo Entertainment System'; support_paragraph=5
+3. question='What is the abbreviation of #2 ?'; answer='NES'; support_paragraph=19
+4. question="What was Nintendo's limit on games per developer per year on the #3 ?"; answer='five'; support_paragraph=4
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:NES> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Famicom> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:bitness> <urn:graphragprov:entity:8-bit> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:developedBy> <urn:graphragprov:entity:Nintendo> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:SK%20Hynix> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:initiallyReleasedIn> <urn:graphragprov:entity:Japan> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20video%20game%20console> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:knownAsIn> <urn:graphragprov:entity:Hyundai%20Comboy> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:knownAsIn> <urn:graphragprov:entity:South%20Korea> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:manufacturedBy> <urn:graphragprov:entity:Nintendo> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseDate> "1983-07-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releaseYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:Australia> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:North%20America> .
+<urn:graphragprov:entity:Nintendo%20Entertainment%20System> <urn:graphragprov:predicate:succeededBy> <urn:graphragprov:entity:Super%20Nintendo%20Entertainment%20System> .
+<urn:graphragprov:entity:Acclaim> <urn:graphragprov:predicate:beganReleasingGamesFor> <urn:graphragprov:entity:both%20platforms> .
+<urn:graphragprov:entity:Capcom> <urn:graphragprov:predicate:licensedSomeGamesTo> <urn:graphragprov:entity:Sega> .
+<urn:graphragprov:entity:Capcom> <urn:graphragprov:predicate:licensedSomeGamesTo> <urn:graphragprov:entity:Sega%20instead%20of%20producing%20them%20directly> .
+<urn:graphragprov:entity:Capcom> <urn:graphragprov:predicate:wasNotableHoldout> <urn:graphragprov:entity:most%20notable%20holdouts> .
+<urn:graphragprov:entity:Konami> <urn:graphragprov:predicate:usedBrand> <urn:graphragprov:entity:Ultra%20Games> .
+<urn:graphragprov:entity:Nintendo> <urn:graphragprov:predicate:hadToApprove> <urn:graphragprov:entity:every%20game> .
+<urn:graphragprov:entity:Nintendo> <urn:graphragprov:predicate:maintainedExclusiveControlOver> <urn:graphragprov:entity:titles%20released%20for%20the%20system> .
+<urn:graphragprov:entity:Nintendo> <urn:graphragprov:predicate:wasExclusiveManufacturerAndSupplierOf> <urn:graphragprov:entity:NES%20cartridges> .
+<urn:graphragprov:entity:Square> <urn:graphragprov:predicate:wasNotableHoldout> <urn:graphragprov:entity:most%20notable%20holdouts> .
+<urn:graphragprov:entity:competition%20from%20Sega%27s%20console> <urn:graphragprov:predicate:broughtAnEndTo> <urn:graphragprov:entity:this%20practice> .
+<urn:graphragprov:entity:most%20of%20Nintendo%27s%20other%20licensees> <urn:graphragprov:predicate:followedSuit> <urn:graphragprov:entity:over%20the%20next%20several%20years> .
+<urn:graphragprov:entity:some%20third%20parties> <urn:graphragprov:predicate:gotAround> <urn:graphragprov:entity:this> .
+<urn:graphragprov:entity:some%20third%20parties> <urn:graphragprov:predicate:usedDifferentNames> <urn:graphragprov:entity:different%20names> .
+<urn:graphragprov:entity:third-party%20developer> <urn:graphragprov:predicate:couldReleaseUpTo> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:third-party%20developer> <urn:graphragprov:predicate:couldReleaseUpTo> <urn:graphragprov:entity:five%20games%20per%20year> .
+<urn:graphragprov:entity:third-party%20developer> <urn:graphragprov:predicate:couldReleaseUpTo> <urn:graphragprov:entity:games%20per%20year> .
+<urn:graphragprov:entity:those%20games> <urn:graphragprov:predicate:couldNotBeReleasedOn> <urn:graphragprov:entity:another%20console> .
+<urn:graphragprov:entity:those%20games> <urn:graphragprov:predicate:couldNotBeReleasedOn> <urn:graphragprov:entity:another%20console%20within%20two%20years> .
+<urn:graphragprov:entity:NFL%20%28video%20game%29> <urn:graphragprov:predicate:developer> <urn:graphragprov:entity:Atlus> .
+<urn:graphragprov:entity:NFL%20%28video%20game%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:football%20video%20game> .
+<urn:graphragprov:entity:NFL%20%28video%20game%29> <urn:graphragprov:predicate:platform> <urn:graphragprov:entity:Nintendo%20Entertainment%20System> .
+<urn:graphragprov:entity:NFL%20%28video%20game%29> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:NFL%20%28video%20game%29> <urn:graphragprov:predicate:publisher> <urn:graphragprov:entity:LJN> .
+<urn:graphragprov:entity:Frito%20-%20Lay> <urn:graphragprov:predicate:agreedToDonate> <urn:graphragprov:entity:Heal%20the%20World%20Foundation> .
+<urn:graphragprov:entity:Frito%20-%20Lay> <urn:graphragprov:predicate:providedCommercialTimeFor> <urn:graphragprov:entity:Heal%20the%20World%20Foundation> .
+<urn:graphragprov:entity:NFL> <urn:graphragprov:predicate:agreedToDonate> <urn:graphragprov:entity:Heal%20the%20World%20Foundation> .
+<urn:graphragprov:entity:NFL> <urn:graphragprov:predicate:coversExpensesFor> <urn:graphragprov:entity:performers%20and%20their%20entourage> .
+<urn:graphragprov:entity:NFL> <urn:graphragprov:predicate:doesNotPay> <urn:graphragprov:entity:halftime%20show%20performers> .
+<urn:graphragprov:entity:NFL> <urn:graphragprov:predicate:providedCommercialTimeFor> <urn:graphragprov:entity:Heal%20the%20World%20Foundation> .
+<urn:graphragprov:entity:Super%20Bowl%20XLIX> <urn:graphragprov:predicate:reportedBy> <urn:graphragprov:entity:Wall%20Street%20Journal> .
+<urn:graphragprov:entity:Super%20Bowl%20XXVII%20halftime%20show> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Michael%20Jackson> .
+<urn:graphragprov:entity:Super%20Bowl%20XXVII%20halftime%20show> <urn:graphragprov:predicate:providedException> <urn:graphragprov:entity:NFL%20does%20not%20pay%20halftime%20show%20performers> .
+<urn:graphragprov:entity:concert%20performances> <urn:graphragprov:predicate:madeAfter> <urn:graphragprov:entity:Super%20Bowl> .
+<urn:graphragprov:entity:cut%20of%20revenue> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:concert%20performances> .
+<urn:graphragprov:entity:financial%20compensation> <urn:graphragprov:predicate:inFormOf> <urn:graphragprov:entity:cut%20of%20revenue> .
+<urn:graphragprov:entity:financial%20compensation> <urn:graphragprov:predicate:inFormOf> <urn:graphragprov:entity:up%20-%20front%20fee> .
+<urn:graphragprov:entity:halftime%20performers> <urn:graphragprov:predicate:experienceSpikesIn> <urn:graphragprov:entity:paid%20digital%20downloads> .
+<urn:graphragprov:entity:halftime%20performers> <urn:graphragprov:predicate:experienceSpikesIn> <urn:graphragprov:entity:weekly%20album%20sales> .
+<urn:graphragprov:entity:league%20officials> <urn:graphragprov:predicate:askedRepresentatives> <urn:graphragprov:entity:potential%20acts> .
+<urn:graphragprov:entity:league%20officials> <urn:graphragprov:predicate:requestedFinancialCompensation> <urn:graphragprov:entity:NFL> .
+<urn:graphragprov:entity:potential%20acts> <urn:graphragprov:predicate:willingToProvide> <urn:graphragprov:entity:financial%20compensation> .
+<urn:graphragprov:entity:reports> <urn:graphragprov:predicate:deniedBy> <urn:graphragprov:entity:NFL%20spokeswoman> .
+<urn:graphragprov:entity:request> <urn:graphragprov:predicate:receivedResponse> <urn:graphragprov:entity:chilly%20response> .

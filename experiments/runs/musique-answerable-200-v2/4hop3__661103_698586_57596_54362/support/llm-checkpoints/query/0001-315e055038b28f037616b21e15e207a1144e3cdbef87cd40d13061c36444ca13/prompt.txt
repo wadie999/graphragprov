@@ -1,0 +1,182 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who burned down the city where the artist who recorded Dunn Dunn died, during the war that saw the introduction of income tax in the U.S.?
+
+Expected answer: Confederate Gen. John Bell Hood
+
+Gold decomposition:
+1. question='Dunn Dunn >> record label'; answer='Shawty Lo'; support_paragraph=5
+2. question='#1 >> place of death'; answer='Atlanta'; support_paragraph=9
+3. question='when did income tax start in the united states'; answer='during the Civil War'; support_paragraph=18
+4. question='who burned down #2 in #3'; answer='Confederate Gen. John Bell Hood'; support_paragraph=13
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Dunn%20Dunn> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Shawty%20Lo> .
+<urn:graphragprov:entity:Dunn%20Dunn> <urn:graphragprov:predicate:fromAlbum> <urn:graphragprov:entity:Units%20in%20the%20City> .
+<urn:graphragprov:entity:Dunn%20Dunn> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Foolish> .
+<urn:graphragprov:entity:Dunn%20Dunn> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Born%20Immaculate> .
+<urn:graphragprov:entity:Dunn%20Dunn> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:DJ%20Pooh> .
+<urn:graphragprov:entity:Dunn%20Dunn> <urn:graphragprov:predicate:singleNumber> "second" .
+<urn:graphragprov:entity:Dunn%20Dunn> <urn:graphragprov:predicate:videoEnding> <urn:graphragprov:entity:to%20be%20continued> .
+<urn:graphragprov:entity:Foolish> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Shawty%20Lo> .
+<urn:graphragprov:entity:Foolish> <urn:graphragprov:predicate:singleNumber> "third" .
+<urn:graphragprov:entity:Units%20in%20the%20City> <urn:graphragprov:predicate:albumType> <urn:graphragprov:entity:debut%20solo%20album> .
+<urn:graphragprov:entity:Units%20in%20the%20City> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Shawty%20Lo> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:besiegedBy> <urn:graphragprov:entity:Union%20Gen.%20William%20Sherman> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:evacuatedOn> "1864-09-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:sceneOf> <urn:graphragprov:entity:Battle%20of%20Atlanta> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:sceneOf> <urn:graphragprov:entity:Battle%20of%20Ezra%20Church> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:sceneOf> <urn:graphragprov:entity:Battle%20of%20Jonesboro> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:sceneOf> <urn:graphragprov:entity:Battle%20of%20Peachtree%20Creek> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:targetOf> <urn:graphragprov:entity:major%20Union%20invasion> .
+<urn:graphragprov:entity:Confederate%20Gen.%20John%20Bell%20Hood> <urn:graphragprov:predicate:evacuated> <urn:graphragprov:entity:Atlanta> .
+<urn:graphragprov:entity:Confederate%20Gen.%20John%20Bell%20Hood> <urn:graphragprov:predicate:orderedDestructionOf> <urn:graphragprov:entity:possible%20Confederate%20assets> .
+<urn:graphragprov:entity:Confederate%20Gen.%20John%20Bell%20Hood> <urn:graphragprov:predicate:orderedDestructionOf> <urn:graphragprov:entity:public%20buildings> .
+<urn:graphragprov:entity:16th%20Amendment> <urn:graphragprov:predicate:legalized> <urn:graphragprov:entity:income%20tax> .
+<urn:graphragprov:entity:16th%20Amendment> <urn:graphragprov:predicate:ratifiedInYear> "1913"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:History%20of%20taxation%20in%20the%20United%20States> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:history> .
+<urn:graphragprov:entity:History%20of%20taxation%20in%20the%20United%20States> <urn:graphragprov:predicate:startTime> <urn:graphragprov:entity:colonial%20protest%20against%20British%20taxation%20policy%20in%20the%201760s> .
+<urn:graphragprov:entity:History%20of%20taxation%20in%20the%20United%20States> <urn:graphragprov:predicate:topic> <urn:graphragprov:entity:taxation%20in%20the%20United%20States> .
+<urn:graphragprov:entity:State%20and%20federal%20inheritance%20taxes> <urn:graphragprov:predicate:startTime> "1900"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:States%20and%20localities> <urn:graphragprov:predicate:collectedTaxOn> <urn:graphragprov:entity:poll%20taxes%20on%20voters> .
+<urn:graphragprov:entity:States%20and%20localities> <urn:graphragprov:predicate:collectedTaxOn> <urn:graphragprov:entity:property%20taxes%20on%20land%20and%20commercial%20buildings> .
+<urn:graphragprov:entity:United%20States> <urn:graphragprov:predicate:imposedTax> <urn:graphragprov:entity:income%20taxes> .
+<urn:graphragprov:entity:United%20States> <urn:graphragprov:predicate:timePeriod> <urn:graphragprov:entity:Civil%20War%20and%20the%201890s> .
+<urn:graphragprov:entity:colonial%20protest%20against%20British%20taxation%20policy> <urn:graphragprov:predicate:ledTo> <urn:graphragprov:entity:American%20Revolution> .
+<urn:graphragprov:entity:colonial%20protest%20against%20British%20taxation%20policy> <urn:graphragprov:predicate:timePeriod> "the 1760s" .
+<urn:graphragprov:entity:independent%20nation> <urn:graphragprov:predicate:collectedTaxOn> <urn:graphragprov:entity:glass%20windows> .
+<urn:graphragprov:entity:independent%20nation> <urn:graphragprov:predicate:collectedTaxOn> <urn:graphragprov:entity:imports> .
+<urn:graphragprov:entity:independent%20nation> <urn:graphragprov:predicate:collectedTaxOn> <urn:graphragprov:entity:whiskey> .
+<urn:graphragprov:entity:state%20and%20federal%20excise%20taxes> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:tax> .
+<urn:graphragprov:entity:states> <urn:graphragprov:predicate:collectedTaxOn> <urn:graphragprov:entity:sales%20taxes> .
+<urn:graphragprov:entity:states> <urn:graphragprov:predicate:startTime> "the 1930s" .
+<urn:graphragprov:entity:Shawty%20Lo> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Atlanta%2C%20Georgia> .
+<urn:graphragprov:entity:Shawty%20Lo> <urn:graphragprov:predicate:careerStart> <urn:graphragprov:entity:D4L> .
+<urn:graphragprov:entity:Shawty%20Lo> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:hip%20hop> .
+<urn:graphragprov:entity:Shawty%20Lo> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:D4L> .
+<urn:graphragprov:entity:Shawty%20Lo> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Shawty%20Lo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:recording%20artist> .
+<urn:graphragprov:entity:Shawty%20Lo%20discography> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:12%20as%20a%20featured%20artist> .
+<urn:graphragprov:entity:Shawty%20Lo%20discography> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:15%20mixtapes> .
+<urn:graphragprov:entity:Shawty%20Lo%20discography> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:20%20singles> .
+<urn:graphragprov:entity:Shawty%20Lo%20discography> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:one%20posthumous%20album> .
+<urn:graphragprov:entity:Shawty%20Lo%20discography> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:one%20studio%20album> .
+<urn:graphragprov:entity:Shawty%20Lo%20discography> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:discography> .

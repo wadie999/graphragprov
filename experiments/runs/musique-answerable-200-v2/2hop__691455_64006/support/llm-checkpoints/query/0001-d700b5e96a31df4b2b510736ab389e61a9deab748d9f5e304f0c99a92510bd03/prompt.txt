@@ -1,0 +1,144 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: By how much of the population of the region where Baton a feu originated reduced by the black death?
+
+Expected answer: 30% to 65%
+
+Gold decomposition:
+1. question='Bâton à feu >> country of origin'; answer='Western Europe'; support_paragraph=18
+2. question='as a result of the black death it is estimated that the population of #1 was reduced by'; answer='30% to 65%'; support_paragraph=14
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:most%20devastating%20pandemics%20in%20human%20history> .
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:killedPercentageOfPopulation> "30% to 65%" .
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:peakPeriod> "1347-1350" .
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:peakedIn> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:reducedWorldPopulation> "from 450 million to between 350 and 375 million" .
+<urn:graphragprov:entity:Consequences%20of%20the%20Black%20Death> <urn:graphragprov:predicate:hadEffectOn> <urn:graphragprov:entity:course%20of%20European%20history> .
+<urn:graphragprov:entity:Consequences%20of%20the%20Black%20Death> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:series%20of%20religious%2C%20social%2C%20and%20economic%20upheavals> .
+<urn:graphragprov:entity:Europe%27s%20population> <urn:graphragprov:predicate:recoveryTime> "80 to 150 years" .
+<urn:graphragprov:entity:B%C3%A2ton%20%C3%A0%20feu> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Baston%20%C3%A0%20feu> .
+<urn:graphragprov:entity:B%C3%A2ton%20%C3%A0%20feu> <urn:graphragprov:predicate:correspondsTo> <urn:graphragprov:entity:portable%20artillery%20of%20the%20second%20half%20of%2014th%20century> .
+<urn:graphragprov:entity:B%C3%A2ton%20%C3%A0%20feu> <urn:graphragprov:predicate:countryOfOrigin> <urn:graphragprov:entity:Western%20Europe> .
+<urn:graphragprov:entity:B%C3%A2ton%20%C3%A0%20feu> <urn:graphragprov:predicate:developedInCentury> <urn:graphragprov:entity:14th%20century> .
+<urn:graphragprov:entity:B%C3%A2ton%20%C3%A0%20feu> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:hand%20cannon> .
+<urn:graphragprov:entity:B%C3%A2ton%20%C3%A0%20feu> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:French> .
+<urn:graphragprov:entity:B%C3%A2ton%20%C3%A0%20feu> <urn:graphragprov:predicate:translation> <urn:graphragprov:entity:Fire%20stick> .

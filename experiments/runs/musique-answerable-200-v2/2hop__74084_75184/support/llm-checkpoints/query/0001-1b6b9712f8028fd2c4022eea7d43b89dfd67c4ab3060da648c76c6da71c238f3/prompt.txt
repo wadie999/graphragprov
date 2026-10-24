@@ -1,0 +1,153 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who played the girlfriend of Chance's voice actor in Homeward Bound in Back to the Future?
+
+Expected answer: Claudia Wells
+
+Gold decomposition:
+1. question='who was the voice of chance in homeward bound'; answer='Michael J. Fox'; support_paragraph=9
+2. question='who played #1 girlfriend in back to the future'; answer='Claudia Wells'; support_paragraph=19
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Back%20to%20the%20Future%20Part%20II> <urn:graphragprov:predicate:openingSceneReShotWith> <urn:graphragprov:entity:Elisabeth%20Shue> .
+<urn:graphragprov:entity:Cathy%20Cavadini> <urn:graphragprov:predicate:voiceIn> <urn:graphragprov:entity:Back%20to%20the%20Future%3A%20the%20Animated%20Series> .
+<urn:graphragprov:entity:Cathy%20Cavadini> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:Jennifer> .
+<urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:notAvailableFor> <urn:graphragprov:entity:sequels> .
+<urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:played> <urn:graphragprov:entity:Jennifer> .
+<urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:Back%20to%20the%20Future> .
+<urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:portrayedAs> <urn:graphragprov:entity:punk%20rock%20version> .
+<urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:recastTo> <urn:graphragprov:entity:Elisabeth%20Shue> .
+<urn:graphragprov:entity:Claudia%20Wells> <urn:graphragprov:predicate:reprisingRoleIn> <urn:graphragprov:entity:Back%20to%20the%20Future%3A%20The%20Game> .
+<urn:graphragprov:entity:Elisabeth%20Shue> <urn:graphragprov:predicate:played> <urn:graphragprov:entity:Jennifer> .
+<urn:graphragprov:entity:Elisabeth%20Shue> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:Back%20to%20the%20Future%20Part%20II> .
+<urn:graphragprov:entity:Bart%20the%20Bear> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Bear> .
+<urn:graphragprov:entity:Benj%20Thall> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Peter%20Burnford> .
+<urn:graphragprov:entity:Don%20Ameche> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:Shadow> .
+<urn:graphragprov:entity:Ed%20Bernard> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Desk%20Sergeant> .
+<urn:graphragprov:entity:Gary%20Taylor> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Frank> .
+<urn:graphragprov:entity:Jean%20Smart> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Kate> .
+<urn:graphragprov:entity:Kevin%20Chevalia> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Jamie%20Burnford> .
+<urn:graphragprov:entity:Kim%20Greist> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Laura%20Burnford%20-%20Seaver> .
+<urn:graphragprov:entity:Michael%20J.%20Fox> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:Chance> .
+<urn:graphragprov:entity:Robert%20Hays> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Bob%20Seaver> .
+<urn:graphragprov:entity:Sally%20Field> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:Sassy> .
+<urn:graphragprov:entity:Veronica%20Lauren> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Hope%20Burnford> .
+<urn:graphragprov:entity:William%20Edward%20Phipps> <urn:graphragprov:predicate:portrayed> <urn:graphragprov:entity:Quentin> .

@@ -1,0 +1,243 @@
+
+H0 one-case execution
+  case:          2hop__2416_53663
+  hops:          2
+  question:      Where is the river that the engine pumped water from located in the world?
+  expected:      northeastern Africa
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__2416_53663/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=4 title='Solar energy'
+  source unit: u_47bc34933e38222fb1852b28f775ee26bef941579ca23d511141c5090f8729d1
+  text chars:  642
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.442s | model=deepseek-v4-flash
+      tokens:   in=2286 | out=2286 | total=4572 | cached=1920 | uncached=366
+    [LLM graph.reference #2] sending...
+      provider: 1.239s | model=deepseek-v4-flash
+      tokens:   in=663 | out=170 | total=833 | cached=0 | uncached=663
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 1
+
+    initial rejection #4
+      validator:
+        response.statements[4].predicate.evidence[0]: quote 'powered' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "engine",
+                "segment": "text"
+              }
+            ],
+            "value": "engine"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "powered",
+                "segment": "text"
+              }
+            ],
+            "value": "powered"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Shuman’s plant",
+                "segment": "text"
+              }
+            ],
+            "value": "Shuman’s plant"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 14
+  coverage:
+    characters combined: 473 / 654 (72.3%)
+    characters text:     473 / 642 (73.7%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  73 chars
+      'with a new wave of interest in solar thermal energy. In 1916 Shuman was'
+    statement density:  21.41 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 2/2] paragraph=10 title='Nile'
+  source unit: u_33c77b3cea384dbca996e9df689825b1ff4e0c9c5b2441dcf9f740c7b5e56c4a
+  text chars:  551
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 12.812s | model=deepseek-v4-flash
+      tokens:   in=2450 | out=3021 | total=5471 | cached=1920 | uncached=530
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 322 / 555 (58.0%)
+    characters text:     318 / 551 (57.7%)
+    characters title:    4 / 4 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  79 chars
+      ', though some sources cite the Amazon River as the longest. The Nile, which is'
+    statement density:  34.23 / 1000 chars
+    title reliance:      19 / 19 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 33
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      33
+resource nodes:        33
+entity nodes:          33
+literal values:        5
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:commonlyRegardedAs> <urn:graphragprov:entity:longest%20river%20in%20the%20world> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinCovers> <urn:graphragprov:entity:eleven%20countries> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Burundi> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Democratic%20Republic%20of%20the%20Congo> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Egypt> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Eritrea> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Ethiopia> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Kenya> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Republic%20of%20the%20Sudan> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Rwanda> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:South%20Sudan> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Tanzania> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Uganda> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:flowDirection> <urn:graphragprov:entity:north> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:river> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:length> "6853 km" .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:northeastern%20Africa> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:primaryWaterSourceOf> <urn:graphragprov:entity:Egypt> .
+  <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:primaryWaterSourceOf> <urn:graphragprov:entity:Sudan> .
+  <urn:graphragprov:entity:Shuman> <urn:graphragprov:predicate:advocated> <urn:graphragprov:entity:solar%20energy%27s%20utilization> .
+  <urn:graphragprov:entity:Shuman> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:world%E2%80%99s%20first%20solar%20thermal%20power%20station> .
+  <urn:graphragprov:entity:Shuman> <urn:graphragprov:predicate:quotedIn> <urn:graphragprov:entity:media> .
+  <urn:graphragprov:entity:Shuman%E2%80%99s%20plant> <urn:graphragprov:predicate:used> <urn:graphragprov:entity:parabolic%20troughs> .
+  <urn:graphragprov:entity:Shuman%E2%80%99s%20vision%20and%20basic%20design> <urn:graphragprov:predicate:resurrectedIn> "1970s" .
+  <urn:graphragprov:entity:discovery%20of%20cheap%20oil%20in%20the%201930s> <urn:graphragprov:predicate:discouraged> <urn:graphragprov:entity:advancement%20of%20solar%20energy> .
+  <urn:graphragprov:entity:engine> <urn:graphragprov:predicate:power> "45–52 kilowatts (60–70 hp)" .
+  <urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumped> <urn:graphragprov:entity:water> .
+  <urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumpedAmount> "more than 22,000 litres (4,800 imp gal; 5,800 US gal) of water per minute" .
+  <urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumpedFrom> <urn:graphragprov:entity:Nile%20River> .
+  <urn:graphragprov:entity:outbreak%20of%20World%20War%20I> <urn:graphragprov:predicate:discouraged> <urn:graphragprov:entity:advancement%20of%20solar%20energy> .
+  <urn:graphragprov:entity:water> <urn:graphragprov:predicate:pumpedTo> <urn:graphragprov:entity:adjacent%20cotton%20fields> .
+  <urn:graphragprov:entity:world%E2%80%99s%20first%20solar%20thermal%20power%20station> <urn:graphragprov:predicate:builtInYear> "1912-1913" .
+  <urn:graphragprov:entity:world%E2%80%99s%20first%20solar%20thermal%20power%20station> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Maadi%2C%20Egypt> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.666s | model=deepseek-v4-flash
+      tokens:   in=2319 | out=175 | total=2494 | cached=640 | uncached=1679
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumpedFrom> <urn:graphragprov:entity:Nile%20River> .
+  - <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:northeastern%20Africa> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumpedFrom> <urn:graphragprov:entity:Nile%20River> . <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_33c77b3cea384dbc>
+  FROM <urn:graphragprov:unit:u_47bc34933e38222f>
+  WHERE { <urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumpedFrom> <urn:graphragprov:entity:Nile%20River> . <urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('northeastern Africa',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Nile', 'Solar energy']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__2416_53663
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__2416_53663/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7718
+output tokens:         5652
+total tokens:          13370
+cached input tokens:   4480
+uncached input tokens: 3238
+cumulative LLM seconds: 26.159
+
+statement occurrences: 33
+semantic triples:      33
+entity nodes:          33
+literal values:        5
+predicates:            20
+query attempts:        1
+observed answers:      ('northeastern Africa',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.504s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.038s
+  graph.materialization [attempt=1]: 0.060s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.667s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.486s

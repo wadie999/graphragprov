@@ -1,0 +1,219 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What series of wins did the sports team that the all time highest goal scorer in spain national team was a member or achieve in 2009?
+
+Expected answer: continental treble
+
+Gold decomposition:
+1. question='all time highest goal scorer in spain national team'; answer='David Villa'; support_paragraph=0
+2. question='#1 >> member of sports team'; answer='Barcelona'; support_paragraph=19
+3. question='What series of wins did #2 achieve in 2009?'; answer='continental treble'; support_paragraph=17
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:achievedInYear> <urn:graphragprov:entity:continental%20treble> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:completed> <urn:graphragprov:entity:sextuple> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:consideredBySomeToBe> <urn:graphragprov:entity:greatest%20team%20of%20all%20time> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:firstEuropeanClubToAchieve> <urn:graphragprov:entity:continental%20treble%20twice> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:firstFootballClubToWin> <urn:graphragprov:entity:six%20out%20of%20six%20competitions%20in%20a%20single%20year> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:firstSpanishClubToWin> <urn:graphragprov:entity:continental%20treble> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:foundingMemberOf> <urn:graphragprov:entity:Primera%20Divisi%C3%B3n> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:football%20club> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Primera%20Divisi%C3%B3n> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:neverRelegatedFrom> <urn:graphragprov:entity:Primera%20Divisi%C3%B3n> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:reached> <urn:graphragprov:entity:record%20six%20consecutive%20Champions%20League%20semi-finals> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:underManager> <urn:graphragprov:entity:Pep%20Guardiola> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:14%20trophies> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:continental%20treble> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:wonInPeriod> <urn:graphragprov:entity:14%20trophies> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:wonInYear> <urn:graphragprov:entity:Copa%20del%20Rey> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:wonInYear> <urn:graphragprov:entity:European%20champions> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:wonInYear> <urn:graphragprov:entity:La%20Liga> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:wonInYear> <urn:graphragprov:entity:UEFA%20Champions%20League> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:wonInYear> <urn:graphragprov:entity:continental%20treble> .
+<urn:graphragprov:entity:Barcelona> <urn:graphragprov:predicate:wonInYear> <urn:graphragprov:entity:five%20trophies> .
+<urn:graphragprov:entity:continental%20treble> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:Copa%20del%20Rey> .
+<urn:graphragprov:entity:continental%20treble> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:La%20Liga> .
+<urn:graphragprov:entity:continental%20treble> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:UEFA%20Champions%20League> .
+<urn:graphragprov:entity:sextuple> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:FIFA%20Club%20World%20Cup> .
+<urn:graphragprov:entity:sextuple> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:Spanish%20Super%20Cup> .
+<urn:graphragprov:entity:sextuple> <urn:graphragprov:predicate:consistsOf> <urn:graphragprov:entity:UEFA%20Super%20Cup> .
+<urn:graphragprov:entity:Alfredo%20Di%20St%C3%A9fano> <urn:graphragprov:predicate:careerAverage> "0.742"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Alfredo%20Di%20St%C3%A9fano> <urn:graphragprov:predicate:careerCaps> "31"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Alfredo%20Di%20St%C3%A9fano> <urn:graphragprov:predicate:careerGoals> "23"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Alfredo%20Di%20St%C3%A9fano> <urn:graphragprov:predicate:careerYears> "1957-1961" .
+<urn:graphragprov:entity:Alfredo%20Di%20St%C3%A9fano> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:David%20Silva> <urn:graphragprov:predicate:careerAverage> "0.299"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:David%20Silva> <urn:graphragprov:predicate:careerCaps> "117"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:David%20Silva> <urn:graphragprov:predicate:careerGoals> "35"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:David%20Silva> <urn:graphragprov:predicate:careerYears> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:David%20Silva> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:careerAverage> "0.608"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:careerCaps> "98"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:careerGoals> "59"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:careerYears> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:Emilio%20Butrague%C3%B1o> <urn:graphragprov:predicate:careerAverage> "0.377"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Emilio%20Butrague%C3%B1o> <urn:graphragprov:predicate:careerCaps> "69"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Emilio%20Butrague%C3%B1o> <urn:graphragprov:predicate:careerGoals> "26"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Emilio%20Butrague%C3%B1o> <urn:graphragprov:predicate:careerYears> "1984-1992" .
+<urn:graphragprov:entity:Emilio%20Butrague%C3%B1o> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:Fernando%20Hierro> <urn:graphragprov:predicate:careerAverage> "0.326"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Fernando%20Hierro> <urn:graphragprov:predicate:careerCaps> "89"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Fernando%20Hierro> <urn:graphragprov:predicate:careerGoals> "29"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Fernando%20Hierro> <urn:graphragprov:predicate:careerYears> "1989-2002" .
+<urn:graphragprov:entity:Fernando%20Hierro> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:Fernando%20Morientes> <urn:graphragprov:predicate:careerAverage> "0.574"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Fernando%20Morientes> <urn:graphragprov:predicate:careerCaps> "47"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Fernando%20Morientes> <urn:graphragprov:predicate:careerGoals> "27"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Fernando%20Morientes> <urn:graphragprov:predicate:careerYears> "1998-2007" .
+<urn:graphragprov:entity:Fernando%20Morientes> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:Fernando%20Torres> <urn:graphragprov:predicate:careerAverage> "0.345"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Fernando%20Torres> <urn:graphragprov:predicate:careerCaps> "110"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Fernando%20Torres> <urn:graphragprov:predicate:careerGoals> "38"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Fernando%20Torres> <urn:graphragprov:predicate:careerYears> "2003-2014" .
+<urn:graphragprov:entity:Fernando%20Torres> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:Julio%20Salinas> <urn:graphragprov:predicate:careerAverage> "0.411"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Julio%20Salinas> <urn:graphragprov:predicate:careerCaps> "56"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Julio%20Salinas> <urn:graphragprov:predicate:careerGoals> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Julio%20Salinas> <urn:graphragprov:predicate:careerYears> "1986-1996" .
+<urn:graphragprov:entity:Julio%20Salinas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:M%C3%ADchel> <urn:graphragprov:predicate:careerAverage> "0.318"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:M%C3%ADchel> <urn:graphragprov:predicate:careerCaps> "66"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:M%C3%ADchel> <urn:graphragprov:predicate:careerGoals> "21"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:M%C3%ADchel> <urn:graphragprov:predicate:careerYears> "1985-1992" .
+<urn:graphragprov:entity:M%C3%ADchel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:Ra%C3%BAl> <urn:graphragprov:predicate:careerAverage> "0.431"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Ra%C3%BAl> <urn:graphragprov:predicate:careerCaps> "102"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Ra%C3%BAl> <urn:graphragprov:predicate:careerGoals> "44"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Ra%C3%BAl> <urn:graphragprov:predicate:careerYears> "1996-2006" .
+<urn:graphragprov:entity:Ra%C3%BAl> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Player> .
+<urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> <urn:graphragprov:predicate:eventDate> "2013-08-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Supercopa%20de%20Espa%C3%B1a> .
+<urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> <urn:graphragprov:predicate:location> <urn:graphragprov:entity:Madrid> .
+<urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> <urn:graphragprov:predicate:participant> <urn:graphragprov:entity:Atl%C3%A9tico%20Madrid> .
+<urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> <urn:graphragprov:predicate:participant> <urn:graphragprov:entity:Barcelona> .
+<urn:graphragprov:entity:Dani%20Alves> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Barcelona> .
+<urn:graphragprov:entity:Dani%20Alves> <urn:graphragprov:predicate:providedAssistInMatch> <urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:formerMemberOfSportsTeam> <urn:graphragprov:entity:Barcelona> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Atl%C3%A9tico%20Madrid> .
+<urn:graphragprov:entity:David%20Villa> <urn:graphragprov:predicate:scoredGoalInMatch> <urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> .
+<urn:graphragprov:entity:Neymar> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Barcelona> .
+<urn:graphragprov:entity:Neymar> <urn:graphragprov:predicate:scoredGoalInMatch> <urn:graphragprov:entity:2013%20Supercopa%20de%20Espa%C3%B1a> .

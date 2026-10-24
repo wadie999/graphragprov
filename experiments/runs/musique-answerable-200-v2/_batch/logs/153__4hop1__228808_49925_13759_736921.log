@@ -1,0 +1,623 @@
+
+H0 one-case execution
+  case:          4hop1__228808_49925_13759_736921
+  hops:          4
+  question:      The German priest, who wanted to reform Laurean Rugambwa's religion, preached a sermon on Marian devotion late in his life in which German state?
+  expected:      Saxony-Anhalt
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__228808_49925_13759_736921/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=4 title='Laurean Rugambwa'
+  source unit: u_6ac3287725d6416eedc5be5aa27fc0b3d8b2207d92f6eb7a9f2abac336c2f51d
+  text chars:  231
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.559s | model=deepseek-v4-flash
+      tokens:   in=2269 | out=1386 | total=3655 | cached=2048 | uncached=221
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 155 / 247 (62.8%)
+    characters text:     139 / 231 (60.2%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  30 chars
+      ') was the first modern native'
+    statement density:  36.44 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 2/4] paragraph=3 title='Reformation'
+  source unit: u_6806d0b1dddb455b4ae2cad63fb3f67c72260a5e8ed4d38bd5d34405f427dff4
+  text chars:  1082
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.106s | model=deepseek-v4-flash
+      tokens:   in=2545 | out=2661 | total=5206 | cached=2048 | uncached=497
+    [LLM graph.reference #3] sending...
+      provider: 0.640s | model=deepseek-v4-flash
+      tokens:   in=718 | out=8 | total=726 | cached=640 | uncached=78
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'reformer' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "reformer",
+                "segment": "text"
+              }
+            ],
+            "value": "reformer"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "reformer",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Martin Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 696 / 1093 (63.7%)
+    characters text:     696 / 1082 (64.3%)
+    characters title:    0 / 11 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  44 chars
+      'Although there had been significant earlier'
+    statement density:  15.55 / 1000 chars
+    title reliance:      0 / 17 (0.0%)
+
+[GRAPH 3/4] paragraph=12 title='Mary, mother of Jesus'
+  source unit: u_2692dc5609ff13f5bc70c13ccd3435f0cfb15ce278a728d5e994e58d6b0e77e9
+  text chars:  1832
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 11.732s | model=deepseek-v4-flash
+      tokens:   in=2932 | out=2801 | total=5733 | cached=2048 | uncached=884
+    [LLM graph.reference #5] sending...
+      provider: 5.922s | model=deepseek-v4-flash
+      tokens:   in=2456 | out=1331 | total=3787 | cached=0 | uncached=2456
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 8
+
+    initial rejection #11
+      validator:
+        response.statements[11].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 8 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "veneration of Mary",
+                "segment": "text"
+              }
+            ],
+            "value": "veneration of Mary"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "preached",
+                "segment": "text"
+              }
+            ],
+            "value": "preached"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 8,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+    initial rejection #12
+      validator:
+        response.statements[12].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 8 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "veneration of Mary",
+                "segment": "text"
+              }
+            ],
+            "value": "veneration of Mary"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "taught",
+                "segment": "text"
+              }
+            ],
+            "value": "taught"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 8,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+    initial rejection #13
+      validator:
+        response.statements[13].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 8 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "veneration of Mary",
+                "segment": "text"
+              }
+            ],
+            "value": "veneration of Mary"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "argued",
+                "segment": "text"
+              }
+            ],
+            "value": "arguedAbout"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 8,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+    initial rejection #14
+      validator:
+        response.statements[14].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 9 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Papists",
+                "segment": "text"
+              }
+            ],
+            "value": "Papists"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "came to criticize",
+                "segment": "text"
+              }
+            ],
+            "value": "criticized"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 9,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+    initial rejection #15
+      validator:
+        response.statements[15].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 9 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Roman Catholic practice of celebrating saints' days and making intercessory requests addressed especially to Mary and other departed saints",
+                "segment": "text"
+              }
+            ],
+            "value": "Roman Catholic practice of celebrating saints' days and making intercessory requests addressed especially to Mary and other departed saints"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "considered",
+                "segment": "text"
+              }
+            ],
+            "value": "considered"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 9,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+    initial rejection #16
+      validator:
+        response.statements[16].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 10 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marian devotion and veneration",
+                "segment": "text"
+              }
+            ],
+            "value": "Marian devotion and veneration"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "preached at Wittenberg only a month before his death",
+                "segment": "text"
+              }
+            ],
+            "value": "preachedSermonOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 10,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+    initial rejection #17
+      validator:
+        response.statements[17].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 10 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Wittenberg",
+                "segment": "text"
+              }
+            ],
+            "value": "Wittenberg"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "preached at Wittenberg",
+                "segment": "text"
+              }
+            ],
+            "value": "preachedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 10,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+    initial rejection #18
+      validator:
+        response.statements[18].subject.evidence[0]: quote 'Luther' occurs 7 time(s) in source segment 'text'; occurrence 10 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marian devotion and veneration",
+                "segment": "text"
+              }
+            ],
+            "value": "Marian devotion and veneration"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "preached at Wittenberg only a month before his death",
+                "segment": "text"
+              }
+            ],
+            "value": "preachedSermonOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 10,
+                "quote": "Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    8
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 18
+  coverage:
+    characters combined: 826 / 1853 (44.6%)
+    characters text:     826 / 1832 (45.1%)
+    characters title:    0 / 21 (0.0%)
+    sentences:           10 / 11 (90.9%)
+    longest uncovered:  186 chars
+      'with a verbosity that ranged from childlike piety to sophisticated polemics. His views are intimately linked to his Christocentric theology and its consequences for liturgy and pi…'
+    statement density:  9.71 / 1000 chars
+    title reliance:      0 / 18 (0.0%)
+
+[GRAPH 4/4] paragraph=7 title='Wittenberg (district)'
+  source unit: u_1bd6c0faa693361e0844c29b5a94fcd7ddac4102d43f4774c275a01c259fd4c0
+  text chars:  319
+  whole-source attempt: 1/3
+    [LLM graph.reference #6] sending...
+      provider: 6.309s | model=deepseek-v4-flash
+      tokens:   in=2897 | out=1499 | total=4396 | cached=2048 | uncached=849
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 200 / 340 (58.8%)
+    characters text:     179 / 319 (56.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  37 chars
+      'in Brandenburg, and the district of'
+    statement density:  29.41 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 54
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 9
+  corrected valid: 8
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      54
+resource nodes:        51
+entity nodes:          51
+literal values:        5
+predicates:            34
+
+N-Triples:
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:district> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Free%20State%20of%20Saxony> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Germany> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Saxony-Anhalt> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Anhalt-Bitterfeld> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Dessau-Ro%C3%9Flau> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Elbe-Elster> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Nordsachsen> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Potsdam-Mittelmark> .
+  <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Teltow-Fl%C3%A4ming> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:adheredTo> <urn:graphragprov:entity:Marian%20decrees%20of%20the%20ecumenical%20councils> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:adheredTo> <urn:graphragprov:entity:dogmas%20of%20the%20church> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:adherentOf> <urn:graphragprov:entity:Immaculate%20Conception> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:arguedAbout> <urn:graphragprov:entity:veneration%20of%20Mary> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:changedPositionOn> <urn:graphragprov:entity:Immaculate%20Conception> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:considered> <urn:graphragprov:entity:Roman%20Catholic%20practice%20of%20celebrating%20saints%27%20days%20and%20making%20intercessory%20requests%20addressed%20especially%20to%20Mary%20and%20other%20departed%20saints> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:criticized> <urn:graphragprov:entity:Papists> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:heldBelief> <urn:graphragprov:entity:Assumption%20of%20Mary> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:heldBelief> <urn:graphragprov:entity:Mary%20and%20the%20saints%20do%20live%20on%20after%20death> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:heldBelief> <urn:graphragprov:entity:Mary%20was%20a%20perpetual%20virgin> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:heldBelief> <urn:graphragprov:entity:Mary%20was%20the%20Theotokos%20or%20Mother%20of%20God> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:maintained> <urn:graphragprov:entity:sinlessness%20of%20Mary%20throughout%20her%20life> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preached> <urn:graphragprov:entity:veneration%20of%20Mary> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedIn> <urn:graphragprov:entity:Wittenberg> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedSermonOn> <urn:graphragprov:entity:Marian%20devotion%20and%20veneration> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:stated> <urn:graphragprov:entity:Bible%20did%20not%20say%20anything%20about%20it> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:stoppedCelebrating> <urn:graphragprov:entity:feast%20of%20the%20Assumption%20of%20Mary> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:taught> <urn:graphragprov:entity:veneration%20of%20Mary> .
+  <urn:graphragprov:entity:Jan%20Hus> <urn:graphragprov:predicate:attempted> <urn:graphragprov:entity:reform%20the%20Catholic%20Church> .
+  <urn:graphragprov:entity:John%20Wycliffe> <urn:graphragprov:predicate:attempted> <urn:graphragprov:entity:reform%20the%20Catholic%20Church> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:criticised> <urn:graphragprov:entity:sale%20of%20indulgences> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Catholic%20doctrine%20of%20the%20merits%20of%20the%20saints%20had%20no%20foundation%20in%20the%20Bible> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Pope%20had%20no%20authority%20over%20purgatory> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:Reformation> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Ninety-five%20Theses> .
+  <urn:graphragprov:entity:Peter%20Waldo> <urn:graphragprov:predicate:attempted> <urn:graphragprov:entity:reform%20the%20Catholic%20Church> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:coreMotivation> <urn:graphragprov:entity:theological> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:included> <urn:graphragprov:entity:belief%20that%20faith%20in%20Jesus%2C%20and%20not%20good%20works%2C%20is%20the%20only%20way%20to%20obtain%20God%27s%20pardon%20for%20sin> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:included> <urn:graphragprov:entity:complete%20reliance%20on%20Scripture%20as%20a%20source%20of%20proper%20belief> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:doctrinal%20changes> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Western%20Schism> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:impact%20of%20humanism> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:new%20learning%20of%20the%20Renaissance> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:perceived%20corruption%20of%20the%20Roman%20Curia> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:rise%20of%20nationalism> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:birthDate> "1912-07-12"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:deathDate> "1997-12-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:elevatedToCardinalate> "1960"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:endTime> "1992"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Cardinal> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:African> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:Archbishop%20of%20Dar%20es%20Salaam> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:Roman%20Catholic%20Church> .
+  <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:startTime> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.371s | model=deepseek-v4-flash
+      tokens:   in=3867 | out=416 | total=4283 | cached=640 | uncached=3227
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:Roman%20Catholic%20Church> .
+  - <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedSermonOn> <urn:graphragprov:entity:Marian%20devotion%20and%20veneration> .
+  - <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedIn> <urn:graphragprov:entity:Wittenberg> .
+  - <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Saxony-Anhalt> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:Roman%20Catholic%20Church> . <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedSermonOn> <urn:graphragprov:entity:Marian%20devotion%20and%20veneration> . <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedIn> <urn:graphragprov:entity:Wittenberg> . <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1bd6c0faa693361e>
+  FROM <urn:graphragprov:unit:u_2692dc5609ff13f5>
+  FROM <urn:graphragprov:unit:u_6806d0b1dddb455b>
+  FROM <urn:graphragprov:unit:u_6ac3287725d6416e>
+  WHERE { <urn:graphragprov:entity:Laurean%20Rugambwa> <urn:graphragprov:predicate:religion> <urn:graphragprov:entity:Roman%20Catholic%20Church> . <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedSermonOn> <urn:graphragprov:entity:Marian%20devotion%20and%20veneration> . <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedIn> <urn:graphragprov:entity:Wittenberg> . <urn:graphragprov:entity:Wittenberg%20%28district%29> <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Germany', 'Saxony-Anhalt', 'Free State of Saxony')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 3
+  provenance sources: ['Laurean Rugambwa', 'Mary, mother of Jesus', 'Wittenberg (district)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__228808_49925_13759_736921
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__228808_49925_13759_736921/support/result.json
+graph LLM executed:    6
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          17684
+output tokens:         10102
+total tokens:          27786
+cached input tokens:   9472
+uncached input tokens: 8212
+cumulative LLM seconds: 44.639
+
+statement occurrences: 54
+semantic triples:      54
+entity nodes:          51
+literal values:        5
+predicates:            34
+query attempts:        1
+observed answers:      ('Germany', 'Saxony-Anhalt', 'Free State of Saxony')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 42.293s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.086s
+  graph.materialization [attempt=1]: 0.113s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.372s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.630s

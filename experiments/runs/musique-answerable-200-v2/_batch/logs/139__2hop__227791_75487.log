@@ -1,0 +1,332 @@
+
+H0 one-case execution
+  case:          2hop__227791_75487
+  hops:          2
+  question:      Who is the federal leader of the political party Ken Epp belongs to?
+  expected:      Andrew Scheer
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__227791_75487/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=19 title='Ken Epp'
+  source unit: u_299de37d7e8ae75788ff1904dea387d985e22707024f62d7ee6cd69a8ec3d665
+  text chars:  436
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.296s | model=deepseek-v4-flash
+      tokens:   in=2223 | out=2022 | total=4245 | cached=2048 | uncached=175
+    [LLM graph.reference #2] sending...
+      provider: 0.635s | model=deepseek-v4-flash
+      tokens:   in=648 | out=8 | total=656 | cached=0 | uncached=648
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 1
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'member of the Reform Party of Canada' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Reform Party of Canada",
+                "segment": "text"
+              }
+            ],
+            "value": "Reform Party of Canada"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "member of the Reform Party of Canada",
+                "segment": "text"
+              }
+            ],
+            "value": "memberOfPoliticalParty"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Ken Epp",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "He",
+                "segment": "text"
+              }
+            ],
+            "value": "Ken Epp"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 305 / 443 (68.8%)
+    characters text:     298 / 436 (68.3%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  73 chars
+      '(2000-2003) and the Reform Party of Canada (1993-2000). Epp is a former'
+    statement density:  24.83 / 1000 chars
+    title reliance:      11 / 11 (100.0%)
+
+[GRAPH 2/2] paragraph=11 title='2017 Conservative Party of Canada leadership election'
+  source unit: u_5572a2bf29c4e9c42d37cbb7b7a3baa15d70d4c40f4a4d5d5700959b77e5a9f6
+  text chars:  894
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 14.717s | model=deepseek-v4-flash
+      tokens:   in=2445 | out=3504 | total=5949 | cached=2048 | uncached=397
+    [LLM graph.reference #4] sending...
+      provider: 1.612s | model=deepseek-v4-flash
+      tokens:   in=955 | out=208 | total=1163 | cached=0 | uncached=955
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    22
+    initially rejected: 2
+
+    initial rejection #22
+      validator:
+        response.statements[22].predicate.evidence[0]: quote 'instructed me to ... appoint an Interim Leader' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "appoint an Interim Leader",
+                "segment": "text"
+              }
+            ],
+            "value": "appoint an Interim Leader"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "instructed me to ... appoint an Interim Leader",
+                "segment": "text"
+              }
+            ],
+            "value": "instructedTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harry Walsh",
+                "segment": "text"
+              }
+            ],
+            "value": "Harry Walsh"
+          }
+        }
+
+    initial rejection #23
+      validator:
+        response.statements[23].predicate.evidence[0]: quote 'instructed me to ... implement the leadership selection process' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "implement the leadership selection process",
+                "segment": "text"
+              }
+            ],
+            "value": "implement the leadership selection process"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "instructed me to ... implement the leadership selection process",
+                "segment": "text"
+              }
+            ],
+            "value": "instructedTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Harry Walsh",
+                "segment": "text"
+              }
+            ],
+            "value": "Harry Walsh"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 23
+  coverage:
+    characters combined: 637 / 947 (67.3%)
+    characters text:     584 / 894 (65.3%)
+    characters title:    53 / 53 (100.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  92 chars
+      'following the merger of the Canadian Alliance and Progressive Conservative parties. Harper'
+    statement density:  24.29 / 1000 chars
+    title reliance:      2 / 23 (8.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 34
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 3
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      34
+resource nodes:        22
+entity nodes:          22
+literal values:        8
+predicates:            27
+
+N-Triples:
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:employedAt> <urn:graphragprov:entity:Northern%20Alberta%20Institute%20of%20Technology> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Edmonton> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:House%20of%20Commons%20of%20Canada> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfParliamentFor> <urn:graphragprov:entity:Elk%20Island> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfParliamentFrom> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfParliamentUntil> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Canadian%20Alliance> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:mathematics%20instructor> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:representativeSince> "2004-06"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:representsRiding> <urn:graphragprov:entity:Edmonton%E2%80%94Sherwood%20Park> .
+  <urn:graphragprov:entity:2015%20federal%20election> <urn:graphragprov:predicate:heldOn> "2015-10-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2017%20Conservative%20Party%20of%20Canada%20leadership%20election> <urn:graphragprov:predicate:heldOn> "2017-05-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2017%20Conservative%20Party%20of%20Canada%20leadership%20election> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:leadership%20election> .
+  <urn:graphragprov:entity:Andrew%20Scheer> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+  <urn:graphragprov:entity:Andrew%20Scheer> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Stephen%20Harper> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:defeatedInElection> <urn:graphragprov:entity:2015%20federal%20election> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedGovernment> <urn:graphragprov:entity:majority%20government> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedGovernment> <urn:graphragprov:entity:minority%20government> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedGovernmentInYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedGovernmentInYear> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:formedGovernmentInYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:increasedSeatCountIn> <urn:graphragprov:entity:House%20of%20Commons%20of%20Canada> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:increasedSeatCountInYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> <urn:graphragprov:predicate:leader> <urn:graphragprov:entity:Andrew%20Scheer> .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> <urn:graphragprov:entity:appoint%20an%20Interim%20Leader%20and%20to%20implement%20the%20leadership%20selection%20process> .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:instructedTo> <urn:graphragprov:entity:reach%20out%20to%20the%20newly%20elected%20parliamentary%20caucus> .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:position> <urn:graphragprov:entity:Conservative%20Party%20President> .
+  <urn:graphragprov:entity:Harry%20Walsh> <urn:graphragprov:predicate:spokeTo> <urn:graphragprov:entity:Stephen%20Harper> .
+  <urn:graphragprov:entity:Stephen%20Harper> <urn:graphragprov:predicate:instructed> <urn:graphragprov:entity:Harry%20Walsh> .
+  <urn:graphragprov:entity:Stephen%20Harper> <urn:graphragprov:predicate:leaderFrom> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Stephen%20Harper> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+  <urn:graphragprov:entity:Stephen%20Harper> <urn:graphragprov:predicate:ledPartyThrough> <urn:graphragprov:entity:five%20federal%20elections> .
+  <urn:graphragprov:entity:Stephen%20Harper> <urn:graphragprov:predicate:resignedAs> <urn:graphragprov:entity:party%20leader> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.512s | model=deepseek-v4-flash
+      tokens:   in=2645 | out=217 | total=2862 | cached=640 | uncached=2005
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+  - <urn:graphragprov:entity:Andrew%20Scheer> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> . ?answer <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_299de37d7e8ae757>
+  FROM <urn:graphragprov:unit:u_5572a2bf29c4e9c4>
+  WHERE { <urn:graphragprov:entity:Ken%20Epp> <urn:graphragprov:predicate:memberOfPoliticalParty> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> . ?answer <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:Conservative%20Party%20of%20Canada> . }
+
+GraphDB execution:
+  observed answers: ('Stephen Harper', 'Andrew Scheer')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['2017 Conservative Party of Canada leadership election', 'Ken Epp']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__227791_75487
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__227791_75487/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8916
+output tokens:         5959
+total tokens:          14875
+cached input tokens:   4736
+uncached input tokens: 4180
+cumulative LLM seconds: 27.772
+
+statement occurrences: 34
+semantic triples:      34
+entity nodes:          22
+literal values:        8
+predicates:            27
+query attempts:        1
+observed answers:      ('Stephen Harper', 'Andrew Scheer')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 26.279s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.051s
+  graph.materialization [attempt=1]: 0.064s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.513s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.475s

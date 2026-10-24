@@ -1,0 +1,189 @@
+
+H0 one-case execution
+  case:          2hop__142842_68489
+  hops:          2
+  question:      Who did the performer of Night Rocker play on Young and Restless?
+  expected:      Snapper Foster
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__142842_68489/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=13 title='Night Rocker'
+  source unit: u_e8949f1c5ee587edcb4bc34d90109dcc749aca457b9c6234dbdd5a840d59b562
+  text chars:  176
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.541s | model=deepseek-v4-flash
+      tokens:   in=2161 | out=1227 | total=3388 | cached=2048 | uncached=113
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 144 / 188 (76.6%)
+    characters text:     132 / 176 (75.0%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  21 chars
+      '. It was released in'
+    statement density:  42.55 / 1000 chars
+    title reliance:      5 / 8 (62.5%)
+
+[GRAPH 2/2] paragraph=2 title='Snapper Foster'
+  source unit: u_73eac880603bb66175751cc57ebd296369822b103ad3f5e484dcdf0814bc5c8f
+  text chars:  410
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.651s | model=deepseek-v4-flash
+      tokens:   in=2313 | out=2573 | total=4886 | cached=2048 | uncached=265
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 315 / 424 (74.3%)
+    characters text:     301 / 410 (73.4%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  42 chars
+      "since the show's inception, the role was"
+    statement density:  40.09 / 1000 chars
+    title reliance:      9 / 17 (52.9%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 25
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      25
+resource nodes:        12
+entity nodes:          12
+literal values:        10
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:portrayalEndDate> "1982-05"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:portrayalStartDate> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:portrayedCharacter> <urn:graphragprov:entity:Snapper%20Foster> .
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:reprisalEndDate> "2010-06-21"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:reprisalStartDate> "2010-06-15"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:reprisedRole> <urn:graphragprov:entity:Snapper%20Foster> .
+  <urn:graphragprov:entity:Snapper%20Foster> <urn:graphragprov:predicate:appearsIn> <urn:graphragprov:entity:The%20Young%20and%20the%20Restless> .
+  <urn:graphragprov:entity:Snapper%20Foster> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:fictional%20character> .
+  <urn:graphragprov:entity:Snapper%20Foster> <urn:graphragprov:predicate:originalCharacter> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Snapper%20Foster> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:David%20Hasselhoff> .
+  <urn:graphragprov:entity:Snapper%20Foster> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:William%20Gray%20Espy> .
+  <urn:graphragprov:entity:William%20Gray%20Espy> <urn:graphragprov:predicate:portrayalEndDate> "1975-07"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:William%20Gray%20Espy> <urn:graphragprov:predicate:portrayalStartDate> "1973-03-26"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:William%20Gray%20Espy> <urn:graphragprov:predicate:portrayedCharacter> <urn:graphragprov:entity:Snapper%20Foster> .
+  <urn:graphragprov:entity:William%20Gray%20Espy> <urn:graphragprov:predicate:reprisalEndDate> "2003-03-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:William%20Gray%20Espy> <urn:graphragprov:predicate:reprisalStartDate> "2003-02-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:William%20Gray%20Espy> <urn:graphragprov:predicate:reprisedRole> <urn:graphragprov:entity:Snapper%20Foster> .
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+  <urn:graphragprov:entity:Joel%20Diamond> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:record%20producer> .
+  <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:debut%20studio%20album> .
+  <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:David%20Hasselhoff> .
+  <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:Joel%20Diamond> .
+  <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:publicationYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Silver%20Blue%20Records> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.090s | model=deepseek-v4-flash
+      tokens:   in=2112 | out=178 | total=2290 | cached=640 | uncached=1472
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:David%20Hasselhoff> .
+  - <urn:graphragprov:entity:David%20Hasselhoff> <urn:graphragprov:predicate:portrayedCharacter> <urn:graphragprov:entity:Snapper%20Foster> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:portrayedCharacter> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_73eac880603bb661>
+  FROM <urn:graphragprov:unit:u_e8949f1c5ee587ed>
+  WHERE { <urn:graphragprov:entity:Night%20Rocker> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:portrayedCharacter> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Snapper Foster',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Night Rocker', 'Snapper Foster']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__142842_68489
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__142842_68489/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6586
+output tokens:         3978
+total tokens:          10564
+cached input tokens:   4736
+uncached input tokens: 1850
+cumulative LLM seconds: 21.281
+
+statement occurrences: 25
+semantic triples:      25
+entity nodes:          12
+literal values:        10
+predicates:            16
+query attempts:        1
+observed answers:      ('Snapper Foster',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 19.202s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.091s
+  graph.materialization [attempt=1]: 0.060s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.091s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.484s

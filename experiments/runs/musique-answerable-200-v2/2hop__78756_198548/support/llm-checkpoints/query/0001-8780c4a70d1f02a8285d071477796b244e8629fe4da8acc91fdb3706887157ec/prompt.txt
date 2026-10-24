@@ -1,0 +1,158 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who is the spouse of the person who voices Smokey the bear?
+
+Expected answer: Katharine Ross
+
+Gold decomposition:
+1. question='who does the voice of smokey the bear'; answer='Sam Elliott'; support_paragraph=5
+2. question='#1 >> spouse'; answer='Katharine Ross'; support_paragraph=16
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:true%20story> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:William%20Hale> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:firstAiredOn> "1981-05-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20film> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:publicationYear> "1981"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Andy%20Griffith> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Farrah%20Fawcett> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Katharine%20Ross> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sam%20Elliott> .
+<urn:graphragprov:entity:Murder%20in%20Texas> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:John%20McGreevey> .
+<urn:graphragprov:entity:Forest%20Service> <urn:graphragprov:predicate:launched> <urn:graphragprov:entity:new%20series%20of%20public%20service%20announcements> .
+<urn:graphragprov:entity:Forest%20Service> <urn:graphragprov:predicate:launchedOn> "2008-06"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:George%20Walsh> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:KNX> .
+<urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:diedOn> "1992-10"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:personality> .
+<urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Washington%2C%20D.C.> .
+<urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:Smokey> .
+<urn:graphragprov:entity:Jackson%20Weaver> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:WMAL> .
+<urn:graphragprov:entity:Patrick%20Warburton> <urn:graphragprov:predicate:voiceOf> <urn:graphragprov:entity:anonymous%20park%20ranger> .
+<urn:graphragprov:entity:Sam%20Elliott> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actor> .
+<urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:visualDesign> <urn:graphragprov:entity:new%20visual%20design> .
+<urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Gene%20Moss> .
+<urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:George%20Walsh> .
+<urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Jack%20Angel> .
+<urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Jim%20Cummings> .
+<urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Roger%20C.%20Carmel> .
+<urn:graphragprov:entity:Smokey> <urn:graphragprov:predicate:voiceActor> <urn:graphragprov:entity:Sam%20Elliott> .
+<urn:graphragprov:entity:new%20series%20of%20public%20service%20announcements> <urn:graphragprov:predicate:voicedBy> <urn:graphragprov:entity:Sam%20Elliott> .
+<urn:graphragprov:entity:new%20visual%20design> <urn:graphragprov:predicate:intendedFor> <urn:graphragprov:entity:young%20adults> .

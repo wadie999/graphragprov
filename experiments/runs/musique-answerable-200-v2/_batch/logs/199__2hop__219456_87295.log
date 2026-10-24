@@ -1,0 +1,192 @@
+
+H0 one-case execution
+  case:          2hop__219456_87295
+  hops:          2
+  question:      What character in Princess Diaries does the actress play who was also a cast member in On Golden Pond?
+  expected:      Queen dowager Clarisse Renaldi
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__219456_87295/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=15 title='On Golden Pond (2001 film)'
+  source unit: u_cd3aa87b4613492ab8151e13643ec5eb359ec1c725aa712587cfabf47cc9acc0
+  text chars:  278
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.639s | model=deepseek-v4-flash
+      tokens:   in=2197 | out=1500 | total=3697 | cached=1920 | uncached=277
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 219 / 304 (72.0%)
+    characters text:     193 / 278 (69.4%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  23 chars
+      '. The movie originally'
+    statement density:  32.89 / 1000 chars
+    title reliance:      10 / 10 (100.0%)
+
+[GRAPH 2/2] paragraph=1 title='The Princess Diaries (film)'
+  source unit: u_730a3b947e09bcf84b4374346f2864d424800948c86da73df6c2f153f4af7fda
+  text chars:  497
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.891s | model=deepseek-v4-flash
+      tokens:   in=2407 | out=2662 | total=5069 | cached=1920 | uncached=487
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 413 / 524 (78.8%)
+    characters text:     386 / 497 (77.7%)
+    characters title:    27 / 27 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  26 chars
+      'The Princess Diaries is a'
+    statement density:  34.35 / 1000 chars
+    title reliance:      11 / 18 (61.1%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 28
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      28
+resource nodes:        25
+entity nodes:          25
+literal values:        2
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Anne%20Hathaway> <urn:graphragprov:predicate:character> <urn:graphragprov:entity:Mia%20Thermopolis> .
+  <urn:graphragprov:entity:Kingdom%20of%20Genovia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:fictional%20kingdom> .
+  <urn:graphragprov:entity:Kingdom%20of%20Genovia> <urn:graphragprov:predicate:ruledBy> <urn:graphragprov:entity:Queen%20dowager%20Clarisse%20Renaldi> .
+  <urn:graphragprov:entity:Mia%20Thermopolis> <urn:graphragprov:predicate:discovers> <urn:graphragprov:entity:she%20is%20the%20heir%20to%20the%20throne%20of%20the%20fictional%20Kingdom%20of%20Genovia> .
+  <urn:graphragprov:entity:Mia%20Thermopolis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:teenager> .
+  <urn:graphragprov:entity:Queen%20dowager%20Clarisse%20Renaldi> <urn:graphragprov:predicate:grandmotherOf> <urn:graphragprov:entity:Mia%20Thermopolis> .
+  <urn:graphragprov:entity:Queen%20dowager%20Clarisse%20Renaldi> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Julie%20Andrews> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Meg%20Cabot%27s%202000%20novel%20of%20the%20same%20name> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Garry%20Marshall> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:teen%20romantic%20comedy%20film> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:publicationYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Anne%20Hathaway> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:H%C3%A9ctor%20Elizondo> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Heather%20Matarazzo> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mandy%20Moore> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Robert%20Schwartzman> .
+  <urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Gina%20Wendkos> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:airDate> "2001-04-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:CBS> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:the%20play> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Los%20Angeles%2C%20California> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20adaptation> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:promotedAs> <urn:graphragprov:entity:a%20live%20television%20event> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:publicationYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Christopher%20Plummer> .
+  <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Andrews> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.744s | model=deepseek-v4-flash
+      tokens:   in=2459 | out=233 | total=2692 | cached=640 | uncached=1819
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Andrews> .
+  - <urn:graphragprov:entity:Queen%20dowager%20Clarisse%20Renaldi> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Julie%20Andrews> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Andrews> . ?answer <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Julie%20Andrews> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_730a3b947e09bcf8>
+  FROM <urn:graphragprov:unit:u_cd3aa87b4613492a>
+  WHERE { <urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Andrews> . ?answer <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Julie%20Andrews> . }
+
+GraphDB execution:
+  observed answers: ('Queen dowager Clarisse Renaldi',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['On Golden Pond (2001 film)', 'The Princess Diaries (film)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__219456_87295
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__219456_87295/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7063
+output tokens:         4395
+total tokens:          11458
+cached input tokens:   4480
+uncached input tokens: 2583
+cumulative LLM seconds: 20.274
+
+statement occurrences: 28
+semantic triples:      28
+entity nodes:          25
+literal values:        2
+predicates:            16
+query attempts:        1
+observed answers:      ('Queen dowager Clarisse Renaldi',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.541s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.033s
+  graph.materialization [attempt=1]: 0.053s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.745s
+  graphdb.semantic [attempt=1]: 0.009s
+  provenance.execution [attempt=1]: 0.431s

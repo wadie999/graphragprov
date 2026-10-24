@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_03e19494b8aa066125542d1dee8ce3cab0ee5aa14b1da7777511849a264b2c1e
+Title: Nanjing
+Text:
+Archaeological discovery shows that "Nanjing Man" lived in more than 500 thousand years ago. Zun, a kind of wine vessel, was found to exist in Beiyinyangying culture of Nanjing in about 5000 years ago. In the late period of Shang dynasty, Taibo of Zhou came to Jiangnan and established Wu state, and the first stop is in Nanjing area according to some historians based on discoveries in Taowu and Hushu culture. According to legend,[which?] Fuchai, King of the State of Wu, founded a fort named Yecheng (冶城) in today's Nanjing area in 495 BC. Later in 473 BC, the State of Yue conquered Wu and constructed the fort of Yuecheng (越城) on the outskirts of the present-day Zhonghua Gate. In 333 BC, after eliminating the State of Yue, the State of Chu built Jinling Yi (金陵邑) in the western part of present-day Nanjing. It was renamed Moling (秣陵) during reign of Qin Shi Huang. Since then, the city experienced destruction and renewal many times.[citation needed] The area was successively part of Kuaiji, Zhang and Danyang prefectures in Qin and Han dynasty, and part of Yangzhou region which was established as the nation's 13 supervisory and administrative regions in the 5th year of Yuanfeng in Han dynasty (106 BC). Nanjing was later the capital city of Danyang Prefecture, and had been the capital city of Yangzhou for about 400 years from late Han to early Tang.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 4,
+    "statement": {
+      "subject": {
+        "value": "Nanjing",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Nanjing",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "locatedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "in today's Nanjing area",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Jiangsu",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Jiangsu",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[4].object.evidence[0]: quote 'Jiangsu' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 5,
+    "statement": {
+      "subject": {
+        "value": "Nanjing",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Nanjing",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "locatedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "in today's Nanjing area",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "China",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "China",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[5].object.evidence[0]: quote 'China' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

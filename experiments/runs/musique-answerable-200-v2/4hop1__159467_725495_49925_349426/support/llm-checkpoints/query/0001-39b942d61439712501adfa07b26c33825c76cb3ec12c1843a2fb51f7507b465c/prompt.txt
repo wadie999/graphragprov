@@ -1,0 +1,207 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who married the man who wanted to reform the institution behind the denomination constituting 12.6% of Christians in New Zealand?
+
+Expected answer: Katharina von Bora
+
+Gold decomposition:
+1. question='What Christina denomination makes up 12.6% of Christians?'; answer='Roman Catholicism'; support_paragraph=13
+2. question='#1 in Lesotho >> part of'; answer='Catholic Church'; support_paragraph=2
+3. question='who wanted #2 to reform and address'; answer='Martin Luther'; support_paragraph=17
+4. question='#3 >> spouse'; answer='Katharina von Bora'; support_paragraph=9
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Catholic%20doctrine%20of%20the%20merits%20of%20the%20saints> <urn:graphragprov:predicate:hadNoFoundationIn> <urn:graphragprov:entity:Bible> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:beganBy> <urn:graphragprov:entity:criticising%20the%20sale%20of%20indulgences> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:criticised> <urn:graphragprov:entity:sale%20of%20indulgences> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Catholic%20doctrine%20of%20the%20merits%20of%20the%20saints%20had%20no%20foundation%20in%20the%20Bible> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Pope%20had%20no%20authority%20over%20purgatory> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:isAcknowledgedToHaveStarted> <urn:graphragprov:entity:Reformation> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:Reformation> .
+<urn:graphragprov:entity:Pope> <urn:graphragprov:predicate:hadNoAuthorityOver> <urn:graphragprov:entity:purgatory> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:hadCoreMotivation> <urn:graphragprov:entity:theological> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:included> <urn:graphragprov:entity:belief%20that%20faith%20in%20Jesus%2C%20and%20not%20good%20works%2C%20is%20the%20only%20way%20to%20obtain%20God%27s%20pardon%20for%20sin> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:included> <urn:graphragprov:entity:complete%20reliance%20on%20Scripture%20as%20a%20source%20of%20proper%20belief> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:doctrinal%20changes> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:hadEarlierAttempts> <urn:graphragprov:entity:Jan%20Hus> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:hadEarlierAttempts> <urn:graphragprov:entity:John%20Wycliffe> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:hadEarlierAttempts> <urn:graphragprov:entity:Peter%20Waldo> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Western%20Schism> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:impact%20of%20humanism> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:new%20learning%20of%20the%20Renaissance> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:perceived%20corruption%20of%20the%20Roman%20Curia> .
+<urn:graphragprov:entity:Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:rise%20of%20nationalism> .
+<urn:graphragprov:entity:Western%20Schism> <urn:graphragprov:predicate:erodedLoyaltyTo> <urn:graphragprov:entity:Papacy> .
+<urn:graphragprov:entity:core%20motivation%20behind%20these%20changes> <urn:graphragprov:predicate:was> <urn:graphragprov:entity:theological> .
+<urn:graphragprov:entity:new%20learning%20of%20the%20Renaissance> <urn:graphragprov:predicate:questioned> <urn:graphragprov:entity:much%20traditional%20thought> .
+<urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:hasDeveloped> <urn:graphragprov:entity:a%20local%20and%20traditional%20way%20of%20singing> .
+<urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:hasFused> <urn:graphragprov:entity:some%20aspects%20of%20local%20culture> .
+<urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Lesotho> .
+<urn:graphragprov:entity:Sesotho> <urn:graphragprov:predicate:isIndigenousLanguage> <urn:graphragprov:entity:indigenous%20language> .
+<urn:graphragprov:entity:priests> <urn:graphragprov:predicate:areSeenDressedIn> <urn:graphragprov:entity:local%20dress> .
+<urn:graphragprov:entity:priests> <urn:graphragprov:predicate:during> <urn:graphragprov:entity:services> .
+<urn:graphragprov:entity:singing%20of%20hymns%20during%20services> <urn:graphragprov:predicate:hasDevelopedInto> <urn:graphragprov:entity:a%20local%20and%20traditional%20way%20of%20singing> .
+<urn:graphragprov:entity:singing%20of%20hymns%20during%20services> <urn:graphragprov:predicate:isIn> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:singing%20of%20hymns%20during%20services> <urn:graphragprov:predicate:isIn> <urn:graphragprov:entity:Sesotho> .
+<urn:graphragprov:entity:2013%20census> <urn:graphragprov:predicate:found> <urn:graphragprov:entity:41.9%25%20indicated%20that%20they%20had%20no%20religion> .
+<urn:graphragprov:entity:2013%20census> <urn:graphragprov:predicate:found> <urn:graphragprov:entity:49.0%25%20identifying%20as%20Christians> .
+<urn:graphragprov:entity:2013%20census> <urn:graphragprov:predicate:found> <urn:graphragprov:entity:55.0%25%20of%20the%20population%20identified%20with%20one%20or%20more%20religions> .
+<urn:graphragprov:entity:Anglicanism> <urn:graphragprov:predicate:hasPercentage> "11.8"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Anglicanism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+<urn:graphragprov:entity:Auckland%20Region> <urn:graphragprov:predicate:exhibited> <urn:graphragprov:entity:greatest%20religious%20diversity> .
+<urn:graphragprov:entity:Buddhism> <urn:graphragprov:predicate:hasPercentage> "1.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Buddhism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+<urn:graphragprov:entity:Christian%20not%20further%20defined> <urn:graphragprov:predicate:hasPercentage> "5.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Christian%20not%20further%20defined> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+<urn:graphragprov:entity:Christianity> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:religion> .
+<urn:graphragprov:entity:Christianity> <urn:graphragprov:predicate:predominantReligionIn> <urn:graphragprov:entity:New%20Zealand> .
+<urn:graphragprov:entity:Hinduism> <urn:graphragprov:predicate:hasPercentage> "2.1"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Hinduism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+<urn:graphragprov:entity:Islam> <urn:graphragprov:predicate:hasPercentage> "1.2"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Islam> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+<urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:hasSociety> <urn:graphragprov:entity:society> .
+<urn:graphragprov:entity:New%20Zealand%20society> <urn:graphragprov:predicate:isAmong> <urn:graphragprov:entity:most%20secular%20in%20the%20world> .
+<urn:graphragprov:entity:Presbyterianism> <urn:graphragprov:predicate:hasPercentage> "8.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Presbyterianism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+<urn:graphragprov:entity:R%C4%81tana> <urn:graphragprov:predicate:hasPercentage> "1.4"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:R%C4%81tana> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:M%C4%81ori-based%20religion> .
+<urn:graphragprov:entity:R%C4%81tana> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Christian> .
+<urn:graphragprov:entity:Ringat%C5%AB> <urn:graphragprov:predicate:hasPercentage> "1.4"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Ringat%C5%AB> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:M%C4%81ori-based%20religion> .
+<urn:graphragprov:entity:Ringat%C5%AB> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Christian> .
+<urn:graphragprov:entity:Roman%20Catholicism> <urn:graphragprov:predicate:hasPercentage> "12.6"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Roman%20Catholicism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+<urn:graphragprov:entity:Sikhism> <urn:graphragprov:predicate:hasPercentage> "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Sikhism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Katharina%20Luther> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:die%20Lutherin> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:bornOn> "1499-01-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:diedOn> "1552-12-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:wife> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:helping%20to%20define%20Protestant%20family%20life> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:setting%20the%20tone%20for%20clergy%20marriages> .
+<urn:graphragprov:entity:Katharina%20von%20Bora> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Martin%20Luther> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:Protestant%20Reformation> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:seminal%20figure> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:reformer> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Reformation> .

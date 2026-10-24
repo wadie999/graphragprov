@@ -1,0 +1,188 @@
+
+H0 one-case execution
+  case:          2hop__58939_213732
+  hops:          2
+  question:      Who is the child of Obama's opponent in his first election?
+  expected:      Meghan McCain
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__58939_213732/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=18 title='2008 United States presidential election'
+  source unit: u_7998dc6f7d467b057210eb570796f93a55f6cd0fafd5cda264c1316a5dec9ee4
+  text chars:  427
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.085s | model=deepseek-v4-flash
+      tokens:   in=2209 | out=2514 | total=4723 | cached=2048 | uncached=161
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 302 / 467 (64.7%)
+    characters text:     262 / 427 (61.4%)
+    characters title:    40 / 40 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  43 chars
+      'quadrennial presidential election. It was'
+    statement density:  38.54 / 1000 chars
+    title reliance:      3 / 18 (16.7%)
+
+[GRAPH 2/2] paragraph=8 title='Dirty Sexy Politics'
+  source unit: u_eaacaf7cfd72b5fd5d23f5ce4bf464743930eb0456777e998722b4c1cea62a5f
+  text chars:  172
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.106s | model=deepseek-v4-flash
+      tokens:   in=2333 | out=857 | total=3190 | cached=2048 | uncached=285
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 147 / 191 (77.0%)
+    characters text:     128 / 172 (74.4%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  25 chars
+      'Dirty Sexy Politics is a'
+    statement density:  31.41 / 1000 chars
+    title reliance:      4 / 6 (66.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 24
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        19
+entity nodes:          19
+literal values:        3
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:2008%20United%20States%20presidential%20election> <urn:graphragprov:predicate:heldOn> "2008-11-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:2008%20United%20States%20presidential%20election> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:presidential%20election> .
+  <urn:graphragprov:entity:2008%20United%20States%20presidential%20election> <urn:graphragprov:predicate:ordinal> "56th" .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:first%20African%20American%20ever%20to%20be%20elected%20as%20president> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:John%20McCain> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Sarah%20Palin> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Democratic%20ticket> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Senator> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:representedState> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Joe%20Biden> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Democratic%20ticket> .
+  <urn:graphragprov:entity:Joe%20Biden> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Senator> .
+  <urn:graphragprov:entity:Joe%20Biden> <urn:graphragprov:predicate:representedState> <urn:graphragprov:entity:Delaware> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Republican%20ticket> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Senator> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:representedState> <urn:graphragprov:entity:Arizona> .
+  <urn:graphragprov:entity:Sarah%20Palin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Republican%20ticket> .
+  <urn:graphragprov:entity:Sarah%20Palin> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Governor> .
+  <urn:graphragprov:entity:Sarah%20Palin> <urn:graphragprov:predicate:representedState> <urn:graphragprov:entity:Alaska> .
+  <urn:graphragprov:entity:Dirty%20Sexy%20Politics> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:2008%20United%20States%20presidential%20election> .
+  <urn:graphragprov:entity:Dirty%20Sexy%20Politics> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:political%20memoir> .
+  <urn:graphragprov:entity:Dirty%20Sexy%20Politics> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Dirty%20Sexy%20Politics> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Meghan%20McCain> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Republican%20Senator> .
+  <urn:graphragprov:entity:Meghan%20McCain> <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:John%20McCain> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.453s | model=deepseek-v4-flash
+      tokens:   in=1950 | out=198 | total=2148 | cached=640 | uncached=1310
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:John%20McCain> .
+  - <urn:graphragprov:entity:Meghan%20McCain> <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:John%20McCain> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:John%20McCain> . ?answer <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:John%20McCain> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_7998dc6f7d467b05>
+  FROM <urn:graphragprov:unit:u_eaacaf7cfd72b5fd>
+  WHERE { <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:John%20McCain> . ?answer <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:John%20McCain> . }
+
+GraphDB execution:
+  observed answers: ('Meghan McCain',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['2008 United States presidential election', 'Dirty Sexy Politics']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__58939_213732
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__58939_213732/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6492
+output tokens:         3569
+total tokens:          10061
+cached input tokens:   4736
+uncached input tokens: 1756
+cumulative LLM seconds: 16.644
+
+statement occurrences: 24
+semantic triples:      24
+entity nodes:          19
+literal values:        3
+predicates:            11
+query attempts:        1
+observed answers:      ('Meghan McCain',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.201s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.042s
+  graph.materialization [attempt=1]: 0.041s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.454s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.554s

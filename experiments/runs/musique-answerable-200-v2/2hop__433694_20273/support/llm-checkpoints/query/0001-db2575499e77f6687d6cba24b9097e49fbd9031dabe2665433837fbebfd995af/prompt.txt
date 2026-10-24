@@ -1,0 +1,173 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: In what year did Margaret Knox's spouse pass away?
+
+Expected answer: 1572
+
+Gold decomposition:
+1. question='Margaret Knox >> spouse'; answer='John Knox'; support_paragraph=10
+2. question='What year did #1 past away?'; answer='1572'; support_paragraph=3
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Charles%20I> <urn:graphragprov:predicate:attemptedToForce> <urn:graphragprov:entity:Church%20of%20Scotland> .
+<urn:graphragprov:entity:Charles%20I> <urn:graphragprov:predicate:attemptedToForceUseOf> <urn:graphragprov:entity:Book%20of%20Common%20Prayer> .
+<urn:graphragprov:entity:Charles%20I> <urn:graphragprov:predicate:successorOf> <urn:graphragprov:entity:King%20James%20VI%20and%20I> .
+<urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:receivedInitialSupportFrom> <urn:graphragprov:entity:Covenanters> .
+<urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:reinstated> <urn:graphragprov:entity:episcopal%20form%20of%20government> .
+<urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:reinstatedOn> <urn:graphragprov:entity:church> .
+<urn:graphragprov:entity:Church> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:national%20Church%20of%20Scotland> .
+<urn:graphragprov:entity:Church> <urn:graphragprov:predicate:organisedAlong> <urn:graphragprov:entity:Presbyterian%20lines> .
+<urn:graphragprov:entity:Church> <urn:graphragprov:predicate:organisedBy> <urn:graphragprov:entity:Andrew%20Melville> .
+<urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedBy> <urn:graphragprov:entity:Scottish%20Reformation%20Parliament> .
+<urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedIn> <urn:graphragprov:entity:Scotland> .
+<urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedInFavourOf> <urn:graphragprov:entity:Reformation> .
+<urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedInYear> "1560"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:sentMilitarySupportDuring> <urn:graphragprov:entity:English%20Civil%20War> .
+<urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:sentMilitarySupportTo> <urn:graphragprov:entity:Parliamentarians> .
+<urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:government%20of%20Scotland> .
+<urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:servedForDuration> "nearly a decade" .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:birthYear> "1505"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:deathYear> "1572"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Scot> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:returnedTo> <urn:graphragprov:entity:Scotland> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:studiedIn> <urn:graphragprov:entity:Geneva> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:studiedUnder> <urn:graphragprov:entity:Calvin> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:urged> <urn:graphragprov:entity:his%20countrymen> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:urgedReformInLineWith> <urn:graphragprov:entity:Calvinist%20doctrines> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:urgedTo> <urn:graphragprov:entity:reform%20the%20Church> .
+<urn:graphragprov:entity:King%20James%20VI%20and%20I> <urn:graphragprov:predicate:moved> <urn:graphragprov:entity:Church%20of%20Scotland> .
+<urn:graphragprov:entity:King%20James%20VI%20and%20I> <urn:graphragprov:predicate:movedTowards> <urn:graphragprov:entity:episcopal%20form%20of%20government> .
+<urn:graphragprov:entity:William%20Laud> <urn:graphragprov:predicate:archbishopOf> <urn:graphragprov:entity:Canterbury> .
+<urn:graphragprov:entity:William%20Laud> <urn:graphragprov:predicate:attemptedToForce> <urn:graphragprov:entity:Church%20of%20Scotland> .
+<urn:graphragprov:entity:William%20Laud> <urn:graphragprov:predicate:attemptedToForceUseOf> <urn:graphragprov:entity:Book%20of%20Common%20Prayer> .
+<urn:graphragprov:entity:many%20Scots> <urn:graphragprov:predicate:signed> <urn:graphragprov:entity:Solemn%20League%20and%20Covenant> .
+<urn:graphragprov:entity:restoration%20of%20the%20monarchy> <urn:graphragprov:predicate:occurredInYear> "1660"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:marriageAge> "54"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Stewart> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:birthYear> "1547"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:deathYear> "after 1612" .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:noblewoman> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriageAge> "17"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriageCausedConsternationFrom> <urn:graphragprov:entity:Mary%2C%20Queen%20of%20Scots> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriageWithoutRoyalConsent> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriedTo> <urn:graphragprov:entity:John%20Knox> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Scottish> .
+<urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:John%20Knox> .

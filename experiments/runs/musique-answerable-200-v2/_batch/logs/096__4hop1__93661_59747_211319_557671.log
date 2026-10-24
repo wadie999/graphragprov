@@ -1,0 +1,253 @@
+
+H0 one-case execution
+  case:          4hop1__93661_59747_211319_557671
+  hops:          4
+  question:      Which county shares a border with the county where the most populous city in the state where season 8 of The Walking Dead was filmed is located?
+  expected:      Presque Isle County
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__93661_59747_211319_557671/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=14 title='The Walking Dead (TV series)'
+  source unit: u_1f7f50f28d0e4d50f8a8b5ca2524ad551060561e8015b73460de6219012b1efc
+  text chars:  179
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.922s | model=deepseek-v4-flash
+      tokens:   in=2231 | out=597 | total=2828 | cached=1920 | uncached=311
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 154 / 207 (74.4%)
+    characters text:     126 / 179 (70.4%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  27 chars
+      'The Walking Dead is mostly'
+    statement density:  19.32 / 1000 chars
+    title reliance:      1 / 4 (25.0%)
+
+[GRAPH 2/4] paragraph=19 title='List of municipalities in Georgia (U.S. state)'
+  source unit: u_814b51a7d897c7a9c59964d9e593cf510a93167130087ef8fedc492313457d6f
+  text chars:  365
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.786s | model=deepseek-v4-flash
+      tokens:   in=2337 | out=1637 | total=3974 | cached=1920 | uncached=417
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 301 / 411 (73.2%)
+    characters text:     301 / 365 (82.5%)
+    characters title:    0 / 46 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  10 chars
+      ', and the'
+    statement density:  26.76 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 3/4] paragraph=18 title='Sno*Drift'
+  source unit: u_ac7d67ed6153ac6f10574b0c1d13758cd414d6bb49ee8fbff786d4b7188841fb
+  text chars:  481
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.697s | model=deepseek-v4-flash
+      tokens:   in=2475 | out=1747 | total=4222 | cached=2048 | uncached=427
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 343 / 490 (70.0%)
+    characters text:     334 / 481 (69.4%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  39 chars
+      'of the season. Currently the event is'
+    statement density:  24.49 / 1000 chars
+    title reliance:      9 / 12 (75.0%)
+
+[GRAPH 4/4] paragraph=0 title='Alpena Power Company'
+  source unit: u_35920493ec6cb85e682723cedb7cc494c2e098ed585a1cd54f40b0360fe24e76
+  text chars:  310
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 5.440s | model=deepseek-v4-flash
+      tokens:   in=2611 | out=1221 | total=3832 | cached=2048 | uncached=563
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 246 / 330 (74.5%)
+    characters text:     226 / 310 (72.9%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  26 chars
+      'Alpena Power Company is a'
+    statement density:  24.24 / 1000 chars
+    title reliance:      7 / 8 (87.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 35
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      35
+resource nodes:        30
+entity nodes:          30
+literal values:        7
+predicates:            22
+
+N-Triples:
+  <urn:graphragprov:entity:Georgia> <urn:graphragprov:predicate:offersTaxIncentive> <urn:graphragprov:entity:large%20film%20productions> .
+  <urn:graphragprov:entity:Georgia> <urn:graphragprov:predicate:taxIncentivePurpose> <urn:graphragprov:entity:drive%20producers%20to%20the%20state%20and%20bolster%20its%20economy> .
+  <urn:graphragprov:entity:Georgia> <urn:graphragprov:predicate:taxIncentiveStartYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Walking%20Dead%20%28TV%20series%29> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:George%20N.%20Fletcher> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedInYear> "1881"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:headquartersLocatedIn> <urn:graphragprov:entity:Alpena%2C%20Michigan> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20utility%20company> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:most%20of%20Alpena%20County%2C%20Michigan> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:southeastern%20Presque%20Isle%20County> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:village%20of%20Hillman> .
+  <urn:graphragprov:entity:village%20of%20Hillman> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+  <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:population> "420003"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:consolidated%20city%20-%20county> .
+  <urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:landArea> "302.47 sq mi" .
+  <urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:largestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:landArea> "0.18 sq mi" .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:population> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:smallestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:smallestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Santa%20Claus> <urn:graphragprov:predicate:landArea> "0.18 sq mi" .
+  <urn:graphragprov:entity:Santa%20Claus> <urn:graphragprov:predicate:smallestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:frequency> "annually" .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:national%20championship%20event> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:two%20regional%20rally%20events> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Atlanta%2C%20Michigan> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:first%20Rally%20America%20National%20Rally%20Championship%20event> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rally%20racing%20event> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Michigan> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:organizedInto> <urn:graphragprov:entity:three%20distinct%20rallies> .
+  <urn:graphragprov:entity:competitors> <urn:graphragprov:predicate:mayBeEnteredIn> <urn:graphragprov:entity:any%20or%20all%20of%20these%20events> .
+  <urn:graphragprov:entity:national%20championship%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:both%20days%20of%20rallying> .
+  <urn:graphragprov:entity:regional%20rally%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:one%20of%20the%20two%20days> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.206s | model=deepseek-v4-flash
+      tokens:   in=2607 | out=331 | total=2938 | cached=640 | uncached=1967
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Walking%20Dead%20%28TV%20series%29> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Georgia> .
+  - <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+  - <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+  - <urn:graphragprov:entity:Montmorency%20County> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Presque%20Isle%20County> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Walking%20Dead%20%28TV%20series%29> <urn:graphragprov:predicate:filmedIn> ?state . ?city <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> ?state . ?city <urn:graphragprov:predicate:locatedIn> ?county . ?county <urn:graphragprov:predicate:sharesBorderWith> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1f7f50f28d0e4d50>
+  FROM <urn:graphragprov:unit:u_35920493ec6cb85e>
+  FROM <urn:graphragprov:unit:u_814b51a7d897c7a9>
+  FROM <urn:graphragprov:unit:u_ac7d67ed6153ac6f>
+  WHERE { <urn:graphragprov:entity:The%20Walking%20Dead%20%28TV%20series%29> <urn:graphragprov:predicate:filmedIn> ?state . ?city <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> ?state . ?city <urn:graphragprov:predicate:locatedIn> ?county . ?county <urn:graphragprov:predicate:sharesBorderWith> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__93661_59747_211319_557671
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__93661_59747_211319_557671/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12261
+output tokens:         5533
+total tokens:          17794
+cached input tokens:   8576
+uncached input tokens: 3685
+cumulative LLM seconds: 27.051
+
+statement occurrences: 35
+semantic triples:      35
+entity nodes:          30
+literal values:        7
+predicates:            22
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.861s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.078s
+  graph.materialization [attempt=1]: 0.090s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.206s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.492s

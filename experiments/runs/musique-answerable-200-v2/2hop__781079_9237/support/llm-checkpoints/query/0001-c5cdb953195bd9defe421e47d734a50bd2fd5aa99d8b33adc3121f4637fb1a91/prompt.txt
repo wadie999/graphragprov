@@ -1,0 +1,171 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the first mosque in the place where the Marshall Islands International Airport is located open?
+
+Expected answer: September 2012
+
+Gold decomposition:
+1. question='Marshall Islands International Airport >> place served by transport hub'; answer='Majuro'; support_paragraph=7
+2. question='When did the first mosque in #1 open?'; answer='September 2012'; support_paragraph=8
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Ahmadiyya%20Muslims> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Majuro> .
+<urn:graphragprov:entity:Ahmadiyya%20Muslims> <urn:graphragprov:predicate:hasMosque> <urn:graphragprov:entity:first%20mosque> .
+<urn:graphragprov:entity:Assemblies%20of%20God> <urn:graphragprov:predicate:shareOfPopulation> "24.2"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Baha%27i%20Faith> <urn:graphragprov:predicate:shareOfPopulation> "0.6"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Baptist> <urn:graphragprov:predicate:shareOfPopulation> "1.0"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Bukot%20Nan%20Jesus> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Assembly%20of%20God%20Part%20Two> .
+<urn:graphragprov:entity:Bukot%20Nan%20Jesus> <urn:graphragprov:predicate:shareOfPopulation> "2.2"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Full%20Gospel> <urn:graphragprov:predicate:shareOfPopulation> "0.7"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Persons%20without%20any%20religious%20affiliation> <urn:graphragprov:predicate:shareOfPopulation> "a very small percentage" .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Ahmadiyya%20Muslims> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Assemblies%20of%20God> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Baha%27i%20Faith> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Baptist> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Bukot%20Nan%20Jesus> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Full%20Gospel> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Persons%20without%20any%20religious%20affiliation> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Roman%20Catholic%20Church> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:Seventh-day%20Adventists> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:The%20Church%20of%20Jesus%20Christ%20of%20Latter-day%20Saints> .
+<urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> <urn:graphragprov:predicate:hasReligiousGroup> <urn:graphragprov:entity:United%20Church%20of%20Christ> .
+<urn:graphragprov:entity:Roman%20Catholic%20Church> <urn:graphragprov:predicate:shareOfPopulation> "8.4"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Seventh-day%20Adventists> <urn:graphragprov:predicate:shareOfPopulation> "0.9"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:The%20Church%20of%20Jesus%20Christ%20of%20Latter-day%20Saints> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Mormons> .
+<urn:graphragprov:entity:The%20Church%20of%20Jesus%20Christ%20of%20Latter-day%20Saints> <urn:graphragprov:predicate:shareOfPopulation> "8.3"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:United%20Church%20of%20Christ> <urn:graphragprov:predicate:formerlyKnownAs> <urn:graphragprov:entity:Congregational> .
+<urn:graphragprov:entity:United%20Church%20of%20Christ> <urn:graphragprov:predicate:shareOfPopulation> "51.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:first%20mosque> <urn:graphragprov:predicate:openedIn> <urn:graphragprov:entity:capital> .
+<urn:graphragprov:entity:first%20mosque> <urn:graphragprov:predicate:openedOn> "2012-09"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Delap%20Island> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Majuro%20Atoll> .
+<urn:graphragprov:entity:Majuro%20Airfield> <urn:graphragprov:predicate:constructedBy> <urn:graphragprov:entity:Japanese%20occupation%20forces> .
+<urn:graphragprov:entity:Majuro%20Airfield> <urn:graphragprov:predicate:constructedInYear> "1942"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Majuro%20Airfield> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:coral-surfaced%20airstrip> .
+<urn:graphragprov:entity:Majuro%20Airfield> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Delap%20Island> .
+<urn:graphragprov:entity:Majuro%20Atoll> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Republic%20of%20the%20Marshall%20Islands> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Amata%20Kabua%20International%20Airport> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:builtDuring> <urn:graphragprov:entity:World%20War%20II> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:builtInYear> "1943"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:builtOn> <urn:graphragprov:entity:Anenelibw%20islet> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:builtOn> <urn:graphragprov:entity:Lokojbar%20islet> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Majuro%20Atoll> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:western%20part%20of%20Rairok> .
+<urn:graphragprov:entity:Marshall%20Islands%20International%20Airport> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Majuro%20Airfield> .

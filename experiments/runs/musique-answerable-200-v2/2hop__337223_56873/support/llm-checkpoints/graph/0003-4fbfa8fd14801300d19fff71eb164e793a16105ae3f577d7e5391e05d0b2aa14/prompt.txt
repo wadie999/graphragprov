@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_64025ff167a8831d2c43f30c681bc4da3befa869a540b08afca9483e3a02ee0e
+Title: Nottingham Forest F.C.
+Text:
+Forest were founder members of the Football Alliance in 1889 before joining the Football League in 1892. They have since mostly competed in the top two League tiers except five seasons in the third tier. Forest won the FA Cup in 1898 and 1959. Their most successful period was in the management reign of Brian Clough and Peter Taylor between 1976 and 1982. With Forest they won the 1977 -- 78 Football League title followed by the 1979 and 1980 European Cups. They also won two Football League Cups at Forest together. After Taylor left Clough won two more League Cups and two Full Members Cups.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 15,
+    "statement": {
+      "subject": {
+        "value": "Nottingham Forest F.C.",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Nottingham Forest F.C.",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "won",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "won two Full Members Cups",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Full Members Cup",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Full Members Cups",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[15].predicate.evidence[0]: quote 'won two Full Members Cups' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

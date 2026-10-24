@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_d60217ecd58ddf117e01796258456122982d999ebe4415d41e78059cce529d26
+Title: Celebrity Big Brother (American TV series)
+Text:
+Celebrity Big Brother also known as Big Brother: Celebrity Edition is a spin - off series of the American reality television series Big Brother. This season will air during the winter of the 2017 -- 18 network television season on CBS and will be the second U.S. Big Brother season to air outside the usual summer television season, the first being Big Brother 9 in 2008. Julie Chen will return as host, with Allison Grodner and Rich Meehan returning as executive producers. The season will be produced by Fly on the Wall Entertainment in association with Endemol Shine North America. CBS announced that the series is set to premiere on February 7, 2018 and conclude on February 25, 2018.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 7,
+    "statement": {
+      "subject": {
+        "value": "Celebrity Big Brother (American TV series)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Celebrity Big Brother (American TV series)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "airedOn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "air ... on CBS",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "CBS",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "CBS",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[7].predicate.evidence[0]: quote 'air ... on CBS' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 10,
+    "statement": {
+      "subject": {
+        "value": "Celebrity Big Brother (American TV series)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Celebrity Big Brother (American TV series)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "executiveProducer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Allison Grodner ... returning as executive producers",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Allison Grodner",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Allison Grodner",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[10].predicate.evidence[0]: quote 'Allison Grodner ... returning as executive producers' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

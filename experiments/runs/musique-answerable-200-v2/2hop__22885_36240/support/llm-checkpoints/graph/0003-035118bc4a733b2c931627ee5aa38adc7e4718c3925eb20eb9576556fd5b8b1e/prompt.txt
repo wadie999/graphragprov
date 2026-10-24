@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_ab99ae8ad9047c1ecef67f412e674aca33295ea6152469bf74762dedb0150d21
+Title: Immaculate Conception
+Text:
+The papal bull defining the dogma, Ineffabilis Deus, mentioned in particular the patrististic interpretation of Genesis 3:15 as referring to a woman, Mary, who would be eternally at enmity with the evil serpent and completely triumphing over him. It said the Fathers saw foreshadowings of Mary's "wondrous abundance of divine gifts and original innocence" "in that ark of Noah, which was built by divine command and escaped entirely safe and sound from the common shipwreck of the whole world; in the ladder which Jacob saw reaching from the earth to heaven, by whose rungs the angels of God ascended and descended, and on whose top the Lord himself leaned; in that bush which Moses saw in the holy place burning on all sides, which was not consumed or injured in any way but grew green and blossomed beautifully; in that impregnable tower before the enemy, from which hung a thousand bucklers and all the armor of the strong; in that garden enclosed on all sides, which cannot be violated or corrupted by any deceitful plots; in that resplendent city of God, which has its foundations on the holy mountains; in that most august temple of God, which, radiant with divine splendours, is full of the glory of God; and in very many other biblical types of this kind."
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "angels of God",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "angels of God",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "ascendedAndDescended",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "ascended and descended",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "on the ladder",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "on whose rungs",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].object.evidence[0]: quote 'on whose rungs' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

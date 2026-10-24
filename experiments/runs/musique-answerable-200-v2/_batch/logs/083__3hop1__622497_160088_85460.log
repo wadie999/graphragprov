@@ -1,0 +1,227 @@
+
+H0 one-case execution
+  case:          3hop1__622497_160088_85460
+  hops:          3
+  question:      What is the average salary of a working person with the same nationality as the producer of The Wild Women of Chastity Gulch?
+  expected:      $59,039
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__622497_160088_85460/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=8 title='The Wild Women of Chastity Gulch'
+  source unit: u_161d228bcaedf8f5a6ced6d873e0f36f96820003178e254a402d50105b7da174
+  text chars:  374
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.637s | model=deepseek-v4-flash
+      tokens:   in=2256 | out=2148 | total=4404 | cached=2048 | uncached=208
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 305 / 406 (75.1%)
+    characters text:     305 / 374 (81.6%)
+    characters title:    0 / 32 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  17 chars
+      'for rebroadcast.'
+    statement density:  34.48 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 2/3] paragraph=7 title='Aaron Spelling'
+  source unit: u_4c381a3d83a338787cce33e20899185df88c9f0f50b44a33c926fe987be3b491
+  text chars:  422
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.695s | model=deepseek-v4-flash
+      tokens:   in=2536 | out=1977 | total=4513 | cached=2048 | uncached=488
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 205 / 436 (47.0%)
+    characters text:     191 / 422 (45.3%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  44 chars
+      '. Some of his works include the TV programs'
+    statement density:  32.11 / 1000 chars
+    title reliance:      14 / 14 (100.0%)
+
+[GRAPH 3/3] paragraph=15 title='Household income in the United States'
+  source unit: u_3487ef72fb9a2e1c9cc382120fe571717e25a75ab20b137edca7d378cc31812a
+  text chars:  272
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.654s | model=deepseek-v4-flash
+      tokens:   in=2605 | out=1240 | total=3845 | cached=2048 | uncached=557
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 258 / 309 (83.5%)
+    characters text:     221 / 272 (81.2%)
+    characters title:    37 / 37 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      ', this measure was'
+    statement density:  25.89 / 1000 chars
+    title reliance:      6 / 8 (75.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 36
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      36
+resource nodes:        29
+entity nodes:          29
+literal values:        7
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:broadcastNetwork> <urn:graphragprov:entity:ABC> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Philip%20Leacock> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Aaron%20Spelling> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:made-for-television%20western%20romantic%20comedy%20film> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:laterSyndicatedTo> <urn:graphragprov:entity:cable%20television> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:premieredOn> "1982-10-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Donny%20Osmond> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Joan%20Collins> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lee%20Horsley> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lisa%20Whelchel> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Morgan%20Brittany> .
+  <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Priscilla%20Barnes> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:hasMeasure> <urn:graphragprov:entity:real%20median%20level> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:largestTwoYearPercentageIncrease> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:measuredBy> <urn:graphragprov:entity:Census> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:recordHigh> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:valueInYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:valueInYear> "59039"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:real%20median%20level> <urn:graphragprov:predicate:adjustedFor> <urn:graphragprov:entity:inflation> .
+  <urn:graphragprov:entity:real%20median%20level> <urn:graphragprov:predicate:definition> <urn:graphragprov:entity:half%20of%20households%20have%20income%20above%20that%20level%20and%20half%20below> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:bornOn> "1923-04-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:diedOn> "2006-06-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20and%20television%20producer> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:7th%20Heaven> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Beverly%20Hills%2C%2090210> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Charlie%27s%20Angels> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Charmed> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Dynasty> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Hart%20to%20Hart> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Mod%20Squad> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Sunset%20Beach> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:The%20Love%20Boat> .
+  <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:The%20Rookies> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.421s | model=deepseek-v4-flash
+      tokens:   in=2856 | out=281 | total=3137 | cached=640 | uncached=2216
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Aaron%20Spelling> .
+  - <urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  - <urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:valueInYear> "59039"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:executiveProducer> ?producer . ?producer <urn:graphragprov:predicate:nationality> ?nationality . ?nationality <urn:graphragprov:predicate:valueInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_161d228bcaedf8f5>
+  FROM <urn:graphragprov:unit:u_3487ef72fb9a2e1c>
+  FROM <urn:graphragprov:unit:u_4c381a3d83a33878>
+  WHERE { <urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:executiveProducer> ?producer . ?producer <urn:graphragprov:predicate:nationality> ?nationality . ?nationality <urn:graphragprov:predicate:valueInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__622497_160088_85460
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__622497_160088_85460/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10253
+output tokens:         5646
+total tokens:          15899
+cached input tokens:   6784
+uncached input tokens: 3469
+cumulative LLM seconds: 26.406
+
+statement occurrences: 36
+semantic triples:      36
+entity nodes:          29
+literal values:        7
+predicates:            19
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 23.997s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.099s
+  graph.materialization [attempt=1]: 0.074s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.422s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.539s

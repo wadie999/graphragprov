@@ -1,0 +1,181 @@
+
+H0 one-case execution
+  case:          2hop__94507_654855
+  hops:          2
+  question:      What political party does the person that Adversary in the House is based on a member of?
+  expected:      Socialist Party of America
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__94507_654855/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Adversary in the House'
+  source unit: u_b2310d4cefce74db2b8ebde568547b6de22dcdbf4aef14712a618427a06d3644
+  text chars:  141
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.405s | model=deepseek-v4-flash
+      tokens:   in=2177 | out=973 | total=3150 | cached=1920 | uncached=257
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 119 / 163 (73.0%)
+    characters text:     97 / 141 (68.8%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  13 chars
+      'the life of'
+    statement density:  36.81 / 1000 chars
+    title reliance:      4 / 6 (66.7%)
+
+[GRAPH 2/2] paragraph=12 title='Eugene V. Debs'
+  source unit: u_36d742a72bac03ec5b3ff5a6e2f00662a5bc5c0f2b466280b70de6f67a1eb4ff
+  text chars:  455
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 9.186s | model=deepseek-v4-flash
+      tokens:   in=2313 | out=1963 | total=4276 | cached=1920 | uncached=393
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 276 / 469 (58.8%)
+    characters text:     262 / 455 (57.6%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  115 chars
+      '. Through his presidential candidacies as well as his work with labor movements, Debs eventually became one of the'
+    statement density:  23.45 / 1000 chars
+    title reliance:      11 / 11 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 17
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      17
+resource nodes:        12
+entity nodes:          12
+literal values:        4
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:birthDate> "1855-11-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:candidateFor> <urn:graphragprov:entity:President%20of%20the%20United%20States> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:deathDate> "1926-10-20"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20socialist> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:socialism> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Industrial%20Workers%20of%20the%20World> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Socialist%20Party%20of%20America> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:numberOfCandidacies> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:political%20activist> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:trade%20unionist> .
+  <urn:graphragprov:entity:Adversary%20in%20the%20House> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Eugene%20V.%20Debs> .
+  <urn:graphragprov:entity:Adversary%20in%20the%20House> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Kate> .
+  <urn:graphragprov:entity:Adversary%20in%20the%20House> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:biographical%20novel> .
+  <urn:graphragprov:entity:Adversary%20in%20the%20House> <urn:graphragprov:predicate:publicationYear> "1947"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Kate> .
+  <urn:graphragprov:entity:Kate> <urn:graphragprov:predicate:opposedTo> <urn:graphragprov:entity:socialism> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.511s | model=deepseek-v4-flash
+      tokens:   in=1712 | out=195 | total=1907 | cached=640 | uncached=1072
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Adversary%20in%20the%20House> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Eugene%20V.%20Debs> .
+  - <urn:graphragprov:entity:Eugene%20V.%20Debs> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Socialist%20Party%20of%20America> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Adversary%20in%20the%20House> <urn:graphragprov:predicate:basedOn> ?person . ?person <urn:graphragprov:predicate:memberOf> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_36d742a72bac03ec>
+  FROM <urn:graphragprov:unit:u_b2310d4cefce74db>
+  WHERE { <urn:graphragprov:entity:Adversary%20in%20the%20House> <urn:graphragprov:predicate:basedOn> ?person . ?person <urn:graphragprov:predicate:memberOf> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Industrial Workers of the World', 'Socialist Party of America')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Adversary in the House', 'Eugene V. Debs']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__94507_654855
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__94507_654855/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6202
+output tokens:         3131
+total tokens:          9333
+cached input tokens:   4480
+uncached input tokens: 1722
+cumulative LLM seconds: 16.102
+
+statement occurrences: 17
+semantic triples:      17
+entity nodes:          12
+literal values:        4
+predicates:            13
+query attempts:        1
+observed answers:      ('Industrial Workers of the World', 'Socialist Party of America')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 14.598s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.036s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.512s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.428s

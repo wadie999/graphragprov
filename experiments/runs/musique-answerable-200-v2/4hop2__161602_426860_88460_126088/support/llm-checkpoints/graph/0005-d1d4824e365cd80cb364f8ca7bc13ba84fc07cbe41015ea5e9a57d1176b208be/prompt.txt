@@ -1,0 +1,108 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_e95a9986f2760c3d3ed31b050f55760b10438a95a99be4a22ed15379e7c23c09
+Title: Myanmar
+Text:
+The impact of the post-election reforms has been observed in numerous areas, including ASEAN's approval of Myanmar's bid for the position of ASEAN chair in 2014; the visit by United States Secretary of State Hillary Clinton in December 2011 for the encouragement of further progress, which was the first visit by a Secretary of State in more than fifty years, during which Clinton met with the Burmese president and former military commander Thein Sein, as well as opposition leader Aung San Suu Kyi; and the participation of Aung San Suu Kyi's National League for Democracy (NLD) party in the 2012 by-elections, facilitated by the government's abolition of the laws that previously barred the NLD. As of July 2013, about 100 political prisoners remain imprisoned, while conflict between the Burmese Army and local insurgent groups continues.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Myanmar",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Myanmar",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "country",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "country",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "country",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'country' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 21,
+    "statement": {
+      "subject": {
+        "value": "Hillary Clinton",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Hillary Clinton",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "visitedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "visit",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "December 2011",
+        "datatype": "yearMonth",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "December 2011",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[21].object.value must use YYYY-MM notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

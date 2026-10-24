@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_9a1a0b0279fc286c42d93f32ad7a17edc9cb3d9bbabf8d0c5fd9266a4cfb0b3b
+Title: Tucson, Arizona
+Text:
+Both the council members and the mayor serve four-year terms; none face term limits. Council members are nominated by their wards via a ward-level primary held in September. The top vote-earners from each party then compete at-large for their ward's seat on the November ballot. In other words, on election day the whole city votes on all the council races up for that year. Council elections are severed: Wards 1, 2, and 4 (as well as the mayor) are up for election in the same year (most recently 2011), while Wards 3, 5, and 6 share another year (most recently 2013).
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "top vote-earners",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "top vote-earners",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "competeFor",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "compete ... for their ward's seat",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "their ward's seat",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "their ward's seat",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].predicate.evidence[0]: quote \"compete ... for their ward's seat\" does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

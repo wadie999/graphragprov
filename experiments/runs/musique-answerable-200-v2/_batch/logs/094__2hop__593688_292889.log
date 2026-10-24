@@ -1,0 +1,227 @@
+
+H0 one-case execution
+  case:          2hop__593688_292889
+  hops:          2
+  question:      What country does team that Pa Amadou Gai is a member of play for?
+  expected:      Senegal
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__593688_292889/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=10 title='Pa Amadou Gai'
+  source unit: u_b9630e12998c5529fc09674e68f944fa6126ebc24ba5a24e68ce5949501f5a98
+  text chars:  103
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.744s | model=deepseek-v4-flash
+      tokens:   in=2155 | out=868 | total=3023 | cached=2048 | uncached=107
+    [LLM graph.reference #2] sending...
+      provider: 1.254s | model=deepseek-v4-flash
+      tokens:   in=579 | out=209 | total=788 | cached=0 | uncached=579
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'born ... in Bakau' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bakau",
+                "segment": "text"
+              }
+            ],
+            "value": "Bakau"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "born ... in Bakau",
+                "segment": "text"
+              }
+            ],
+            "value": "bornIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Pa Amadou Gai",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Pa Amadou Gai",
+                "segment": "text"
+              }
+            ],
+            "value": "Pa Amadou Gai"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 5
+  coverage:
+    characters combined: 89 / 116 (76.7%)
+    characters text:     76 / 103 (73.8%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  15 chars
+      'who currently'
+    statement density:  43.10 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[GRAPH 2/2] paragraph=0 title='Stade de ASC HLM'
+  source unit: u_97aee0b372b33609eb926108bbc25ecf9ce3c1c3387afa47fb8ac386e46ebdaa
+  text chars:  179
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.141s | model=deepseek-v4-flash
+      tokens:   in=2231 | out=877 | total=3108 | cached=2048 | uncached=183
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 109 / 195 (55.9%)
+    characters text:     93 / 179 (52.0%)
+    characters title:    16 / 16 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  22 chars
+      'ASC HLM. The stadium'
+    statement density:  30.77 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 11
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      11
+resource nodes:        10
+entity nodes:          10
+literal values:        2
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:capacity> "5000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:homeGroundOf> <urn:graphragprov:entity:ASC%20HLM> .
+  <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:multi-use%20stadium> .
+  <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Dakar> .
+  <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Senegal> .
+  <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:usedFor> <urn:graphragprov:entity:football%20matches> .
+  <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Bakau> .
+  <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:bornOn> "1984-06-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:ASC%20HLM> .
+  <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Gambian> .
+  <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:soccer%20player> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.738s | model=deepseek-v4-flash
+      tokens:   in=1383 | out=260 | total=1643 | cached=640 | uncached=743
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:ASC%20HLM> .
+  - <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:homeGroundOf> <urn:graphragprov:entity:ASC%20HLM> .
+  - <urn:graphragprov:entity:Stade%20de%20ASC%20HLM> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Senegal> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:memberOfSportsTeam> ?team . ?stadium <urn:graphragprov:predicate:homeGroundOf> ?team . ?stadium <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_97aee0b372b33609>
+  FROM <urn:graphragprov:unit:u_b9630e12998c5529>
+  WHERE { <urn:graphragprov:entity:Pa%20Amadou%20Gai> <urn:graphragprov:predicate:memberOfSportsTeam> ?team . ?stadium <urn:graphragprov:predicate:homeGroundOf> ?team . ?stadium <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Dakar', 'Senegal')
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Pa Amadou Gai', 'Stade de ASC HLM']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__593688_292889
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__593688_292889/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6348
+output tokens:         2214
+total tokens:          8562
+cached input tokens:   4736
+uncached input tokens: 1612
+cumulative LLM seconds: 11.877
+
+statement occurrences: 11
+semantic triples:      11
+entity nodes:          10
+literal values:        2
+predicates:            10
+query attempts:        1
+observed answers:      ('Dakar', 'Senegal')
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 10.145s
+  graph.reference.measurements [attempt=1]: 0.001s
+  graph.clear_support [attempt=1]: 0.039s
+  graph.materialization [attempt=1]: 0.034s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.002s
+  query.reference.generation [attempt=1]: 1.739s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.463s

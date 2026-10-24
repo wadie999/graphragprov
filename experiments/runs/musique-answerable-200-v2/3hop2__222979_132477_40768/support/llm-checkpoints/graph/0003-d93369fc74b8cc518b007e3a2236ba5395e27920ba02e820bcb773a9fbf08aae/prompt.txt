@@ -1,0 +1,354 @@
+Convert one source unit into a rich grounded RDF-style knowledge graph.
+
+The source has two immutable segments: `title` and `text`.
+
+Goals:
+1. extract as many useful explicit atomic facts as possible;
+2. represent them as reusable subject-predicate-object statements;
+3. ground every subject, predicate, and object to exact source substrings.
+
+Do not stop after finding only the facts needed for one downstream question.
+
+Return ONLY:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "...",
+        "datatype": "... optional ...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+RULES
+
+1. ATOMIC FACTS
+Each statement expresses one relation.
+Subjects and entity objects must be reusable entities/concepts, not sentences,
+clauses, explanations, or lists.
+
+Split dimensions:
+"American jazz guitarist" ->
+  nationality -> American
+  occupation -> guitarist
+  genre -> jazz
+
+Split lists:
+"CD and vinyl" -> two statements.
+
+2. ENTITIES VS LITERALS
+Subjects are always entities.
+Objects without `datatype` are entities.
+
+Use literals only for scalar values.
+
+Allowed datatypes:
+string, integer, decimal, boolean, year, yearMonth, date, dateTime
+
+Normalize when the source provides enough precision:
+
+"68,202,492" -> value "68202492", datatype "integer"
+"6 March 2018" -> value "2018-03-06", datatype "date"
+"March 2018" -> value "2018-03", datatype "yearMonth"
+"2018" -> value "2018", datatype "year"
+
+Keep imprecise scalars as strings:
+"the 1950s"
+"around 2018"
+"35 to 40 hours per week"
+
+Never invent missing precision.
+Every `value` is a JSON string.
+
+3. PREDICATES
+Use concise lowerCamelCase relations, normally 1-4 words, e.g.:
+
+instanceOf, nationality, occupation, genre, bornIn, bornOn,
+director, writtenBy, producedBy, starring, locatedIn,
+foundedBy, foundedInYear, publicationYear, headquarteredIn
+
+Predicate evidence should be the shortest exact phrase expressing the relation.
+
+4. LOCAL SUPPORT
+A statement must be supported by one local assertion, normally one clause or
+sentence.
+
+Cross-sentence resolution is allowed only for local identity/coreference:
+pronouns, aliases, abbreviations, omitted subjects, or the title.
+
+Do not combine unrelated fragments to manufacture a relation.
+
+5. EXACT GROUNDING
+Every subject, predicate, and object requires evidence.
+
+Each `quote` must be an exact non-empty substring of its declared segment.
+Preserve capitalization, spelling, punctuation, whitespace, Unicode, etc.
+
+Occurrences are counted independently per segment from left to right.
+Use occurrence 1 unless the same quote appears multiple times.
+
+Evidence roles must be meaningful:
+- subject evidence identifies the subject;
+- predicate evidence expresses the relation;
+- object evidence identifies/expresses the object.
+
+6. TITLE
+Use the title when needed to resolve a local subject/object.
+
+Example:
+Title: "Maria Torres"
+Text: "She founded Lumen Works."
+
+"Maria Torres" may use title evidence "Maria Torres" plus text evidence "She".
+
+Do not automatically make the title entity the subject of every statement.
+
+7. SOURCE BOUNDARY
+Use only explicit information in the supplied title and text.
+
+Do not automatically add inverse, symmetric, transitive, ontology-derived,
+cross-source, or external-world facts.
+
+8. BROAD COVERAGE
+Continue through the whole source.
+
+Extract useful explicit facts about identity, type, nationality, occupation,
+location, people, works, organizations, authorship, direction, production,
+membership, leadership, dates, quantities, genres, formats, and other grounded
+relations.
+
+Do not manufacture facts merely to increase graph size.
+
+Return {"statements": []} only when no useful fully grounded atomic fact exists.
+
+
+EXAMPLE
+
+Title:
+"Example Film"
+
+Text:
+"Example Film is a 2018 French drama film directed by Maria Torres and starring
+John Lee and Anna Smith."
+
+Output:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {"segment": "text", "quote": "film", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "drama film",
+        "evidence": [
+          {"segment": "text", "quote": "drama film", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "publicationYear",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "2018",
+        "datatype": "year",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "French",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {"segment": "text", "quote": "directed by", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Maria Torres",
+        "evidence": [
+          {"segment": "text", "quote": "Maria Torres", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "John Lee",
+        "evidence": [
+          {"segment": "text", "quote": "John Lee", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Anna Smith",
+        "evidence": [
+          {"segment": "text", "quote": "Anna Smith", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+EXPERIMENT TASK — CONSTRUCT MUSIQUE QUESTION GRAPH
+
+We are constructing a grounded RDF graph for one MuSiQue benchmark question.
+
+The question, expected answer, and decomposition are coordination context. They
+help keep entity and predicate choices compatible across supporting paragraphs.
+They are not evidence.
+
+For the CURRENT SOURCE only, return grounded RDF statements using the extraction
+schema below. Reuse semantic names already present in the accepted graph when
+they denote the same thing.
+Extract all useful explicit atomic facts from CURRENT SOURCE.
+
+Do not restrict extraction to facts needed for the question.
+
+However, facts explicitly present in CURRENT SOURCE that are required
+to realize its MuSiQue decomposition hop(s) are mandatory and must not
+be omitted.
+
+Question/answer/decomposition/accepted graph are coordination context,
+not evidence.
+
+Every returned statement must be supported by the CURRENT SOURCE. Python owns
+source identity; never return source IDs.
+
+Question: When did the maker of the Acura RLX, the owner of Scion, and Nissan open US assembly plants?
+
+Expected answer: 1981
+
+Gold decomposition:
+1. question='Scion >> owned by'; answer='Toyota'; support_paragraph=13
+2. question='Who made Acura RLX?'; answer='Honda'; support_paragraph=14
+3. question='When did #2 , #1 and Nissan open US assembly plants?'; answer='1981'; support_paragraph=17
+
+Accepted semantic graph so far:
+Acura RLX | hasVariant | front-wheel drive base model
+Acura RLX | hasVariant | hybrid variant
+Acura RLX | instanceOf | full-size luxury sedan
+Acura RLX | manufacturedBy | Honda
+Acura RLX | offers | two versions
+Acura RLX | releasedInYear | 2013
+Acura RLX | soldUnder | Acura division
+Acura RLX | succeeded | Acura RL
+Honda Legend | offeredWith | SH-AWD powertrain
+JDM version | instanceOf | Honda Legend
+Scion | designedFor | younger customers
+Scion | discontinued | true
+Scion | eschewed | trim levels
+Scion | expandedInto | Canada
+Scion | expandedIntoYear | 2010
+Scion | expandedNationwideBy | 2004-02
+Scion | featured | sports compact vehicles
+Scion | instanceOf | marque
+Scion | nameMeaning | descendant of a family or heir
+Scion | nameRefersTo | brand's cars and their owners
+Scion | offered | range of factory and aftermarket options
+Scion | offered | single trim for each vehicle
+Scion | ownedBy | Toyota
+Scion | softLaunchedAt | selected Toyota dealers
+Scion | softLaunchedIn | United States
+Scion | softLaunchedInState | California
+Scion | softLaunchedOn | 2003-06
+Scion | startedInYear | 2003
+Scion | targetedDemographic | generation Y demographic
+Scion | usedBusinessModel | simplified "pure price" model
+Scion | usedMarketingTechnique | guerrilla and viral marketing techniques
+front-wheel drive base model | equippedWith | Acura's Precision All-Wheel Steer (P-AWS) four-wheel steering system
+hybrid variant | featuring | SH-AWD
+hybrid variant | servesAs | Acura's flagship
+
+CURRENT SOURCE — MuSiQue paragraph 17
+
+{
+  "title": "1973 oil crisis",
+  "text": "Some buyers lamented the small size of the first Japanese compacts, and both Toyota and Nissan (then known as Datsun) introduced larger cars such as the Toyota Corona Mark II, the Toyota Cressida, the Mazda 616 and Datsun 810, which added passenger space and amenities such as air conditioning, power steering, AM-FM radios, and even power windows and central locking without increasing the price of the vehicle. A decade after the 1973 oil crisis, Honda, Toyota and Nissan, affected by the 1981 voluntary export restraints, opened US assembly plants and established their luxury divisions (Acura, Lexus and Infiniti, respectively) to distinguish themselves from their mass-market brands."
+}

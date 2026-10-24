@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_ad34a32ae10cdeef82cf072fc59839c52bed92fb3c27bf6c1e57b8496fa1d71c
+Title: Acornsoft
+Text:
+Acornsoft ceased to operate as a separate company upon the departure of David Johnson-Davies in January 1986. Past this date, Acorn Computers used the Acornsoft name on office software it released in the "VIEW" family for the BBC Master series. In 1986 Superior Software was granted a licence to publish some Acornsoft games and rereleased many, individually and as compilations such as the "Play It Again Sam" and "Acornsoft Hits" series. By agreement, the Acornsoft name was also used on the packaging of some of the subsequent Superior games. Superior chose not to take on Acornsoft's text adventure games, most of which were released in updated versions by Topologika along with some sequels from the same authors.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Acornsoft",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Acornsoft",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "ceasedToOperateAsSeparateCompanyOn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "ceased to operate as a separate company",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "January 1986",
+        "datatype": "yearMonth",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "January 1986",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].object.value must use YYYY-MM notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

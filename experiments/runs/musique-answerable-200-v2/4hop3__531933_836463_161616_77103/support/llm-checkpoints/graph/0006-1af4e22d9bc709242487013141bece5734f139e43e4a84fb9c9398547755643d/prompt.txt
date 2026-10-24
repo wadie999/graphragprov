@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_79aadb8bf764b4713a8094866625a1ecbbf5ceed6c841584802cb347e22fab82
+Title: History of Austin, Texas
+Text:
+The recorded history of Austin, Texas, began in the 1830s when Anglo - American settlers arrived in Central Texas. In 1837 settlers founded the village of Waterloo on the banks of the Colorado River, the first permanent settlement in the area. By 1839, Waterloo would adopt the name Austin and become the capital of the Republic of Texas.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Austin, Texas",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Austin, Texas",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "city",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "city",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "city",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'city' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 11,
+    "statement": {
+      "subject": {
+        "value": "settlers",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "settlers",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Anglo-American",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Anglo-American",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Anglo-American",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[11].predicate.evidence[0]: quote 'Anglo-American' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

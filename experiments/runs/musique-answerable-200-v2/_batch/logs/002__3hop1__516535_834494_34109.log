@@ -1,0 +1,277 @@
+
+H0 one-case execution
+  case:          3hop1__516535_834494_34109
+  hops:          3
+  question:      What is the PBS station in the city that shares a county with Allen, Arizona?
+  expected:      KUAT-TV 6
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__516535_834494_34109/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=9 title='Allen, Arizona'
+  source unit: u_bdce8d469023e5e08895db6a09296fea96f9574d866f118940a22b4375dc91bc
+  text chars:  208
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.328s | model=deepseek-v4-flash
+      tokens:   in=2206 | out=1005 | total=3211 | cached=1920 | uncached=286
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 103 / 222 (46.4%)
+    characters text:     89 / 208 (42.8%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  47 chars
+      ', the post office closed and the town has been'
+    statement density:  31.53 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/3] paragraph=11 title='Pima County Natural Resources, Parks and Recreation'
+  source unit: u_3c167c4c7ddb81e3148b77f6c66b9388bc2d99a40df12b8936f1e36b92538a13
+  text chars:  202
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.021s | model=deepseek-v4-flash
+      tokens:   in=2273 | out=1196 | total=3469 | cached=1920 | uncached=353
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 158 / 253 (62.5%)
+    characters text:     107 / 202 (53.0%)
+    characters title:    51 / 51 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  48 chars
+      'Natural Resources, Parks and Recreation is the'
+    statement density:  31.62 / 1000 chars
+    title reliance:      7 / 8 (87.5%)
+
+[GRAPH 3/3] paragraph=2 title='Tucson, Arizona'
+  source unit: u_0ab99175fb27b40e1743336e488627fad65f783589f75f052349ad6c87590e47
+  text chars:  522
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 15.101s | model=deepseek-v4-flash
+      tokens:   in=2504 | out=3477 | total=5981 | cached=2176 | uncached=328
+    [LLM graph.reference #4] sending...
+      provider: 2.023s | model=deepseek-v4-flash
+      tokens:   in=663 | out=188 | total=851 | cached=0 | uncached=663
+  extraction: ACCEPTED
+  statements: 24
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].object.value must use canonical decimal notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "decimal",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "0.39%",
+                "segment": "text"
+              }
+            ],
+            "value": "0.39%"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "0.39% of the total U.S.",
+                "segment": "text"
+              }
+            ],
+            "value": "percentageOfUS"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Tucson metro area",
+                "segment": "text"
+              }
+            ],
+            "value": "Tucson metro area"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 24
+  coverage:
+    characters combined: 390 / 537 (72.6%)
+    characters text:     390 / 522 (74.7%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  24 chars
+      '(DMA) in the U.S. with'
+    statement density:  44.69 / 1000 chars
+    title reliance:      0 / 24 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 39
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      39
+resource nodes:        37
+entity nodes:          37
+literal values:        4
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:KGUN%209> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:ABC> .
+  <urn:graphragprov:entity:KMSB-TV%2011> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:Fox> .
+  <urn:graphragprov:entity:KOLD-TV%2013> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:CBS> .
+  <urn:graphragprov:entity:KTTU%2018> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:My%20Network%20TV> .
+  <urn:graphragprov:entity:KUAS%2027> <urn:graphragprov:predicate:runBy> <urn:graphragprov:entity:University%20of%20Arizona> .
+  <urn:graphragprov:entity:KUAS%2027> <urn:graphragprov:predicate:sisterStationOf> <urn:graphragprov:entity:KUAT-TV%206> .
+  <urn:graphragprov:entity:KUAT-TV%206> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:PBS> .
+  <urn:graphragprov:entity:KUAT-TV%206> <urn:graphragprov:predicate:runBy> <urn:graphragprov:entity:University%20of%20Arizona> .
+  <urn:graphragprov:entity:KVOA%204> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:KWBA%2058> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:The%20CW> .
+  <urn:graphragprov:entity:Tucson%20metro%20area> <urn:graphragprov:predicate:hasHomes> "433310"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Tucson%20metro%20area> <urn:graphragprov:predicate:limitedTo> <urn:graphragprov:entity:three%20counties%20of%20southeastern%20Arizona> .
+  <urn:graphragprov:entity:Tucson%20metro%20area> <urn:graphragprov:predicate:percentageOfUS> "0.0039"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Tucson%20metro%20area> <urn:graphragprov:predicate:rankInDMA> <urn:graphragprov:entity:68th%20largest%20designated%20market%20area> .
+  <urn:graphragprov:entity:Tucson%20metro%20area> <urn:graphragprov:predicate:servedBy> <urn:graphragprov:entity:many%20local%20television%20stations> .
+  <urn:graphragprov:entity:major%20television%20networks%20serving%20Tucson> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:KGUN%209> .
+  <urn:graphragprov:entity:major%20television%20networks%20serving%20Tucson> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:KMSB-TV%2011> .
+  <urn:graphragprov:entity:major%20television%20networks%20serving%20Tucson> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:KOLD-TV%2013> .
+  <urn:graphragprov:entity:major%20television%20networks%20serving%20Tucson> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:KTTU%2018> .
+  <urn:graphragprov:entity:major%20television%20networks%20serving%20Tucson> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:KVOA%204> .
+  <urn:graphragprov:entity:major%20television%20networks%20serving%20Tucson> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:KWBA%2058> .
+  <urn:graphragprov:entity:three%20counties%20of%20southeastern%20Arizona> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Cochise> .
+  <urn:graphragprov:entity:three%20counties%20of%20southeastern%20Arizona> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Pima> .
+  <urn:graphragprov:entity:three%20counties%20of%20southeastern%20Arizona> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Santa%20Cruz> .
+  <urn:graphragprov:entity:Pima%20County> <urn:graphragprov:predicate:containsAdministrativeTerritorialEntity> <urn:graphragprov:entity:Tucson> .
+  <urn:graphragprov:entity:Pima%20County%20Natural%20Resources%2C%20Parks%20and%20Recreation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:agency> .
+  <urn:graphragprov:entity:Pima%20County%20Natural%20Resources%2C%20Parks%20and%20Recreation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Arizona> .
+  <urn:graphragprov:entity:Pima%20County%20Natural%20Resources%2C%20Parks%20and%20Recreation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pima%20County> .
+  <urn:graphragprov:entity:Pima%20County%20Natural%20Resources%2C%20Parks%20and%20Recreation> <urn:graphragprov:predicate:manages> <urn:graphragprov:entity:Tucson> .
+  <urn:graphragprov:entity:Pima%20County%20Natural%20Resources%2C%20Parks%20and%20Recreation> <urn:graphragprov:predicate:manages> <urn:graphragprov:entity:natural%20resources> .
+  <urn:graphragprov:entity:Pima%20County%20Natural%20Resources%2C%20Parks%20and%20Recreation> <urn:graphragprov:predicate:manages> <urn:graphragprov:entity:parks> .
+  <urn:graphragprov:entity:Pima%20County%20Natural%20Resources%2C%20Parks%20and%20Recreation> <urn:graphragprov:predicate:manages> <urn:graphragprov:entity:recreation%20offerings> .
+  <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:foundedInYear> "c. 1880" .
+  <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:ghost%20town> .
+  <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pima%20County> .
+  <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:southern%20Arizona> .
+  <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:locatedRelativeTo> <urn:graphragprov:entity:Ajo> .
+  <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:postOfficeClosedInYear> "1886"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:abandoned> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.176s | model=deepseek-v4-flash
+      tokens:   in=2866 | out=283 | total=3149 | cached=640 | uncached=2226
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pima%20County> .
+  - <urn:graphragprov:entity:Pima%20County> <urn:graphragprov:predicate:containsAdministrativeTerritorialEntity> <urn:graphragprov:entity:Tucson> .
+  - <urn:graphragprov:entity:KUAT-TV%206> <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:PBS> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pima%20County> . <urn:graphragprov:entity:Pima%20County> <urn:graphragprov:predicate:containsAdministrativeTerritorialEntity> <urn:graphragprov:entity:Tucson> . ?answer <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:PBS> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0ab99175fb27b40e>
+  FROM <urn:graphragprov:unit:u_3c167c4c7ddb81e3>
+  FROM <urn:graphragprov:unit:u_bdce8d469023e5e0>
+  WHERE { <urn:graphragprov:entity:Allen%2C%20Arizona> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Pima%20County> . <urn:graphragprov:entity:Pima%20County> <urn:graphragprov:predicate:containsAdministrativeTerritorialEntity> <urn:graphragprov:entity:Tucson> . ?answer <urn:graphragprov:predicate:affiliatedWith> <urn:graphragprov:entity:PBS> . }
+
+GraphDB execution:
+  observed answers: ('KUAT-TV 6',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Allen, Arizona', 'Pima County Natural Resources, Parks and Recreation', 'Tucson, Arizona']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__516535_834494_34109
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__516535_834494_34109/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10512
+output tokens:         6149
+total tokens:          16661
+cached input tokens:   6656
+uncached input tokens: 3856
+cumulative LLM seconds: 31.649
+
+statement occurrences: 39
+semantic triples:      39
+entity nodes:          37
+literal values:        4
+predicates:            17
+query attempts:        1
+observed answers:      ('KUAT-TV 6',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 29.488s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.065s
+  graph.materialization [attempt=1]: 0.114s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.177s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.471s

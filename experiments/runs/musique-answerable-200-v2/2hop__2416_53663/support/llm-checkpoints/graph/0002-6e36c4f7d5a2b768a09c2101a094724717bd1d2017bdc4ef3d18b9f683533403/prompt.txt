@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_47bc34933e38222fb1852b28f775ee26bef941579ca23d511141c5090f8729d1
+Title: Solar energy
+Text:
+Shuman built the world’s first solar thermal power station in Maadi, Egypt, between 1912 and 1913. Shuman’s plant used parabolic troughs to power a 45–52 kilowatts (60–70 hp) engine that pumped more than 22,000 litres (4,800 imp gal; 5,800 US gal) of water per minute from the Nile River to adjacent cotton fields. Although the outbreak of World War I and the discovery of cheap oil in the 1930s discouraged the advancement of solar energy, Shuman’s vision and basic design were resurrected in the 1970s with a new wave of interest in solar thermal energy. In 1916 Shuman was quoted in the media advocating solar energy's utilization, saying:
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 4,
+    "statement": {
+      "subject": {
+        "value": "Shuman’s plant",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Shuman’s plant",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "powered",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "powered",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "engine",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "engine",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[4].predicate.evidence[0]: quote 'powered' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

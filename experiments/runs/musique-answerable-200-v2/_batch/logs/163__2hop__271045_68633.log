@@ -1,0 +1,184 @@
+
+H0 one-case execution
+  case:          2hop__271045_68633
+  hops:          2
+  question:      Who is the president of the organization Julio Maglione is located?
+  expected:      Thomas Bach
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__271045_68633/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=16 title='Julio Maglione'
+  source unit: u_3def92174eff37039d2a9bfb0aefbec304f7b4cc71f8c061a90fe596c08081cf
+  text chars:  177
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.960s | model=deepseek-v4-flash
+      tokens:   in=2170 | out=888 | total=3058 | cached=1920 | uncached=250
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 126 / 191 (66.0%)
+    characters text:     112 / 177 (63.3%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  22 chars
+      'Julio César Maglione ('
+    statement density:  31.41 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[GRAPH 2/2] paragraph=1 title='President of the International Olympic Committee'
+  source unit: u_b11be825d9e87a9b9552cc508659e8b0535895ad0486bff2a163e24cd6334ce1
+  text chars:  552
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.835s | model=deepseek-v4-flash
+      tokens:   in=2291 | out=2063 | total=4354 | cached=2048 | uncached=243
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 407 / 600 (67.8%)
+    characters text:     359 / 552 (65.0%)
+    characters title:    48 / 48 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  59 chars
+      'Président du Comité international olympique Olympic rings'
+    statement density:  23.33 / 1000 chars
+    title reliance:      14 / 14 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        17
+entity nodes:          17
+literal values:        4
+predicates:            19
+
+N-Triples:
+  <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Montevideo> .
+  <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:bornOn> "1935-11-14"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:member> .
+  <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:International%20Olympic%20Committee> .
+  <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:memberSince> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Uruguay> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:appointer> <urn:graphragprov:entity:IOC%20Session> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:constitutingInstrument> <urn:graphragprov:entity:Olympic%20Charter> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:electedBy> <urn:graphragprov:entity:IOC%20Members> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:electionMethod> <urn:graphragprov:entity:secret%20ballot> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:firstHolder> <urn:graphragprov:entity:Demetrius%20Vikelas> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:formationYear> "1894"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:incumbent> <urn:graphragprov:entity:Thomas%20Bach> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:IOC%20Executive%20Board> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:renewable> <urn:graphragprov:entity:once%20for%20four%20years> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:Lausanne%20Palace> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:seat> <urn:graphragprov:entity:IOC%20Headquarters%2C%20Lausanne%2C%20Switzerland> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:since> "2013-09-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:termLength> <urn:graphragprov:entity:Eight%20years> .
+  <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:website> <urn:graphragprov:entity:International%20Olympic%20Committee> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.556s | model=deepseek-v4-flash
+      tokens:   in=1940 | out=242 | total=2182 | cached=640 | uncached=1300
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:International%20Olympic%20Committee> .
+  - <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> <urn:graphragprov:predicate:incumbent> <urn:graphragprov:entity:Thomas%20Bach> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:memberOf> ?org . ?president <urn:graphragprov:predicate:incumbent> ?answer . FILTER(?president = <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> && ?org = <urn:graphragprov:entity:International%20Olympic%20Committee>) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_3def92174eff3703>
+  FROM <urn:graphragprov:unit:u_b11be825d9e87a9b>
+  WHERE { <urn:graphragprov:entity:Julio%20Maglione> <urn:graphragprov:predicate:memberOf> ?org . ?president <urn:graphragprov:predicate:incumbent> ?answer . FILTER(?president = <urn:graphragprov:entity:President%20of%20the%20International%20Olympic%20Committee> && ?org = <urn:graphragprov:entity:International%20Olympic%20Committee>) }
+
+GraphDB execution:
+  observed answers: ('Thomas Bach',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__271045_68633
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__271045_68633/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6401
+output tokens:         3193
+total tokens:          9594
+cached input tokens:   4608
+uncached input tokens: 1793
+cumulative LLM seconds: 15.351
+
+statement occurrences: 20
+semantic triples:      20
+entity nodes:          17
+literal values:        4
+predicates:            19
+query attempts:        1
+observed answers:      ('Thomas Bach',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.806s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.068s
+  graph.materialization [attempt=1]: 0.072s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.557s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.444s

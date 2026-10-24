@@ -1,0 +1,301 @@
+
+H0 one-case execution
+  case:          2hop__129721_40482
+  hops:          2
+  question:      From whom did the Huguenots in the state encompassing Zubly Cemetery purchase land from?
+  expected:      Edmund Bellinger
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__129721_40482/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=18 title='Zubly Cemetery'
+  source unit: u_25cdc0b20aa19c56dce1425c0cfab055b50367514d9aa051e18d7448134a8346
+  text chars:  436
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.202s | model=deepseek-v4-flash
+      tokens:   in=2232 | out=2072 | total=4304 | cached=2048 | uncached=184
+    [LLM graph.reference #2] sending...
+      provider: 3.189s | model=deepseek-v4-flash
+      tokens:   in=909 | out=420 | total=1329 | cached=0 | uncached=909
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 2
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'established ... by Swiss settlers' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Swiss settlers",
+                "segment": "text"
+              }
+            ],
+            "value": "Swiss settlers"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "established ... by Swiss settlers",
+                "segment": "text"
+              }
+            ],
+            "value": "establishedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Zubly Cemetery",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Zubly Cemetery",
+                "segment": "text"
+              }
+            ],
+            "value": "Zubly Cemetery"
+          }
+        }
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'listed on ... on January 28, 2002' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 28, 2002",
+                "segment": "text"
+              }
+            ],
+            "value": "2002-01-28"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "listed on ... on January 28, 2002",
+                "segment": "text"
+              }
+            ],
+            "value": "listedOnDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Zubly Cemetery",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Zubly Cemetery",
+                "segment": "text"
+              }
+            ],
+            "value": "Zubly Cemetery"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 13
+  coverage:
+    characters combined: 321 / 450 (71.3%)
+    characters text:     307 / 436 (70.4%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  41 chars
+      'of the period. The town of New Windsor,'
+    statement density:  28.89 / 1000 chars
+    title reliance:      8 / 13 (61.5%)
+
+[GRAPH 2/2] paragraph=14 title='Huguenots'
+  source unit: u_8006c7197c371b6475c09162c8a3fa6bf9571c699d14187970aa38455d284665
+  text chars:  1095
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 18.780s | model=deepseek-v4-flash
+      tokens:   in=2531 | out=4411 | total=6942 | cached=2048 | uncached=483
+  extraction: ACCEPTED
+  statements: 30
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    30
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     30
+  coverage:
+    characters combined: 676 / 1104 (61.2%)
+    characters text:     667 / 1095 (60.9%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           7 / 8 (87.5%)
+    longest uncovered:  72 chars
+      '. They were very successful at marriage and property speculation. After'
+    statement density:  27.17 / 1000 chars
+    title reliance:      2 / 30 (6.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 43
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      43
+resource nodes:        38
+entity nodes:          38
+literal values:        6
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:Beech%20Island> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:small%20community> .
+  <urn:graphragprov:entity:Beech%20Island> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Aiken%20County> .
+  <urn:graphragprov:entity:Beech%20Island> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:New%20Windsor%20Township> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:outpost%20for%20Indian%20traders> .
+  <urn:graphragprov:entity:New%20Windsor%20Township> <urn:graphragprov:predicate:settledInYear> "1737"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:establishedBy> <urn:graphragprov:entity:Swiss%20settlers> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:establishedInYear> "1790"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:illustrates> <urn:graphragprov:entity:vernacular%20burial%20customs> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:listedOn> <urn:graphragprov:entity:National%20Register%20of%20Historic%20Places> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:listedOnDate> "2002-01-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Aiken%20County> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:New%20Windsor%20Township> .
+  <urn:graphragprov:entity:Alexander%20Pepin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+  <urn:graphragprov:entity:Antoine%20Poitevin> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Orsement%20France> .
+  <urn:graphragprov:entity:Antoine%20Poitevin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+  <urn:graphragprov:entity:Edmund%20Bohun> <urn:graphragprov:predicate:descendedFrom> <urn:graphragprov:entity:Humphrey%20de%20Bohun%20line%20of%20French%20royalty> .
+  <urn:graphragprov:entity:Edmund%20Bohun> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Suffolk%20England> .
+  <urn:graphragprov:entity:Edmund%20Bohun> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+  <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:immigratedInYear> "1685"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+  <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:petitioned> <urn:graphragprov:entity:British%20Crown> .
+  <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:petitionedInYear> "1697"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:prosperedAs> <urn:graphragprov:entity:slave%20owners> .
+  <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:plantations> .
+  <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchasedLandFrom> <urn:graphragprov:entity:Edmund%20Bellinger> .
+  <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> .
+  <urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:settledInYear> "early years" .
+  <urn:graphragprov:entity:Humphrey%20de%20Bohun%20line%20of%20French%20royalty> <urn:graphragprov:predicate:descendedFrom> <urn:graphragprov:entity:Charlemagne> .
+  <urn:graphragprov:entity:Jacques%20de%20Bordeaux> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Grenoble> .
+  <urn:graphragprov:entity:Jacques%20de%20Bordeaux> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+  <urn:graphragprov:entity:Jean%20Postell> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Dieppe%20France> .
+  <urn:graphragprov:entity:Jean%20Postell> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+  <urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:becamePastorOf> <urn:graphragprov:entity:first%20Huguenot%20church%20in%20North%20America> .
+  <urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Pons%2C%20France> .
+  <urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+  <urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> .
+  <urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:settledInYear> "1685"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:descendants%20of%20Huguenot%20families> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:new%20plantations> .
+  <urn:graphragprov:entity:descendants%20of%20Huguenot%20families> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Deep%20South> .
+  <urn:graphragprov:entity:descendants%20of%20Huguenot%20families> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Texas> .
+  <urn:graphragprov:entity:first%20Huguenot%20church%20in%20North%20America> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> .
+  <urn:graphragprov:entity:plantations> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Cooper%2C%20Ashepoo%2C%20Ashley%20and%20Santee%20River> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.935s | model=deepseek-v4-flash
+      tokens:   in=3019 | out=207 | total=3226 | cached=640 | uncached=2379
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+  - <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchasedLandFrom> <urn:graphragprov:entity:Edmund%20Bellinger> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> . <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchasedLandFrom> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_25cdc0b20aa19c56>
+  FROM <urn:graphragprov:unit:u_8006c7197c371b64>
+  WHERE { <urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> . <urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchasedLandFrom> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Edmund Bellinger',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Huguenots', 'Zubly Cemetery']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__129721_40482
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__129721_40482/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8691
+output tokens:         7110
+total tokens:          15801
+cached input tokens:   4736
+uncached input tokens: 3955
+cumulative LLM seconds: 35.107
+
+statement occurrences: 43
+semantic triples:      43
+entity nodes:          38
+literal values:        6
+predicates:            24
+query attempts:        1
+observed answers:      ('Edmund Bellinger',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.186s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.055s
+  graph.materialization [attempt=1]: 0.075s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 1.936s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.430s

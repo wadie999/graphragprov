@@ -1,0 +1,386 @@
+
+H0 one-case execution
+  case:          4hop1__482815_624859_355213_203322
+  hops:          4
+  question:      What county shares a border with the other county, that contains the city, that is the birthplace of the performer of Never Gonna Fall in Love Again?
+  expected:      Cabarrus County
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__482815_624859_355213_203322/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=11 title='Never Gonna Fall in Love Again'
+  source unit: u_4b041a822224f2a8b5bd43e6f2cd332235906ff196c58e9cc8d238ee1235dde1
+  text chars:  426
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.648s | model=deepseek-v4-flash
+      tokens:   in=2295 | out=2030 | total=4325 | cached=1920 | uncached=375
+    [LLM graph.reference #2] sending...
+      provider: 0.974s | model=deepseek-v4-flash
+      tokens:   in=851 | out=8 | total=859 | cached=0 | uncached=851
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 2
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'Billboard Hot 100' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Billboard Hot 100",
+                "segment": "text"
+              }
+            ],
+            "value": "Billboard Hot 100"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Billboard Hot 100",
+                "segment": "text"
+              }
+            ],
+            "value": "chart"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Never Gonna Fall in Love Again",
+                "segment": "title"
+              }
+            ],
+            "value": "Never Gonna Fall in Love Again"
+          }
+        }
+
+    initial rejection #10
+      validator:
+        response.statements[10].predicate.evidence[0]: quote 'Billboard Easy Listening' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Billboard Easy Listening",
+                "segment": "text"
+              }
+            ],
+            "value": "Billboard Easy Listening"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Billboard Easy Listening",
+                "segment": "text"
+              }
+            ],
+            "value": "chart"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Never Gonna Fall in Love Again",
+                "segment": "title"
+              }
+            ],
+            "value": "Never Gonna Fall in Love Again"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 148 / 456 (32.5%)
+    characters text:     118 / 426 (27.7%)
+    characters title:    30 / 30 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  92 chars
+      ". It was released as the second single from Carmen's self-titled debut solo album, the song"
+    statement density:  26.32 / 1000 chars
+    title reliance:      9 / 12 (75.0%)
+
+[GRAPH 2/4] paragraph=19 title='The Definitive Collection (Eric Carmen album)'
+  source unit: u_933315419fb0c709988f02d2fe15a23fd24868020bd5930c0c880cb42734f5f1
+  text chars:  409
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.557s | model=deepseek-v4-flash
+      tokens:   in=2414 | out=1823 | total=4237 | cached=1920 | uncached=494
+    [LLM graph.reference #4] sending...
+      provider: 1.021s | model=deepseek-v4-flash
+      tokens:   in=648 | out=8 | total=656 | cached=0 | uncached=648
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 1
+
+    initial rejection #10
+      validator:
+        response.statements[10].predicate.evidence[0]: quote 'contains ... two popular songs from the movie "Dirty Dancing"' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "two popular songs from the movie \"Dirty Dancing\"",
+                "segment": "text"
+              }
+            ],
+            "value": "two popular songs from the movie \"Dirty Dancing\""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "contains ... two popular songs from the movie \"Dirty Dancing\"",
+                "segment": "text"
+              }
+            ],
+            "value": "containsWork"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Definitive Collection (Eric Carmen album)",
+                "segment": "title"
+              }
+            ],
+            "value": "The Definitive Collection (Eric Carmen album)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 285 / 454 (62.8%)
+    characters text:     240 / 409 (58.7%)
+    characters title:    45 / 45 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  56 chars
+      ', two popular songs from the movie "Dirty Dancing", and'
+    statement density:  24.23 / 1000 chars
+    title reliance:      6 / 11 (54.5%)
+
+[GRAPH 3/4] paragraph=14 title='Cleveland, North Carolina'
+  source unit: u_048c011ee26c9a9faad0f9ae3132c7e584101678b8f85444f9c585056fda082a
+  text chars:  136
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 4.776s | model=deepseek-v4-flash
+      tokens:   in=2514 | out=1020 | total=3534 | cached=2048 | uncached=466
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 115 / 161 (71.4%)
+    characters text:     90 / 136 (66.2%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  15 chars
+      'Cleveland is a'
+    statement density:  43.48 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 4/4] paragraph=13 title='Gold Hill, North Carolina'
+  source unit: u_45fbb9c686eedf795762e079ed26d9849d4961b53d7a31cff866f7916b0d775b
+  text chars:  290
+  whole-source attempt: 1/3
+    [LLM graph.reference #6] sending...
+      provider: 5.975s | model=deepseek-v4-flash
+      tokens:   in=2636 | out=1326 | total=3962 | cached=2048 | uncached=588
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 214 / 315 (67.9%)
+    characters text:     189 / 290 (65.2%)
+    characters title:    25 / 25 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  36 chars
+      '. Gold was found in this small town'
+    statement density:  28.57 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 39
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 3
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      38
+resource nodes:        32
+entity nodes:          32
+literal values:        7
+predicates:            22
+
+N-Triples:
+  <urn:graphragprov:entity:Cleveland%2C%20North%20Carolina> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:town> .
+  <urn:graphragprov:entity:Cleveland%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Cleveland%20Township> .
+  <urn:graphragprov:entity:Cleveland%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:North%20Carolina> .
+  <urn:graphragprov:entity:Cleveland%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rowan%20County> .
+  <urn:graphragprov:entity:Cleveland%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Cleveland%2C%20North%20Carolina> <urn:graphragprov:predicate:population> "871"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Cleveland%2C%20North%20Carolina> <urn:graphragprov:predicate:populationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:goldDiscoveryCentury> "19th century" .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:unincorporated%20community> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:North%20Carolina> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rowan%20County> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:Salisbury> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:Yadkin%20River> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:near> <urn:graphragprov:entity:Cabarrus%20County> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:servedBy> <urn:graphragprov:entity:Old%20Beatty%20Ford%20Road> .
+  <urn:graphragprov:entity:Gold%20Hill%2C%20North%20Carolina> <urn:graphragprov:predicate:servedBy> <urn:graphragprov:entity:U.S.%20Highway%2052> .
+  <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:pop%20rock> .
+  <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:artist> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:both%20charts> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:chartPosition> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:chartPosition> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:coWrittenBy> <urn:graphragprov:entity:Eric%20Carmen> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Canada> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:publicationYear> "1976"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Eric%20Carmen> .
+  <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Cleveland%2C%20Ohio> .
+  <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:the%20Raspberries> .
+  <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:singer-songwriter> .
+  <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:wroteFor> <urn:graphragprov:entity:Shaun%20Cassidy> .
+  <urn:graphragprov:entity:The%20Definitive%20Collection%20%28Eric%20Carmen%20album%29> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Eric%20Carmen> .
+  <urn:graphragprov:entity:The%20Definitive%20Collection%20%28Eric%20Carmen%20album%29> <urn:graphragprov:predicate:containsWork> <urn:graphragprov:entity:All%20By%20Myself> .
+  <urn:graphragprov:entity:The%20Definitive%20Collection%20%28Eric%20Carmen%20album%29> <urn:graphragprov:predicate:containsWork> <urn:graphragprov:entity:five%20hits%20by%20the%20Raspberries> .
+  <urn:graphragprov:entity:The%20Definitive%20Collection%20%28Eric%20Carmen%20album%29> <urn:graphragprov:predicate:containsWork> <urn:graphragprov:entity:two%20major%20hits%20which%20he%20wrote%20for%20Shaun%20Cassidy> .
+  <urn:graphragprov:entity:The%20Definitive%20Collection%20%28Eric%20Carmen%20album%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:greatest%20hits%20compilation%20album> .
+  <urn:graphragprov:entity:The%20Definitive%20Collection%20%28Eric%20Carmen%20album%29> <urn:graphragprov:predicate:publicationYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Raspberries> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:power%20pop%20group> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.214s | model=deepseek-v4-flash
+      tokens:   in=2962 | out=414 | total=3376 | cached=640 | uncached=2322
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Eric%20Carmen> .
+  - <urn:graphragprov:entity:Eric%20Carmen> <urn:graphragprov:predicate:birthPlace> <urn:graphragprov:entity:Cleveland%2C%20Ohio> .
+  - <urn:graphragprov:entity:Cleveland%2C%20Ohio> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Cuyahoga%20County> .
+  - <urn:graphragprov:entity:Cuyahoga%20County> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Rowan%20County> .
+  - <urn:graphragprov:entity:Rowan%20County> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Cabarrus%20County> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:recordedBy> ?performer . ?performer <urn:graphragprov:predicate:birthPlace> ?birthplace . ?birthplace <urn:graphragprov:predicate:locatedIn> ?county1 . ?county1 <urn:graphragprov:predicate:sharesBorderWith> ?county2 . ?county2 <urn:graphragprov:predicate:sharesBorderWith> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_048c011ee26c9a9f>
+  FROM <urn:graphragprov:unit:u_45fbb9c686eedf79>
+  FROM <urn:graphragprov:unit:u_4b041a822224f2a8>
+  FROM <urn:graphragprov:unit:u_933315419fb0c709>
+  WHERE { <urn:graphragprov:entity:Never%20Gonna%20Fall%20in%20Love%20Again> <urn:graphragprov:predicate:recordedBy> ?performer . ?performer <urn:graphragprov:predicate:birthPlace> ?birthplace . ?birthplace <urn:graphragprov:predicate:locatedIn> ?county1 . ?county1 <urn:graphragprov:predicate:sharesBorderWith> ?county2 . ?county2 <urn:graphragprov:predicate:sharesBorderWith> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__482815_624859_355213_203322
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__482815_624859_355213_203322/support/result.json
+graph LLM executed:    6
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          14320
+output tokens:         6629
+total tokens:          20949
+cached input tokens:   8576
+uncached input tokens: 5744
+cumulative LLM seconds: 33.165
+
+statement occurrences: 39
+semantic triples:      38
+entity nodes:          32
+literal values:        7
+predicates:            22
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 30.966s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.170s
+  graph.materialization [attempt=1]: 0.229s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.215s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.512s

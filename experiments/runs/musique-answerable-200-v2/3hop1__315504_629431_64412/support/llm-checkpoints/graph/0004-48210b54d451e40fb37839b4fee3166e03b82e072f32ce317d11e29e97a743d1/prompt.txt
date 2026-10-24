@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_c74b6f58701fe0a467a3f45a6f6a4d18dd6f6a740d30732f0a6d817b05509b50
+Title: Vatican City
+Text:
+The name Vatican city was first used in the Lateran Treaty, signed on 11 February 1929, which established the modern city - state. The name is taken from Vatican Hill, the geographic location of the state. ``Vatican ''is derived from the name of an Etruscan settlement, Vatica or Vaticum meaning garden, located in the general area the Romans called vaticanus ager,`` Vatican territory''.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 8,
+    "statement": {
+      "subject": {
+        "value": "general area the Romans called vaticanus ager",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "general area the Romans called vaticanus ager",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "alsoKnownAs",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "``Vatican territory''",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Vatican territory",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "``Vatican territory''",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[8].predicate.evidence[0]: quote \"``Vatican territory''\" does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

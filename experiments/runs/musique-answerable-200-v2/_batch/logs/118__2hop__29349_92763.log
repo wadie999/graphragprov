@@ -1,0 +1,248 @@
+
+H0 one-case execution
+  case:          2hop__29349_92763
+  hops:          2
+  question:      What is the enrollment where the first debate between Kerry and Bush took place?
+  expected:      16,801
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__29349_92763/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=18 title='2004 United States presidential election'
+  source unit: u_9fd7598591d5cedb4806b9f2f347954f2e016d4c32e4081c5adc24af281a9928
+  text chars:  728
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.897s | model=deepseek-v4-flash
+      tokens:   in=2277 | out=2722 | total=4999 | cached=1920 | uncached=357
+    [LLM graph.reference #2] sending...
+      provider: 0.717s | model=deepseek-v4-flash
+      tokens:   in=653 | out=8 | total=661 | cached=0 | uncached=653
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 1
+
+    initial rejection #16
+      validator:
+        response.statements[16].subject.evidence[0]: quote 'win' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "campaign",
+                "segment": "text"
+              }
+            ],
+            "value": "campaign"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "strengthening",
+                "segment": "text"
+              }
+            ],
+            "value": "strengthened"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "win",
+                "segment": "text"
+              }
+            ],
+            "value": "win"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 18
+  coverage:
+    characters combined: 580 / 768 (75.5%)
+    characters text:     580 / 728 (79.7%)
+    characters title:    0 / 40 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  36 chars
+      ', strengthening what had come to be'
+    statement density:  23.44 / 1000 chars
+    title reliance:      0 / 18 (0.0%)
+
+[GRAPH 2/2] paragraph=19 title='University of Miami'
+  source unit: u_a26a667515fa16927297fa2667aae19a907df0de39990724a9a294d02cb3d4e8
+  text chars:  659
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 11.987s | model=deepseek-v4-flash
+      tokens:   in=2492 | out=2969 | total=5461 | cached=1920 | uncached=572
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 477 / 678 (70.4%)
+    characters text:     458 / 659 (69.5%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  123 chars
+      'University of Miami Latin: Universitas Miamiensis Motto Magna est veritas (Latin) Motto in English Great is the truth Type'
+    statement density:  29.50 / 1000 chars
+    title reliance:      20 / 20 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 38
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      38
+resource nodes:        27
+entity nodes:          27
+literal values:        17
+predicates:            36
+
+N-Triples:
+  <urn:graphragprov:entity:Australia> <urn:graphragprov:predicate:assisted> <urn:graphragprov:entity:U.S.> .
+  <urn:graphragprov:entity:Bush> <urn:graphragprov:predicate:failedToGain> <urn:graphragprov:entity:international%20support> .
+  <urn:graphragprov:entity:Bush> <urn:graphragprov:predicate:for> <urn:graphragprov:entity:2003%20Invasion%20of%20Iraq> .
+  <urn:graphragprov:entity:Bush> <urn:graphragprov:predicate:replied> "Well, actually, he forgot Poland." .
+  <urn:graphragprov:entity:Jim%20Lehrer> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:PBS> .
+  <urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:accused> <urn:graphragprov:entity:Bush> .
+  <urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:said> "the only countries assisting the U.S. during the invasion were the United Kingdom and Australia" .
+  <urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:won> "decisively" .
+  <urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:debate> .
+  <urn:graphragprov:entity:United%20Kingdom> <urn:graphragprov:predicate:assisted> <urn:graphragprov:entity:U.S.> .
+  <urn:graphragprov:entity:campaign> <urn:graphragprov:predicate:seenAs> "weak and troubled" .
+  <urn:graphragprov:entity:consensus> <urn:graphragprov:predicate:formedAmong> <urn:graphragprov:entity:mainstream%20pollsters%20and%20pundits> .
+  <urn:graphragprov:entity:consensus> <urn:graphragprov:predicate:that> "Kerry won the debate decisively" .
+  <urn:graphragprov:entity:coverage> <urn:graphragprov:predicate:focusedOn> "Bush's apparent annoyance with Kerry and numerous scowls and negative facial expressions" .
+  <urn:graphragprov:entity:debate> <urn:graphragprov:predicate:focusOn> <urn:graphragprov:entity:foreign%20policy> .
+  <urn:graphragprov:entity:first%20debate> <urn:graphragprov:predicate:heldAt> <urn:graphragprov:entity:University%20of%20Miami> .
+  <urn:graphragprov:entity:first%20debate> <urn:graphragprov:predicate:heldOn> "September 30" .
+  <urn:graphragprov:entity:first%20debate> <urn:graphragprov:predicate:moderatedBy> <urn:graphragprov:entity:Jim%20Lehrer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:academicStaff> "3045"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:administrativeStaff> "10985"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:budget> "$3.3 billion" .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:campusArea> "453 acres" .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:campusType> <urn:graphragprov:entity:Suburban> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:chairman> <urn:graphragprov:entity:Richard%20D.%20Fain> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:colors> <urn:graphragprov:entity:Orange%2C%20Green%2C%20White> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:endowment> "$949 million" .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:enrollment> "16801"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:establishedInYear> "1925"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Private> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Coral%20Gables%2C%20Florida%2C%20U.S.> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:mascot> <urn:graphragprov:entity:Sebastian%20the%20Ibis> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Hurricanes> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:postgraduateEnrollment> "5952"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:president> <urn:graphragprov:entity:Julio%20Frenk> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:provost> <urn:graphragprov:entity:Jeffrey%20Duerk> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:sportingAffiliation> <urn:graphragprov:entity:NCAA%20Division%20I%20--%20ACC> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:undergraduateEnrollment> "10849"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:website> "www.miami.edu" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.713s | model=deepseek-v4-flash
+      tokens:   in=2528 | out=179 | total=2707 | cached=640 | uncached=1888
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:first%20debate> <urn:graphragprov:predicate:heldAt> <urn:graphragprov:entity:University%20of%20Miami> .
+  - <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:enrollment> "16801"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:first%20debate> <urn:graphragprov:predicate:heldAt> ?place . ?place <urn:graphragprov:predicate:enrollment> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_9fd7598591d5cedb>
+  FROM <urn:graphragprov:unit:u_a26a667515fa1692>
+  WHERE { <urn:graphragprov:entity:first%20debate> <urn:graphragprov:predicate:heldAt> ?place . ?place <urn:graphragprov:predicate:enrollment> ?answer . }
+
+GraphDB execution:
+  observed answers: ('16801',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['2004 United States presidential election', 'University of Miami']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__29349_92763
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__29349_92763/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7950
+output tokens:         5878
+total tokens:          13828
+cached input tokens:   4480
+uncached input tokens: 3470
+cumulative LLM seconds: 26.314
+
+statement occurrences: 38
+semantic triples:      38
+entity nodes:          27
+literal values:        17
+predicates:            36
+query attempts:        1
+observed answers:      ('16801',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 24.610s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.053s
+  graph.materialization [attempt=1]: 0.061s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.714s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.443s

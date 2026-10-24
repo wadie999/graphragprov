@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_0ab99175fb27b40e1743336e488627fad65f783589f75f052349ad6c87590e47
+Title: Tucson, Arizona
+Text:
+The Tucson metro area is served by many local television stations and is the 68th largest designated market area (DMA) in the U.S. with 433,310 homes (0.39% of the total U.S.). It is limited to the three counties of southeastern Arizona (Pima, Santa Cruz, and Cochise) The major television networks serving Tucson are: KVOA 4 (NBC), KGUN 9 (ABC), KMSB-TV 11 (Fox), KOLD-TV 13 (CBS), KTTU 18 (My Network TV) and KWBA 58 (The CW). KUAT-TV 6 is a PBS affiliate run by the University of Arizona (as is sister station KUAS 27).
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "Tucson metro area",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Tucson metro area",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "percentageOfUS",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "0.39% of the total U.S.",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "0.39%",
+        "datatype": "decimal",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "0.39%",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].object.value must use canonical decimal notation"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

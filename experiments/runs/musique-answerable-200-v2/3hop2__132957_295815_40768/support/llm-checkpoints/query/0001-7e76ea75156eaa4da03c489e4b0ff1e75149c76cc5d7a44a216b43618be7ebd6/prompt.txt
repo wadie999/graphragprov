@@ -1,0 +1,217 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the maker of the Acura Legend, the manufacturer of Toyopet Master, and Nissan open US assembly plants?
+
+Expected answer: 1981
+
+Gold decomposition:
+1. question='Who made Acura Legend?'; answer='Honda'; support_paragraph=11
+2. question='Toyopet Master >> manufacturer'; answer='Toyota'; support_paragraph=14
+3. question='When did #1 , #2 and Nissan open US assembly plants?'; answer='1981'; support_paragraph=4
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Acura%203.5RL> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:KA9%20series%20Honda%20Legend> .
+<urn:graphragprov:entity:Acura%203.5RL> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:North%20American%20version> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:bodyStyle> <urn:graphragprov:entity:coupe> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:bodyStyle> <urn:graphragprov:entity:sedan> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:brand> <urn:graphragprov:entity:Acura> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:flagship%20sedan> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:mid-size%20luxury%2Fexecutive%20car> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:manufacturedBy> <urn:graphragprov:entity:Honda> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:productionEndYear> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:productionStartYear> "1985"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:renamedInYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Acura%203.5RL> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:soldIn> <urn:graphragprov:entity:Canada> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:soldIn> <urn:graphragprov:entity:U.S.> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:soldIn> <urn:graphragprov:entity:parts%20of%20China> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:soldUnder> <urn:graphragprov:entity:Acura%20nameplate> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:vehicleClass> <urn:graphragprov:entity:full-size%20car> .
+<urn:graphragprov:entity:Acura%20Legend> <urn:graphragprov:predicate:vehicleClass> <urn:graphragprov:entity:mid-size%20car> .
+<urn:graphragprov:entity:Datsun%20810> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:AM-FM%20radios> .
+<urn:graphragprov:entity:Datsun%20810> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:air%20conditioning> .
+<urn:graphragprov:entity:Datsun%20810> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:central%20locking> .
+<urn:graphragprov:entity:Datsun%20810> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20steering> .
+<urn:graphragprov:entity:Datsun%20810> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20windows> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:affectedBy> <urn:graphragprov:entity:1981%20voluntary%20export%20restraints> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Acura> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:establishedLuxuryDivision> <urn:graphragprov:entity:Acura> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:US%20assembly%20plants> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:openedAssemblyPlantsInYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mazda> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Mazda%20616> .
+<urn:graphragprov:entity:Mazda%20616> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:AM-FM%20radios> .
+<urn:graphragprov:entity:Mazda%20616> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:air%20conditioning> .
+<urn:graphragprov:entity:Mazda%20616> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:central%20locking> .
+<urn:graphragprov:entity:Mazda%20616> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20steering> .
+<urn:graphragprov:entity:Mazda%20616> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20windows> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:affectedBy> <urn:graphragprov:entity:1981%20voluntary%20export%20restraints> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Infiniti> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:establishedLuxuryDivision> <urn:graphragprov:entity:Infiniti> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Datsun%20810> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:US%20assembly%20plants> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:openedAssemblyPlantsInYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:affectedBy> <urn:graphragprov:entity:1981%20voluntary%20export%20restraints> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Lexus> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:establishedLuxuryDivision> <urn:graphragprov:entity:Lexus> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Toyota%20Cressida> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:US%20assembly%20plants> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:openedAssemblyPlantsInYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:AM-FM%20radios> .
+<urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:air%20conditioning> .
+<urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:central%20locking> .
+<urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20steering> .
+<urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20windows> .
+<urn:graphragprov:entity:Toyota%20Cressida> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:AM-FM%20radios> .
+<urn:graphragprov:entity:Toyota%20Cressida> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:air%20conditioning> .
+<urn:graphragprov:entity:Toyota%20Cressida> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:central%20locking> .
+<urn:graphragprov:entity:Toyota%20Cressida> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20steering> .
+<urn:graphragprov:entity:Toyota%20Cressida> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:power%20windows> .
+<urn:graphragprov:entity:Coronaline> <urn:graphragprov:predicate:developedBy> <urn:graphragprov:entity:Toyota> .
+<urn:graphragprov:entity:Coronaline> <urn:graphragprov:predicate:smallerVersionOf> <urn:graphragprov:entity:Masterline> .
+<urn:graphragprov:entity:Coronaline> <urn:graphragprov:predicate:soldThrough> <urn:graphragprov:entity:Toyopet%20dealers> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:engineUpgradedInYear> "1956-08"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:firstCarBasedTrucksInJapan> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:hasVariant> <urn:graphragprov:entity:Masterline%20RR16%20pickup> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:hasVariant> <urn:graphragprov:entity:Masterline%20RR17%20van> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:hasVariant> <urn:graphragprov:entity:Masterline%20RR19%20double%20pickup> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:commercial%20models> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:productionEndYear> "1959-03"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:productionStartYear> "1955-11"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:SG%20commercial%20models> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:replacedBy> <urn:graphragprov:entity:Crown-based%20Masterline> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:soldThrough> <urn:graphragprov:entity:Toyota%20Store%20sales%20channel> .
+<urn:graphragprov:entity:Masterline> <urn:graphragprov:predicate:vehicleClass> <urn:graphragprov:entity:car-based%20trucks> .
+<urn:graphragprov:entity:Masterline%20RR16%20pickup> <urn:graphragprov:predicate:bodyStyle> <urn:graphragprov:entity:single-cab%20pickup> .
+<urn:graphragprov:entity:Masterline%20RR16%20pickup> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:pickup> .
+<urn:graphragprov:entity:Masterline%20RR16%20pickup> <urn:graphragprov:predicate:introductionYear> "1955-11"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Masterline%20RR17%20van> <urn:graphragprov:predicate:bodyStyle> <urn:graphragprov:entity:van> .
+<urn:graphragprov:entity:Masterline%20RR17%20van> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:van> .
+<urn:graphragprov:entity:Masterline%20RR17%20van> <urn:graphragprov:predicate:introductionYear> "1955-11"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Masterline%20RR19%20double%20pickup> <urn:graphragprov:predicate:bodyStyle> <urn:graphragprov:entity:double%20pickup> .
+<urn:graphragprov:entity:Masterline%20RR19%20double%20pickup> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:two%20rows%20of%20seats> .
+<urn:graphragprov:entity:Masterline%20RR19%20double%20pickup> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:double%20pickup> .
+<urn:graphragprov:entity:Masterline%20RR19%20double%20pickup> <urn:graphragprov:predicate:introductionYear> "1956-08"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Toyopet%20Master> <urn:graphragprov:predicate:discontinuationYear> "1959-03"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Toyopet%20Master> <urn:graphragprov:predicate:hasVariant> <urn:graphragprov:entity:Masterline> .
+<urn:graphragprov:entity:Toyopet%20Master> <urn:graphragprov:predicate:introductionYear> "1955-11"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Toyopet%20Master> <urn:graphragprov:predicate:manufacturedBy> <urn:graphragprov:entity:Toyota> .
+<urn:graphragprov:entity:Toyopet%20Master> <urn:graphragprov:predicate:soldThrough> <urn:graphragprov:entity:Toyota%20Store%20sales%20channel> .

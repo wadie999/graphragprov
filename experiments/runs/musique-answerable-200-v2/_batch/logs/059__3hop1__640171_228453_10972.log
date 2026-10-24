@@ -1,0 +1,217 @@
+
+H0 one-case execution
+  case:          3hop1__640171_228453_10972
+  hops:          3
+  question:      When did the headquarters city of the Blanton's manufacturer elect its first black mayor?
+  expected:      1970s
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__640171_228453_10972/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=9 title="Blanton's"
+  source unit: u_83c19d94833de47e19608fd0a377f75f54813116545c85776e5d0c7dad490d4b
+  text chars:  157
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.632s | model=deepseek-v4-flash
+      tokens:   in=2183 | out=852 | total=3035 | cached=1920 | uncached=263
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 115 / 166 (69.3%)
+    characters text:     106 / 157 (67.5%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  15 chars
+      "Blanton's is a"
+    statement density:  36.14 / 1000 chars
+    title reliance:      6 / 6 (100.0%)
+
+[GRAPH 2/3] paragraph=6 title='Sazerac'
+  source unit: u_67b848f9821c5d7b2241f5cebe3418efe4594e0e0a5752662b02cf7e5e255794
+  text chars:  235
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.320s | model=deepseek-v4-flash
+      tokens:   in=2268 | out=1033 | total=3301 | cached=1920 | uncached=348
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 137 / 242 (56.6%)
+    characters text:     130 / 235 (55.3%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  50 chars
+      '. The drink is most traditionally a combination of'
+    statement density:  28.93 / 1000 chars
+    title reliance:      5 / 7 (71.4%)
+
+[GRAPH 3/3] paragraph=0 title='Black people'
+  source unit: u_a1187dbfe32887e2f2c7a2df3af4353fc34e1772f8fc713ae1260463f1a8eaa8
+  text chars:  765
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.358s | model=deepseek-v4-flash
+      tokens:   in=2475 | out=1949 | total=4424 | cached=2176 | uncached=299
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 575 / 777 (74.0%)
+    characters text:     575 / 765 (75.2%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  40 chars
+      'the widescale disruption and damage of'
+    statement density:  16.73 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 26
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      26
+resource nodes:        29
+entity nodes:          29
+literal values:        2
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cocktail> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20Orleans> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:namedFor> <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:originalIngredient> <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:variationOf> <urn:graphragprov:entity:cognac%20or%20whiskey%20cocktail> .
+  <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:brand> .
+  <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:productType> <urn:graphragprov:entity:cognac%20brandy> .
+  <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:distilledAt> <urn:graphragprov:entity:Buffalo%20Trace%20Distillery> .
+  <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:distilledIn> <urn:graphragprov:entity:Frankfort%2C%20Kentucky> .
+  <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:brand> .
+  <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:marketedBy> <urn:graphragprov:entity:Sazerac%20Company> .
+  <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Sazerac%20Company> .
+  <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:productType> <urn:graphragprov:entity:bourbon%20whiskey> .
+  <urn:graphragprov:entity:Brazilians%20of%20at%20least%20partial%20African%20heritage> <urn:graphragprov:predicate:makeUp> <urn:graphragprov:entity:large%20percentage%20of%20the%20population> .
+  <urn:graphragprov:entity:New%20Orleans> <urn:graphragprov:predicate:electedFirstBlackMayorIn> "1970s" .
+  <urn:graphragprov:entity:New%20Orleans> <urn:graphragprov:predicate:electedWhiteMayorAfter> <urn:graphragprov:entity:Hurricane%20Katrina%20in%202005> .
+  <urn:graphragprov:entity:US%20cities%20with%20black%20majorities> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:Detroit> .
+  <urn:graphragprov:entity:US%20cities%20with%20black%20majorities> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:New%20Orleans> .
+  <urn:graphragprov:entity:US%20cities%20with%20black%20majorities> <urn:graphragprov:predicate:haveNotElectedWhiteMayorsSince> <urn:graphragprov:entity:after%20the%20civil%20rights%20movement> .
+  <urn:graphragprov:entity:US%20cities%20with%20black%20majorities> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cities> .
+  <urn:graphragprov:entity:Voting%20Rights%20Act%20of%201965> <urn:graphragprov:predicate:protected> <urn:graphragprov:entity:franchise%20for%20minorities> .
+  <urn:graphragprov:entity:blacks%20in%20the%20South> <urn:graphragprov:predicate:regainedPowerToVote> <urn:graphragprov:entity:for%20the%20first%20time%20since%20the%20turn%20of%20the%2020th%20century> .
+  <urn:graphragprov:entity:city%20of%20Salvador%2C%20Bahia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:city> .
+  <urn:graphragprov:entity:city%20of%20Salvador%2C%20Bahia> <urn:graphragprov:predicate:percentageOfPeopleOfColor> "80%" .
+  <urn:graphragprov:entity:few%20blacks> <urn:graphragprov:predicate:electedAs> <urn:graphragprov:entity:politicians> .
+  <urn:graphragprov:entity:voters> <urn:graphragprov:predicate:elected> <urn:graphragprov:entity:mayor%20of%20color> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.727s | model=deepseek-v4-flash
+      tokens:   in=2173 | out=235 | total=2408 | cached=640 | uncached=1533
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Sazerac%20Company> .
+  - <urn:graphragprov:entity:Sazerac%20Company> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:New%20Orleans> .
+  - <urn:graphragprov:entity:New%20Orleans> <urn:graphragprov:predicate:electedFirstBlackMayorIn> "1970s" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:producedBy> ?manufacturer . ?manufacturer <urn:graphragprov:predicate:headquartersLocation> ?city . ?city <urn:graphragprov:predicate:electedFirstBlackMayorIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_67b848f9821c5d7b>
+  FROM <urn:graphragprov:unit:u_83c19d94833de47e>
+  FROM <urn:graphragprov:unit:u_a1187dbfe32887e2>
+  WHERE { <urn:graphragprov:entity:Blanton%27s> <urn:graphragprov:predicate:producedBy> ?manufacturer . ?manufacturer <urn:graphragprov:predicate:headquartersLocation> ?city . ?city <urn:graphragprov:predicate:electedFirstBlackMayorIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__640171_228453_10972
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__640171_228453_10972/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9099
+output tokens:         4069
+total tokens:          13168
+cached input tokens:   6656
+uncached input tokens: 2443
+cumulative LLM seconds: 20.037
+
+statement occurrences: 26
+semantic triples:      26
+entity nodes:          29
+literal values:        2
+predicates:            20
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.318s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.094s
+  graph.materialization [attempt=1]: 0.077s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.728s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.434s

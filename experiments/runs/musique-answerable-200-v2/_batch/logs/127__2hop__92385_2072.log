@@ -1,0 +1,185 @@
+
+H0 one-case execution
+  case:          2hop__92385_2072
+  hops:          2
+  question:      What is the public library system called in the place where the Cosbys live in New York?
+  expected:      Brooklyn Public Library
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__92385_2072/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=16 title='The Cosby Show'
+  source unit: u_967d5f07fa3c00d6d52079435cbb252c8b750bb85059717711620119f7953bc6
+  text chars:  309
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.042s | model=deepseek-v4-flash
+      tokens:   in=2208 | out=1746 | total=3954 | cached=2048 | uncached=160
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 251 / 323 (77.7%)
+    characters text:     237 / 309 (76.7%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  9 chars
+      'The show'
+    statement density:  37.15 / 1000 chars
+    title reliance:      1 / 12 (8.3%)
+
+[GRAPH 2/2] paragraph=17 title='New York City'
+  source unit: u_9b7df89607b6f55d7c76f2af0945b9158194cb897d036e57d84074d613c50b00
+  text chars:  317
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.948s | model=deepseek-v4-flash
+      tokens:   in=2339 | out=1297 | total=3636 | cached=2048 | uncached=291
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 218 / 330 (66.1%)
+    characters text:     218 / 317 (68.8%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  23 chars
+      'in the United States,'
+    statement density:  27.27 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 21
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      21
+resource nodes:        23
+entity nodes:          23
+literal values:        2
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Clair%20Huxtable> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:attorney> .
+  <urn:graphragprov:entity:Clair%20Huxtable> <urn:graphragprov:predicate:roleInFamily> <urn:graphragprov:entity:matriarch> .
+  <urn:graphragprov:entity:Clair%20Huxtable> <urn:graphragprov:predicate:spouseOf> <urn:graphragprov:entity:Cliff%20Huxtable> .
+  <urn:graphragprov:entity:Cliff%20Huxtable> <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:prominent%20jazz%20trombonist> .
+  <urn:graphragprov:entity:Cliff%20Huxtable> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:obstetrician> .
+  <urn:graphragprov:entity:Cliff%20Huxtable> <urn:graphragprov:predicate:roleInFamily> <urn:graphragprov:entity:patriarch> .
+  <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:address> <urn:graphragprov:entity:10%20Stigwood%20Avenue> .
+  <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:ethnicity> <urn:graphragprov:entity:African%20-%20American> .
+  <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brooklyn%20Heights%2C%20New%20York> .
+  <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:brownstone> .
+  <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:socialClass> <urn:graphragprov:entity:upper%20middle%20-%20class> .
+  <urn:graphragprov:entity:The%20Cosby%20Show> <urn:graphragprov:predicate:focusesOn> <urn:graphragprov:entity:Huxtable%20family> .
+  <urn:graphragprov:entity:Brooklyn%20Public%20Library> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Brooklyn> .
+  <urn:graphragprov:entity:New%20York%20Public%20Library> <urn:graphragprov:predicate:hasLargestCollection> "largest collection" .
+  <urn:graphragprov:entity:New%20York%20Public%20Library> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20library%20system> .
+  <urn:graphragprov:entity:New%20York%20Public%20Library> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Manhattan> .
+  <urn:graphragprov:entity:New%20York%20Public%20Library> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Staten%20Island> .
+  <urn:graphragprov:entity:New%20York%20Public%20Library> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:the%20Bronx> .
+  <urn:graphragprov:entity:Queens%20Borough%20Public%20Library> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20library%20system> .
+  <urn:graphragprov:entity:Queens%20Borough%20Public%20Library> <urn:graphragprov:predicate:rank> "second largest" .
+  <urn:graphragprov:entity:Queens%20Borough%20Public%20Library> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Queens> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.697s | model=deepseek-v4-flash
+      tokens:   in=1829 | out=212 | total=2041 | cached=640 | uncached=1189
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brooklyn%20Heights%2C%20New%20York> .
+  - <urn:graphragprov:entity:Brooklyn%20Public%20Library> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Brooklyn> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brooklyn%20Heights%2C%20New%20York> . ?answer <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Brooklyn> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_967d5f07fa3c00d6>
+  FROM <urn:graphragprov:unit:u_9b7df89607b6f55d>
+  WHERE { <urn:graphragprov:entity:Huxtable%20family> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brooklyn%20Heights%2C%20New%20York> . ?answer <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Brooklyn> . }
+
+GraphDB execution:
+  observed answers: ('Brooklyn Public Library',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['New York City', 'The Cosby Show']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__92385_2072
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__92385_2072/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6376
+output tokens:         3255
+total tokens:          9631
+cached input tokens:   4736
+uncached input tokens: 1640
+cumulative LLM seconds: 15.687
+
+statement occurrences: 21
+semantic triples:      21
+entity nodes:          23
+literal values:        2
+predicates:            14
+query attempts:        1
+observed answers:      ('Brooklyn Public Library',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 13.999s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.048s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.698s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.447s

@@ -1,0 +1,295 @@
+
+H0 one-case execution
+  case:          4hop1__625463_229349_66759_54221
+  hops:          4
+  question:      Storm of the Century filmed in state A based on the book by the author who wrote a story featuring the author of The Hope. When do alcohol sales start in state A?
+  expected:      5am
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__625463_229349_66759_54221/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=18 title='The Hope (novel)'
+  source unit: u_68d0f75999c5658d12e63ee79b02cc20286415f627e4c2985c8eb48de31d83de
+  text chars:  302
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.863s | model=deepseek-v4-flash
+      tokens:   in=2264 | out=1131 | total=3395 | cached=1920 | uncached=344
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 207 / 318 (65.1%)
+    characters text:     207 / 302 (68.5%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  46 chars
+      '(known in Israel as "Operation Kadesh"), and'
+    statement density:  25.16 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[GRAPH 2/4] paragraph=13 title='Herman Wouk Is Still Alive'
+  source unit: u_8efcc1a2e3ccbc916309b9a97e54e8901c95155df0a231134cd93a477ec7811a
+  text chars:  223
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.413s | model=deepseek-v4-flash
+      tokens:   in=2335 | out=1027 | total=3362 | cached=1920 | uncached=415
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 163 / 249 (65.5%)
+    characters text:     137 / 223 (61.4%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  34 chars
+      '"Herman Wouk Is Still Alive" is a'
+    statement density:  28.11 / 1000 chars
+    title reliance:      5 / 7 (71.4%)
+
+[GRAPH 3/4] paragraph=4 title='Storm of the Century'
+  source unit: u_467ae5629e9b4796b6671061cc6da458251fd9d10be7148a6f91a80424d44945
+  text chars:  611
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 6.159s | model=deepseek-v4-flash
+      tokens:   in=2510 | out=1282 | total=3792 | cached=2048 | uncached=462
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 134 / 631 (21.2%)
+    characters text:     114 / 611 (18.7%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           2 / 4 (50.0%)
+    longest uncovered:  244 chars
+      '. The storm is so powerful that all access off the island is blocked, and no one is able to leave the island until the storm is over. While trying to deal with the storm, tragedy…'
+    statement density:  14.26 / 1000 chars
+    title reliance:      6 / 9 (66.7%)
+
+[GRAPH 4/4] paragraph=14 title='Alcohol laws of Maine'
+  source unit: u_2ee0779a82f9710e217de4be7d336c6e67d3b711f3089c79849388b5bd741f1d
+  text chars:  126
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 4.305s | model=deepseek-v4-flash
+      tokens:   in=2512 | out=895 | total=3407 | cached=2048 | uncached=464
+    [LLM graph.reference #5] sending...
+      provider: 1.590s | model=deepseek-v4-flash
+      tokens:   in=580 | out=191 | total=771 | cached=0 | uncached=580
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 1
+
+    initial rejection #5
+      validator:
+        response.statements[5].subject.evidence[0]: quote 'alcohol' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "2 a.m.",
+                "segment": "text"
+              }
+            ],
+            "value": "2 a.m."
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "On New Year's Day, alcohol may be sold until 2 a.m.",
+                "segment": "text"
+              }
+            ],
+            "value": "saleEndTimeOnNewYearsDay"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "alcohol",
+                "segment": "text"
+              }
+            ],
+            "value": "alcohol"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 6
+  coverage:
+    characters combined: 142 / 147 (96.6%)
+    characters text:     121 / 126 (96.0%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  2 chars
+      '.'
+    statement density:  40.82 / 1000 chars
+    title reliance:      2 / 6 (33.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 30
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      30
+resource nodes:        27
+entity nodes:          27
+literal values:        5
+predicates:            21
+
+N-Triples:
+  <urn:graphragprov:entity:Alcohol%20laws%20of%20Maine> <urn:graphragprov:predicate:appliesTo> <urn:graphragprov:entity:Maine> .
+  <urn:graphragprov:entity:Alcohol%20laws%20of%20Maine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:laws> .
+  <urn:graphragprov:entity:alcohol> <urn:graphragprov:predicate:saleDays> "each day of the week" .
+  <urn:graphragprov:entity:alcohol> <urn:graphragprov:predicate:saleEndTime> "1am" .
+  <urn:graphragprov:entity:alcohol> <urn:graphragprov:predicate:saleEndTimeOnNewYearsDay> "2 a.m." .
+  <urn:graphragprov:entity:alcohol> <urn:graphragprov:predicate:saleStartTime> "5am" .
+  <urn:graphragprov:entity:Andr%C3%A9%20Linoge> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:menacing%20stranger> .
+  <urn:graphragprov:entity:Andr%C3%A9%20Linoge> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Colm%20Feore> .
+  <urn:graphragprov:entity:Little%20Tall%20Island> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Maine> .
+  <urn:graphragprov:entity:Storm%20of%20the%20Century> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Maine> .
+  <urn:graphragprov:entity:Storm%20of%20the%20Century> <urn:graphragprov:predicate:hasCharacter> <urn:graphragprov:entity:Andr%C3%A9%20Linoge> .
+  <urn:graphragprov:entity:Storm%20of%20the%20Century> <urn:graphragprov:predicate:hasSetting> <urn:graphragprov:entity:Little%20Tall%20Island> .
+  <urn:graphragprov:entity:Storm%20of%20the%20Century> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:blizzard> .
+  <urn:graphragprov:entity:Storm%20of%20the%20Century> <urn:graphragprov:predicate:setting> <urn:graphragprov:entity:Little%20Tall%20Island> .
+  <urn:graphragprov:entity:Storm%20of%20the%20Century> <urn:graphragprov:predicate:setting> <urn:graphragprov:entity:fictional%20small%20town> .
+  <urn:graphragprov:entity:The%20Glory> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sequel> .
+  <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:pivotal%20events%20in%20the%20history%20of%20the%20State%20of%20Israel%20from%201948%20to%201967> .
+  <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:continuedIn> <urn:graphragprov:entity:The%20Glory> .
+  <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Israel%27s%20War%20of%20Independence> .
+  <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:the%201956%20Sinai%20War> .
+  <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:the%20Six-Day%20War> .
+  <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:historical%20novel> .
+  <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Herman%20Wouk> .
+  <urn:graphragprov:entity:Herman%20Wouk%20Is%20Still%20Alive> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:2011%20Best%20Short%20Fiction%20Bram%20Stoker%20Award> .
+  <urn:graphragprov:entity:Herman%20Wouk%20Is%20Still%20Alive> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:short%20story> .
+  <urn:graphragprov:entity:Herman%20Wouk%20Is%20Still%20Alive> <urn:graphragprov:predicate:publicationDate> "2011-05"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Herman%20Wouk%20Is%20Still%20Alive> <urn:graphragprov:predicate:publishedIn> <urn:graphragprov:entity:The%20Atlantic> .
+  <urn:graphragprov:entity:Herman%20Wouk%20Is%20Still%20Alive> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Stephen%20King> .
+  <urn:graphragprov:entity:Stephen%20King> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Stephen%20King> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:author> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.409s | model=deepseek-v4-flash
+      tokens:   in=2327 | out=358 | total=2685 | cached=640 | uncached=1687
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Herman%20Wouk> .
+  - <urn:graphragprov:entity:Herman%20Wouk%20Is%20Still%20Alive> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Stephen%20King> .
+  - <urn:graphragprov:entity:Storm%20of%20the%20Century> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Maine> .
+  - <urn:graphragprov:entity:alcohol> <urn:graphragprov:predicate:saleStartTime> "5am" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:writtenBy> ?author . ?story <urn:graphragprov:predicate:writtenBy> ?author . ?story <urn:graphragprov:predicate:writtenBy> ?author2 . ?film <urn:graphragprov:predicate:filmedIn> ?state . ?state <urn:graphragprov:predicate:appliesTo> ?law . ?law <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:laws> . ?alcohol <urn:graphragprov:predicate:saleStartTime> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2ee0779a82f9710e>
+  FROM <urn:graphragprov:unit:u_467ae5629e9b4796>
+  FROM <urn:graphragprov:unit:u_68d0f75999c5658d>
+  FROM <urn:graphragprov:unit:u_8efcc1a2e3ccbc91>
+  WHERE { <urn:graphragprov:entity:The%20Hope> <urn:graphragprov:predicate:writtenBy> ?author . ?story <urn:graphragprov:predicate:writtenBy> ?author . ?story <urn:graphragprov:predicate:writtenBy> ?author2 . ?film <urn:graphragprov:predicate:filmedIn> ?state . ?state <urn:graphragprov:predicate:appliesTo> ?law . ?law <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:laws> . ?alcohol <urn:graphragprov:predicate:saleStartTime> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__625463_229349_66759_54221
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__625463_229349_66759_54221/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12528
+output tokens:         4884
+total tokens:          17412
+cached input tokens:   8576
+uncached input tokens: 3952
+cumulative LLM seconds: 25.738
+
+statement occurrences: 30
+semantic triples:      30
+entity nodes:          27
+literal values:        5
+predicates:            21
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 23.344s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.114s
+  graph.materialization [attempt=1]: 0.210s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.410s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.472s

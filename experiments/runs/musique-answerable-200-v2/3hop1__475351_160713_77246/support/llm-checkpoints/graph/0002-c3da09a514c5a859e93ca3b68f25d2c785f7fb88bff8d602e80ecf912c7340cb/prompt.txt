@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_a94ca9e2318ce965fab561480c7e2d2bf8fa8865aa30fbcaff13feaa99ae8273
+Title: Dourkhan
+Text:
+Dourkhan a small town in Gilgit–Baltistan, Pakistan, 1 km from Ali Abad. Dourkhan village is a residential area consisting of about 150 houses(Increasing). A middle school run by the education department of Gilgit–Baltistan is located in Dourkhan, and in 2012 an Air Foundation School system campus was also established. The civil session court of Hunza–Nagar District is also located in Dourkhan, as are offices of PWD and XEN.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "Dourkhan",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Dourkhan",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "distanceTo",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "1 km from",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Ali Abad",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Ali Abad",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].predicate.evidence[0]: quote '1 km from' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 13,
+    "statement": {
+      "subject": {
+        "value": "offices of PWD and XEN",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "offices of PWD and XEN",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "locatedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "as are",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Dourkhan",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Dourkhan",
+            "occurrence": 5
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[13].object.evidence[0]: quote 'Dourkhan' occurs 4 time(s) in source segment 'text'; occurrence 5 does not exist"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

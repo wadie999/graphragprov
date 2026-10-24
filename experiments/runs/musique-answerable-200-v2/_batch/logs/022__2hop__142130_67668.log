@@ -1,0 +1,195 @@
+
+H0 one-case execution
+  case:          2hop__142130_67668
+  hops:          2
+  question:      Who does the Nothing Suits Me Like a Suit artist play in Batman Under the Red Hood?
+  expected:      Nightwing / Dick Grayson
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__142130_67668/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=5 title='Nothing Suits Me Like a Suit'
+  source unit: u_fa0fa0a631b9680166066461120549b0c216992b4a1ef7927dd68061372019a3
+  text chars:  313
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.166s | model=deepseek-v4-flash
+      tokens:   in=2218 | out=1239 | total=3457 | cached=1920 | uncached=298
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 275 / 341 (80.6%)
+    characters text:     247 / 313 (78.9%)
+    characters title:    28 / 28 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  36 chars
+      '"Nothing Suits Me Like a Suit" is a'
+    statement density:  23.46 / 1000 chars
+    title reliance:      6 / 8 (75.0%)
+
+[GRAPH 2/2] paragraph=4 title='Batman: Under the Red Hood'
+  source unit: u_2dd3e439e6eed81d99a3663c6d2087c1507c1e665910b1a163bcb7f434e6abba
+  text chars:  624
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 14.268s | model=deepseek-v4-flash
+      tokens:   in=2429 | out=3385 | total=5814 | cached=1920 | uncached=509
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     23
+  coverage:
+    characters combined: 484 / 650 (74.5%)
+    characters text:     458 / 624 (73.4%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  32 chars
+      'Batman: Under the Red Hood is a'
+    statement density:  35.38 / 1000 chars
+    title reliance:      15 / 23 (65.2%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 31
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      31
+resource nodes:        28
+entity nodes:          28
+literal values:        3
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:animated%20superhero%20direct-to-video%20film> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:partOfSeries> <urn:graphragprov:entity:DC%20Universe%20Animated%20Original%20Movies%20series> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Warner%20Bros.%20Animation> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:publicationYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:releaseDate> "2010-07-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:releasedBy> <urn:graphragprov:entity:Warner%20Home%20Video> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:screenplayWrittenBy> <urn:graphragprov:entity:Judd%20Winick> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:seriesOrdinal> "eighth" .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Bruce%20Greenwood> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jason%20Isaacs> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jensen%20Ackles> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:John%20DiMaggio> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Neil%20Patrick%20Harris> .
+  <urn:graphragprov:entity:Batman%3A%20Under%20the%20Red%20Hood> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wade%20Williams> .
+  <urn:graphragprov:entity:Bruce%20Greenwood> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:Bruce%20Wayne%20%2F%20Batman> .
+  <urn:graphragprov:entity:Jason%20Isaacs> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:Ra%27s%20al%20Ghul> .
+  <urn:graphragprov:entity:Jensen%20Ackles> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:Red%20Hood%20%2F%20Jason%20Todd> .
+  <urn:graphragprov:entity:John%20DiMaggio> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:Joker> .
+  <urn:graphragprov:entity:Judd%20Winick> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Under%20the%20Hood> .
+  <urn:graphragprov:entity:Neil%20Patrick%20Harris> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:Nightwing%20%2F%20Dick%20Grayson> .
+  <urn:graphragprov:entity:Under%20the%20Hood> <urn:graphragprov:predicate:publishedIn> <urn:graphragprov:entity:Batman%20comic> .
+  <urn:graphragprov:entity:Wade%20Williams> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:Black%20Mask> .
+  <urn:graphragprov:entity:Carter%20Bays> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Primetime%20Emmy%20Award%20for%20Outstanding%20Original%20Music%20and%20Lyrics> .
+  <urn:graphragprov:entity:Craig%20Thomas> <urn:graphragprov:predicate:nominatedFor> <urn:graphragprov:entity:Primetime%20Emmy%20Award%20for%20Outstanding%20Original%20Music%20and%20Lyrics> .
+  <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:fromEpisode> <urn:graphragprov:entity:Girls%20Versus%20Suits> .
+  <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Neil%20Patrick%20Harris> .
+  <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:the%20cast%20of%20the%20comedy%20series%20%22How%20I%20Met%20Your%20Mother%22> .
+  <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Carter%20Bays> .
+  <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Craig%20Thomas> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.452s | model=deepseek-v4-flash
+      tokens:   in=2661 | out=239 | total=2900 | cached=640 | uncached=2021
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Neil%20Patrick%20Harris> .
+  - <urn:graphragprov:entity:Neil%20Patrick%20Harris> <urn:graphragprov:predicate:playsRole> <urn:graphragprov:entity:Nightwing%20%2F%20Dick%20Grayson> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Neil%20Patrick%20Harris> . <urn:graphragprov:entity:Neil%20Patrick%20Harris> <urn:graphragprov:predicate:playsRole> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2dd3e439e6eed81d>
+  FROM <urn:graphragprov:unit:u_fa0fa0a631b96801>
+  WHERE { <urn:graphragprov:entity:Nothing%20Suits%20Me%20Like%20a%20Suit> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Neil%20Patrick%20Harris> . <urn:graphragprov:entity:Neil%20Patrick%20Harris> <urn:graphragprov:predicate:playsRole> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Nightwing / Dick Grayson',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Batman: Under the Red Hood', 'Nothing Suits Me Like a Suit']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__142130_67668
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__142130_67668/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7308
+output tokens:         4863
+total tokens:          12171
+cached input tokens:   4480
+uncached input tokens: 2828
+cumulative LLM seconds: 22.886
+
+statement occurrences: 31
+semantic triples:      31
+entity nodes:          28
+literal values:        3
+predicates:            17
+query attempts:        1
+observed answers:      ('Nightwing / Dick Grayson',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.441s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.066s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.453s
+  graphdb.semantic [attempt=1]: 0.006s
+  provenance.execution [attempt=1]: 0.435s

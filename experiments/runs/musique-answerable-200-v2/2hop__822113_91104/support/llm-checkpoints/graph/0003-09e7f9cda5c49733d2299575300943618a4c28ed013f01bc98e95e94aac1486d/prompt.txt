@@ -1,0 +1,76 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_4d4320242e14ca7c34eaa3e7d632e66d70af3825851e74ff9cc692dba1a73437
+Title: ATS-6
+Text:
+ATS - 6 (Applications Technology Satellite - 6) was a NASA experimental satellite, built by Fairchild Space and Electronics Division It has been called the world's first educational satellite as well as world's first experimental Direct Broadcast Satellite as part of the Satellite Instructional Television Experiment between NASA and Indian Space Research Organisation (ISRO). It was launched May 30, 1974, and decommissioned July 1979. At the time of launch, it was the most powerful telecommunication satellite in orbit. ATS - 6 carried no fewer than 23 different experiments, and introduced several breakthroughs. It was the first 3 - axis stabilized spacecraft in geostationary orbit. It was also the first to use experimentally with some success electric propulsion in geostationary orbit. It also carried several particle physics experiments, including the first heavy ion detector in geostationary orbit.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 16,
+    "statement": {
+      "subject": {
+        "value": "ATS-6",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "ATS-6",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "ATS - 6",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "used",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "used",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "electric propulsion",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "electric propulsion",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[16].predicate.evidence[0]: quote 'used' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

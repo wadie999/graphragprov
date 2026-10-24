@@ -1,0 +1,188 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What dissolved the privileges in Poland of the empire that helped the patriots during the Revolutionary War, the Kingdom that acquired some Thuringian territory in 1815, and the Habsburg Monarchy?
+
+Expected answer: March Constitution of Poland
+
+Gold decomposition:
+1. question='Which kingdom acquired some Thuringian territory?'; answer='the Kingdom of Prussia'; support_paragraph=1
+2. question='who helped the patriots win the revolutionary war'; answer='the Russian Empire'; support_paragraph=17
+3. question='What dissolved the priveleges of #2 , #1 or Habsburg Monarchy?'; answer='March Constitution of Poland'; support_paragraph=7
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:beganExploration> <urn:graphragprov:entity:North%20America%27s%20west%20coast> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:lasting%20legacy%20of%20the%20American%20Revolution%20abroad> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:didNotSendTroopsOrSuppliesTo> <urn:graphragprov:entity:British%20Empire> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:didNotSendTroopsOrSuppliesTo> <urn:graphragprov:entity:Thirteen%20Colonies> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:establishedColony> <urn:graphragprov:entity:Alaska> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:establishedColonyInYear> "the year following the combat's conclusion" .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:empire> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:global%20conflict%20of%20colonial%20supremacy> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:American%20Revolutionary%20War> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:playedRoleIn> <urn:graphragprov:entity:international%20diplomacy> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:respondedTo> <urn:graphragprov:entity:Declaration%20of%20Independence> .
+<urn:graphragprov:entity:global%20conflict%20of%20colonial%20supremacy> <urn:graphragprov:predicate:between> <urn:graphragprov:entity:Kingdom%20of%20Great%20Britain> .
+<urn:graphragprov:entity:global%20conflict%20of%20colonial%20supremacy> <urn:graphragprov:predicate:between> <urn:graphragprov:entity:Thirteen%20Colonies> .
+<urn:graphragprov:entity:Confederation%20of%20the%20Rhine> <urn:graphragprov:predicate:organizedInYear> "1806"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Congress%20of%20Vienna> <urn:graphragprov:predicate:confirmedChanges> <urn:graphragprov:entity:Thuringian%20states> .
+<urn:graphragprov:entity:Congress%20of%20Vienna> <urn:graphragprov:predicate:year> "1815"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:German%20Empire> <urn:graphragprov:predicate:unificationLedBy> <urn:graphragprov:entity:Prussia> .
+<urn:graphragprov:entity:German%20Mediatisation> <urn:graphragprov:predicate:endYear> "1814"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:German%20Mediatisation> <urn:graphragprov:predicate:startYear> "1795"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Kingdom%20of%20Prussia> <urn:graphragprov:predicate:acquiredTerritory> <urn:graphragprov:entity:Thuringian%20territory> .
+<urn:graphragprov:entity:Kingdom%20of%20Prussia> <urn:graphragprov:predicate:administeredTerritoryIn> <urn:graphragprov:entity:Province%20of%20Saxony> .
+<urn:graphragprov:entity:Reuss%20Elder%20Line> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:principality> .
+<urn:graphragprov:entity:Reuss%20Younger%20Line> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:principality> .
+<urn:graphragprov:entity:Saxe-Altenburg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Thuringian%20duchy> .
+<urn:graphragprov:entity:Saxe-Coburg> <urn:graphragprov:predicate:votedToJoin> <urn:graphragprov:entity:Bavaria> .
+<urn:graphragprov:entity:Saxe-Coburg-Gotha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Thuringian%20duchy> .
+<urn:graphragprov:entity:Saxe-Meiningen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Thuringian%20duchy> .
+<urn:graphragprov:entity:Saxe-Weimar-Eisenach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Thuringian%20duchy> .
+<urn:graphragprov:entity:Schwarzburg-Rudolstadt> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Thuringian%20duchy> .
+<urn:graphragprov:entity:Schwarzburg-Sondershausen> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Thuringian%20duchy> .
+<urn:graphragprov:entity:Thuringian%20duchies> <urn:graphragprov:predicate:becamePartOf> <urn:graphragprov:entity:German%20Empire> .
+<urn:graphragprov:entity:Thuringian%20duchies> <urn:graphragprov:predicate:becamePartOfInYear> "1871"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Thuringian%20states> <urn:graphragprov:predicate:includedIn> <urn:graphragprov:entity:Confederation%20of%20the%20Rhine> .
+<urn:graphragprov:entity:Thuringian%20states> <urn:graphragprov:predicate:includedIn> <urn:graphragprov:entity:German%20Confederation> .
+<urn:graphragprov:entity:Thuringian%20states> <urn:graphragprov:predicate:mergedInYear> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Thuringian%20states> <urn:graphragprov:predicate:mergedInto> <urn:graphragprov:entity:Thuringia> .
+<urn:graphragprov:entity:Thuringian%20states> <urn:graphragprov:predicate:reorderedDuring> <urn:graphragprov:entity:German%20Mediatisation> .
+<urn:graphragprov:entity:Weimar> <urn:graphragprov:predicate:becameCapitalOf> <urn:graphragprov:entity:Thuringia> .
+<urn:graphragprov:entity:coat%20of%20arms%20of%20Thuringia> <urn:graphragprov:predicate:wasSimplerThan> <urn:graphragprov:entity:previous%20coat%20of%20arms> .
+<urn:graphragprov:entity:Habsburg%20Monarchy> <urn:graphragprov:predicate:influencedLegitimationOf> <urn:graphragprov:entity:Szlachta> .
+<urn:graphragprov:entity:Kingdom%20of%20Prussia> <urn:graphragprov:predicate:influencedLegitimationOf> <urn:graphragprov:entity:Szlachta> .
+<urn:graphragprov:entity:March%20Constitution%20of%20Poland> <urn:graphragprov:predicate:dissolvedPrivilegesOf> <urn:graphragprov:entity:Szlachta> .
+<urn:graphragprov:entity:Russian%20Empire> <urn:graphragprov:predicate:influencedLegitimationOf> <urn:graphragprov:entity:Szlachta> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:Livonian%20nobles> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:Ruthenian%20boyars> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:local%20nobility> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:nobility> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Poland> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Polish%E2%80%93Lithuanian%20Commonwealth> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:percentageOfPopulation> "10–12%" .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:percentageOfPopulation> "16%" .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:percentageOfPopulation> "25%" .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:percentageOfPopulation> "30%" .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:percentageOfPopulation> "6.6%" .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:percentageOfPopulation> "8%" .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:privilegesDissolvedBy> <urn:graphragprov:entity:March%20Constitution%20of%20Poland> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:privilegesDissolvedInYear> "1921"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Szlachta> <urn:graphragprov:predicate:sovereignRulesEndedInYear> "1795"^^<http://www.w3.org/2001/XMLSchema#gYear> .

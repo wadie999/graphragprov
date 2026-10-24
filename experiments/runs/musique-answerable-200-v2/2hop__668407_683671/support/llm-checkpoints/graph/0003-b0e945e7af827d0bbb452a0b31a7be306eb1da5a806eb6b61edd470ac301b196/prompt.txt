@@ -1,0 +1,108 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_f9e3bff5da9882f4aaaa08ffab74f86a980bc9271760e3c43423d12f9accee11
+Title: Empress Dowager Wang (Rui)
+Text:
+Empress Dowager Wang (王太后, personal name unknown) (died 928) was a concubine of the late-Tang Dynasty warlord Yang Xingmi and the mother of his son Yang Pu, the final ruler and the only emperor of the Wu state founded upon the territory that Yang Xingmi took. During Yang Pu's reign as emperor, she was honored as empress dowager.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 1,
+    "statement": {
+      "subject": {
+        "value": "Empress Dowager Wang (Rui)",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Empress Dowager Wang (Rui)",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "diedOn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "died",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "928",
+        "datatype": "year",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "928",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[1].object.value must use YYYY notation"
+  },
+  {
+    "statement_index": 8,
+    "statement": {
+      "subject": {
+        "value": "Yang Pu",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Yang Pu",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "rulerOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "ruler of the Wu state",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Wu state",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Wu state",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[8].predicate.evidence[0]: quote 'ruler of the Wu state' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

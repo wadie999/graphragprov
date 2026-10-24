@@ -1,0 +1,229 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When was the region immediately north of the region where Israel is located and the final destination for the export crops established?
+
+Expected answer: 1932
+
+Gold decomposition:
+1. question='what region of the world is israel located'; answer='Middle East,'; support_paragraph=12
+2. question='Where was the final destination for the export crops ?'; answer='Persian Gulf'; support_paragraph=4
+3. question='what region lies immediately to the north of #1 and #2'; answer='Kingdom of Saudi Arabia'; support_paragraph=16
+4. question='when was #3 established'; answer='1932'; support_paragraph=3
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:marketing%20networks> .
+<urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Bombay> .
+<urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Calcutta> .
+<urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Hong%20Kong> .
+<urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Istanbul> .
+<urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Port%20Said> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:economicBase> <urn:graphragprov:entity:provincial%20products> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:economicCenterOf> <urn:graphragprov:entity:southern%20Iran> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:cement%20production> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:fertilizers> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:metalwork> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:rugs> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:sugar> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:textile%20products> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:wood%20products> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasOilRefinery> <urn:graphragprov:entity:major%20oil%20refinery> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:isCenterFor> <urn:graphragprov:entity:Iran%27s%20electronic%20industries> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:southern%20Iran> .
+<urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:shareOfNationalElectronicInvestment> "0.53"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Suez%20Canal> <urn:graphragprov:predicate:allowedImport> <urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> .
+<urn:graphragprov:entity:Suez%20Canal> <urn:graphragprov:predicate:openingYear> "1869"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:cash%20crops> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:cotton> .
+<urn:graphragprov:entity:cash%20crops> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:opium%20poppy> .
+<urn:graphragprov:entity:cash%20crops> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:tobacco> .
+<urn:graphragprov:entity:export%20crops> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:Persian%20Gulf> .
+<urn:graphragprov:entity:export%20crops> <urn:graphragprov:predicate:passedThrough> <urn:graphragprov:entity:Shiraz> .
+<urn:graphragprov:entity:farmers> <urn:graphragprov:predicate:planted> <urn:graphragprov:entity:cash%20crops> .
+<urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> <urn:graphragprov:predicate:importedInto> <urn:graphragprov:entity:southern%20Iran> .
+<urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:India> .
+<urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:citrus%20fruits> .
+<urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:cotton> .
+<urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:grapes> .
+<urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:rice> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Red%20Sea> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasArea> "2217949"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasAreaEstimate> "2,149,690 to 2,240,000 sq. kilometres" .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasAreaUnit> <urn:graphragprov:entity:square%20kilometres> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Oman> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Republic%20of%20Yemen> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:United%20Arab%20Emirates> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCultivableAreaPercentage> "less than 1" .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationDistribution> "varied greatly among the towns of the eastern and western coastal areas, the densely populated interior oases, and the vast, almost empty deserts" .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:largestCountryOf> <urn:graphragprov:entity:Arabia> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southwest%20Asia> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupies> <urn:graphragprov:entity:Arabian%20Peninsula> .
+<urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupiesPercentageOf> "80"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:holiest%20place%20in%20Islam> .
+<urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mecca> .
+<urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:holiest%20place%20in%20Islam> .
+<urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Medina> .
+<urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:beganConquestsInYear> "1902"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:captured> <urn:graphragprov:entity:Riyadh> .
+<urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:united> <urn:graphragprov:entity:four%20regions> .
+<urn:graphragprov:entity:Riyadh> <urn:graphragprov:predicate:ancestralHomeOf> <urn:graphragprov:entity:House%20of%20Saud> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:effectively> <urn:graphragprov:entity:hereditary%20dictatorship> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Ibn%20Saud> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:governedAlong> <urn:graphragprov:entity:Islamic%20lines> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasFormOfGovernment> <urn:graphragprov:entity:absolute%20monarchy> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Eastern%20Arabia%20%28Al%20-%20Ahsa%29> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Hejaz> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Najd> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Southern%20Arabia%20%28%27Asir%29> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationGroup> <urn:graphragprov:entity:Saudi%20nationals> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationGroup> <urn:graphragprov:entity:foreigners> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:state> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:the%20Land%20of%20the%20Two%20Holy%20Mosques> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:officialLanguage> <urn:graphragprov:entity:Arabic> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:population> "28.7 million" .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:population> "33 million" .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:populationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:populationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:the%20predominant%20feature%20of%20Saudi%20culture> .
+<urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:movement> .
+<urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:within> <urn:graphragprov:entity:Sunni%20Islam> .
+<urn:graphragprov:entity:global%20spread%20of%20Wahhabi%20religious%20movement> <urn:graphragprov:predicate:financedBy> <urn:graphragprov:entity:oil%20and%20gas%20trade> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Egypt> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Jordan> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Lebanon> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Palestinian%20territories> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Syria> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:economyAndTechnologyCenter> <urn:graphragprov:entity:Tel%20Aviv> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:ethnicGroup> <urn:graphragprov:entity:Arab> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:ethnicGroup> <urn:graphragprov:entity:Jewish> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:ethnicGroup> <urn:graphragprov:entity:others> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:geographically%20diverse%20features> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:northern%20shore%20of%20the%20Red%20Sea> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:southeastern%20shore%20of%20the%20Mediterranean%20Sea> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:population> "8777580"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:populationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:proclaimedCapital> <urn:graphragprov:entity:Jerusalem> .
+<urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:seatOfGovernment> <urn:graphragprov:entity:Jerusalem> .

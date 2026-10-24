@@ -1,0 +1,315 @@
+
+H0 one-case execution
+  case:          3hop1__228_237521_291682
+  hops:          3
+  question:      Who is the wife of the man who produced the documentary of the pop star who influenced Beyonce?
+  expected:      Liza Minnelli
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__228_237521_291682/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=11 title='Beyoncé'
+  source unit: u_c7032015cf1c046d06eed6b87cde8fc3eb1f5ef052fcc8da7fdf20577d8bd1af
+  text chars:  766
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 15.344s | model=deepseek-v4-flash
+      tokens:   in=2324 | out=2281 | total=4605 | cached=2048 | uncached=276
+    [LLM graph.reference #2] sending...
+      provider: 2.115s | model=deepseek-v4-flash
+      tokens:   in=901 | out=342 | total=1243 | cached=0 | uncached=901
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 2
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'names ... as her major musical influence' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Michael Jackson",
+                "segment": "text"
+              }
+            ],
+            "value": "Michael Jackson"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "names ... as her major musical influence",
+                "segment": "text"
+              }
+            ],
+            "value": "influencedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Beyoncé",
+                "segment": "text"
+              }
+            ],
+            "value": "Beyoncé"
+          }
+        }
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'credits ... as influencing' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "her",
+                "segment": "text"
+              }
+            ],
+            "value": "Beyoncé"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "credits ... as influencing",
+                "segment": "text"
+              }
+            ],
+            "value": "influenced"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Mariah Carey",
+                "segment": "text"
+              }
+            ],
+            "value": "Mariah Carey"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 16
+  coverage:
+    characters combined: 403 / 773 (52.1%)
+    characters text:     403 / 766 (52.6%)
+    characters title:    0 / 7 (0.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  82 chars
+      'said, "if it wasn\'t for Michael Jackson, I would never ever have performed." She'
+    statement density:  20.70 / 1000 chars
+    title reliance:      0 / 16 (0.0%)
+
+[GRAPH 2/3] paragraph=4 title='Michael Jackson: The Life of an Icon'
+  source unit: u_62df971ca3e62d28a85734edfd8f1257813df2e3bc9ca129a9722dfac528a6d9
+  text chars:  570
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.594s | model=deepseek-v4-flash
+      tokens:   in=2447 | out=2552 | total=4999 | cached=2048 | uncached=399
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 384 / 606 (63.4%)
+    characters text:     348 / 570 (61.1%)
+    characters title:    36 / 36 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  95 chars
+      ', as well as other artists—who were inspired by him and had met him before his death—including'
+    statement density:  28.05 / 1000 chars
+    title reliance:      15 / 17 (88.2%)
+
+[GRAPH 3/3] paragraph=12 title='Liza and David'
+  source unit: u_f3a90dc3bbc22fc8e35d59d51837b3ae5467d5f8725f526e176923b04600be2d
+  text chars:  134
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 4.095s | model=deepseek-v4-flash
+      tokens:   in=2623 | out=867 | total=3490 | cached=2048 | uncached=575
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 110 / 148 (74.3%)
+    characters text:     96 / 134 (71.6%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  21 chars
+      'Liza and David was a'
+    statement density:  40.54 / 1000 chars
+    title reliance:      5 / 6 (83.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 39
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      39
+resource nodes:        32
+entity nodes:          32
+literal values:        2
+predicates:            17
+
+N-Triples:
+  <urn:graphragprov:entity:David%20Gest> <urn:graphragprov:predicate:friendOf> <urn:graphragprov:entity:Michael%20Jackson> .
+  <urn:graphragprov:entity:Michael%20Jackson> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:pop%20singer> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Michael%20Jackson> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:availableOn> <urn:graphragprov:entity:Blu-ray> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:availableOn> <urn:graphragprov:entity:DVD> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Jackson%27s%20solo%20career> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:footage%20of%20the%20beginning%20of%20The%20Jackson%205> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:the%20child%20molestation%20accusations%20made%20against%20him> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:hasInterviewWith> <urn:graphragprov:entity:Dionne%20Warwick> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:hasInterviewWith> <urn:graphragprov:entity:Katherine%20Jackson> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:hasInterviewWith> <urn:graphragprov:entity:Rebbie%20Jackson> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:hasInterviewWith> <urn:graphragprov:entity:Smokey%20Robinson> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:hasInterviewWith> <urn:graphragprov:entity:Tito%20Jackson> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:hasInterviewWith> <urn:graphragprov:entity:Whitney%20Houston> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20film> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:David%20Gest> .
+  <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:releaseDate> "2011-11-02"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:admires> <urn:graphragprov:entity:Diana%20Ross> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:admires> <urn:graphragprov:entity:Whitney%20Houston> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:attendedConcertOf> <urn:graphragprov:entity:Michael%20Jackson> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Aaliyah> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Anita%20Baker> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Donna%20Summer> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Janet%20Jackson> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Lauryn%20Hill> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Mary%20J.%20Blige> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Michael%20Jackson> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Prince> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Rachelle%20Ferrell> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Sade%20Adu> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:presentedTributeAwardTo> <urn:graphragprov:entity:Michael%20Jackson> .
+  <urn:graphragprov:entity:Mariah%20Carey> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Beyonc%C3%A9> .
+  <urn:graphragprov:entity:Whitney%20Houston> <urn:graphragprov:predicate:influenced> <urn:graphragprov:entity:Beyonc%C3%A9> .
+  <urn:graphragprov:entity:Liza%20Minnelli> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:David%20Gest> .
+  <urn:graphragprov:entity:Liza%20and%20David> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:David%20Gest> .
+  <urn:graphragprov:entity:Liza%20and%20David> <urn:graphragprov:predicate:features> <urn:graphragprov:entity:Liza%20Minnelli> .
+  <urn:graphragprov:entity:Liza%20and%20David> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reality%20television%20series> .
+  <urn:graphragprov:entity:Liza%20and%20David> <urn:graphragprov:predicate:scheduledForBroadcastOn> <urn:graphragprov:entity:VH1> .
+  <urn:graphragprov:entity:Liza%20and%20David> <urn:graphragprov:predicate:scheduledYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.940s | model=deepseek-v4-flash
+      tokens:   in=2933 | out=430 | total=3363 | cached=640 | uncached=2293
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Michael%20Jackson> .
+  - <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Michael%20Jackson> .
+  - <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20film> .
+  - <urn:graphragprov:entity:Michael%20Jackson%3A%20The%20Life%20of%20an%20Icon> <urn:graphragprov:predicate:producer> <urn:graphragprov:entity:David%20Gest> .
+  - <urn:graphragprov:entity:Liza%20Minnelli> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:David%20Gest> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> ?popStar . ?documentary <urn:graphragprov:predicate:about> ?popStar . ?documentary <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20film> . ?documentary <urn:graphragprov:predicate:producer> ?producer . ?answer <urn:graphragprov:predicate:spouse> ?producer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_62df971ca3e62d28>
+  FROM <urn:graphragprov:unit:u_c7032015cf1c046d>
+  FROM <urn:graphragprov:unit:u_f3a90dc3bbc22fc8>
+  WHERE { <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:influencedBy> ?popStar . ?documentary <urn:graphragprov:predicate:about> ?popStar . ?documentary <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:documentary%20film> . ?documentary <urn:graphragprov:predicate:producer> ?producer . ?answer <urn:graphragprov:predicate:spouse> ?producer . }
+
+GraphDB execution:
+  observed answers: ('Liza Minnelli',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Beyoncé', 'Liza and David', 'Michael Jackson: The Life of an Icon']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__228_237521_291682
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__228_237521_291682/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11228
+output tokens:         6472
+total tokens:          17700
+cached input tokens:   6784
+uncached input tokens: 4444
+cumulative LLM seconds: 35.088
+
+statement occurrences: 39
+semantic triples:      39
+entity nodes:          32
+literal values:        2
+predicates:            17
+query attempts:        1
+observed answers:      ('Liza Minnelli',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 32.161s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.073s
+  graph.materialization [attempt=1]: 0.075s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.941s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.479s

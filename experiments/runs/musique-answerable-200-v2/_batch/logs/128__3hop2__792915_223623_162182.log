@@ -1,0 +1,219 @@
+
+H0 one-case execution
+  case:          3hop2__792915_223623_162182
+  hops:          3
+  question:      In what region of the country containing the Cái River is the place where John Phan was born?
+  expected:      South Central Coast
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__792915_223623_162182/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=19 title='Cái River'
+  source unit: u_efad2aacf8c75c76a2b54082a799165d6158c1bfe8b092f7292c09456255384e
+  text chars:  137
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 3.856s | model=deepseek-v4-flash
+      tokens:   in=2196 | out=716 | total=2912 | cached=1920 | uncached=276
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 82 / 146 (56.2%)
+    characters text:     73 / 137 (53.3%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  22 chars
+      'The Cái River () is a'
+    statement density:  34.25 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[GRAPH 2/3] paragraph=6 title='John Phan'
+  source unit: u_f5590ebeb19b30309c83411e569e74c14dc761c46fd60da2793e7c320e75213f
+  text chars:  275
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.504s | model=deepseek-v4-flash
+      tokens:   in=2269 | out=1456 | total=3725 | cached=1920 | uncached=349
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 178 / 284 (62.7%)
+    characters text:     169 / 275 (61.5%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  31 chars
+      'and is a winner and four time'
+    statement density:  31.69 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[GRAPH 3/3] paragraph=14 title='South Central Coast'
+  source unit: u_b22b53fcd3bb38851dc8bd369c23e4ae8e141f41cc780d6fa8088d0ffb2fb9e5
+  text chars:  389
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.162s | model=deepseek-v4-flash
+      tokens:   in=2405 | out=2001 | total=4406 | cached=2176 | uncached=229
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 273 / 408 (66.9%)
+    characters text:     254 / 389 (65.3%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  29 chars
+      '. The two southern provinces'
+    statement density:  34.31 / 1000 chars
+    title reliance:      7 / 14 (50.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 28
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      28
+resource nodes:        26
+entity nodes:          26
+literal values:        2
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:independent%20municipality> .
+  <urn:graphragprov:entity:B%C3%ACnh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:province> .
+  <urn:graphragprov:entity:B%C3%ACnh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southeast%20region> .
+  <urn:graphragprov:entity:Ninh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:province> .
+  <urn:graphragprov:entity:Ninh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southeast%20region> .
+  <urn:graphragprov:entity:Paracel%20Islands> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Ho%C3%A0ng%20Sa%20District> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:Paracel%20Islands> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:Spratly%20Islands> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:seven%20other%20provinces> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:hasVietnameseName> <urn:graphragprov:entity:Duy%C3%AAn%20h%E1%BA%A3i%20Nam%20Trung%20B%E1%BB%99> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:region> .
+  <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+  <urn:graphragprov:entity:Spratly%20Islands> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Tr%C6%B0%E1%BB%9Dng%20Sa%20District> .
+  <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:basinArea> "1904"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Vietnam> .
+  <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:flowsThrough> <urn:graphragprov:entity:%C4%90%E1%BA%AFk%20L%E1%BA%AFk%20Province> .
+  <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:flowsThrough> <urn:graphragprov:entity:Kh%C3%A1nh%20H%C3%B2a%20Province> .
+  <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:river> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Stockton%2C%20California> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Da%20Nang> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornOn> "1974-10-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:finalTablistOf> <urn:graphragprov:entity:World%20Poker%20Tour%20Championships> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:poker%20player> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Vietnamese-American> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:poker%20player> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:winnerOf> <urn:graphragprov:entity:World%20Poker%20Tour%20Championships> .
+  <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:winnerOf> <urn:graphragprov:entity:World%20Series%20of%20Poker%20bracelet> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.056s | model=deepseek-v4-flash
+      tokens:   in=2298 | out=279 | total=2577 | cached=640 | uncached=1658
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Vietnam> .
+  - <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Da%20Nang> .
+  - <urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:country> ?country . <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> ?birthplace . ?answer <urn:graphragprov:predicate:contains> ?birthplace . ?answer <urn:graphragprov:predicate:locatedIn> ?country . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_b22b53fcd3bb3885>
+  FROM <urn:graphragprov:unit:u_efad2aacf8c75c76>
+  FROM <urn:graphragprov:unit:u_f5590ebeb19b3030>
+  WHERE { <urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:country> ?country . <urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> ?birthplace . ?answer <urn:graphragprov:predicate:contains> ?birthplace . ?answer <urn:graphragprov:predicate:locatedIn> ?country . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__792915_223623_162182
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__792915_223623_162182/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9168
+output tokens:         4452
+total tokens:          13620
+cached input tokens:   6656
+uncached input tokens: 2512
+cumulative LLM seconds: 20.578
+
+statement occurrences: 28
+semantic triples:      28
+entity nodes:          26
+literal values:        2
+predicates:            15
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.537s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.064s
+  graph.materialization [attempt=1]: 0.076s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.057s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.577s

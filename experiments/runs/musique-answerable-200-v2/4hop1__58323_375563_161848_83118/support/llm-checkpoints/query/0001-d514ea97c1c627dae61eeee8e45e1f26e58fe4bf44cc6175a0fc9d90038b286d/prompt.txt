@@ -1,0 +1,166 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When does daylight savings end in the country near the country where the author of The Book Thief is from?
+
+Expected answer: the first Sunday in April
+
+Gold decomposition:
+1. question='who wrote the book thief soon to appear as a film'; answer='Markus Zusak'; support_paragraph=11
+2. question='#1 >> country of citizenship'; answer='Australia'; support_paragraph=3
+3. question='What country located near #2 was a first time participant in these games?'; answer='New Zealand'; support_paragraph=6
+4. question='when does daylight saving end in #3'; answer='the first Sunday in April'; support_paragraph=8
+
+Frozen RDF graph:
+<urn:graphragprov:entity:1952%20Winter%20Olympics> <urn:graphragprov:predicate:participant> <urn:graphragprov:entity:New%20Zealand> .
+<urn:graphragprov:entity:1952%20Winter%20Olympics> <urn:graphragprov:predicate:participant> <urn:graphragprov:entity:Portugal> .
+<urn:graphragprov:entity:1952%20Winter%20Olympics> <urn:graphragprov:predicate:participantCount> "30"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Australia> <urn:graphragprov:predicate:returnedAfterAbsence> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:Germany> <urn:graphragprov:predicate:returnedAfterAbsence> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:Japan> <urn:graphragprov:predicate:returnedAfterAbsence> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:Liechtenstein> <urn:graphragprov:predicate:competedInPreviousGames> <urn:graphragprov:entity:1948%20Winter%20Olympics> .
+<urn:graphragprov:entity:Liechtenstein> <urn:graphragprov:predicate:didNotParticipateIn> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:firstParticipation> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:Portugal> <urn:graphragprov:predicate:firstParticipation> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:South%20Korea> <urn:graphragprov:predicate:competedInPreviousGames> <urn:graphragprov:entity:1948%20Winter%20Olympics> .
+<urn:graphragprov:entity:South%20Korea> <urn:graphragprov:predicate:didNotParticipateIn> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:Turkey> <urn:graphragprov:predicate:competedInPreviousGames> <urn:graphragprov:entity:1948%20Winter%20Olympics> .
+<urn:graphragprov:entity:Turkey> <urn:graphragprov:predicate:didNotParticipateIn> <urn:graphragprov:entity:1952%20Winter%20Olympics> .
+<urn:graphragprov:entity:Chatham%20Daylight%20Time> <urn:graphragprov:predicate:utcOffset> "13 hours 45 minutes" .
+<urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:daylightSavingEnd> "first Sunday in April" .
+<urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:daylightSavingStart> "last Sunday in September" .
+<urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:observesDaylightSavingTime> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:New%20Zealand%20Daylight%20Time> <urn:graphragprov:predicate:utcOffset> "13 hours" .
+<urn:graphragprov:entity:The%20Messenger%20%28Zusak%20novel%29> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:2003%20Children%27s%20Book%20Council%20of%20Australia%20Book%20of%20the%20Year%20Award> .
+<urn:graphragprov:entity:The%20Messenger%20%28Zusak%20novel%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Novel> .
+<urn:graphragprov:entity:The%20Messenger%20%28Zusak%20novel%29> <urn:graphragprov:predicate:publicationYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Messenger%20%28Zusak%20novel%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Markus%20Zusak> .
+<urn:graphragprov:entity:The%20Book%20Thief> <urn:graphragprov:predicate:publicationYear> "2005"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Book%20Thief> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Markus%20Zusak> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:a%20young%20girl%20living%20with%20her%20adoptive%20German%20family%20during%20the%20Nazi%20era> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:The%20Book%20Thief> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Brian%20Percival> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:war%20drama%20film> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:musicComposedBy> <urn:graphragprov:entity:John%20Williams> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:publicationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Emily%20Watson> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Geoffrey%20Rush> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Sophie%20N%C3%A9lisse> .
+<urn:graphragprov:entity:The%20Book%20Thief%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Michael%20Petroni> .

@@ -1,0 +1,107 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_c7032015cf1c046d06eed6b87cde8fc3eb1f5ef052fcc8da7fdf20577d8bd1af
+Title: Beyoncé
+Text:
+Beyoncé names Michael Jackson as her major musical influence. Aged five, Beyoncé attended her first ever concert where Jackson performed and she claims to have realised her purpose. When she presented him with a tribute award at the World Music Awards in 2006, Beyoncé said, "if it wasn't for Michael Jackson, I would never ever have performed." She admires Diana Ross as an "all-around entertainer" and Whitney Houston, who she said "inspired me to get up there and do what she did." She credits Mariah Carey's singing and her song "Vision of Love" as influencing her to begin practicing vocal runs as a child. Her other musical influences include Aaliyah, Prince, Lauryn Hill, Sade Adu, Donna Summer, Mary J. Blige, Janet Jackson, Anita Baker and Rachelle Ferrell.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Beyoncé",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Beyoncé",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "influencedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "names ... as her major musical influence",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Michael Jackson",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Michael Jackson",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'names ... as her major musical influence' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Mariah Carey",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Mariah Carey",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "influenced",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "credits ... as influencing",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Beyoncé",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "her",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].predicate.evidence[0]: quote 'credits ... as influencing' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

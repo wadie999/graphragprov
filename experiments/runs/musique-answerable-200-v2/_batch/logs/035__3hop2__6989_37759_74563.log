@@ -1,0 +1,262 @@
+
+H0 one-case execution
+  case:          3hop2__6989_37759_74563
+  hops:          3
+  question:      When did the religious order that founded Harvard College, arrive in the region of the U.S. served by the Rainbow Times?
+  expected:      1630
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__6989_37759_74563/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=2 title='Boston'
+  source unit: u_bb2201aaf7822a63d36e530e130daccdb7890704a2e35894e6629b23281ca254
+  text chars:  280
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.298s | model=deepseek-v4-flash
+      tokens:   in=2214 | out=870 | total=3084 | cached=2048 | uncached=166
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 112 / 286 (39.2%)
+    characters text:     112 / 280 (40.0%)
+    characters title:    0 / 6 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  113 chars
+      "Various LGBT publications serve the city's large LGBT (lesbian, gay, bisexual and transgender) community such as"
+    statement density:  20.98 / 1000 chars
+    title reliance:      0 / 6 (0.0%)
+
+[GRAPH 2/3] paragraph=10 title='Protestantism'
+  source unit: u_ddaabb42c9499b3cc9f0c94591578766c961e4fb378b05533b926877312c3cbc
+  text chars:  606
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 7.638s | model=deepseek-v4-flash
+      tokens:   in=2344 | out=1744 | total=4088 | cached=2048 | uncached=296
+    [LLM graph.reference #3] sending...
+      provider: 1.450s | model=deepseek-v4-flash
+      tokens:   in=634 | out=8 | total=642 | cached=512 | uncached=122
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].subject.evidence[0]: quote 'literacy rate in Scotland' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "65 per cent",
+                "segment": "text"
+              }
+            ],
+            "value": "65 per cent"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "was",
+                "segment": "text"
+              }
+            ],
+            "value": "was"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "literacy rate in Scotland",
+                "segment": "text"
+              }
+            ],
+            "value": "literacy rate in Scotland"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 379 / 619 (61.2%)
+    characters text:     379 / 606 (62.5%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  71 chars
+      '. About a dozen other colleges followed in the 18th century, including'
+    statement density:  17.77 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 3/3] paragraph=5 title='History of the Puritans in North America'
+  source unit: u_a283e416a587a0d5489c2921acf7b4fcf218da96db2e4a8ba23532ea08fc4bd3
+  text chars:  382
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 6.039s | model=deepseek-v4-flash
+      tokens:   in=2430 | out=1190 | total=3620 | cached=2048 | uncached=382
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 303 / 422 (71.8%)
+    characters text:     303 / 382 (79.3%)
+    characters title:    0 / 40 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  18 chars
+      ', it succeeded in'
+    statement density:  18.96 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 25
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      25
+resource nodes:        26
+entity nodes:          26
+literal values:        7
+predicates:            24
+
+N-Triples:
+  <urn:graphragprov:entity:Great%20Puritan%20Migration> <urn:graphragprov:predicate:startedInYear> "1630"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Massachusetts%20Bay%20Company> <urn:graphragprov:predicate:charterFor> <urn:graphragprov:entity:Massachusetts%20Bay%20Colony> .
+  <urn:graphragprov:entity:Massachusetts%20Bay%20Company> <urn:graphragprov:predicate:obtainedCharterFrom> <urn:graphragprov:entity:King%20Charles> .
+  <urn:graphragprov:entity:Massachusetts%20Bay%20Company> <urn:graphragprov:predicate:obtainedCharterIn> "1629-03"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Puritans> <urn:graphragprov:predicate:convinced> <urn:graphragprov:entity:New%20England%20could%20provide%20a%20religious%20refuge> .
+  <urn:graphragprov:entity:enterprise> <urn:graphragprov:predicate:reorganizedAs> <urn:graphragprov:entity:Massachusetts%20Bay%20Company> .
+  <urn:graphragprov:entity:first%20ships%20of%20the%20Great%20Puritan%20Migration> <urn:graphragprov:predicate:ledBy> <urn:graphragprov:entity:John%20Winthrop> .
+  <urn:graphragprov:entity:first%20ships%20of%20the%20Great%20Puritan%20Migration> <urn:graphragprov:predicate:sailedTo> <urn:graphragprov:entity:New%20World> .
+  <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Boston> .
+  <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:LGBT%20newsmagazine> .
+  <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:lesbianOwned> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:minorityOwned> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:publicationYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:all%20of%20New%20England> .
+  <urn:graphragprov:entity:Colleges%20and%20universities> <urn:graphragprov:predicate:were%20founded> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Harvard%20College> <urn:graphragprov:predicate:foundedInYear> "1636"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Pennsylvania> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:a%20centre%20of%20learning> .
+  <urn:graphragprov:entity:Puritans> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Massachusetts%20Bay%20Colony> .
+  <urn:graphragprov:entity:Puritans> <urn:graphragprov:predicate:establishedInYear> "1628"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Puritans> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Harvard%20College> .
+  <urn:graphragprov:entity:Reformers> <urn:graphragprov:predicate:wanted> <urn:graphragprov:entity:all%20members%20of%20the%20church%20to%20be%20able%20to%20read%20the%20Bible> .
+  <urn:graphragprov:entity:Yale> <urn:graphragprov:predicate:foundedInYear> "1701"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:education%20on%20all%20levels> <urn:graphragprov:predicate:got> <urn:graphragprov:entity:a%20strong%20boost> .
+  <urn:graphragprov:entity:eight%20of%20ten%20men%20and%20women%20in%20Sweden> <urn:graphragprov:predicate:were%20able%20to%20read%20and%20to%20write> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:literacy%20rate%20in%20England> <urn:graphragprov:predicate:was> <urn:graphragprov:entity:about%2060%20per%20cent> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.322s | model=deepseek-v4-flash
+      tokens:   in=2194 | out=304 | total=2498 | cached=640 | uncached=1554
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:all%20of%20New%20England> .
+  - <urn:graphragprov:entity:Puritans> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Harvard%20College> .
+  - <urn:graphragprov:entity:Great%20Puritan%20Migration> <urn:graphragprov:predicate:startedInYear> "1630"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:all%20of%20New%20England> . <urn:graphragprov:entity:Puritans> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Harvard%20College> . <urn:graphragprov:entity:Great%20Puritan%20Migration> <urn:graphragprov:predicate:startedInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_a283e416a587a0d5>
+  FROM <urn:graphragprov:unit:u_bb2201aaf7822a63>
+  FROM <urn:graphragprov:unit:u_ddaabb42c9499b3c>
+  WHERE { <urn:graphragprov:entity:The%20Rainbow%20Times> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:all%20of%20New%20England> . <urn:graphragprov:entity:Puritans> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Harvard%20College> . <urn:graphragprov:entity:Great%20Puritan%20Migration> <urn:graphragprov:predicate:startedInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1630',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Boston', 'History of the Puritans in North America', 'Protestantism']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__6989_37759_74563
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__6989_37759_74563/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          9816
+output tokens:         4116
+total tokens:          13932
+cached input tokens:   7296
+uncached input tokens: 2520
+cumulative LLM seconds: 22.747
+
+statement occurrences: 25
+semantic triples:      25
+entity nodes:          26
+literal values:        7
+predicates:            24
+query attempts:        1
+observed answers:      ('1630',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.439s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.251s
+  graph.materialization [attempt=1]: 0.118s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.323s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.471s

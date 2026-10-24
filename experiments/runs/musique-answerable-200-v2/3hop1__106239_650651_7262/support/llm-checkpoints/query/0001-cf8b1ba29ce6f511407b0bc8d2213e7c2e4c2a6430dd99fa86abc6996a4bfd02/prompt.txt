@@ -1,0 +1,181 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who was a prominent figure at the radio division of the broadcast company that created the version of The Biggest Loser set in the country where Kelupis originated?
+
+Expected answer: Walter Sabo
+
+Gold decomposition:
+1. question='What country did Kelupis originate?'; answer='Brunei'; support_paragraph=12
+2. question='The Biggest Loser #1 (season 3): The Final Chance >> creator'; answer='NBC'; support_paragraph=18
+3. question="Who was a prominent figure at #2 's radio division?"; answer='Walter Sabo'; support_paragraph=11
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Cristine%20Phoebe> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Juliana%20Mikael> .
+<urn:graphragprov:entity:Juliana%20Mikael> <urn:graphragprov:predicate:didNotReturnFor> <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> .
+<urn:graphragprov:entity:The%20Biggest%20Loser> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:NBC> .
+<urn:graphragprov:entity:The%20Biggest%20Loser> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reality%20television%20series> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:The%20Biggest%20Loser> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei> <urn:graphragprov:predicate:countryOfOrigin> <urn:graphragprov:entity:Brunei> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:version> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:season> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:introducedTrainer> <urn:graphragprov:entity:Cristine%20Phoebe> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:partOfSeries> <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:premiereDate> "2012-03-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:seasonNumber> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:createdBy> <urn:graphragprov:entity:Lun%20Bawang%2FLundayeh> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:forPeople> <urn:graphragprov:entity:Bisaya%20people> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:forPeople> <urn:graphragprov:entity:Bruneian%20Malay%20people> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:traditional%20kuih> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:traditional%20snack> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:literalTranslation> <urn:graphragprov:entity:glutinous%20rice%20rolls> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brunei> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Malaysia> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sabah> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sarawak> .
+<urn:graphragprov:entity:Kelupis> <urn:graphragprov:predicate:usedInEvent> <urn:graphragprov:entity:wedding%20ceremony> .
+<urn:graphragprov:entity:Dan%20Daniel> <urn:graphragprov:predicate:addedTo> <urn:graphragprov:entity:radio%20format> .
+<urn:graphragprov:entity:Dick%20Summers> <urn:graphragprov:predicate:addedTo> <urn:graphragprov:entity:radio%20format> .
+<urn:graphragprov:entity:Don%20Bleu> <urn:graphragprov:predicate:addedTo> <urn:graphragprov:entity:radio%20format> .
+<urn:graphragprov:entity:Rumours> <urn:graphragprov:predicate:bestSellingAlbumOfDecade> "1970s" .
+<urn:graphragprov:entity:Rumours> <urn:graphragprov:predicate:publicationYear> "1977"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:commercialPeak> "mid-to-late 1970s" .
+<urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Air%20Supply> .
+<urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:America> .
+<urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:England%20Dan%20%26%20John%20Ford%20Coley> .
+<urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Seals%20and%20Crofts> .
+<urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Toto> .
+<urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:reformed%20Fleetwood%20Mac> .
+<urn:graphragprov:entity:Steve%20O%27Brien> <urn:graphragprov:predicate:addedTo> <urn:graphragprov:entity:radio%20format> .
+<urn:graphragprov:entity:Tom%20Parker> <urn:graphragprov:predicate:addedTo> <urn:graphragprov:entity:radio%20format> .
+<urn:graphragprov:entity:WTFM> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:all-soft%20rock> .
+<urn:graphragprov:entity:WTFM> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:WYNY> <urn:graphragprov:predicate:format> <urn:graphragprov:entity:all-soft%20rock> .
+<urn:graphragprov:entity:WYNY> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:WYNY> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:NBC> .
+<urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:broughtInPersonalities> <urn:graphragprov:entity:major%20personalities%20from%20the%20AM%20Band%20to%20the%20FM%20Band> .
+<urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:changedFormat> <urn:graphragprov:entity:format> .
+<urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:teamMember> <urn:graphragprov:entity:team%20at%20NBC> .
+<urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:NBC> .
+<urn:graphragprov:entity:addition%20of%20major%20radio%20stars> <urn:graphragprov:predicate:madePossible> <urn:graphragprov:entity:fully%20monetize%20the%20format> .
+<urn:graphragprov:entity:addition%20of%20major%20radio%20stars> <urn:graphragprov:predicate:providedFoundation> <urn:graphragprov:entity:financial%20success> .
+<urn:graphragprov:entity:radio%20formats> <urn:graphragprov:predicate:includedArtists> <urn:graphragprov:entity:Journey> .
+<urn:graphragprov:entity:radio%20formats> <urn:graphragprov:predicate:reflectedChange> <urn:graphragprov:entity:change%20in%20tastes> .
+<urn:graphragprov:entity:radio%20stations> <urn:graphragprov:predicate:switchedToFormat> <urn:graphragprov:entity:all-soft%20rock%20format> .

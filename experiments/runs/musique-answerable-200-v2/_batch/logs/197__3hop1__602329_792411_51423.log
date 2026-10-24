@@ -1,0 +1,275 @@
+
+H0 one-case execution
+  case:          3hop1__602329_792411_51423
+  hops:          3
+  question:      What is the name of the castle in the birth city of the performer who recorded A Day in the Life?
+  expected:      Casa Loma
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__602329_792411_51423/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=8 title='A Day in the Life (Jane Siberry album)'
+  source unit: u_912bdcb9ada2c6c37d8d416b0dd347fa6bf5ea230f04ccadd36ee8ff64dc772a
+  text chars:  145
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.550s | model=deepseek-v4-flash
+      tokens:   in=2196 | out=1011 | total=3207 | cached=2048 | uncached=148
+    [LLM graph.reference #2] sending...
+      provider: 1.506s | model=deepseek-v4-flash
+      tokens:   in=545 | out=176 | total=721 | cached=0 | uncached=545
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 1
+
+    initial rejection #4
+      validator:
+        response.statements[4].object.value must use canonical integer notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "second",
+                "segment": "text"
+              }
+            ],
+            "value": "second"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "second release",
+                "segment": "text"
+              }
+            ],
+            "value": "releaseNumberOnLabel"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "A Day in the Life",
+                "segment": "text"
+              }
+            ],
+            "value": "A Day in the Life"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 103 / 183 (56.3%)
+    characters text:     103 / 145 (71.0%)
+    characters title:    0 / 38 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  13 chars
+      '. It was the'
+    statement density:  38.25 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/3] paragraph=9 title='Gavin Bradley'
+  source unit: u_eed2d7134b3adec690fdbe8a5feeded869c168ebb101746b2c96b539c3dfce99
+  text chars:  479
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.433s | model=deepseek-v4-flash
+      tokens:   in=2332 | out=1670 | total=4002 | cached=2048 | uncached=284
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 175 / 492 (35.6%)
+    characters text:     162 / 479 (33.8%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  225 chars
+      '. Fusing acoustic and electronic elements, his work is identifiable for its signature "warm" piano sound and live strings mixed with filtered synthesizers and other electronic man…'
+    statement density:  24.39 / 1000 chars
+    title reliance:      9 / 12 (75.0%)
+
+[GRAPH 3/3] paragraph=17 title='Casa Loma'
+  source unit: u_1ec257311c1864ef0bba79e8538deea02e357c55bc41a8ab266cb7feaf2872a7
+  text chars:  402
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 11.321s | model=deepseek-v4-flash
+      tokens:   in=2454 | out=2588 | total=5042 | cached=2048 | uncached=406
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 290 / 411 (70.6%)
+    characters text:     281 / 402 (69.9%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  23 chars
+      '. Casa Loma sits at an'
+    statement density:  43.80 / 1000 chars
+    title reliance:      17 / 18 (94.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 37
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      37
+resource nodes:        29
+entity nodes:          29
+literal values:        7
+predicates:            22
+
+N-Triples:
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:architect> <urn:graphragprov:entity:E.%20J.%20Lennox> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:architecturalStyle> <urn:graphragprov:entity:Gothic%20Revival%20style> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:constructionEndYear> "1914"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:constructionStartYear> "1911"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:elevation> "140"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:elevation> "460"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:elevationUnit> <urn:graphragprov:entity:ft> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:elevationUnit> <urn:graphragprov:entity:metres> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:garden> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:historic%20house%20museum> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:landmark> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:mansion> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Canada> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Ontario> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:originalName> <urn:graphragprov:entity:Hill%20House> .
+  <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:residenceOf> <urn:graphragprov:entity:Sir%20Henry%20Pellatt> .
+  <urn:graphragprov:entity:E.%20J.%20Lennox> <urn:graphragprov:predicate:designed> <urn:graphragprov:entity:several%20other%20city%20landmarks> .
+  <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jane%20Siberry> .
+  <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:publicationYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sheeba%20Records> .
+  <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:releaseNumberOnLabel> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jane%20Siberry> <urn:graphragprov:predicate:leftLabel> <urn:graphragprov:entity:Reprise> .
+  <urn:graphragprov:entity:Sheeba%20Records> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Jane%20Siberry> .
+  <urn:graphragprov:entity:Deep%20Freeze> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Gavin%20Bradley> .
+  <urn:graphragprov:entity:Deep%20Freeze> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:Deep%20Freeze> <urn:graphragprov:predicate:publicationYear> "2006"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Deep%20Freeze> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:UMI%20Records> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Toronto> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:singer-songwriter> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:solo%20recording%20artist> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Canadian> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:producer> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Jane%20Siberry> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Nelly%20Furtado> .
+  <urn:graphragprov:entity:Gavin%20Bradley> <urn:graphragprov:predicate:workedWith> <urn:graphragprov:entity:Tori%20Amos> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.549s | model=deepseek-v4-flash
+      tokens:   in=2552 | out=261 | total=2813 | cached=640 | uncached=1912
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Jane%20Siberry> .
+  - <urn:graphragprov:entity:Jane%20Siberry> <urn:graphragprov:predicate:leftLabel> <urn:graphragprov:entity:Reprise> .
+  - <urn:graphragprov:entity:Casa%20Loma> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:leftLabel> <urn:graphragprov:entity:Reprise> . ?answer <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1ec257311c1864ef>
+  FROM <urn:graphragprov:unit:u_912bdcb9ada2c6c3>
+  FROM <urn:graphragprov:unit:u_eed2d7134b3adec6>
+  WHERE { <urn:graphragprov:entity:A%20Day%20in%20the%20Life> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:leftLabel> <urn:graphragprov:entity:Reprise> . ?answer <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> . }
+
+GraphDB execution:
+  observed answers: ('Casa Loma',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['A Day in the Life (Jane Siberry album)', 'Casa Loma']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__602329_792411_51423
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__602329_792411_51423/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10079
+output tokens:         5706
+total tokens:          15785
+cached input tokens:   6784
+uncached input tokens: 3295
+cumulative LLM seconds: 28.359
+
+statement occurrences: 37
+semantic triples:      37
+entity nodes:          29
+literal values:        7
+predicates:            22
+query attempts:        1
+observed answers:      ('Casa Loma',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 25.828s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.062s
+  graph.materialization [attempt=1]: 0.078s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.550s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.443s

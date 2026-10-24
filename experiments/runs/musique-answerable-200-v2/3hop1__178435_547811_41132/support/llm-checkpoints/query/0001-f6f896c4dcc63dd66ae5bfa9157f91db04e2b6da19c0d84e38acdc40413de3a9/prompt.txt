@@ -1,0 +1,195 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: How many times did plague occur in the birthplace of the composer of Gloria in D Major?
+
+Expected answer: 22
+
+Gold decomposition:
+1. question='Gloria in D Major >> composer'; answer='Antonio Vivaldi'; support_paragraph=11
+2. question='#1 >> place of birth'; answer='Venice'; support_paragraph=10
+3. question='How many times did plague occur in #2 ?'; answer='22'; support_paragraph=3
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Amsterdam> <urn:graphragprov:predicate:plagueDeathPercentage> "10%" .
+<urn:graphragprov:entity:Amsterdam> <urn:graphragprov:predicate:plagueDeathYears> "1623–25, 1635–36, 1655, and 1664" .
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:continuedOnTo> <urn:graphragprov:entity:Russia> .
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:ravaged> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:Black%20Death> <urn:graphragprov:predicate:ravagedDuration> "three years" .
+<urn:graphragprov:entity:Great%20Plague%20of%20Vienna> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:plague> .
+<urn:graphragprov:entity:Great%20Plague%20of%20Vienna> <urn:graphragprov:predicate:occurredInYear> "1679"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Italian%20Plague%20of%201629%E2%80%931631> <urn:graphragprov:predicate:associatedWith> <urn:graphragprov:entity:troop%20movements%20during%20the%20Thirty%20Years%27%20War> .
+<urn:graphragprov:entity:Italian%20Plague%20of%201629%E2%80%931631> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:plague> .
+<urn:graphragprov:entity:London> <urn:graphragprov:predicate:plagueEpidemicYears> "1563, 1593, 1603, 1625, 1636, and 1665" .
+<urn:graphragprov:entity:London> <urn:graphragprov:predicate:populationReduction> "10 to 30%" .
+<urn:graphragprov:entity:Norway> <urn:graphragprov:predicate:plagueDeathYear> "1348-50" .
+<urn:graphragprov:entity:Norway> <urn:graphragprov:predicate:populationDeathPercentage> "60%" .
+<urn:graphragprov:entity:Oslo> <urn:graphragprov:predicate:lastPlagueOutbreakYear> "1654"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Paris> <urn:graphragprov:predicate:plagueDeathCount> "40000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Paris> <urn:graphragprov:predicate:plagueDeathYear> "1466"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Paris> <urn:graphragprov:predicate:plaguePresenceFrequency> "30 per cent of the time" .
+<urn:graphragprov:entity:Paris> <urn:graphragprov:predicate:plaguePresencePeriod> "16th and 17th centuries" .
+<urn:graphragprov:entity:Russia> <urn:graphragprov:predicate:plagueOccurrenceCount> "25"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Russia> <urn:graphragprov:predicate:plaguePresencePeriod> "1350 to 1490" .
+<urn:graphragprov:entity:Venice> <urn:graphragprov:predicate:plagueDeathCount> "50000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Venice> <urn:graphragprov:predicate:plagueDeathYear> "1576-77" .
+<urn:graphragprov:entity:Venice> <urn:graphragprov:predicate:plagueOccurrenceCount> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Venice> <urn:graphragprov:predicate:plagueOccurrencePeriod> "1361 and 1528" .
+<urn:graphragprov:entity:Venice> <urn:graphragprov:predicate:populationDeathPercentage> "almost a third" .
+<urn:graphragprov:entity:Orlando%20furioso%20%28RV%20728%29> <urn:graphragprov:predicate:publicationYear> "1727"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:cataloguedAs> <urn:graphragprov:entity:RV%20Anh.%2084> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:hasRVNumber> <urn:graphragprov:entity:RV%20819> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:three-act%20opera> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:librettoBy> <urn:graphragprov:entity:Grazio%20Braccioli> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:manuscriptIn> <urn:graphragprov:entity:Antonio%20Vivaldi%27s%20personal%20library> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:partlyRelatedTo> <urn:graphragprov:entity:Orlando%20furioso%20%28RV%20728%29> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:performedAt> <urn:graphragprov:entity:Teatro%20San%20Angelo> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:premiereYear> "1714"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:recompositionOf> <urn:graphragprov:entity:Orlando%20furioso%20by%20Giovanni%20Alberto%20Ristori> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:relatedTo> <urn:graphragprov:entity:Orlando%20furioso%20%28RV%20728%29> .
+<urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:survives> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Orlando%20furioso%20by%20Giovanni%20Alberto%20Ristori> <urn:graphragprov:predicate:stagedBy> <urn:graphragprov:entity:Vivaldi%20and%20his%20father%27s%20impresa> .
+<urn:graphragprov:entity:Orlando%20furioso%20by%20Giovanni%20Alberto%20Ristori> <urn:graphragprov:predicate:stagedInYear> "1713"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Orlando%20furioso%20by%20Giovanni%20Alberto%20Ristori> <urn:graphragprov:predicate:survives> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Orlando%20furioso%20by%20Giovanni%20Alberto%20Ristori> <urn:graphragprov:predicate:survivesIn> <urn:graphragprov:entity:a%20few%20fragments> .
+<urn:graphragprov:entity:Orlando%20furioso%20by%20Giovanni%20Alberto%20Ristori> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Giovanni%20Alberto%20Ristori> .
+<urn:graphragprov:entity:Peter%20Ryom> <urn:graphragprov:predicate:cataloguerOf> <urn:graphragprov:entity:Antonio%20Vivaldi> .
+<urn:graphragprov:entity:Antonio%20Vivaldi> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Gloria%20in%20D%20Major> .
+<urn:graphragprov:entity:Antonio%20Vivaldi> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Gloria%20in%20excelsis%20Deo> .
+<urn:graphragprov:entity:Antonio%20Vivaldi> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:RV%20588> .
+<urn:graphragprov:entity:Antonio%20Vivaldi> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:RV%20589> .
+<urn:graphragprov:entity:Antonio%20Vivaldi> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:RV%20590> .
+<urn:graphragprov:entity:Gloria%20in%20excelsis%20Deo> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:hymn> .
+<urn:graphragprov:entity:Gloria%20in%20excelsis%20Deo> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Ordinary%20of%20the%20Mass> .
+<urn:graphragprov:entity:Gloria%20in%20excelsis%20Deo> <urn:graphragprov:predicate:wordsDateFrom> "4th Century" .
+<urn:graphragprov:entity:RV%20588> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:setting> .
+<urn:graphragprov:entity:RV%20588> <urn:graphragprov:predicate:survives> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:among> <urn:graphragprov:entity:sacred%20works%20by%20Vivaldi> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Gloria> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:setting> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:isFamiliar> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:isPopular> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:survives> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:writtenAtSameTimeAs> <urn:graphragprov:entity:RV%20588> .
+<urn:graphragprov:entity:RV%20589> <urn:graphragprov:predicate:writtenIn> "1715"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:RV%20590> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:setting> .
+<urn:graphragprov:entity:RV%20590> <urn:graphragprov:predicate:mentionedIn> <urn:graphragprov:entity:Kreuzherren%20catalogue> .
+<urn:graphragprov:entity:RV%20590> <urn:graphragprov:predicate:presumedLost> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .

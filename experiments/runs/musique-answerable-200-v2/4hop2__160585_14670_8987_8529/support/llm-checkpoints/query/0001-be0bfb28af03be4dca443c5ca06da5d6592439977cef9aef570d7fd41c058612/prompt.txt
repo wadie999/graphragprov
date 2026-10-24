@@ -1,0 +1,177 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: A country's military branch, which in the US contains the Air Defense Artillery, was unprepared for the invasion of Hana Mandlikova's birth country. When was the word "Slavs" used in the national anthem of the unprepared country?
+
+Expected answer: 1943–1992
+
+Gold decomposition:
+1. question='Where was Hana Mandlikova born?'; answer='Czechoslovakia'; support_paragraph=13
+2. question='The Air Defense Artillery is a branch of what?'; answer='the Army'; support_paragraph=12
+3. question='What #2 was unprepared for the invasion of #1 ?'; answer='Yugoslavia'; support_paragraph=4
+4. question='When was the word "Slavs" used in the national anthem of #3 ?'; answer='1943–1992'; support_paragraph=19
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offered> <urn:graphragprov:entity:Alexander%20Dub%C4%8Dek> .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredHelp> <urn:graphragprov:entity:Dub%C4%8Dek> .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredInYear> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredOnNotice> "three hours" .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:offeredToFlyToPrague> <urn:graphragprov:entity:Prague> .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Ivan%20Go%C5%A1njak> .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removed> <urn:graphragprov:entity:Rade%20Hamovi%C4%87> .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removedDueTo> <urn:graphragprov:entity:unpreparedness%20of%20the%20Yugoslav%20army> .
+<urn:graphragprov:entity:Tito> <urn:graphragprov:predicate:removedInYear> "1969"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:army> .
+<urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:wasUnpreparedFor> <urn:graphragprov:entity:invasion%20of%20Czechoslovakia> .
+<urn:graphragprov:entity:Yugoslav%20army> <urn:graphragprov:predicate:wasUnpreparedFor> <urn:graphragprov:entity:invasion%20of%20Yugoslavia> .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:hasArmy> <urn:graphragprov:entity:Yugoslav%20army> .
+<urn:graphragprov:entity:invasion%20of%20Czechoslovakia> <urn:graphragprov:predicate:occurredIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:invasion%20of%20Yugoslavia> <urn:graphragprov:predicate:occurredIn> <urn:graphragprov:entity:Yugoslavia> .
+<urn:graphragprov:entity:Federal%20Republic%20of%20Yugoslavia> <urn:graphragprov:predicate:existedInPeriod> "1992–2003" .
+<urn:graphragprov:entity:Serbia%20and%20Montenegro> <urn:graphragprov:predicate:existedInPeriod> "2003–2006" .
+<urn:graphragprov:entity:Slavs> <urn:graphragprov:predicate:usedIn> <urn:graphragprov:entity:national%20anthem%20of%20the%20Slovak%20Republic%20%281939%E2%80%931945%29> .
+<urn:graphragprov:entity:Slovak%20Republic> <urn:graphragprov:predicate:existedInPeriod> "1939–1945" .
+<urn:graphragprov:entity:Yugoslavia> <urn:graphragprov:predicate:existedInPeriod> "1943–1992" .
+<urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:consideredAs> <urn:graphragprov:entity:state%20soldiers> .
+<urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:hasRole> <urn:graphragprov:entity:National%20Guardsmen> .
+<urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:hasRole> <urn:graphragprov:entity:reserve%20of%20the%20U.S.%20Army> .
+<urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:statusBefore1903> <urn:graphragprov:entity:state%20soldiers%20unless%20federalized> .
+<urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:statusSince1903> <urn:graphragprov:entity:dual%20status> .
+<urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:underAuthorityOf> <urn:graphragprov:entity:President> .
+<urn:graphragprov:entity:National%20Guard> <urn:graphragprov:predicate:underAuthorityOf> <urn:graphragprov:entity:governor%20of%20their%20state%20or%20territory> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Army%20National%20Guard> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Army%20Reserve> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:dividedInto> <urn:graphragprov:entity:Regular%20Army> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Air%20Defense%20Artillery> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Armor> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Aviation> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Corps%20of%20Engineers> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Infantry> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:hasBranch> <urn:graphragprov:entity:Signal%20Corps> .
+<urn:graphragprov:entity:United%20States%20Army> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:army> .
+<urn:graphragprov:entity:Daniela%20Hantuchov%C3%A1> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Hana%20Mandl%C3%ADkov%C3%A1> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Ivan%20Lendl> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Jan%20Kode%C5%A1> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Jana%20Novotna> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Martina%20Hingis> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Martina%20Navratilova> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Miloslav%20Me%C4%8D%C3%AD%C5%99> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .
+<urn:graphragprov:entity:Petra%20Kvitov%C3%A1> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Czechoslovakia> .

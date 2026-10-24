@@ -1,0 +1,181 @@
+
+H0 one-case execution
+  case:          2hop__347652_47134
+  hops:          2
+  question:      What is the mascot of the institution that owns Memorial Union?
+  expected:      Benny Beaver
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__347652_47134/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=17 title='Memorial Union (Oregon State University)'
+  source unit: u_9176912274789ad133c7ccae2f001a6fc632e8e6497303a881364af24ee4ddd2
+  text chars:  289
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.676s | model=deepseek-v4-flash
+      tokens:   in=2186 | out=1627 | total=3813 | cached=1920 | uncached=266
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 252 / 329 (76.6%)
+    characters text:     212 / 289 (73.4%)
+    characters title:    40 / 40 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  31 chars
+      'The Memorial Union (MU) is the'
+    statement density:  33.43 / 1000 chars
+    title reliance:      9 / 11 (81.8%)
+
+[GRAPH 2/2] paragraph=13 title='Benny Beaver'
+  source unit: u_0629477a90c65b9c387deb972dc9723540db96ef3c1c736d8ec241f7455d4d3f
+  text chars:  306
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.087s | model=deepseek-v4-flash
+      tokens:   in=2360 | out=951 | total=3311 | cached=1920 | uncached=440
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 263 / 318 (82.7%)
+    characters text:     251 / 306 (82.0%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  29 chars
+      'Benny Beaver is the official'
+    statement density:  18.87 / 1000 chars
+    title reliance:      5 / 6 (83.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 17
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      17
+resource nodes:        16
+entity nodes:          16
+literal values:        2
+predicates:            11
+
+N-Triples:
+  <urn:graphragprov:entity:Benny%20Beaver> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:mascot> .
+  <urn:graphragprov:entity:Benny%20Beaver> <urn:graphragprov:predicate:mascotOf> <urn:graphragprov:entity:Oregon%20State%20University> .
+  <urn:graphragprov:entity:Benny%20Beaver> <urn:graphragprov:predicate:nameFirstUsedAsMascotDate> "unknown" .
+  <urn:graphragprov:entity:Benny%20Beaver> <urn:graphragprov:predicate:nameFirstUsedAsMascotEarliestDocumented> "the 1940s" .
+  <urn:graphragprov:entity:Benny%20Beaver> <urn:graphragprov:predicate:winnerOf> <urn:graphragprov:entity:2011%20Capital%20One%20Mascot%20of%20the%20Year%20write-in%20campaign> .
+  <urn:graphragprov:entity:photographs%20in%20the%20school%27s%20yearbook> <urn:graphragprov:predicate:document> <urn:graphragprov:entity:use%20of%20Benny%20Beaver%27s%20name%20as%20mascot%20as%20early%20as%20the%201940s> .
+  <urn:graphragprov:entity:Lee%20Arden%20Thomas> <urn:graphragprov:predicate:alumnusOf> <urn:graphragprov:entity:Oregon%20Agricultural%20College> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:ballroom> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:bowling%20alley> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:cafeteria> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:shops> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:study%20areas> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:designedBy> <urn:graphragprov:entity:Lee%20Arden%20Thomas> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:student%20activity%20center> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Corvallis%2C%20Oregon%2C%20United%20States> .
+  <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Oregon%20State%20University> .
+  <urn:graphragprov:entity:Oregon%20Agricultural%20College> <urn:graphragprov:predicate:predecessorOf> <urn:graphragprov:entity:Oregon%20State%20University> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.889s | model=deepseek-v4-flash
+      tokens:   in=1801 | out=236 | total=2037 | cached=640 | uncached=1161
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Oregon%20State%20University> .
+  - <urn:graphragprov:entity:Benny%20Beaver> <urn:graphragprov:predicate:mascotOf> <urn:graphragprov:entity:Oregon%20State%20University> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Oregon%20State%20University> . ?answer <urn:graphragprov:predicate:mascotOf> <urn:graphragprov:entity:Oregon%20State%20University> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0629477a90c65b9c>
+  FROM <urn:graphragprov:unit:u_9176912274789ad1>
+  WHERE { <urn:graphragprov:entity:Memorial%20Union%20%28Oregon%20State%20University%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Oregon%20State%20University> . ?answer <urn:graphragprov:predicate:mascotOf> <urn:graphragprov:entity:Oregon%20State%20University> . }
+
+GraphDB execution:
+  observed answers: ('Benny Beaver',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Benny Beaver', 'Memorial Union (Oregon State University)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__347652_47134
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__347652_47134/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6347
+output tokens:         2814
+total tokens:          9161
+cached input tokens:   4480
+uncached input tokens: 1867
+cumulative LLM seconds: 14.652
+
+statement occurrences: 17
+semantic triples:      17
+entity nodes:          16
+literal values:        2
+predicates:            11
+query attempts:        1
+observed answers:      ('Benny Beaver',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 12.771s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.048s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.890s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.617s

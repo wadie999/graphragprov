@@ -1,0 +1,166 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the average salary of a working person with the same nationality as the producer of The Wild Women of Chastity Gulch?
+
+Expected answer: $59,039
+
+Gold decomposition:
+1. question='The Wild Women of Chastity Gulch >> producer'; answer='Aaron Spelling'; support_paragraph=8
+2. question='What nationality was #1 ?'; answer='an American'; support_paragraph=7
+3. question='what is the average salary of a working #2'; answer='$59,039'; support_paragraph=15
+
+Frozen RDF graph:
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:broadcastNetwork> <urn:graphragprov:entity:ABC> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Philip%20Leacock> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Aaron%20Spelling> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:made-for-television%20western%20romantic%20comedy%20film> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:laterSyndicatedTo> <urn:graphragprov:entity:cable%20television> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:premieredOn> "1982-10-31"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:publicationYear> "1982"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Donny%20Osmond> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Joan%20Collins> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lee%20Horsley> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Lisa%20Whelchel> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Morgan%20Brittany> .
+<urn:graphragprov:entity:The%20Wild%20Women%20of%20Chastity%20Gulch> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Priscilla%20Barnes> .
+<urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:hasMeasure> <urn:graphragprov:entity:real%20median%20level> .
+<urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:largestTwoYearPercentageIncrease> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:measuredBy> <urn:graphragprov:entity:Census> .
+<urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:recordHigh> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:valueInYear> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Household%20income%20in%20the%20United%20States> <urn:graphragprov:predicate:valueInYear> "59039"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:real%20median%20level> <urn:graphragprov:predicate:adjustedFor> <urn:graphragprov:entity:inflation> .
+<urn:graphragprov:entity:real%20median%20level> <urn:graphragprov:predicate:definition> <urn:graphragprov:entity:half%20of%20households%20have%20income%20above%20that%20level%20and%20half%20below> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:bornOn> "1923-04-22"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:diedOn> "2006-06-23"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:film%20and%20television%20producer> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:7th%20Heaven> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Beverly%20Hills%2C%2090210> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Charlie%27s%20Angels> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Charmed> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Dynasty> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Hart%20to%20Hart> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Mod%20Squad> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:Sunset%20Beach> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:The%20Love%20Boat> .
+<urn:graphragprov:entity:Aaron%20Spelling> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:The%20Rookies> .

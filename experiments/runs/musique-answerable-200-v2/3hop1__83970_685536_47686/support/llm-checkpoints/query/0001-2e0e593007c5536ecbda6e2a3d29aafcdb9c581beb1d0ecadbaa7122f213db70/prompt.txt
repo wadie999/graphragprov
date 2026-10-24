@@ -1,0 +1,164 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where do greyhound buses leave from in where the headquarters is located of who owns the hard rock hotel in las vegas?
+
+Expected answer: Toronto Coach Terminal
+
+Gold decomposition:
+1. question='who owns the hard rock hotel in las vegas'; answer='Brookfield Asset Management'; support_paragraph=0
+2. question='#1 >> headquarters location'; answer='Toronto'; support_paragraph=15
+3. question='where do greyhound buses leave from in #2'; answer='Toronto Coach Terminal'; support_paragraph=17
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Gray%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:interurban%20bus%20service> .
+<urn:graphragprov:entity:Gray%20Coach> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Toronto%20Transit%20Commission> .
+<urn:graphragprov:entity:Gray%20Line%20Terminal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:open%20air%20terminal> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:architecturalStyle> <urn:graphragprov:entity:Art%20Deco> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:formerlyKnownAs> <urn:graphragprov:entity:Gray%20Coach%20Terminal> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:homeBaseFor> <urn:graphragprov:entity:Gray%20Coach> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:central%20bus%20station> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:leasedTo> <urn:graphragprov:entity:Coach%20Canada> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:leasedTo> <urn:graphragprov:entity:Greyhound%20Canada> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:610%20Bay%20Street> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Canada> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Downtown> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Ontario> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Toronto> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:managedBy> <urn:graphragprov:entity:Toronto%20Transit%20Commission> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:openedInYear> "1931"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Gray%20Line%20Terminal> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:wholly%20owned%20subsidiary> .
+<urn:graphragprov:entity:Toronto%20Coach%20Terminal%20Inc.> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Toronto%20Transit%20Commission> .
+<urn:graphragprov:entity:Hard%20Rock%20Hotel%20and%20Casino%20%28Las%20Vegas%29> <urn:graphragprov:predicate:area> "16.7 acres" .
+<urn:graphragprov:entity:Hard%20Rock%20Hotel%20and%20Casino%20%28Las%20Vegas%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:resort> .
+<urn:graphragprov:entity:Hard%20Rock%20Hotel%20and%20Casino%20%28Las%20Vegas%29> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:corner%20of%20Harmon%20and%20Paradise%20Road> .
+<urn:graphragprov:entity:Hard%20Rock%20Hotel%20and%20Casino%20%28Las%20Vegas%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Las%20Vegas%20Strip> .
+<urn:graphragprov:entity:Hard%20Rock%20Hotel%20and%20Casino%20%28Las%20Vegas%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Paradise%2C%20Nevada> .
+<urn:graphragprov:entity:Hard%20Rock%20Hotel%20and%20Casino%20%28Las%20Vegas%29> <urn:graphragprov:predicate:operatedBy> <urn:graphragprov:entity:Warner%20Gaming> .
+<urn:graphragprov:entity:Hard%20Rock%20Hotel%20and%20Casino%20%28Las%20Vegas%29> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Brookfield%20Asset%20Management> .
+<urn:graphragprov:entity:Enwave> <urn:graphragprov:predicate:formedAfterRestructuringOf> <urn:graphragprov:entity:Toronto%20District%20Heating%20Corporation> .
+<urn:graphragprov:entity:Enwave%20Energy%20Corporation> <urn:graphragprov:predicate:formerlyOwnedBy> <urn:graphragprov:entity:City%20of%20Toronto%20government> .
+<urn:graphragprov:entity:Enwave%20Energy%20Corporation> <urn:graphragprov:predicate:formerlyOwnedBy> <urn:graphragprov:entity:Ontario%20Municipal%20Employees%20Retirement%20System> .
+<urn:graphragprov:entity:Enwave%20Energy%20Corporation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:district%20energy%20system> .
+<urn:graphragprov:entity:Enwave%20Energy%20Corporation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:private%20corporation> .
+<urn:graphragprov:entity:Enwave%20Energy%20Corporation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:North%20America> .
+<urn:graphragprov:entity:Enwave%20Energy%20Corporation> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Brookfield%20Asset%20Management> .

@@ -1,0 +1,391 @@
+
+H0 one-case execution
+  case:          4hop2__161602_426860_88460_126088
+  hops:          4
+  question:      Who was in charge in the country that is the natural boundary between the country that hosted the tournament and the country where That Dam is located?
+  expected:      Thein Sein
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop2__161602_426860_88460_126088/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=1 title='2020 AFC U-23 Championship qualification'
+  source unit: u_25c170dffe47215d4f49834ba4afb997f84a7df364778483d193c0c10dc7f38b
+  text chars:  220
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 4.624s | model=deepseek-v4-flash
+      tokens:   in=2222 | out=744 | total=2966 | cached=2048 | uncached=174
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 166 / 260 (63.8%)
+    characters text:     126 / 220 (57.3%)
+    characters title:    40 / 40 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  46 chars
+      'Of the 47 AFC member associations, a total of'
+    statement density:  19.23 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 2/4] paragraph=4 title='That Dam'
+  source unit: u_7639059e9707920fcf30b7b74a124aeb28b4fde1fb5e039d241a6aed3eb83727
+  text chars:  219
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.208s | model=deepseek-v4-flash
+      tokens:   in=2311 | out=1303 | total=3614 | cached=2048 | uncached=263
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 153 / 227 (67.4%)
+    characters text:     145 / 219 (66.2%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  30 chars
+      '. Many Laotians believe it is'
+    statement density:  39.65 / 1000 chars
+    title reliance:      6 / 9 (66.7%)
+
+[GRAPH 3/4] paragraph=18 title='Geography of Myanmar'
+  source unit: u_31f7149343d3329da3b2a5b8349f4b8c19b0bdf6708c6c1101842937f52bb331
+  text chars:  364
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.209s | model=deepseek-v4-flash
+      tokens:   in=2434 | out=1659 | total=4093 | cached=2048 | uncached=386
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 238 / 384 (62.0%)
+    characters text:     238 / 364 (65.4%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  48 chars
+      '. It lies along the Indian and Eurasian Plates,'
+    statement density:  31.25 / 1000 chars
+    title reliance:      0 / 12 (0.0%)
+
+[GRAPH 4/4] paragraph=2 title='Myanmar'
+  source unit: u_e95a9986f2760c3d3ed31b050f55760b10438a95a99be4a22ed15379e7c23c09
+  text chars:  842
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 16.617s | model=deepseek-v4-flash
+      tokens:   in=2640 | out=3714 | total=6354 | cached=2176 | uncached=464
+    [LLM graph.reference #5] sending...
+      provider: 2.276s | model=deepseek-v4-flash
+      tokens:   in=876 | out=325 | total=1201 | cached=0 | uncached=876
+  extraction: ACCEPTED
+  statements: 25
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    24
+    initially rejected: 2
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'country' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "country",
+                "segment": "text"
+              }
+            ],
+            "value": "country"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "country",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Myanmar",
+                "segment": "title"
+              }
+            ],
+            "value": "Myanmar"
+          }
+        }
+
+    initial rejection #21
+      validator:
+        response.statements[21].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "December 2011",
+                "segment": "text"
+              }
+            ],
+            "value": "December 2011"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "visit",
+                "segment": "text"
+              }
+            ],
+            "value": "visitedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hillary Clinton",
+                "segment": "text"
+              }
+            ],
+            "value": "Hillary Clinton"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'country' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "country",
+                "segment": "text"
+              }
+            ],
+            "value": "country"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "country",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Myanmar",
+                "segment": "title"
+              }
+            ],
+            "value": "Myanmar"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 25
+  coverage:
+    characters combined: 443 / 849 (52.2%)
+    characters text:     436 / 842 (51.8%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  87 chars
+      'The impact of the post-election reforms has been observed in numerous areas, including'
+    statement density:  29.45 / 1000 chars
+    title reliance:      9 / 25 (36.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 51
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      51
+resource nodes:        41
+entity nodes:          41
+literal values:        8
+predicates:            33
+
+N-Triples:
+  <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:competition> .
+  <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> <urn:graphragprov:predicate:participantCount> "44"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+  <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+  <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:qualifiedFor> <urn:graphragprov:entity:final%20tournament> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Burma> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Bangladesh> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:China> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Laos> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Thailand> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasSouthBoundary> <urn:graphragprov:entity:Andaman%20Sea> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasWestBoundary> <urn:graphragprov:entity:Bay%20of%20Bengal> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:mainland%20Southeast%20Asia> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:major%20Indian%20Ocean%20shipping%20lanes> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedRelativeTo> <urn:graphragprov:entity:Himalayas> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:hasLaoName> <urn:graphragprov:entity:%E0%BA%97%E0%BA%B2%E0%BA%94%E0%BA%94%E0%BA%B3> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:inhabitedBy> <urn:graphragprov:entity:seven-headed%20n%C4%81ga> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:stupa> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Laos> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vientiane> .
+  <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:meaning> <urn:graphragprov:entity:Black%20Stupa> .
+  <urn:graphragprov:entity:invasion%20by%20the%20Siamese%20army> <urn:graphragprov:predicate:happenedInYear> "1827"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:protectedAgainst> <urn:graphragprov:entity:invasion%20by%20the%20Siamese%20army> .
+  <urn:graphragprov:entity:seven-headed%20n%C4%81ga> <urn:graphragprov:predicate:triedToProtect> <urn:graphragprov:entity:Laotians> .
+  <urn:graphragprov:entity:2012%20by-elections> <urn:graphragprov:predicate:happenedInYear> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:ASEAN> <urn:graphragprov:predicate:approved> <urn:graphragprov:entity:Myanmar%27s%20bid> .
+  <urn:graphragprov:entity:ASEAN%20chair> <urn:graphragprov:predicate:happenedInYear> "2014"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Aung%20San%20Suu%20Kyi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:opposition%20leader> .
+  <urn:graphragprov:entity:Aung%20San%20Suu%20Kyi> <urn:graphragprov:predicate:leaderOf> <urn:graphragprov:entity:National%20League%20for%20Democracy> .
+  <urn:graphragprov:entity:Burmese%20Army> <urn:graphragprov:predicate:involvedIn> <urn:graphragprov:entity:local%20insurgent%20groups> .
+  <urn:graphragprov:entity:Hillary%20Clinton> <urn:graphragprov:predicate:firstVisitBySecretaryOfState> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Hillary%20Clinton> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:United%20States%20Secretary%20of%20State> .
+  <urn:graphragprov:entity:Hillary%20Clinton> <urn:graphragprov:predicate:metWith> <urn:graphragprov:entity:Aung%20San%20Suu%20Kyi> .
+  <urn:graphragprov:entity:Hillary%20Clinton> <urn:graphragprov:predicate:metWith> <urn:graphragprov:entity:Thein%20Sein> .
+  <urn:graphragprov:entity:Hillary%20Clinton> <urn:graphragprov:predicate:visited> <urn:graphragprov:entity:Myanmar> .
+  <urn:graphragprov:entity:Hillary%20Clinton> <urn:graphragprov:predicate:visitedIn> "2011-12"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Burmese> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:approvedFor> <urn:graphragprov:entity:ASEAN%20chair> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasAbolishedLaws> <urn:graphragprov:entity:laws%20that%20previously%20barred%20the%20NLD> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasConflict> <urn:graphragprov:entity:Burmese%20Army> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasConflictWith> <urn:graphragprov:entity:local%20insurgent%20groups> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasPoliticalPrisoners> "100"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasPoliticalPrisoners> "about 100" .
+  <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:leader> <urn:graphragprov:entity:Thein%20Sein> .
+  <urn:graphragprov:entity:Myanmar%27s%20bid> <urn:graphragprov:predicate:forPosition> <urn:graphragprov:entity:ASEAN%20chair> .
+  <urn:graphragprov:entity:National%20League%20for%20Democracy> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:NLD> .
+  <urn:graphragprov:entity:National%20League%20for%20Democracy> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:2012%20by-elections> .
+  <urn:graphragprov:entity:Thein%20Sein> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:former%20military%20commander> .
+  <urn:graphragprov:entity:Thein%20Sein> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:president> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.950s | model=deepseek-v4-flash
+      tokens:   in=3295 | out=366 | total=3661 | cached=640 | uncached=2655
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Thailand> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> .
+  - <urn:graphragprov:entity:That%20Dam> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Laos> .
+  - <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Laos> .
+  - <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Thailand> .
+  - <urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:leader> <urn:graphragprov:entity:Thein%20Sein> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?host <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> . ?dam <urn:graphragprov:predicate:locatedIn> ?damCountry . ?boundary <urn:graphragprov:predicate:borders> ?host . ?boundary <urn:graphragprov:predicate:borders> ?damCountry . ?boundary <urn:graphragprov:predicate:leader> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_25c170dffe47215d>
+  FROM <urn:graphragprov:unit:u_31f7149343d3329d>
+  FROM <urn:graphragprov:unit:u_7639059e9707920f>
+  FROM <urn:graphragprov:unit:u_e95a9986f2760c3d>
+  WHERE { ?host <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:2020%20AFC%20U-23%20Championship%20qualification> . ?dam <urn:graphragprov:predicate:locatedIn> ?damCountry . ?boundary <urn:graphragprov:predicate:borders> ?host . ?boundary <urn:graphragprov:predicate:borders> ?damCountry . ?boundary <urn:graphragprov:predicate:leader> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Thein Sein',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['2020 AFC U-23 Championship qualification', 'Geography of Myanmar', 'Myanmar', 'That Dam']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop2__161602_426860_88460_126088
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop2__161602_426860_88460_126088/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13778
+output tokens:         8111
+total tokens:          21889
+cached input tokens:   8960
+uncached input tokens: 4818
+cumulative LLM seconds: 40.885
+
+statement occurrences: 51
+semantic triples:      51
+entity nodes:          41
+literal values:        8
+predicates:            33
+query attempts:        1
+observed answers:      ('Thein Sein',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 37.964s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.088s
+  graph.materialization [attempt=1]: 0.102s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.951s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.471s

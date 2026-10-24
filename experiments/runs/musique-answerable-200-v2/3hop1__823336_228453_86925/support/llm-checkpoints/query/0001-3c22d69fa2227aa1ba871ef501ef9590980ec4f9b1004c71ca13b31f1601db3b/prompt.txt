@@ -1,0 +1,155 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the symbol of the Saints from the headquarters location of Ten High's manufacturer called?
+
+Expected answer: fleur - de-lis
+
+Gold decomposition:
+1. question='Ten High >> manufacturer'; answer='Sazerac Company'; support_paragraph=2
+2. question='#1 >> headquarters location'; answer='New Orleans'; support_paragraph=7
+3. question='what is the #2 saints symbol called'; answer='fleur - de-lis'; support_paragraph=19
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Detroit%20City%20FC> .
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Fiorentina> .
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Montreal%20Expos> .
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Montreal%20Impact> .
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Quebec%20Nordiques> .
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:SV%20Darmstadt%2098> .
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Wakefield%20Trinity%20Wildcats> .
+<urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:sports%20teams%20of%20New%20Orleans%2C%20Louisiana> .
+<urn:graphragprov:entity:France> <urn:graphragprov:predicate:usedSymbolIn> <urn:graphragprov:entity:official%20emblem%20on%20the%202019%20FIFA%20Women%27s%20World%20Cup> .
+<urn:graphragprov:entity:Georges%20St-Pierre> <urn:graphragprov:predicate:hasTattoo> <urn:graphragprov:entity:fleur-de-lis> .
+<urn:graphragprov:entity:IT%20University%20of%20Copenhagen%27s%20soccer%20team%20ITU%20F.C.> <urn:graphragprov:predicate:hasLogo> <urn:graphragprov:entity:fleur-de-lis> .
+<urn:graphragprov:entity:Marc-Andr%C3%A9%20Fleury> <urn:graphragprov:predicate:hasLogo> <urn:graphragprov:entity:fleur-de-lis> .
+<urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cocktail> .
+<urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20Orleans> .
+<urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:namedFor> <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> .
+<urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:originalMainIngredient> <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> .
+<urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:brand> .
+<urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:productType> <urn:graphragprov:entity:cognac%20brandy> .
+<urn:graphragprov:entity:Barton%20Brands> <urn:graphragprov:predicate:divisionOf> <urn:graphragprov:entity:Sazerac%20Company> .
+<urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:brand> .
+<urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:introducedInYear> "1930s" .
+<urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:manufacturerPromise> <urn:graphragprov:entity:that%20the%20brand%20was%20from%20barrels%20aged%20in%20such%20locations> .
+<urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:nameOrigin> <urn:graphragprov:entity:barrel%20storage%20location%20at%20least%20ten%20ricks%20high> .
+<urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Barton%20Brands> .
+<urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:productType> <urn:graphragprov:entity:American%20whiskey> .

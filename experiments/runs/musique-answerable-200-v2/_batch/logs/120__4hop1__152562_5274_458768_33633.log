@@ -1,0 +1,437 @@
+
+H0 one-case execution
+  case:          4hop1__152562_5274_458768_33633
+  hops:          4
+  question:      When did the explorer reach the city where the headquarters of the only group larger than Vilaiyaadu Mankatha's record label is located?
+  expected:      August 3, 1769
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__152562_5274_458768_33633/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=8 title='Vilaiyaadu Mankatha'
+  source unit: u_674424a03e1a0fb544f2804a05529764849825ad367c1b7254aaf57e24d1e661
+  text chars:  647
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 14.723s | model=deepseek-v4-flash
+      tokens:   in=2378 | out=3374 | total=5752 | cached=1920 | uncached=458
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     23
+  coverage:
+    characters combined: 357 / 666 (53.6%)
+    characters text:     338 / 647 (52.2%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  78 chars
+      'and Ranjith - were added in their original composition without any variation.'
+    statement density:  34.53 / 1000 chars
+    title reliance:      7 / 23 (30.4%)
+
+[GRAPH 2/4] paragraph=7 title='Sony Music'
+  source unit: u_b2b2839417fb6bd0e90e840d9bbf60b9be56a98638073bf423f5871ea8976ee9
+  text chars:  636
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 11.929s | model=deepseek-v4-flash
+      tokens:   in=2660 | out=2887 | total=5547 | cached=1920 | uncached=740
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 416 / 646 (64.4%)
+    characters text:     416 / 636 (65.4%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  52 chars
+      '(sometimes known as Sony Music or by the initials,'
+    statement density:  30.96 / 1000 chars
+    title reliance:      0 / 20 (0.0%)
+
+[GRAPH 3/4] paragraph=9 title='The Right Stuff Records'
+  source unit: u_058f4b6abd0b757a62a79ddc66ff90730b278b21a18e85e710a1024008d1096b
+  text chars:  161
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 3.670s | model=deepseek-v4-flash
+      tokens:   in=2795 | out=703 | total=3498 | cached=2048 | uncached=747
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 116 / 184 (63.0%)
+    characters text:     93 / 161 (57.8%)
+    characters title:    23 / 23 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  29 chars
+      'The Right Stuff Records is a'
+    statement density:  27.17 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 4/4] paragraph=19 title='Santa Monica, California'
+  source unit: u_7941ba420f6107fecf95bd7730b34746ea725466306410e1389d2e31c4465371
+  text chars:  714
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 9.165s | model=deepseek-v4-flash
+      tokens:   in=2980 | out=2083 | total=5063 | cached=2048 | uncached=932
+    [LLM graph.reference #5] sending...
+      provider: 3.640s | model=deepseek-v4-flash
+      tokens:   in=1351 | out=666 | total=2017 | cached=0 | uncached=1351
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 4
+
+    initial rejection #4
+      validator:
+        response.statements[4].object.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 3 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 3,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "first non-indigenous group to set foot in",
+                "segment": "text"
+              }
+            ],
+            "value": "firstNonIndigenousGroupToSetFootIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "party of explorer Gaspar de Portolà",
+                "segment": "text"
+              }
+            ],
+            "value": "party of explorer Gaspar de Portolà"
+          }
+        }
+
+    initial rejection #7
+      validator:
+        response.statements[7].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 4 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Saint Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Saint Monica"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "named in honor of",
+                "segment": "text"
+              }
+            ],
+            "value": "namedInHonorOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 4,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+    initial rejection #10
+      validator:
+        response.statements[10].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 5 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Juan Crespí",
+                "segment": "text"
+              }
+            ],
+            "value": "Juan Crespí"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "named by",
+                "segment": "text"
+              }
+            ],
+            "value": "namedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 5,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+    initial rejection #11
+      validator:
+        response.statements[11].subject.evidence[0]: quote 'Santa Monica' occurs 2 time(s) in source segment 'text'; occurrence 5 does not exist
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Kuruvungna Springs",
+                "segment": "text"
+              }
+            ],
+            "value": "Kuruvungna Springs"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "on account of",
+                "segment": "text"
+              }
+            ],
+            "value": "namedOnAccountOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 5,
+                "quote": "Santa Monica",
+                "segment": "text"
+              }
+            ],
+            "value": "Santa Monica"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    4
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 14
+  coverage:
+    characters combined: 444 / 738 (60.2%)
+    characters text:     444 / 714 (62.2%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  83 chars
+      '. There are two different versions of the naming of the city. One says that it was'
+    statement density:  18.97 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 62
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 4
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      62
+resource nodes:        55
+entity nodes:          55
+literal values:        6
+predicates:            38
+
+N-Triples:
+  <urn:graphragprov:entity:EMI> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Universal%20Music%20Group> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Santa%20Monica> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reissue%20record%20label> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:California> .
+  <urn:graphragprov:entity:The%20Right%20Stuff%20Records> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:EMI> .
+  <urn:graphragprov:entity:Dia%20Dia%20Dole> <urn:graphragprov:predicate:fromFilm> <urn:graphragprov:entity:Avan%20Ivan> .
+  <urn:graphragprov:entity:Dia%20Dia%20Dole> <urn:graphragprov:predicate:performedBy> <urn:graphragprov:entity:Suchitra> .
+  <urn:graphragprov:entity:Goa> <urn:graphragprov:predicate:fromFilm> <urn:graphragprov:entity:Goa> .
+  <urn:graphragprov:entity:Goa> <urn:graphragprov:predicate:hasVocals> <urn:graphragprov:entity:Chynk%20Showtyme> .
+  <urn:graphragprov:entity:Goa> <urn:graphragprov:predicate:hasVocals> <urn:graphragprov:entity:Krish> .
+  <urn:graphragprov:entity:Goa> <urn:graphragprov:predicate:hasVocals> <urn:graphragprov:entity:Pav%20Bundy> .
+  <urn:graphragprov:entity:Goa> <urn:graphragprov:predicate:hasVocals> <urn:graphragprov:entity:Ranjith> .
+  <urn:graphragprov:entity:Goa> <urn:graphragprov:predicate:hasVocals> <urn:graphragprov:entity:Suchitra> .
+  <urn:graphragprov:entity:Goa> <urn:graphragprov:predicate:hasVocals> <urn:graphragprov:entity:Tanvi%20Shah> .
+  <urn:graphragprov:entity:Theeradha%20Vilaiyattu%20Pillai> <urn:graphragprov:predicate:renderedBy> <urn:graphragprov:entity:Andrea%20Jeremiah> .
+  <urn:graphragprov:entity:Theeradha%20Vilaiyattu%20Pillai> <urn:graphragprov:predicate:renderedBy> <urn:graphragprov:entity:Ranjith> .
+  <urn:graphragprov:entity:Theeradha%20Vilaiyattu%20Pillai> <urn:graphragprov:predicate:renderedBy> <urn:graphragprov:entity:Tanvi%20Shah> .
+  <urn:graphragprov:entity:Theeradha%20Vilaiyattu%20Pillai> <urn:graphragprov:predicate:renderedBy> <urn:graphragprov:entity:Vinaitha> .
+  <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Yuvan%20Shankar%20Raja> .
+  <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:hasBonusTrack> <urn:graphragprov:entity:Dia%20Dia%20Dole> .
+  <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:hasBonusTrack> <urn:graphragprov:entity:Goa> .
+  <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:hasBonusTrack> <urn:graphragprov:entity:Theeradha%20Vilaiyattu%20Pillai> .
+  <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:hasBonusTrack> <urn:graphragprov:entity:Yogi%20Yogi%20Thaan> .
+  <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sony%20Music%20Entertainment> .
+  <urn:graphragprov:entity:Yogi%20Yogi%20Thaan> <urn:graphragprov:predicate:fromFilm> <urn:graphragprov:entity:Yogi> .
+  <urn:graphragprov:entity:Yogi%20Yogi%20Thaan> <urn:graphragprov:predicate:sungBy> <urn:graphragprov:entity:Blaaze> .
+  <urn:graphragprov:entity:Yogi%20Yogi%20Thaan> <urn:graphragprov:predicate:sungBy> <urn:graphragprov:entity:Neha%20Bhasin> .
+  <urn:graphragprov:entity:Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:explorer> .
+  <urn:graphragprov:entity:Kecheek> <urn:graphragprov:predicate:inLanguage> <urn:graphragprov:entity:Tongva%20language> .
+  <urn:graphragprov:entity:Kuruvungna%20Springs> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Serra%20Springs> .
+  <urn:graphragprov:entity:Kuruvungna%20Springs> <urn:graphragprov:predicate:reminiscentOf> <urn:graphragprov:entity:tears%20that%20Saint%20Monica%20shed%20over%20her%20son%27s%20early%20impiety> .
+  <urn:graphragprov:entity:Saint%20Monica> <urn:graphragprov:predicate:feastDay> <urn:graphragprov:entity:May%204> .
+  <urn:graphragprov:entity:Saint%20Monica> <urn:graphragprov:predicate:motherOf> <urn:graphragprov:entity:Saint%20Augustine> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:Kecheek> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:inhabitedBy> <urn:graphragprov:entity:Tongva%20people> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedBy> <urn:graphragprov:entity:Juan%20Cresp%C3%AD> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedInHonorOf> <urn:graphragprov:entity:Saint%20Monica> .
+  <urn:graphragprov:entity:Santa%20Monica> <urn:graphragprov:predicate:namedOnAccountOf> <urn:graphragprov:entity:Kuruvungna%20Springs> .
+  <urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:arrivedOn> "1769-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:campedNear> <urn:graphragprov:entity:present%20day%20intersection%20of%20Barrington%20and%20Ohio%20Avenues> .
+  <urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:firstNonIndigenousGroupToSetFootIn> <urn:graphragprov:entity:Santa%20Monica> .
+  <urn:graphragprov:entity:American%20Record%20Corporation> <urn:graphragprov:predicate:acquiredBy> <urn:graphragprov:entity:CBS> .
+  <urn:graphragprov:entity:American%20Record%20Corporation> <urn:graphragprov:predicate:foundedInYear> "1929"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:American%20Record%20Corporation> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Columbia%20Recording%20Corporation> .
+  <urn:graphragprov:entity:CBS%20Records> <urn:graphragprov:predicate:acquiredBy> <urn:graphragprov:entity:Sony%20Corporation%20of%20Japan> .
+  <urn:graphragprov:entity:CBS%20Records> <urn:graphragprov:predicate:acquiredInYear> "1987"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:CBS%20Records> <urn:graphragprov:predicate:renamedInYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:CBS%20Records> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:SME> .
+  <urn:graphragprov:entity:Columbia%20Recording%20Corporation> <urn:graphragprov:predicate:renamedInYear> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Columbia%20Recording%20Corporation> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:CBS%20Records> .
+  <urn:graphragprov:entity:Columbia%20Recording%20Corporation> <urn:graphragprov:predicate:reorganizedInYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sony%20Corporation> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Japanese%20conglomerate> .
+  <urn:graphragprov:entity:Sony%20Corporation> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Japanese> .
+  <urn:graphragprov:entity:Sony%20Corporation%20of%20America> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Sony%20Corporation> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20music%20corporation> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:recorded%20music%20company> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:managedBy> <urn:graphragprov:entity:Sony%20Corporation%20of%20America> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:operatedBy> <urn:graphragprov:entity:Sony%20Corporation%20of%20America> .
+  <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> <urn:graphragprov:predicate:rank> <urn:graphragprov:entity:second%20largest> .
+  <urn:graphragprov:entity:Universal%20Music%20Group> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.402s | model=deepseek-v4-flash
+      tokens:   in=4023 | out=398 | total=4421 | cached=640 | uncached=3383
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Sony%20Music%20Entertainment> .
+  - <urn:graphragprov:entity:Universal%20Music%20Group> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:Sony%20Music%20Entertainment%20Inc.> .
+  - <urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:firstNonIndigenousGroupToSetFootIn> <urn:graphragprov:entity:Santa%20Monica> .
+  - <urn:graphragprov:entity:party%20of%20explorer%20Gaspar%20de%20Portol%C3%A0> <urn:graphragprov:predicate:arrivedOn> "1769-08-03"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:recordLabel> ?label . ?group <urn:graphragprov:predicate:largerThan> ?label . ?group <urn:graphragprov:predicate:headquartersLocation> ?city . ?party <urn:graphragprov:predicate:firstNonIndigenousGroupToSetFootIn> ?city . ?party <urn:graphragprov:predicate:arrivedOn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_058f4b6abd0b757a>
+  FROM <urn:graphragprov:unit:u_674424a03e1a0fb5>
+  FROM <urn:graphragprov:unit:u_7941ba420f6107fe>
+  FROM <urn:graphragprov:unit:u_b2b2839417fb6bd0>
+  WHERE { <urn:graphragprov:entity:Vilaiyaadu%20Mankatha> <urn:graphragprov:predicate:recordLabel> ?label . ?group <urn:graphragprov:predicate:largerThan> ?label . ?group <urn:graphragprov:predicate:headquartersLocation> ?city . ?party <urn:graphragprov:predicate:firstNonIndigenousGroupToSetFootIn> ?city . ?party <urn:graphragprov:predicate:arrivedOn> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__152562_5274_458768_33633
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__152562_5274_458768_33633/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          16187
+output tokens:         10111
+total tokens:          26298
+cached input tokens:   8576
+uncached input tokens: 7611
+cumulative LLM seconds: 45.529
+
+statement occurrences: 62
+semantic triples:      62
+entity nodes:          55
+literal values:        6
+predicates:            38
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 43.148s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.070s
+  graph.materialization [attempt=1]: 0.095s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.403s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.455s

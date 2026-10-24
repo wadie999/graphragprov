@@ -1,0 +1,159 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When is the opening day of the league that Jim Wilson plays for?
+
+Expected answer: Thursday, March 29
+
+Gold decomposition:
+1. question='Jim Wilson >> member of sports team'; answer='Indians'; support_paragraph=8
+2. question='What league was Cleveland #1 ?'; answer='Major League Baseball'; support_paragraph=17
+3. question='when is opening day of #2'; answer='Thursday, March 29'; support_paragraph=4
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:championshipWins> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:divisionTitles> "10"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:foundedInYear> "1901"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:hasWorldSeriesChampionshipDrought> <urn:graphragprov:entity:longest%20active%20drought%20among%20all%2030%20current%20Major%20League%20teams> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:homeStadium> <urn:graphragprov:entity:Progressive%20Field> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:professional%20baseball%20team> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Cleveland%2C%20Ohio> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:American%20League%20Central%20division> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:pennantWins> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:springTrainingFacility> <urn:graphragprov:entity:Goodyear%20Ballpark> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:worldSeriesChampionIn> "1920"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Cleveland%20Indians> <urn:graphragprov:predicate:worldSeriesChampionIn> "1948"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Goodyear%20Ballpark> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Goodyear%2C%20Arizona> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:hasEarliestDomesticStart> "2018-03-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:hasFirstSameDayStartSince> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:hasNumberOfTeams> "30"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:hasPostponedGames> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:openingDay> "2012-04-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:openingDay> "2012-04-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:openingDay> "2018-03-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:openingDay> "2018-03-30"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Jim%20Wilson> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Indians> .
+<urn:graphragprov:entity:Jim%20Wilson> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Minnesota%20Twins> .
+<urn:graphragprov:entity:Jim%20Wilson> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Seattle%20Mariners> .
+<urn:graphragprov:entity:Jim%20Wilson> <urn:graphragprov:predicate:playedFor> <urn:graphragprov:entity:Seattle%20Mariners> .
+<urn:graphragprov:entity:Jim%20Wilson> <urn:graphragprov:predicate:playedInSeason> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Jim%20Wilson> <urn:graphragprov:predicate:signedOn> "1988-03-01"^^<http://www.w3.org/2001/XMLSchema#date> .

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_6806d0b1dddb455b4ae2cad63fb3f67c72260a5e8ed4d38bd5d34405f427dff4
+Title: Reformation
+Text:
+Although there had been significant earlier attempts to reform the Catholic Church before Luther -- such as those of Jan Hus, Peter Waldo, and John Wycliffe -- Martin Luther is widely acknowledged to have started the Reformation with the Ninety - five Theses. Luther began by criticising the sale of indulgences, insisting that the Pope had no authority over purgatory and that the Catholic doctrine of the merits of the saints had no foundation in the Bible. The Protestant Reformation, however, would come to incorporate doctrinal changes such as a complete reliance on Scripture as a source of proper belief (sola scriptura) and the belief that faith in Jesus, and not good works, is the only way to obtain God's pardon for sin (sola fide). The core motivation behind these changes was theological, though many other factors played a part, including the rise of nationalism, the Western Schism that eroded loyalty to the Papacy, the perceived corruption of the Roman Curia, the impact of humanism, and the new learning of the Renaissance that questioned much traditional thought.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 0,
+    "statement": {
+      "subject": {
+        "value": "Martin Luther",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Martin Luther",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "reformer",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "reformer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "reformer",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[0].predicate.evidence[0]: quote 'reformer' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

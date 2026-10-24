@@ -1,0 +1,200 @@
+
+H0 one-case execution
+  case:          2hop__35137_22896
+  hops:          2
+  question:      What is the name of one library that the author of The Canon of Medicine had access to?
+  expected:      Hamadan
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__35137_22896/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Muslim world'
+  source unit: u_5c5284079e50ca68927b3754b7b3d02bc34281ff37c538f322fc030aef6bd9f6
+  text chars:  896
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.195s | model=deepseek-v4-flash
+      tokens:   in=2319 | out=3004 | total=5323 | cached=1920 | uncached=399
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 594 / 908 (65.4%)
+    characters text:     594 / 896 (66.3%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           3 / 4 (75.0%)
+    longest uncovered:  91 chars
+      'for centuries. Other medical advancements came in the fields of pharmacology and pharmacy.'
+    statement density:  22.03 / 1000 chars
+    title reliance:      0 / 20 (0.0%)
+
+[GRAPH 2/2] paragraph=4 title='Avicenna'
+  source unit: u_eb854c967fd70c4c488680ef2f2d9865a70c9f1bc31a59ed3ab1a55cff401543
+  text chars:  753
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.163s | model=deepseek-v4-flash
+      tokens:   in=2613 | out=2272 | total=4885 | cached=1920 | uncached=693
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 212 / 761 (27.9%)
+    characters text:     204 / 753 (27.1%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           4 / 6 (66.7%)
+    longest uncovered:  223 chars
+      'The study of the Quran and the Hadith thrived in such a scholarly atmosphere. Philosophy, Fiqh and theology (kalaam) were further developed, most noticeably by Avicenna and his op…'
+    statement density:  21.02 / 1000 chars
+    title reliance:      11 / 16 (68.8%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 36
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      36
+resource nodes:        38
+entity nodes:          38
+literal values:        2
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Abulcasis> .
+  <urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Kitab%20al-Tasrif> .
+  <urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:medical%20surgery> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:The%20Canon%20of%20Medicine> .
+  <urn:graphragprov:entity:Ibn%20al-Nafis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Egyptian> .
+  <urn:graphragprov:entity:Ibn%20al-Nafis> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:physician> .
+  <urn:graphragprov:entity:Ibn%20al-Nafis> <urn:graphragprov:predicate:proposedTheory> <urn:graphragprov:entity:pulmonary%20circulation> .
+  <urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:medical%20encyclopedia> .
+  <urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:translatedTo> <urn:graphragprov:entity:Latin> .
+  <urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:usedIn> <urn:graphragprov:entity:European%20and%20Muslim%20medical%20schools> .
+  <urn:graphragprov:entity:Mansur%20ibn%20Muhammad%20ibn%20al-Faqih%20Ilyas> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Tashrih%20al-badan> .
+  <urn:graphragprov:entity:Mansur%20ibn%20Muhammad%20ibn%20al-Faqih%20Ilyas> <urn:graphragprov:predicate:century> "15th century" .
+  <urn:graphragprov:entity:Mansur%20ibn%20Muhammad%20ibn%20al-Faqih%20Ilyas> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Persian> .
+  <urn:graphragprov:entity:Muslim%20physicians> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:anatomy%20and%20physiology> .
+  <urn:graphragprov:entity:Muslim%20physicians> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:field%20of%20medicine> .
+  <urn:graphragprov:entity:Tashrih%20al-badan> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:comprehensive%20diagrams%20of%20the%20body%27s%20structural%2C%20nervous%20and%20circulatory%20systems> .
+  <urn:graphragprov:entity:Tashrih%20al-badan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:work> .
+  <urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:authoritative%20medical%20textbook> .
+  <urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:remainedAuthoritativeIn> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:remainedAuthoritativeUntil> "18th century" .
+  <urn:graphragprov:entity:Abu%20Nasr%20Iraqi> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:mathematician> .
+  <urn:graphragprov:entity:Abu%20Sahl%20Masihi> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:philosopher> .
+  <urn:graphragprov:entity:Abu%20al-Khayr%20Khammar> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:physician> .
+  <urn:graphragprov:entity:Al-Biruni> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:astronomer> .
+  <urn:graphragprov:entity:Al-Biruni> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:scientist> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:debatedWith> <urn:graphragprov:entity:Bahmanyar> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Balkh> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Gorgan> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Hamadan> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Isfahan> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Khwarezm> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Rey> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Abu%20Nasr%20Iraqi> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Abu%20Sahl%20Masihi> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Abu%20al-Khayr%20Khammar> .
+  <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Al-Biruni> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.843s | model=deepseek-v4-flash
+      tokens:   in=2564 | out=170 | total=2734 | cached=640 | uncached=1924
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:The%20Canon%20of%20Medicine> .
+  - <urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Hamadan> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:author> ?author . ?author <urn:graphragprov:predicate:hadAccessTo> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5c5284079e50ca68>
+  FROM <urn:graphragprov:unit:u_eb854c967fd70c4c>
+  WHERE { <urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:author> ?author . ?author <urn:graphragprov:predicate:hadAccessTo> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__35137_22896
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__35137_22896/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7496
+output tokens:         5446
+total tokens:          12942
+cached input tokens:   4480
+uncached input tokens: 3016
+cumulative LLM seconds: 25.201
+
+statement occurrences: 36
+semantic triples:      36
+entity nodes:          38
+literal values:        2
+predicates:            16
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 23.366s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.044s
+  graph.materialization [attempt=1]: 0.096s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.844s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.480s

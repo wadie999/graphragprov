@@ -1,0 +1,164 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What specific part of the document that is the highest authority in Protestantism for morals reference Mary?
+
+Expected answer: Genesis 3:15
+
+Gold decomposition:
+1. question='What is the highest authority in Protestantism for morals?'; answer='the Bible'; support_paragraph=5
+2. question='What specific part the #1 does this document reference for Mary ?'; answer='Genesis 3:15'; support_paragraph=6
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Fathers> <urn:graphragprov:predicate:saw> <urn:graphragprov:entity:ark%20of%20Noah> .
+<urn:graphragprov:entity:Fathers> <urn:graphragprov:predicate:saw> <urn:graphragprov:entity:foreshadowings%20of%20Mary%27s%20%22wondrous%20abundance%20of%20divine%20gifts%20and%20original%20innocence%22> .
+<urn:graphragprov:entity:Genesis%203%3A15> <urn:graphragprov:predicate:refersTo> <urn:graphragprov:entity:Mary> .
+<urn:graphragprov:entity:Ineffabilis%20Deus> <urn:graphragprov:predicate:defines> <urn:graphragprov:entity:dogma> .
+<urn:graphragprov:entity:Ineffabilis%20Deus> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:papal%20bull> .
+<urn:graphragprov:entity:Ineffabilis%20Deus> <urn:graphragprov:predicate:mentions> <urn:graphragprov:entity:Genesis%203%3A15> .
+<urn:graphragprov:entity:Lord> <urn:graphragprov:predicate:leanedOn> <urn:graphragprov:entity:ladder> .
+<urn:graphragprov:entity:Mary> <urn:graphragprov:predicate:is> <urn:graphragprov:entity:woman> .
+<urn:graphragprov:entity:Mary> <urn:graphragprov:predicate:willBe> <urn:graphragprov:entity:eternally%20at%20enmity%20with%20the%20evil%20serpent> .
+<urn:graphragprov:entity:Mary> <urn:graphragprov:predicate:willCompletelyTriumphOver> <urn:graphragprov:entity:evil%20serpent> .
+<urn:graphragprov:entity:angels%20of%20God> <urn:graphragprov:predicate:ascendedAndDescended> <urn:graphragprov:entity:ladder> .
+<urn:graphragprov:entity:ark%20of%20Noah> <urn:graphragprov:predicate:builtBy> <urn:graphragprov:entity:divine%20command> .
+<urn:graphragprov:entity:ark%20of%20Noah> <urn:graphragprov:predicate:escaped> <urn:graphragprov:entity:entirely%20safe%20and%20sound%20from%20the%20common%20shipwreck%20of%20the%20whole%20world> .
+<urn:graphragprov:entity:bush> <urn:graphragprov:predicate:burned> <urn:graphragprov:entity:on%20all%20sides> .
+<urn:graphragprov:entity:bush> <urn:graphragprov:predicate:grewGreenAndBlossomed> <urn:graphragprov:entity:beautifully> .
+<urn:graphragprov:entity:bush> <urn:graphragprov:predicate:seenBy> <urn:graphragprov:entity:Moses> .
+<urn:graphragprov:entity:bush> <urn:graphragprov:predicate:wasNotConsumedOrInjured> <urn:graphragprov:entity:in%20any%20way> .
+<urn:graphragprov:entity:garden> <urn:graphragprov:predicate:cannotBeViolatedOrCorrupted> <urn:graphragprov:entity:by%20any%20deceitful%20plots> .
+<urn:graphragprov:entity:garden> <urn:graphragprov:predicate:isEnclosed> <urn:graphragprov:entity:on%20all%20sides> .
+<urn:graphragprov:entity:impregnable%20tower> <urn:graphragprov:predicate:has> <urn:graphragprov:entity:a%20thousand%20bucklers%20and%20all%20the%20armor%20of%20the%20strong> .
+<urn:graphragprov:entity:ladder> <urn:graphragprov:predicate:reaches> <urn:graphragprov:entity:from%20the%20earth%20to%20heaven> .
+<urn:graphragprov:entity:ladder> <urn:graphragprov:predicate:seenBy> <urn:graphragprov:entity:Jacob> .
+<urn:graphragprov:entity:most%20august%20temple%20of%20God> <urn:graphragprov:predicate:isFullOf> <urn:graphragprov:entity:glory%20of%20God> .
+<urn:graphragprov:entity:most%20august%20temple%20of%20God> <urn:graphragprov:predicate:isRadiantWith> <urn:graphragprov:entity:divine%20splendours> .
+<urn:graphragprov:entity:resplendent%20city%20of%20God> <urn:graphragprov:predicate:hasFoundationsOn> <urn:graphragprov:entity:holy%20mountains> .
+<urn:graphragprov:entity:Bible> <urn:graphragprov:predicate:highestAuthorityIn> <urn:graphragprov:entity:matters%20of%20faith%20and%20morals> .
+<urn:graphragprov:entity:Five%20solae> <urn:graphragprov:predicate:opposes> <urn:graphragprov:entity:teaching%20of%20the%20Roman%20Catholic%20Church%20of%20the%20day> .
+<urn:graphragprov:entity:Five%20solae> <urn:graphragprov:predicate:summarizes> <urn:graphragprov:entity:reformers%27%20basic%20differences%20in%20theological%20beliefs> .
+<urn:graphragprov:entity:Protestantism> <urn:graphragprov:predicate:denies> <urn:graphragprov:entity:Roman%20Catholic%20doctrine%20of%20transubstantiation> .
+<urn:graphragprov:entity:Protestantism> <urn:graphragprov:predicate:emphasizes> <urn:graphragprov:entity:belief%20in%20the%20Bible%20alone> .
+<urn:graphragprov:entity:Protestantism> <urn:graphragprov:predicate:emphasizes> <urn:graphragprov:entity:doctrine%20of%20justification%20by%20faith%20alone> .
+<urn:graphragprov:entity:Protestantism> <urn:graphragprov:predicate:emphasizes> <urn:graphragprov:entity:priesthood%20of%20all%20believers> .
+<urn:graphragprov:entity:Protestantism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:denomination> .
+<urn:graphragprov:entity:Protestantism> <urn:graphragprov:predicate:rejects> <urn:graphragprov:entity:papal%20supremacy> .
+<urn:graphragprov:entity:Protestantism> <urn:graphragprov:predicate:summarizedBy> <urn:graphragprov:entity:Five%20solae> .

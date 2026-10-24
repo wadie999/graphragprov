@@ -1,0 +1,353 @@
+
+H0 one-case execution
+  case:          4hop3__673447_132409_371500_35031
+  hops:          4
+  question:      Among the top five largest urban areas in the state where Infest's performer was formed, where does Veoh's headquarters city rank?
+  expected:      third-largest
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop3__673447_132409_371500_35031/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=14 title='Infest (album)'
+  source unit: u_b1c584362ae9427e13d61772b1e956ef2a55678c2100a400285240e29eb269aa
+  text chars:  643
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.175s | model=deepseek-v4-flash
+      tokens:   in=2340 | out=2497 | total=4837 | cached=1920 | uncached=420
+    [LLM graph.reference #2] sending...
+      provider: 1.826s | model=deepseek-v4-flash
+      tokens:   in=690 | out=184 | total=874 | cached=0 | uncached=690
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 1
+
+    initial rejection #11
+      validator:
+        response.statements[11].predicate.evidence[0]: quote 'peaked at  5 on the "Billboard" 200 chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "5",
+                "segment": "text"
+              }
+            ],
+            "value": "5"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "peaked at  5 on the \"Billboard\" 200 chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Infest (album)",
+                "segment": "title"
+              }
+            ],
+            "value": "Infest (album)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'peaked at  5 on the "Billboard" 200 chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "5",
+                "segment": "text"
+              }
+            ],
+            "value": "5"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "peaked at  5 on the \"Billboard\" 200 chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chartPosition"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Infest (album)",
+                "segment": "title"
+              }
+            ],
+            "value": "Infest (album)"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 16
+  coverage:
+    characters combined: 335 / 657 (51.0%)
+    characters text:     321 / 643 (49.9%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           8 / 9 (88.9%)
+    longest uncovered:  100 chars
+      ', and became the 20th highest-selling album of 2000 in the United States. The sound of the album is'
+    statement density:  24.35 / 1000 chars
+    title reliance:      14 / 16 (87.5%)
+
+[GRAPH 2/4] paragraph=4 title='Papa Roach'
+  source unit: u_6fa718536c2230d6b58adcf2b57c631a3f763e462a1021f09b245125a4a22675
+  text chars:  235
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 9.130s | model=deepseek-v4-flash
+      tokens:   in=2447 | out=1988 | total=4435 | cached=1920 | uncached=527
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 183 / 245 (74.7%)
+    characters text:     173 / 235 (73.6%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  22 chars
+      '. The original lineup'
+    statement density:  57.14 / 1000 chars
+    title reliance:      9 / 14 (64.3%)
+
+[GRAPH 3/4] paragraph=10 title='Veoh'
+  source unit: u_8abb27e7943860aee01753d46fcdc7605896268d34363aa230ee800d61199e52
+  text chars:  235
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 3.836s | model=deepseek-v4-flash
+      tokens:   in=2573 | out=724 | total=3297 | cached=2048 | uncached=525
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 198 / 239 (82.8%)
+    characters text:     194 / 235 (82.6%)
+    characters title:    4 / 4 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  19 chars
+      '. The company is a'
+    statement density:  20.92 / 1000 chars
+    title reliance:      4 / 5 (80.0%)
+
+[GRAPH 4/4] paragraph=5 title='San Diego'
+  source unit: u_05bff86db0281951743dedbd1cfa930e867707964bb609e80fa73e958a8cb8cf
+  text chars:  578
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 9.914s | model=deepseek-v4-flash
+      tokens:   in=2723 | out=2267 | total=4990 | cached=2048 | uncached=675
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 440 / 587 (75.0%)
+    characters text:     431 / 578 (74.6%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  23 chars
+      '. They, along with the'
+    statement density:  25.55 / 1000 chars
+    title reliance:      5 / 15 (33.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 50
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      48
+resource nodes:        38
+entity nodes:          38
+literal values:        11
+predicates:            30
+
+N-Triples:
+  <urn:graphragprov:entity:Los%20Angeles%20metropolitan%20area> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> .
+  <urn:graphragprov:entity:Riverside%E2%80%93San%20Bernardino> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> .
+  <urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:landArea> "372.1"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:landAreaInSquareKilometers> "963.7"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:landAreaUnit> <urn:graphragprov:entity:square%20miles> .
+  <urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:population> "1307402"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:San%20Diego> <urn:graphragprov:predicate:populationCensusYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> <urn:graphragprov:predicate:populationCensusYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> <urn:graphragprov:predicate:totalPopulation> "3095313"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:extendsBeyond> <urn:graphragprov:entity:administrative%20city%20limits> .
+  <urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:rankInState> <urn:graphragprov:entity:third-largest> .
+  <urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:rankedAfter> <urn:graphragprov:entity:Los%20Angeles%20metropolitan%20area> .
+  <urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:rankedAfter> <urn:graphragprov:entity:San%20Francisco%20metropolitan%20area> .
+  <urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:totalPopulation> "2956746"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:San%20Francisco%20metropolitan%20area> <urn:graphragprov:predicate:largerThan> <urn:graphragprov:entity:San%20Diego%20metropolitan%20area> .
+  <urn:graphragprov:entity:Ben%20Luther> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:trombonist> .
+  <urn:graphragprov:entity:Dave%20Buckner> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:drummer> .
+  <urn:graphragprov:entity:Jacoby%20Shaddix> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:lead%20vocalist> .
+  <urn:graphragprov:entity:Jerry%20Horton> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:guitarist> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:formedInYear> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Ben%20Luther> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Dave%20Buckner> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Jacoby%20Shaddix> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Jerry%20Horton> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:hasMember> <urn:graphragprov:entity:Will%20James> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rock%20band> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Vacaville%2C%20California> .
+  <urn:graphragprov:entity:Will%20James> <urn:graphragprov:predicate:roleInBand> <urn:graphragprov:entity:bassist> .
+  <urn:graphragprov:entity:Qlipso> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Israeli%20start-up> .
+  <urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:allowsUsersTo> <urn:graphragprov:entity:find%20and%20watch%20major%20studio%20content%2C%20independent%20productions%20and%20user-generated%20material> .
+  <urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:San%20Diego%2C%20California> .
+  <urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Internet%20television%20company> .
+  <urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Qlipso> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:awardNomination> <urn:graphragprov:entity:Best%20New%20Artist> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:bestSellingAlbumOf> <urn:graphragprov:entity:Papa%20Roach> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:certification> <urn:graphragprov:entity:3%C3%97%20Platinum> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:certificationDate> "2001-07-18"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:chartedOn> <urn:graphragprov:entity:Billboard%20200> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:nu%20metal> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:rap%20metal> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:major-label%20debut> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Papa%20Roach> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:publicationDate> "2000-04-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:DreamWorks%20Records> .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:sales> "more than seven million" .
+  <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:salesInUS> "three million" .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rock%20band> .
+  <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 7.029s | model=deepseek-v4-flash
+      tokens:   in=3351 | out=370 | total=3721 | cached=640 | uncached=2711
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:performer> <urn:graphragprov:entity:Papa%20Roach> .
+  - <urn:graphragprov:entity:Papa%20Roach> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Vacaville%2C%20California> .
+  - <urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:San%20Diego%2C%20California> .
+  - <urn:graphragprov:entity:San%20Diego%20urban%20area> <urn:graphragprov:predicate:rankInState> <urn:graphragprov:entity:third-largest> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:origin> ?origin . ?origin <urn:graphragprov:predicate:partOfState> ?state . <urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:headquartersLocation> ?hq . ?hq <urn:graphragprov:predicate:partOfUrbanArea> ?urbanArea . ?urbanArea <urn:graphragprov:predicate:rankInState> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_05bff86db0281951>
+  FROM <urn:graphragprov:unit:u_6fa718536c2230d6>
+  FROM <urn:graphragprov:unit:u_8abb27e7943860ae>
+  FROM <urn:graphragprov:unit:u_b1c584362ae9427e>
+  WHERE { <urn:graphragprov:entity:Infest%20%28album%29> <urn:graphragprov:predicate:performer> ?performer . ?performer <urn:graphragprov:predicate:origin> ?origin . ?origin <urn:graphragprov:predicate:partOfState> ?state . <urn:graphragprov:entity:Veoh> <urn:graphragprov:predicate:headquartersLocation> ?hq . ?hq <urn:graphragprov:predicate:partOfUrbanArea> ?urbanArea . ?urbanArea <urn:graphragprov:predicate:rankInState> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop3__673447_132409_371500_35031
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop3__673447_132409_371500_35031/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          14124
+output tokens:         8030
+total tokens:          22154
+cached input tokens:   8576
+uncached input tokens: 5548
+cumulative LLM seconds: 42.911
+
+statement occurrences: 50
+semantic triples:      48
+entity nodes:          38
+literal values:        11
+predicates:            30
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 35.909s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.064s
+  graph.materialization [attempt=1]: 0.117s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 7.030s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.500s

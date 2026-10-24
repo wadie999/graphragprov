@@ -1,0 +1,367 @@
+
+H0 one-case execution
+  case:          2hop__256553_617289
+  hops:          2
+  question:      Who is the uncle of Liu Bin?
+  expected:      Liu Yin
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__256553_617289/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Consort Dowager Zhao'
+  source unit: u_19de8e21fa389522aef3300665fd9619d81d26a9b5f0537c882d050ab63c74a5
+  text chars:  441
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 7.106s | model=deepseek-v4-flash
+      tokens:   in=2224 | out=1441 | total=3665 | cached=2048 | uncached=176
+    [LLM graph.reference #2] sending...
+      provider: 1.318s | model=deepseek-v4-flash
+      tokens:   in=647 | out=8 | total=655 | cached=0 | uncached=647
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 1
+
+    initial rejection #9
+      validator:
+        response.statements[9].predicate.evidence[0]: quote 'Dayou era (928-942)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "928-942",
+                "segment": "text"
+              }
+            ],
+            "value": "928-942"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Dayou era (928-942)",
+                "segment": "text"
+              }
+            ],
+            "value": "titlePeriod"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Consort Dowager Zhao",
+                "segment": "title"
+              }
+            ],
+            "value": "Consort Dowager Zhao"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 153 / 461 (33.2%)
+    characters text:     133 / 441 (30.2%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  74 chars
+      "'s background. It is known that she was considered very beautiful and was"
+    statement density:  19.52 / 1000 chars
+    title reliance:      4 / 9 (44.4%)
+
+[GRAPH 2/2] paragraph=13 title='Liu Yin (Southern Han)'
+  source unit: u_041f845cf0257fb7e83b114e610d5b8cb1917fbe3890c027513492ab1c5655e0
+  text chars:  558
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.102s | model=deepseek-v4-flash
+      tokens:   in=2340 | out=1745 | total=4085 | cached=2048 | uncached=292
+    [LLM graph.reference #4] sending...
+      provider: 3.977s | model=deepseek-v4-flash
+      tokens:   in=1145 | out=583 | total=1728 | cached=0 | uncached=1145
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 3
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "874",
+                "segment": "text"
+              }
+            ],
+            "value": "874"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "874",
+                "segment": "text"
+              }
+            ],
+            "value": "birthDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Liu Yin",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Liu Yin",
+                "segment": "text"
+              }
+            ],
+            "value": "Liu Yin"
+          }
+        }
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.value must use YYYY-MM-DD notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "date",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "April 4, 911",
+                "segment": "text"
+              }
+            ],
+            "value": "911-04-04"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "April 4, 911",
+                "segment": "text"
+              }
+            ],
+            "value": "deathDate"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Liu Yin",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Liu Yin",
+                "segment": "text"
+              }
+            ],
+            "value": "Liu Yin"
+          }
+        }
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'ruled Qinghai Circuit ... as its military governor' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Qinghai Circuit",
+                "segment": "text"
+              }
+            ],
+            "value": "Qinghai Circuit"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ruled Qinghai Circuit ... as its military governor",
+                "segment": "text"
+              }
+            ],
+            "value": "militaryGovernorOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Liu Yin",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Liu Yin",
+                "segment": "text"
+              }
+            ],
+            "value": "Liu Yin"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 261 / 580 (45.0%)
+    characters text:     254 / 558 (45.5%)
+    characters title:    7 / 22 (31.8%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  135 chars
+      "late in the Chinese dynasty Tang Dynasty and Tang's succeeding dynasty Later Liang of the Five Dynasties and Ten Kingdoms period, who"
+    statement density:  18.97 / 1000 chars
+    title reliance:      8 / 11 (72.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 20
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 4
+  corrected valid: 3
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      20
+resource nodes:        16
+entity nodes:          16
+literal values:        3
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Guangzhou> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Guangdong> .
+  <urn:graphragprov:entity:Liu%20Yan> <urn:graphragprov:predicate:founderOf> <urn:graphragprov:entity:Southern%20Han> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:birthDate> "0874"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:deathDate> "0911-04-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:warlord> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:militaryGovernorOf> <urn:graphragprov:entity:Qinghai%20Circuit> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:posthumousName> <urn:graphragprov:entity:Emperor%20Xiang> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Liu%20Yan> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:templeName> <urn:graphragprov:entity:Liezong> .
+  <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Prince%20Xiang%20of%20Nanhai> .
+  <urn:graphragprov:entity:Qinghai%20Circuit> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Guangzhou> .
+  <urn:graphragprov:entity:Consort%20Dowager%20Zhao> <urn:graphragprov:predicate:gaveBirthTo> <urn:graphragprov:entity:Liu%20Hongdu> .
+  <urn:graphragprov:entity:Consort%20Dowager%20Zhao> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:imperial%20consort> .
+  <urn:graphragprov:entity:Consort%20Dowager%20Zhao> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Liu%20Yan> .
+  <urn:graphragprov:entity:Consort%20Dowager%20Zhao> <urn:graphragprov:predicate:title> <urn:graphragprov:entity:Zhaoyi> .
+  <urn:graphragprov:entity:Liu%20Guitu> <urn:graphragprov:predicate:deathDate> "early" .
+  <urn:graphragprov:entity:Liu%20Hongdu> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:Liu%20Yan> .
+  <urn:graphragprov:entity:Liu%20Hongdu> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Liu%20Guitu> .
+  <urn:graphragprov:entity:Liu%20Hongdu> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Liu%20Yaoshu> .
+  <urn:graphragprov:entity:Liu%20Yaoshu> <urn:graphragprov:predicate:deathDate> "early" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.826s | model=deepseek-v4-flash
+      tokens:   in=1705 | out=101 | total=1806 | cached=640 | uncached=1065
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:sibling> <urn:graphragprov:entity:Liu%20Yan> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:sibling> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_041f845cf0257fb7>
+  FROM <urn:graphragprov:unit:u_19de8e21fa389522>
+  WHERE { <urn:graphragprov:entity:Liu%20Yin> <urn:graphragprov:predicate:sibling> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Liu Yan',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Liu Yin (Southern Han)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__256553_617289
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__256553_617289/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8061
+output tokens:         3878
+total tokens:          11939
+cached input tokens:   4736
+uncached input tokens: 3325
+cumulative LLM seconds: 22.329
+
+statement occurrences: 20
+semantic triples:      20
+entity nodes:          16
+literal values:        3
+predicates:            14
+query attempts:        1
+observed answers:      ('Liu Yan',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.515s
+  graph.reference.measurements [attempt=1]: 0.002s
+  graph.clear_support [attempt=1]: 0.050s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.827s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.494s

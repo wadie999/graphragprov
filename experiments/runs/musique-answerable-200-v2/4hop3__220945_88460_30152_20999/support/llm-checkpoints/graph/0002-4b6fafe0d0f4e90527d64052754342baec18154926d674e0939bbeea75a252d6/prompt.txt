@@ -1,0 +1,109 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_3cbda746333418ad15984c98aca424e32983d0797d99ef9903c86a4e870962a9
+Title: Nam Theun
+Text:
+Nam Theun, also known as Khading, is a river in Laos, in Khammouane and Bolikhamsai Provinces. Together with its tributaries Nam One, Nam Noy, and Nam Theun it has total length of and drains an area of . "Nam Theun" is also three options for large dams on the same river, called Nam Theun 1, Nam Theun 1-2 and Nam Theun 2. Nam Theun 2, which was considered the most economic of the three options, is in operation.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 8,
+    "statement": {
+      "subject": {
+        "value": "Nam Theun",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Nam Theun",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "totalLength",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "total length",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "total length of",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[8].object.value must not be empty"
+  },
+  {
+    "statement_index": 9,
+    "statement": {
+      "subject": {
+        "value": "Nam Theun",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Nam Theun",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "drainageArea",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "drains an area of",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "drains an area of",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[9].object.value must not be empty"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

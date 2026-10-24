@@ -1,0 +1,77 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_00d4cdce5410acd071abc1238b74b96841f71145a4cad041eeefd75adb95ed37
+Title: WLUJ
+Text:
+WLUJ is a Christian radio station licensed to Springfield, Illinois, broadcasting on 89.7 MHz FM. The station is owned by Cornerstone Community Radio.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 2,
+    "statement": {
+      "subject": {
+        "value": "WLUJ",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "WLUJ",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "WLUJ",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "broadcastFrequency",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "broadcasting on",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "89.7 MHz FM",
+        "datatype": "string",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "89.7 MHz FM",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[2].object.evidence[0]: quote '89.7 MHz FM' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

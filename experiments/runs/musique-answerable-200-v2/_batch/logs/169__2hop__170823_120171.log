@@ -1,0 +1,329 @@
+
+H0 one-case execution
+  case:          2hop__170823_120171
+  hops:          2
+  question:      What year did the publisher of Labyrinth end?
+  expected:      1986
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__170823_120171/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=7 title='Labyrinth (1984 video game)'
+  source unit: u_2129532bdd882e1f1cf8ea644685ca1738efcf633d997690665abd212e2fe1aa
+  text chars:  208
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.941s | model=deepseek-v4-flash
+      tokens:   in=2170 | out=1147 | total=3317 | cached=1920 | uncached=250
+    [LLM graph.reference #2] sending...
+      provider: 1.444s | model=deepseek-v4-flash
+      tokens:   in=558 | out=168 | total=726 | cached=0 | uncached=558
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'published by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Acornsoft",
+                "segment": "text"
+              }
+            ],
+            "value": "Acornsoft"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "published by",
+                "segment": "text"
+              }
+            ],
+            "value": "publisher"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Labyrinth",
+                "segment": "text"
+              }
+            ],
+            "value": "Labyrinth"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'published by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Acornsoft",
+                "segment": "text"
+              }
+            ],
+            "value": "Acornsoft"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "published by",
+                "segment": "text"
+              }
+            ],
+            "value": "publisher"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Labyrinth",
+                "segment": "text"
+              }
+            ],
+            "value": "Labyrinth"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 126 / 235 (53.6%)
+    characters text:     126 / 208 (60.6%)
+    characters title:    0 / 27 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  29 chars
+      'Acornsoft release, with its'
+    statement density:  29.79 / 1000 chars
+    title reliance:      0 / 7 (0.0%)
+
+[GRAPH 2/2] paragraph=2 title='Acornsoft'
+  source unit: u_ad34a32ae10cdeef82cf072fc59839c52bed92fb3c27bf6c1e57b8496fa1d71c
+  text chars:  718
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 65.743s | model=deepseek-v4-flash
+      tokens:   in=2348 | out=16384 | total=18732 | cached=2048 | uncached=300
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 11.177s | model=deepseek-v4-flash
+      tokens:   in=2393 | out=2645 | total=5038 | cached=2304 | uncached=89
+    [LLM graph.reference #5] sending...
+      provider: 1.645s | model=deepseek-v4-flash
+      tokens:   in=675 | out=189 | total=864 | cached=0 | uncached=675
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 1986",
+                "segment": "text"
+              }
+            ],
+            "value": "January 1986"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ceased to operate as a separate company",
+                "segment": "text"
+              }
+            ],
+            "value": "ceasedToOperateAsSeparateCompanyOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Acornsoft",
+                "segment": "title"
+              }
+            ],
+            "value": "Acornsoft"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 601 / 727 (82.7%)
+    characters text:     592 / 718 (82.5%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  44 chars
+      '. By agreement, the Acornsoft name was also'
+    statement density:  23.38 / 1000 chars
+    title reliance:      3 / 17 (17.6%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 24
+  whole-source attempts: 3
+  whole-source retries: 1
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        21
+entity nodes:          21
+literal values:        4
+predicates:            21
+
+N-Triples:
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:acclaimed> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:addictive%20gameplay> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:fluid%20animation> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:hasFeature> <urn:graphragprov:entity:high%20resolution%20graphics> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:video%20game> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:platform> <urn:graphragprov:entity:BBC%20Micro> .
+  <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:publicationYear> "1984"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Acorn%20Computers> <urn:graphragprov:predicate:usedNameOn> <urn:graphragprov:entity:office%20software> .
+  <urn:graphragprov:entity:Acorn%20Computers> <urn:graphragprov:predicate:usedNameOnSoftwareFor> <urn:graphragprov:entity:BBC%20Master%20series> .
+  <urn:graphragprov:entity:Acorn%20Computers> <urn:graphragprov:predicate:usedNameOnSoftwareInFamily> <urn:graphragprov:entity:VIEW%20family> .
+  <urn:graphragprov:entity:Acornsoft> <urn:graphragprov:predicate:ceasedToOperateAsSeparateCompanyIn> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Acornsoft> <urn:graphragprov:predicate:ceasedToOperateAsSeparateCompanyOn> "1986-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Acornsoft> <urn:graphragprov:predicate:ceasedToOperateAsSeparateCompanyUponDepartureOf> <urn:graphragprov:entity:David%20Johnson-Davies> .
+  <urn:graphragprov:entity:Acornsoft%20name> <urn:graphragprov:predicate:usedOnPackagingOf> <urn:graphragprov:entity:some%20of%20the%20subsequent%20Superior%20games> .
+  <urn:graphragprov:entity:Acornsoft%27s%20text%20adventure%20games> <urn:graphragprov:predicate:releasedInUpdatedVersionsBy> <urn:graphragprov:entity:Topologika> .
+  <urn:graphragprov:entity:Acornsoft%27s%20text%20adventure%20games> <urn:graphragprov:predicate:releasedWithSequelsFrom> <urn:graphragprov:entity:same%20authors> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:choseNotToTakeOn> <urn:graphragprov:entity:Acornsoft%27s%20text%20adventure%20games> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:grantedLicenceIn> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:grantedLicenceToPublishGamesOf> <urn:graphragprov:entity:Acornsoft> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:rereleasedGames> <urn:graphragprov:entity:Acornsoft%20games> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:rereleasedGamesAsCompilations> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:rereleasedGamesInCompilationSeries> <urn:graphragprov:entity:Acornsoft%20Hits> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:rereleasedGamesInCompilationSeries> <urn:graphragprov:entity:Play%20It%20Again%20Sam> .
+  <urn:graphragprov:entity:Superior%20Software> <urn:graphragprov:predicate:rereleasedGamesIndividually> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.681s | model=deepseek-v4-flash
+      tokens:   in=2045 | out=202 | total=2247 | cached=640 | uncached=1405
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:publicationYear> "1984"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  - <urn:graphragprov:entity:Acornsoft> <urn:graphragprov:predicate:ceasedToOperateAsSeparateCompanyIn> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:publicationYear> ?year . <urn:graphragprov:entity:Acornsoft> <urn:graphragprov:predicate:ceasedToOperateAsSeparateCompanyIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2129532bdd882e1f>
+  FROM <urn:graphragprov:unit:u_ad34a32ae10cdeef>
+  WHERE { <urn:graphragprov:entity:Labyrinth> <urn:graphragprov:predicate:publicationYear> ?year . <urn:graphragprov:entity:Acornsoft> <urn:graphragprov:predicate:ceasedToOperateAsSeparateCompanyIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1986',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Acornsoft', 'Labyrinth (1984 video game)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__170823_120171
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__170823_120171/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10189
+output tokens:         20735
+total tokens:          30924
+cached input tokens:   6912
+uncached input tokens: 3277
+cumulative LLM seconds: 87.630
+
+statement occurrences: 24
+semantic triples:      24
+entity nodes:          21
+literal values:        4
+predicates:            21
+query attempts:        1
+observed answers:      ('1986',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 85.964s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.037s
+  graph.materialization [attempt=1]: 0.050s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.681s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.432s

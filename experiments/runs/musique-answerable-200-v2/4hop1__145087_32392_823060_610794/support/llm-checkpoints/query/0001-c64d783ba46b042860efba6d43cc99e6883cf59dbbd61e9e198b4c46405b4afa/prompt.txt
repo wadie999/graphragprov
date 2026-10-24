@@ -1,0 +1,175 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What county is the city that shares a border with the state capital of the state where Velma Barfield was born located in?
+
+Expected answer: Richland County
+
+Gold decomposition:
+1. question="What was Velma Barfield's city of birth?"; answer='South Carolina'; support_paragraph=5
+2. question='What city became the state capital of #1 ?'; answer='Columbia'; support_paragraph=17
+3. question='#2 >> shares border with'; answer='Forest Acres'; support_paragraph=11
+4. question='#3 >> located in the administrative territorial entity'; answer='Richland County'; support_paragraph=14
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Lillian%20Bullard> <urn:graphragprov:predicate:didNotIntervene> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:rural%20South%20Carolina> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:developedAddiction> <urn:graphragprov:entity:drug%20addiction> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:developedCondition> <urn:graphragprov:entity:back%20pain> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:experiencedBehavioralChange> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:father> <urn:graphragprov:entity:physically%20abusive> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:hadMedicalProcedure> <urn:graphragprov:entity:hysterectomy> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:marriedInYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:mother> <urn:graphragprov:entity:Lillian%20Bullard> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:numberOfChildren> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:Fayetteville%2C%20North%20Carolina> .
+<urn:graphragprov:entity:Velma%20Barfield> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Thomas%20Burke> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:city> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Richland%20County> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Columbia%2C%20South%20Carolina%2C%20Metropolitan%20Statistical%20Area> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:population> "10361"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:populationAsOf> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:becameMoreProsperous> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:economyType> <urn:graphragprov:entity:plantation-dominated%20economy> .
+<urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatus> <urn:graphragprov:entity:state%20capital> .
+<urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusInYear> "1786"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Charleston%2C%20South%20Carolina> <urn:graphragprov:predicate:lostStatusTo> <urn:graphragprov:entity:Columbia> .
+<urn:graphragprov:entity:Lowcountry> <urn:graphragprov:predicate:devotedTo> <urn:graphragprov:entity:cotton%20plantations> .
+<urn:graphragprov:entity:Piedmont%20region> <urn:graphragprov:predicate:developedInto> <urn:graphragprov:entity:cotton%20plantations> .
+<urn:graphragprov:entity:cotton> <urn:graphragprov:predicate:becameMajorExportCommodity> <urn:graphragprov:entity:South%20Carolina%27s%20major%20export%20commodity> .
+<urn:graphragprov:entity:cotton%20gin> <urn:graphragprov:predicate:inventedInYear> "1793"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:cotton%20gin> <urn:graphragprov:predicate:revolutionizedProcessing> <urn:graphragprov:entity:this%20crop> .
+<urn:graphragprov:entity:sea%20islands> <urn:graphragprov:predicate:devotedTo> <urn:graphragprov:entity:cotton%20plantations> .
+<urn:graphragprov:entity:short-staple%20cotton> <urn:graphragprov:predicate:becameProfitable> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:short-staple%20cotton> <urn:graphragprov:predicate:grownIn> <urn:graphragprov:entity:upland%20areas> .
+<urn:graphragprov:entity:slaves> <urn:graphragprov:predicate:werePrimaryLaborForce> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:artisans> .
+<urn:graphragprov:entity:slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:domestics> .
+<urn:graphragprov:entity:slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:laborers> .
+<urn:graphragprov:entity:slaves> <urn:graphragprov:predicate:workedAs> <urn:graphragprov:entity:market%20workers> .
+<urn:graphragprov:entity:Forest%20Acres> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:brandedAs> <urn:graphragprov:entity:94.3%20The%20Dude> .
+<urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:broadcasts> <urn:graphragprov:entity:country%20music%20format> .
+<urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:radio%20station> .
+<urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:licensedTo> <urn:graphragprov:entity:Forest%20Acres> .
+<urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Midlands%20Media%20Group%20LLC> .
+<urn:graphragprov:entity:WWNQ> <urn:graphragprov:predicate:serves> <urn:graphragprov:entity:Columbia%2C%20South%20Carolina%20market> .

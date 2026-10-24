@@ -1,0 +1,365 @@
+
+H0 one-case execution
+  case:          4hop1__39871_314549_131976_44528
+  hops:          4
+  question:      Williamsburg, Main Street station and another station share a track in a state bounded by an ocean. Where does that ocean meet the Gulf of Mexico?
+  expected:      Florida Straits
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__39871_314549_131976_44528/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=14 title='Richmond, Virginia'
+  source unit: u_0d44357db59690f686b63121e70220b08c30648cd4d202b57bd24b3502f1f02b
+  text chars:  737
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 13.103s | model=deepseek-v4-flash
+      tokens:   in=2343 | out=2994 | total=5337 | cached=1920 | uncached=423
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 400 / 755 (53.0%)
+    characters text:     382 / 737 (51.8%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  132 chars
+      '. Each station receives regular service from north of Richmond including Washington, D.C., Philadelphia, and New York. The suburban'
+    statement density:  26.49 / 1000 chars
+    title reliance:      4 / 20 (20.0%)
+
+[GRAPH 2/4] paragraph=10 title='Newport News, Virginia'
+  source unit: u_48a89cc83f5df9e79eb67ff1beda6f38308ea5a1111998f1d912a020f17d6444
+  text chars:  638
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.158s | model=deepseek-v4-flash
+      tokens:   in=2587 | out=1947 | total=4534 | cached=1920 | uncached=667
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 490 / 660 (74.2%)
+    characters text:     468 / 638 (73.4%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  37 chars
+      '. The area now known as Newport News'
+    statement density:  19.70 / 1000 chars
+    title reliance:      7 / 13 (53.8%)
+
+[GRAPH 3/4] paragraph=7 title='Virginia'
+  source unit: u_e53848e13fdeab0bfa6758c2db115aee37802599899d9921026d0ddc6adc0160
+  text chars:  708
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.612s | model=deepseek-v4-flash
+      tokens:   in=2774 | out=2250 | total=5024 | cached=2048 | uncached=726
+    [LLM graph.reference #4] sending...
+      provider: 1.537s | model=deepseek-v4-flash
+      tokens:   in=678 | out=178 | total=856 | cached=0 | uncached=678
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 1
+
+    initial rejection #13
+      validator:
+        response.statements[13].object.evidence[0]: quote '36° 30′ parallel north' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "36° 30′ parallel north",
+                "segment": "text"
+              }
+            ],
+            "value": "36° 30′ parallel north"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "southern border is defined as",
+                "segment": "text"
+              }
+            ],
+            "value": "southernBorderDefinedAs"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Virginia",
+                "segment": "title"
+              }
+            ],
+            "value": "Virginia"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.evidence[0]: quote '36° 30′ parallel north' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "36° 30′ parallel north",
+                "segment": "text"
+              }
+            ],
+            "value": "36° 30′ parallel north"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "southern border is defined as",
+                "segment": "text"
+              }
+            ],
+            "value": "southernBorderDefinedAs"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Virginia",
+                "segment": "title"
+              }
+            ],
+            "value": "Virginia"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 325 / 716 (45.4%)
+    characters text:     317 / 708 (44.8%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           7 / 8 (87.5%)
+    longest uncovered:  140 chars
+      '. The southern border is defined as the 36° 30′ parallel north, though surveyor error led to deviations of as much as three arcminutes. The'
+    statement density:  20.95 / 1000 chars
+    title reliance:      15 / 15 (100.0%)
+
+[GRAPH 4/4] paragraph=16 title='Gulf of Mexico'
+  source unit: u_77216b3e6979eacb4a2e7227013b97bebb4d53f8ee4589064061cdf532d6cb5c
+  text chars:  860
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 9.620s | model=deepseek-v4-flash
+      tokens:   in=2958 | out=2265 | total=5223 | cached=2176 | uncached=782
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 606 / 874 (69.3%)
+    characters text:     592 / 860 (68.8%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  91 chars
+      'between Mexico and Cuba. With the narrow connection to the Atlantic, the Gulf experiences'
+    statement density:  16.02 / 1000 chars
+    title reliance:      14 / 14 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 62
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      62
+resource nodes:        42
+entity nodes:          42
+literal values:        11
+predicates:            37
+
+N-Triples:
+  <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Richmond%2C%20Virginia> .
+  <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> <urn:graphragprov:entity:Newport%20News> .
+  <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> <urn:graphragprov:entity:Williamsburg> .
+  <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Newport%20News> .
+  <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Williamsburg> .
+  <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:renovatedInYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:servedBy> <urn:graphragprov:entity:Amtrak> .
+  <urn:graphragprov:entity:Richmond%2C%20Virginia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Main%20Street%20Station> .
+  <urn:graphragprov:entity:Richmond%2C%20Virginia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Richmond%2C%20Virginia> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:major%20north-south%20freight%20line> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:receivesMoreTrainsThan> <urn:graphragprov:entity:Main%20Street%20Station> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Durham> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Florida> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Newport%20News> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Raleigh> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Savannah> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:receivesServiceTo> <urn:graphragprov:entity:Williamsburg> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:servedBy> <urn:graphragprov:entity:Amtrak> .
+  <urn:graphragprov:entity:Staples%20Mill%20Road%20Station> <urn:graphragprov:predicate:servesMorePassengersThan> <urn:graphragprov:entity:Main%20Street%20Station> .
+  <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:extendsFrom> <urn:graphragprov:entity:Skiffe%27s%20Creek> .
+  <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:extendsTo> <urn:graphragprov:entity:Newport%20News%20Point> .
+  <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:southeastern%20end%20of%20the%20Virginia%20Peninsula> .
+  <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hampton%20Roads%20metropolitan%20area> .
+  <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:harbor%20of%20Hampton%20Roads> .
+  <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:northern%20shore%20of%20the%20James%20River> .
+  <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:wasPartOf> <urn:graphragprov:entity:Warwick%20County> .
+  <urn:graphragprov:entity:Warwick%20County> <urn:graphragprov:predicate:composedOf> <urn:graphragprov:entity:farms%20and%20undeveloped%20land> .
+  <urn:graphragprov:entity:Warwick%20County> <urn:graphragprov:predicate:formedBy> <urn:graphragprov:entity:House%20of%20Burgesses> .
+  <urn:graphragprov:entity:Warwick%20County> <urn:graphragprov:predicate:formedByOrderOf> <urn:graphragprov:entity:King%20Charles%20I> .
+  <urn:graphragprov:entity:Warwick%20County> <urn:graphragprov:predicate:formedInYear> "1634"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Warwick%20County> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:original%20shire%20of%20Virginia> .
+  <urn:graphragprov:entity:Warwick%20County> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:British%20Colony%20of%20Virginia> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:basinSize> "approximately 1.6 million km (615,000 sq mi)" .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:basinWidth> "approximately 810 nautical miles (1,500 km; 930 mi)" .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedThrough> <urn:graphragprov:entity:Florida%20Straits> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedThrough> <urn:graphragprov:entity:Yucat%C3%A1n%20Channel> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedTo> <urn:graphragprov:entity:Atlantic%20Ocean> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedTo> <urn:graphragprov:entity:Caribbean> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:flooredBy> <urn:graphragprov:entity:sedimentary%20rocks%20and%20recent%20sediments> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:formedAsResultOf> <urn:graphragprov:entity:plate%20tectonics> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:formedInYear> "300 million years ago" .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:formsWith> <urn:graphragprov:entity:American%20Mediterranean%20Sea> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:hasBasinShape> "roughly oval" .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:hasShallowContinentalShelf> <urn:graphragprov:entity:shallow%20continental%20shelf%20waters> .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:hasTidalRange> "very small" .
+  <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:hasVolume> "roughly 2,500 quadrillion liters (550 quadrillion Imperial gallons, 660 quadrillion US gallons, 2.5 million km or 600,000 cu mi)" .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borderDisputeBroughtTo> <urn:graphragprov:entity:U.S.%20Supreme%20Court> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borderWithTennesseeSettledInYear> "1893"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Atlantic%20Ocean> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Kentucky> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Maryland> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:North%20Carolina> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Tennessee> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Washington%2C%20D.C.> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:West%20Virginia> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:boundaryExtendsTo> <urn:graphragprov:entity:low-water%20mark%20of%20the%20south%20shore%20of%20the%20Potomac%20River> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:boundaryWith> <urn:graphragprov:entity:Maryland> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:boundaryWith> <urn:graphragprov:entity:Washington%2C%20D.C.> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:hasTotalArea> "total area" .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:hasWaterArea> <urn:graphragprov:entity:water> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:rankedByArea> "35th-largest state by area" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.743s | model=deepseek-v4-flash
+      tokens:   in=3879 | out=494 | total=4373 | cached=640 | uncached=3239
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> <urn:graphragprov:entity:Williamsburg> .
+  - <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> <urn:graphragprov:entity:Newport%20News> .
+  - <urn:graphragprov:entity:Newport%20News> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Hampton%20Roads%20metropolitan%20area> .
+  - <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Atlantic%20Ocean> .
+  - <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedTo> <urn:graphragprov:entity:Atlantic%20Ocean> .
+  - <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedThrough> <urn:graphragprov:entity:Florida%20Straits> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> <urn:graphragprov:entity:Williamsburg> . <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> ?city . ?city <urn:graphragprov:predicate:locatedIn> ?region . ?region <urn:graphragprov:predicate:borders> ?ocean . ?ocean <urn:graphragprov:predicate:connectedTo> <urn:graphragprov:entity:Gulf%20of%20Mexico> . <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedThrough> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0d44357db59690f6>
+  FROM <urn:graphragprov:unit:u_48a89cc83f5df9e7>
+  FROM <urn:graphragprov:unit:u_77216b3e6979eacb>
+  FROM <urn:graphragprov:unit:u_e53848e13fdeab0b>
+  WHERE { <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> <urn:graphragprov:entity:Williamsburg> . <urn:graphragprov:entity:Main%20Street%20Station> <urn:graphragprov:predicate:receivesServiceFrom> ?city . ?city <urn:graphragprov:predicate:locatedIn> ?region . ?region <urn:graphragprov:predicate:borders> ?ocean . ?ocean <urn:graphragprov:predicate:connectedTo> <urn:graphragprov:entity:Gulf%20of%20Mexico> . <urn:graphragprov:entity:Gulf%20of%20Mexico> <urn:graphragprov:predicate:connectedThrough> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__39871_314549_131976_44528
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__39871_314549_131976_44528/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          15219
+output tokens:         10128
+total tokens:          25347
+cached input tokens:   8704
+uncached input tokens: 6515
+cumulative LLM seconds: 45.772
+
+statement occurrences: 62
+semantic triples:      62
+entity nodes:          42
+literal values:        11
+predicates:            37
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 43.054s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.107s
+  graph.materialization [attempt=1]: 0.134s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.008s
+  query.reference.generation [attempt=1]: 2.744s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.489s

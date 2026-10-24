@@ -1,0 +1,173 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where did Huguenot nobility settle in the state where the Patriot was filmed?
+
+Expected answer: Charleston Orange district
+
+Gold decomposition:
+1. question='where did they film the movie the patriot'; answer='South Carolina'; support_paragraph=11
+2. question='Where in #1 did Huguenot nobility settle?'; answer='Charleston Orange district'; support_paragraph=1
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Brattonsville%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:McConnells> .
+<urn:graphragprov:entity:Brattonsville%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:Dean%20Devlin> <urn:graphragprov:predicate:examined> <urn:graphragprov:entity:actual%20Revolutionary%20War%20uniforms> .
+<urn:graphragprov:entity:Dean%20Devlin> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> .
+<urn:graphragprov:entity:Hightower%20Hall> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brattonsville> .
+<urn:graphragprov:entity:Homestead%20House> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brattonsville> .
+<urn:graphragprov:entity:Mansfield%20Plantation> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Georgetown> .
+<urn:graphragprov:entity:Mark%20Gordon> <urn:graphragprov:predicate:producerOf> <urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> .
+<urn:graphragprov:entity:Middleton%20Place> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Charleston> .
+<urn:graphragprov:entity:Middleton%20Place> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Brattonsville%20Plantation> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Charleston> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:College%20of%20Charleston> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Fort%20Lawn> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Hightower%20Hall> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Homestead%20House> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Lowrys> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Mansfield%20Plantation> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Middleton%20Place> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:Rock%20Hill> .
+<urn:graphragprov:entity:The%20Patriot%20%282000%20film%29> <urn:graphragprov:predicate:shotIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:actual%20Revolutionary%20War%20uniforms> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Smithsonian%20Institution> .
+<urn:graphragprov:entity:Alexander%20Pepin> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+<urn:graphragprov:entity:Antoine%20Poitevin%20of%20Orsement%20France> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+<urn:graphragprov:entity:Edmund%20Bohun%20of%20Suffolk%20England> <urn:graphragprov:predicate:descendedFrom> <urn:graphragprov:entity:Humphrey%20de%20Bohun%20line%20of%20French%20royalty> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:petitioned> <urn:graphragprov:entity:British%20Crown> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:petitionedFor> <urn:graphragprov:entity:right%20to%20own%20land%20in%20the%20Baronies> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:prosperedAs> <urn:graphragprov:entity:slave%20owners> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:plantations> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:wereSuccessfulAt> <urn:graphragprov:entity:marriage%20and%20property%20speculation> .
+<urn:graphragprov:entity:Huguenot%20families%20of%20Norman%20and%20Carolingian%20nobility%20and%20descent> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+<urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+<urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:area%20of%20present-day%20Charleston%2C%20South%20Carolina> .
+<urn:graphragprov:entity:Humphrey%20de%20Bohun%20line%20of%20French%20royalty> <urn:graphragprov:predicate:descendedFrom> <urn:graphragprov:entity:Charlemagne> .
+<urn:graphragprov:entity:Jacques%20de%20Bordeaux%20of%20Grenoble> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+<urn:graphragprov:entity:Jean%20Postell%20of%20Dieppe%20France> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:becamePastorOf> <urn:graphragprov:entity:first%20Huguenot%20church%20in%20North%20America> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:town%20of%20Pons%20in%20France> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:wasAmongFirstToSettleIn> <urn:graphragprov:entity:Charleston> .
+<urn:graphragprov:entity:first%20Huguenot%20church%20in%20North%20America> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Charleston> .
+<urn:graphragprov:entity:plantations> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Cooper%2C%20Ashepoo%2C%20Ashley%20and%20Santee%20River> .
+<urn:graphragprov:entity:plantations> <urn:graphragprov:predicate:purchasedFrom> <urn:graphragprov:entity:British%20Landgrave%20Edmund%20Bellinger> .
+<urn:graphragprov:entity:some%20of%20their%20descendants> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:new%20plantations> .
+<urn:graphragprov:entity:some%20of%20their%20descendants> <urn:graphragprov:predicate:movedInto> <urn:graphragprov:entity:Deep%20South%20and%20Texas> .

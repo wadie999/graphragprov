@@ -1,0 +1,364 @@
+
+H0 one-case execution
+  case:          4hop2__71753_158279_70784_61381
+  hops:          4
+  question:      When was the region immediately north of the region where Israel is located and the final destination for the export crops established?
+  expected:      1932
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop2__71753_158279_70784_61381/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=12 title='Israel'
+  source unit: u_ebb1d132051dc212898a4dc59e63cf5b403340ccca1a4cbe03b9e8ffe7466d83
+  text chars:  919
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.997s | model=deepseek-v4-flash
+      tokens:   in=2430 | out=2862 | total=5292 | cached=2048 | uncached=382
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 521 / 925 (56.3%)
+    characters text:     515 / 919 (56.0%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  120 chars
+      'ic: إِسْرَائِيل \u200e), officially the State of Israel (Hebrew: מְדִינַת יִשְׂרָאֵל \u200e, Arabic: دَوْلَة إِسْرَائِيل \u200e), is a'
+    statement density:  19.46 / 1000 chars
+    title reliance:      18 / 18 (100.0%)
+
+[GRAPH 2/4] paragraph=4 title='Shiraz'
+  source unit: u_71b1688133fdabb7c05128cf9c48fcd55c7a28bca46563397c8f690f2c33c3b7
+  text chars:  1096
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 19.264s | model=deepseek-v4-flash
+      tokens:   in=2540 | out=4823 | total=7363 | cached=2048 | uncached=492
+    [LLM graph.reference #3] sending...
+      provider: 1.929s | model=deepseek-v4-flash
+      tokens:   in=721 | out=181 | total=902 | cached=0 | uncached=721
+  extraction: ACCEPTED
+  statements: 34
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    33
+    initially rejected: 1
+
+    initial rejection #33
+      validator:
+        response.statements[33].object.value must use canonical decimal notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "decimal",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "53%",
+                "segment": "text"
+              }
+            ],
+            "value": "53%"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "53% of Iran's electronic investment",
+                "segment": "text"
+              }
+            ],
+            "value": "shareOfNationalElectronicInvestment"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Shiraz",
+                "segment": "title"
+              }
+            ],
+            "value": "Shiraz"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 34
+  coverage:
+    characters combined: 662 / 1102 (60.1%)
+    characters text:     656 / 1096 (59.9%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           8 / 9 (88.9%)
+    longest uncovered:  126 chars
+      '. The second half of the 19th century witnessed certain economic developments that greatly changed the economy of Shiraz. The'
+    statement density:  30.85 / 1000 chars
+    title reliance:      13 / 34 (38.2%)
+
+[GRAPH 3/4] paragraph=16 title='Geography of Saudi Arabia'
+  source unit: u_c90c433f1defefb862705f647dac6406183d78690d4e5ae25cd2d1305711d2d5
+  text chars:  1074
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 10.544s | model=deepseek-v4-flash
+      tokens:   in=2941 | out=2436 | total=5377 | cached=2048 | uncached=893
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 569 / 1099 (51.8%)
+    characters text:     569 / 1074 (53.0%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           6 / 7 (85.7%)
+    longest uncovered:  223 chars
+      "(formerly two separate countries: the Yemen Arab Republic or North Yemen; and the People's Democratic Republic of Yemen or South Yemen) are undefined, so the exact size of the cou…"
+    statement density:  14.56 / 1000 chars
+    title reliance:      0 / 16 (0.0%)
+
+[GRAPH 4/4] paragraph=3 title='Saudi Arabia'
+  source unit: u_d0835ed732619207b35a7e77494dc006b30c50b250a32b092d776b7e81aeef94
+  text chars:  1126
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 17.540s | model=deepseek-v4-flash
+      tokens:   in=3199 | out=4330 | total=7529 | cached=2048 | uncached=1151
+  extraction: ACCEPTED
+  statements: 30
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    30
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     30
+  coverage:
+    characters combined: 671 / 1138 (59.0%)
+    characters text:     659 / 1126 (58.5%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           9 / 9 (100.0%)
+    longest uncovered:  47 chars
+      'The area of modern - day Saudi Arabia formerly'
+    statement density:  26.36 / 1000 chars
+    title reliance:      18 / 30 (60.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 98
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      98
+resource nodes:        87
+entity nodes:          87
+literal values:        14
+predicates:            53
+
+N-Triples:
+  <urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:marketing%20networks> .
+  <urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Bombay> .
+  <urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Calcutta> .
+  <urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Hong%20Kong> .
+  <urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Istanbul> .
+  <urn:graphragprov:entity:Iranian%20long-distance%20merchants%20from%20Fars> <urn:graphragprov:predicate:establishedTradingHousesIn> <urn:graphragprov:entity:Port%20Said> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:economicBase> <urn:graphragprov:entity:provincial%20products> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:economicCenterOf> <urn:graphragprov:entity:southern%20Iran> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:cement%20production> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:fertilizers> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:metalwork> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:rugs> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:sugar> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:textile%20products> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasIndustry> <urn:graphragprov:entity:wood%20products> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:hasOilRefinery> <urn:graphragprov:entity:major%20oil%20refinery> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:isCenterFor> <urn:graphragprov:entity:Iran%27s%20electronic%20industries> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:southern%20Iran> .
+  <urn:graphragprov:entity:Shiraz> <urn:graphragprov:predicate:shareOfNationalElectronicInvestment> "0.53"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Suez%20Canal> <urn:graphragprov:predicate:allowedImport> <urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> .
+  <urn:graphragprov:entity:Suez%20Canal> <urn:graphragprov:predicate:openingYear> "1869"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:cash%20crops> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:cotton> .
+  <urn:graphragprov:entity:cash%20crops> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:opium%20poppy> .
+  <urn:graphragprov:entity:cash%20crops> <urn:graphragprov:predicate:example> <urn:graphragprov:entity:tobacco> .
+  <urn:graphragprov:entity:export%20crops> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:Persian%20Gulf> .
+  <urn:graphragprov:entity:export%20crops> <urn:graphragprov:predicate:passedThrough> <urn:graphragprov:entity:Shiraz> .
+  <urn:graphragprov:entity:farmers> <urn:graphragprov:predicate:planted> <urn:graphragprov:entity:cash%20crops> .
+  <urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> <urn:graphragprov:predicate:importedInto> <urn:graphragprov:entity:southern%20Iran> .
+  <urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:inexpensive%20European%20factory-made%20goods> <urn:graphragprov:predicate:origin> <urn:graphragprov:entity:India> .
+  <urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:citrus%20fruits> .
+  <urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:cotton> .
+  <urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:grapes> .
+  <urn:graphragprov:entity:provincial%20products> <urn:graphragprov:predicate:include> <urn:graphragprov:entity:rice> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Red%20Sea> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasArea> "2217949"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasAreaEstimate> "2,149,690 to 2,240,000 sq. kilometres" .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasAreaUnit> <urn:graphragprov:entity:square%20kilometres> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Oman> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Republic%20of%20Yemen> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:United%20Arab%20Emirates> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCultivableAreaPercentage> "less than 1" .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationDistribution> "varied greatly among the towns of the eastern and western coastal areas, the densely populated interior oases, and the vast, almost empty deserts" .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:largestCountryOf> <urn:graphragprov:entity:Arabia> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southwest%20Asia> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupies> <urn:graphragprov:entity:Arabian%20Peninsula> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupiesPercentageOf> "80"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:holiest%20place%20in%20Islam> .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mecca> .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:holiest%20place%20in%20Islam> .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Medina> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:beganConquestsInYear> "1902"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:captured> <urn:graphragprov:entity:Riyadh> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:united> <urn:graphragprov:entity:four%20regions> .
+  <urn:graphragprov:entity:Riyadh> <urn:graphragprov:predicate:ancestralHomeOf> <urn:graphragprov:entity:House%20of%20Saud> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:effectively> <urn:graphragprov:entity:hereditary%20dictatorship> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Ibn%20Saud> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:governedAlong> <urn:graphragprov:entity:Islamic%20lines> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasFormOfGovernment> <urn:graphragprov:entity:absolute%20monarchy> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Eastern%20Arabia%20%28Al%20-%20Ahsa%29> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Hejaz> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Najd> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:Southern%20Arabia%20%28%27Asir%29> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationGroup> <urn:graphragprov:entity:Saudi%20nationals> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationGroup> <urn:graphragprov:entity:foreigners> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:state> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:the%20Land%20of%20the%20Two%20Holy%20Mosques> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:officialLanguage> <urn:graphragprov:entity:Arabic> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:population> "28.7 million" .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:population> "33 million" .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:populationYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:populationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:called> <urn:graphragprov:entity:the%20predominant%20feature%20of%20Saudi%20culture> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:movement> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:within> <urn:graphragprov:entity:Sunni%20Islam> .
+  <urn:graphragprov:entity:global%20spread%20of%20Wahhabi%20religious%20movement> <urn:graphragprov:predicate:financedBy> <urn:graphragprov:entity:oil%20and%20gas%20trade> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Egypt> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Jordan> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Lebanon> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Palestinian%20territories> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Syria> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:economyAndTechnologyCenter> <urn:graphragprov:entity:Tel%20Aviv> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:ethnicGroup> <urn:graphragprov:entity:Arab> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:ethnicGroup> <urn:graphragprov:entity:Jewish> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:ethnicGroup> <urn:graphragprov:entity:others> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:geographically%20diverse%20features> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:northern%20shore%20of%20the%20Red%20Sea> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:southeastern%20shore%20of%20the%20Mediterranean%20Sea> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:population> "8777580"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:populationYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:proclaimedCapital> <urn:graphragprov:entity:Jerusalem> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:seatOfGovernment> <urn:graphragprov:entity:Jerusalem> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.257s | model=deepseek-v4-flash
+      tokens:   in=5494 | out=486 | total=5980 | cached=640 | uncached=4854
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+  - <urn:graphragprov:entity:export%20crops> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:Persian%20Gulf> .
+  - <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+  - <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> .
+  - <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> . <urn:graphragprov:entity:export%20crops> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:Persian%20Gulf> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> . <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_71b1688133fdabb7>
+  FROM <urn:graphragprov:unit:u_c90c433f1defefb8>
+  FROM <urn:graphragprov:unit:u_d0835ed732619207>
+  FROM <urn:graphragprov:unit:u_ebb1d132051dc212>
+  WHERE { <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> . <urn:graphragprov:entity:export%20crops> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:Persian%20Gulf> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> . <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> . <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1932',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Geography of Saudi Arabia', 'Israel', 'Saudi Arabia', 'Shiraz']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop2__71753_158279_70784_61381
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop2__71753_158279_70784_61381/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          17325
+output tokens:         15118
+total tokens:          32443
+cached input tokens:   8832
+uncached input tokens: 8493
+cumulative LLM seconds: 61.531
+
+statement occurrences: 98
+semantic triples:      98
+entity nodes:          87
+literal values:        14
+predicates:            53
+query attempts:        1
+observed answers:      ('1932',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 58.301s
+  graph.reference.measurements [attempt=1]: 0.010s
+  graph.clear_support [attempt=1]: 0.079s
+  graph.materialization [attempt=1]: 0.103s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 3.258s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.505s

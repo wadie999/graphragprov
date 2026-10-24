@@ -1,0 +1,595 @@
+
+H0 one-case execution
+  case:          4hop1__71715_59747_211319_557671
+  hops:          4
+  question:      Which county shares a border with the county where the most populous city in the state where the Dukes of Hazzard took place is located?
+  expected:      Presque Isle County
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__71715_59747_211319_557671/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=15 title='The Dukes of Hazzard'
+  source unit: u_ee3012272fbe5296d4d0cad9a74df36c38c92ace8674420d33dbc1a254ac03ab
+  text chars:  1608
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 24.404s | model=deepseek-v4-flash
+      tokens:   in=2540 | out=5860 | total=8400 | cached=2048 | uncached=492
+    [LLM graph.reference #2] sending...
+      provider: 3.585s | model=deepseek-v4-flash
+      tokens:   in=1511 | out=662 | total=2173 | cached=0 | uncached=1511
+  extraction: ACCEPTED
+  statements: 37
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    37
+    initially rejected: 4
+
+    initial rejection #13
+      validator:
+        response.statements[13].subject.evidence[0]: quote 'The General Lee' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1969 Dodge Charger",
+                "segment": "text"
+              }
+            ],
+            "value": "1969 Dodge Charger"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1969 Dodge Charger",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The General Lee",
+                "segment": "text"
+              }
+            ],
+            "value": "The General Lee"
+          }
+        }
+
+    initial rejection #14
+      validator:
+        response.statements[14].subject.evidence[0]: quote 'The General Lee' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Duke boys",
+                "segment": "text"
+              }
+            ],
+            "value": "The Duke boys"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Duke boys",
+                "segment": "text"
+              }
+            ],
+            "value": "usedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The General Lee",
+                "segment": "text"
+              }
+            ],
+            "value": "The General Lee"
+          }
+        }
+
+    initial rejection #29
+      validator:
+        response.statements[29].predicate.evidence[0]: quote 'not allowed to leave Hazzard County' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "leaving Hazzard County"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "not allowed to leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "restrictedFrom"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bo Duke",
+                "segment": "text"
+              }
+            ],
+            "value": "Bo Duke"
+          }
+        }
+
+    initial rejection #30
+      validator:
+        response.statements[30].predicate.evidence[0]: quote 'not allowed to leave Hazzard County' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "leaving Hazzard County"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "not allowed to leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "restrictedFrom"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Luke Duke",
+                "segment": "text"
+              }
+            ],
+            "value": "Luke Duke"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     4
+
+    remaining rejection #0
+      validator:
+        response.statements[0].subject.evidence[0]: quote 'The General Lee' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1969 Dodge Charger",
+                "segment": "text"
+              }
+            ],
+            "value": "1969 Dodge Charger"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "1969 Dodge Charger",
+                "segment": "text"
+              }
+            ],
+            "value": "instanceOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The General Lee",
+                "segment": "text"
+              }
+            ],
+            "value": "The General Lee"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].subject.evidence[0]: quote 'The General Lee' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Duke boys",
+                "segment": "text"
+              }
+            ],
+            "value": "The Duke boys"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Duke boys",
+                "segment": "text"
+              }
+            ],
+            "value": "usedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The General Lee",
+                "segment": "text"
+              }
+            ],
+            "value": "The General Lee"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].predicate.evidence[0]: quote 'not allowed to leave Hazzard County' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "leaving Hazzard County"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "not allowed to leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "restrictedFrom"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bo Duke",
+                "segment": "text"
+              }
+            ],
+            "value": "Bo Duke"
+          }
+        }
+
+    remaining rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'not allowed to leave Hazzard County' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "leaving Hazzard County"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "not allowed to leave Hazzard County",
+                "segment": "text"
+              }
+            ],
+            "value": "restrictedFrom"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Luke Duke",
+                "segment": "text"
+              }
+            ],
+            "value": "Luke Duke"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 37
+  coverage:
+    characters combined: 500 / 1628 (30.7%)
+    characters text:     480 / 1608 (29.9%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           6 / 8 (75.0%)
+    longest uncovered:  382 chars
+      ', Boss Hogg, although the exact details of their probation terms vary from episode to episode. Sometimes it is implied that they would be jailed for merely crossing the county lin…'
+    statement density:  22.73 / 1000 chars
+    title reliance:      5 / 37 (13.5%)
+
+[GRAPH 2/4] paragraph=2 title='List of municipalities in Georgia (U.S. state)'
+  source unit: u_814b51a7d897c7a9c59964d9e593cf510a93167130087ef8fedc492313457d6f
+  text chars:  365
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.102s | model=deepseek-v4-flash
+      tokens:   in=2712 | out=1611 | total=4323 | cached=2048 | uncached=664
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 278 / 411 (67.6%)
+    characters text:     278 / 365 (76.2%)
+    characters title:    0 / 46 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  22 chars
+      ', while Edge Hill and'
+    statement density:  26.76 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 3/4] paragraph=0 title='Sno*Drift'
+  source unit: u_ac7d67ed6153ac6f10574b0c1d13758cd414d6bb49ee8fbff786d4b7188841fb
+  text chars:  481
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 9.916s | model=deepseek-v4-flash
+      tokens:   in=2844 | out=2320 | total=5164 | cached=2048 | uncached=796
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 361 / 490 (73.7%)
+    characters text:     352 / 481 (73.2%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  39 chars
+      ', Michigan. The event is currently the'
+    statement density:  32.65 / 1000 chars
+    title reliance:      12 / 16 (75.0%)
+
+[GRAPH 4/4] paragraph=17 title='Alpena Power Company'
+  source unit: u_35920493ec6cb85e682723cedb7cc494c2e098ed585a1cd54f40b0360fe24e76
+  text chars:  310
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 5.959s | model=deepseek-v4-flash
+      tokens:   in=3022 | out=1220 | total=4242 | cached=2048 | uncached=974
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 246 / 330 (74.5%)
+    characters text:     226 / 310 (72.9%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  26 chars
+      'Alpena Power Company is a'
+    statement density:  24.24 / 1000 chars
+    title reliance:      7 / 8 (87.5%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 72
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 4
+  corrected valid: 0
+  remaining rejections: 4
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      72
+resource nodes:        60
+entity nodes:          60
+literal values:        7
+predicates:            33
+
+N-Triples:
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:George%20N.%20Fletcher> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedInYear> "1881"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Alpena%2C%20Michigan> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20utility%20company> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:most%20of%20Alpena%20County%2C%20Michigan> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:southeastern%20Presque%20Isle%20County> .
+  <urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:village%20of%20Hillman> .
+  <urn:graphragprov:entity:village%20of%20Hillman> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+  <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:population> "420003"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:consolidated%20city%20-%20county> .
+  <urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:landArea> "302.47"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:largestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:landArea> "0.18"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:population> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:smallestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:smallestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Santa%20Claus> <urn:graphragprov:predicate:landArea> "0.18"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Santa%20Claus> <urn:graphragprov:predicate:smallestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:frequency> "annually" .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:national%20championship%20event> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:two%20regional%20rally%20events> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Atlanta> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Michigan> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Rally%20America%20National%20Rally%20Championship%20event> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rally%20racing%20event> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Michigan> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:organizedInto> <urn:graphragprov:entity:three%20distinct%20rallies> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:partOfSeason> <urn:graphragprov:entity:Rally%20America%20National%20Rally%20Championship%20season> .
+  <urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:seasonOrder> "first" .
+  <urn:graphragprov:entity:competitors> <urn:graphragprov:predicate:mayEnter> <urn:graphragprov:entity:any%20or%20all%20of%20these%20events> .
+  <urn:graphragprov:entity:competitors> <urn:graphragprov:predicate:mayEnter> <urn:graphragprov:entity:these%20events> .
+  <urn:graphragprov:entity:national%20championship%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:both%20days%20of%20rallying> .
+  <urn:graphragprov:entity:regional%20rally%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:one%20of%20the%20two%20days> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:convictedOf> <urn:graphragprov:entity:illegal%20transportation%20of%20moonshine> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:John%20Schneider> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:probationOfficer> <urn:graphragprov:entity:Boss%20Hogg> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:probationStatus> <urn:graphragprov:entity:on%20probation> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:requiresPermissionFor> <urn:graphragprov:entity:leaving%20Hazzard%20County> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:family%20farm> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:restrictedFrom> <urn:graphragprov:entity:carrying%20firearms> .
+  <urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:usesWeapon> <urn:graphragprov:entity:compound%20bows> .
+  <urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:corrupt> .
+  <urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:crooked> .
+  <urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:county%20commissioner> .
+  <urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Sorrell%20Booke> .
+  <urn:graphragprov:entity:Coy%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Coy%20and%20Vance%20Duke> .
+  <urn:graphragprov:entity:Daisy%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Catherine%20Bach> .
+  <urn:graphragprov:entity:Hazzard%20County> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:fictional%20county> .
+  <urn:graphragprov:entity:Hazzard%20County> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:convictedOf> <urn:graphragprov:entity:illegal%20transportation%20of%20moonshine> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Tom%20Wopat> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:probationOfficer> <urn:graphragprov:entity:Boss%20Hogg> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:probationStatus> <urn:graphragprov:entity:on%20probation> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:requiresPermissionFor> <urn:graphragprov:entity:leaving%20Hazzard%20County> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:family%20farm> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:restrictedFrom> <urn:graphragprov:entity:carrying%20firearms> .
+  <urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:usesWeapon> <urn:graphragprov:entity:compound%20bows> .
+  <urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:bumbling> .
+  <urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:corrupt> .
+  <urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Sheriff> .
+  <urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:James%20Best> .
+  <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:hasSetting> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:hasSetting> <urn:graphragprov:entity:Hazzard%20County> .
+  <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20series> .
+  <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:Georgia> .
+  <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:Hazzard%20County> .
+  <urn:graphragprov:entity:Uncle%20Jesse> <urn:graphragprov:predicate:agreedTo> <urn:graphragprov:entity:refrain%20from%20distilling%20moonshine> .
+  <urn:graphragprov:entity:Uncle%20Jesse> <urn:graphragprov:predicate:madePleaBargainWith> <urn:graphragprov:entity:U.S.%20Government> .
+  <urn:graphragprov:entity:Uncle%20Jesse> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Denver%20Pyle> .
+  <urn:graphragprov:entity:Vance%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Coy%20and%20Vance%20Duke> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.941s | model=deepseek-v4-flash
+      tokens:   in=4348 | out=321 | total=4669 | cached=640 | uncached=3708
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:Georgia> .
+  - <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+  - <urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+  - <urn:graphragprov:entity:Montmorency%20County> <urn:graphragprov:predicate:sharesBorderWith> <urn:graphragprov:entity:Presque%20Isle%20County> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:setIn> ?state . ?city <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> ?state . ?city <urn:graphragprov:predicate:locatedIn> ?county . ?county <urn:graphragprov:predicate:sharesBorderWith> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_35920493ec6cb85e>
+  FROM <urn:graphragprov:unit:u_814b51a7d897c7a9>
+  FROM <urn:graphragprov:unit:u_ac7d67ed6153ac6f>
+  FROM <urn:graphragprov:unit:u_ee3012272fbe5296>
+  WHERE { <urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:setIn> ?state . ?city <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> ?state . ?city <urn:graphragprov:predicate:locatedIn> ?county . ?county <urn:graphragprov:predicate:sharesBorderWith> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__71715_59747_211319_557671
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__71715_59747_211319_557671/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          16977
+output tokens:         11994
+total tokens:          28971
+cached input tokens:   8832
+uncached input tokens: 8145
+cumulative LLM seconds: 52.907
+
+statement occurrences: 72
+semantic triples:      72
+entity nodes:          60
+literal values:        7
+predicates:            33
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 51.000s
+  graph.reference.measurements [attempt=1]: 0.015s
+  graph.clear_support [attempt=1]: 0.093s
+  graph.materialization [attempt=1]: 0.098s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.942s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.541s

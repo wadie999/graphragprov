@@ -1,0 +1,281 @@
+
+H0 one-case execution
+  case:          3hop1__857_846_7702
+  hops:          3
+  question:      What is the meaning of the name of the city where the Yongle emperor greeted the person to whom the edict was addressed?
+  expected:      "Southern Capital"
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__857_846_7702/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=17 title='Sino-Tibetan relations during the Ming dynasty'
+  source unit: u_8341647226651e0e6a67c14ce856c77e0afd072a70d3798672ea3ba4e759f5a8
+  text chars:  322
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.653s | model=deepseek-v4-flash
+      tokens:   in=2247 | out=1969 | total=4216 | cached=2048 | uncached=199
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 284 / 368 (77.2%)
+    characters text:     284 / 322 (88.2%)
+    characters title:    0 / 46 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  14 chars
+      ', the Karmapa:'
+    statement density:  35.33 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[GRAPH 2/3] paragraph=9 title='Sino-Tibetan relations during the Ming dynasty'
+  source unit: u_94579ac7fa3c1c294d14aafc0d06c20b2dbe9e880c64224c5273642756dbb839
+  text chars:  805
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 10.037s | model=deepseek-v4-flash
+      tokens:   in=2545 | out=2078 | total=4623 | cached=2048 | uncached=497
+  extraction: ACCEPTED
+  statements: 14
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    14
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     14
+  coverage:
+    characters combined: 397 / 851 (46.7%)
+    characters text:     397 / 805 (49.3%)
+    characters title:    0 / 46 (0.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  86 chars
+      ', following the tradition of Mongol emperors and their reverence for the Sakya lamas,'
+    statement density:  16.45 / 1000 chars
+    title reliance:      0 / 14 (0.0%)
+
+[GRAPH 3/3] paragraph=4 title='Nanjing'
+  source unit: u_905be3ab13a25a80c5897c365ecda23e3472f163354fc09efbf1fd081fa9e2f2
+  text chars:  1621
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 12.492s | model=deepseek-v4-flash
+      tokens:   in=2898 | out=2823 | total=5721 | cached=2048 | uncached=850
+    [LLM graph.reference #4] sending...
+      provider: 1.766s | model=deepseek-v4-flash
+      tokens:   in=923 | out=238 | total=1161 | cached=0 | uncached=923
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 1
+
+    initial rejection #11
+      validator:
+        response.statements[11].object.evidence[0]: quote 'Jiang (江, River) ... Ning (寧, simplified form 宁, Peace)' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jiang (江, River) ... Ning (寧, simplified form 宁, Peace)",
+                "segment": "text"
+              }
+            ],
+            "value": "Jiang and Ning"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "former character Jiang (江, River) is the former part of the name Jiangsu and latter character Ning (寧, simplified form 宁, Peace) is the short name of Nanjing",
+                "segment": "text"
+              }
+            ],
+            "value": "nameComposedOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jiangning",
+                "segment": "text"
+              }
+            ],
+            "value": "Jiangning"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 17
+  coverage:
+    characters combined: 675 / 1628 (41.5%)
+    characters text:     668 / 1621 (41.2%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  259 chars
+      'has a prominent place in Chinese history and culture, having served as the capitals of various Chinese dynasties, kingdoms and republican governments dating from the 3rd century A…'
+    statement density:  10.44 / 1000 chars
+    title reliance:      14 / 17 (82.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 44
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      43
+resource nodes:        30
+entity nodes:          30
+literal values:        6
+predicates:            38
+
+N-Triples:
+  <urn:graphragprov:entity:Great%20Treasure%20Prince%20of%20Dharma> <urn:graphragprov:predicate:sameAs> <urn:graphragprov:entity:Karmapa> .
+  <urn:graphragprov:entity:Information%20Office%20of%20the%20State%20Council%20of%20the%20PRC> <urn:graphragprov:predicate:preserves> <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> .
+  <urn:graphragprov:entity:Karmapa> <urn:graphragprov:predicate:agent> <urn:graphragprov:entity:agent%20of%20the%20Karmapa> .
+  <urn:graphragprov:entity:Zhengtong%20Emperor> <urn:graphragprov:predicate:deliveredMessageTo> <urn:graphragprov:entity:Great%20Treasure%20Prince%20of%20Dharma> .
+  <urn:graphragprov:entity:Zhengtong%20Emperor> <urn:graphragprov:predicate:reignEndYear> "1449"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Zhengtong%20Emperor> <urn:graphragprov:predicate:reignStartYear> "1435"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:agent%20of%20the%20Karmapa> <urn:graphragprov:predicate:brought> <urn:graphragprov:entity:holy%20relics> .
+  <urn:graphragprov:entity:agent%20of%20the%20Karmapa> <urn:graphragprov:predicate:broughtTo> <urn:graphragprov:entity:Ming%20court> .
+  <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> <urn:graphragprov:entity:Karmapa> .
+  <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:date> "1445"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:writtenAfter> <urn:graphragprov:entity:agent%27s%20bringing%20of%20holy%20relics> .
+  <urn:graphragprov:entity:holy%20relics> <urn:graphragprov:predicate:broughtBy> <urn:graphragprov:entity:agent%20of%20the%20Karmapa> .
+  <urn:graphragprov:entity:holy%20relics> <urn:graphragprov:predicate:broughtTo> <urn:graphragprov:entity:Ming%20court> .
+  <urn:graphragprov:entity:Jiangning> <urn:graphragprov:predicate:nameComposedOf> <urn:graphragprov:entity:Jiang%20and%20Ning> .
+  <urn:graphragprov:entity:Jinling> <urn:graphragprov:predicate:literalMeaning> <urn:graphragprov:entity:Gold%20Mountain> .
+  <urn:graphragprov:entity:Jinling> <urn:graphragprov:predicate:usedSince> <urn:graphragprov:entity:Warring%20States%20Period%20in%20Zhou%20Dynasty> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:abbreviation> <urn:graphragprov:entity:Jing> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Jiangsu%20province> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Republic%20of%20China> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasAlternativeName> <urn:graphragprov:entity:Jiangning> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Nankin> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Nanking> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:knownAs> <urn:graphragprov:entity:Jinling> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:China> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:People%27s%20Republic%20of%20China> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:heartland%20of%20lower%20Yangtze%20River%20region> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:nameDesignatedIn> <urn:graphragprov:entity:Ming%20dynasty> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:nameMeaning> <urn:graphragprov:entity:Southern%20Capital> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:population> "8216100"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Deshin%20Shekpa> <urn:graphragprov:predicate:travelStartYear> "1403"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Deshin%20Shekpa> <urn:graphragprov:predicate:visitDate> "1407-04-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Deshin%20Shekpa> <urn:graphragprov:predicate:visited> <urn:graphragprov:entity:Nanjing> .
+  <urn:graphragprov:entity:Karmapa> <urn:graphragprov:predicate:givenPlaceOfHonorBy> <urn:graphragprov:entity:Yongle%20Emperor> .
+  <urn:graphragprov:entity:Karmapa> <urn:graphragprov:predicate:seatedAtLeftOf> <urn:graphragprov:entity:Yongle%20Emperor> .
+  <urn:graphragprov:entity:Karmapa> <urn:graphragprov:predicate:seatedOnHigherThroneThan> <urn:graphragprov:entity:Yongle%20Emperor> .
+  <urn:graphragprov:entity:Kublai%20Khan> <urn:graphragprov:predicate:madeSimilarArrangement> <urn:graphragprov:entity:Sakya%20Phagpa%20lama> .
+  <urn:graphragprov:entity:Kublai%20Khan> <urn:graphragprov:predicate:receivedReligiousInstructionsFrom> <urn:graphragprov:entity:Tibetan%20cleric> .
+  <urn:graphragprov:entity:Kublai%20Khan> <urn:graphragprov:predicate:satOnLowerPlatformThan> <urn:graphragprov:entity:Tibetan%20cleric> .
+  <urn:graphragprov:entity:Ming%20court> <urn:graphragprov:predicate:induced> <urn:graphragprov:entity:Deshin%20Shekpa> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:didNotRequireKowtow> <urn:graphragprov:entity:Karmapa> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greeted> <urn:graphragprov:entity:Karmapa> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> <urn:graphragprov:entity:Nanjing> .
+  <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:showedDeferenceTo> <urn:graphragprov:entity:Deshin%20Shekpa> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.758s | model=deepseek-v4-flash
+      tokens:   in=2975 | out=366 | total=3341 | cached=640 | uncached=2335
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> <urn:graphragprov:entity:Karmapa> .
+  - <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greeted> <urn:graphragprov:entity:Karmapa> .
+  - <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> <urn:graphragprov:entity:Nanjing> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:nameMeaning> <urn:graphragprov:entity:Southern%20Capital> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> <urn:graphragprov:entity:Karmapa> . <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greeted> <urn:graphragprov:entity:Karmapa> . <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> ?city . ?city <urn:graphragprov:predicate:nameMeaning> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_8341647226651e0e>
+  FROM <urn:graphragprov:unit:u_905be3ab13a25a80>
+  FROM <urn:graphragprov:unit:u_94579ac7fa3c1c29>
+  WHERE { <urn:graphragprov:entity:edict%20of%20the%20Zhengtong%20Emperor> <urn:graphragprov:predicate:addressedTo> <urn:graphragprov:entity:Karmapa> . <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greeted> <urn:graphragprov:entity:Karmapa> . <urn:graphragprov:entity:Yongle%20Emperor> <urn:graphragprov:predicate:greetedIn> ?city . ?city <urn:graphragprov:predicate:nameMeaning> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Southern Capital',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 2
+  provenance sources: ['Nanjing', 'Sino-Tibetan relations during the Ming dynasty']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__857_846_7702
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__857_846_7702/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11588
+output tokens:         7474
+total tokens:          19062
+cached input tokens:   6784
+uncached input tokens: 4804
+cumulative LLM seconds: 36.707
+
+statement occurrences: 44
+semantic triples:      43
+entity nodes:          30
+literal values:        6
+predicates:            38
+query attempts:        1
+observed answers:      ('Southern Capital',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.970s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.079s
+  graph.materialization [attempt=1]: 0.107s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.759s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.486s

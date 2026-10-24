@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_a3b6159d762a97c4d5efc05447c959f451179c27faa2d36dd72668619ddf7f8b
+Title: Vat Yotkeo
+Text:
+Vat Yotkeo was a temple in Laos which was built between during the rule of King Sai Setthathirat. It was destroyed in 1828 by the Thais, who burned and pillaged Vientiane following the defeat of the last king of the Vientiane dynasty of Lan Xang, Chao Anouvong.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 2,
+    "statement": {
+      "subject": {
+        "value": "Vat Yotkeo",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Vat Yotkeo",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "builtDuring",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "built during",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "rule of King Sai Setthathirat",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "rule of King Sai Setthathirat",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[2].predicate.evidence[0]: quote 'built during' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

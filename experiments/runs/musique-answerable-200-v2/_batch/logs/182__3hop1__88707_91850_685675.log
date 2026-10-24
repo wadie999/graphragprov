@@ -1,0 +1,456 @@
+
+H0 one-case execution
+  case:          3hop1__88707_91850_685675
+  hops:          3
+  question:      On what team was the player who hit the first home run at the new location of NY Yankees home games?
+  expected:      New York Yankees
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__88707_91850_685675/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=6 title='Yankee Stadium'
+  source unit: u_5c0751e7f1a20d7c344e9beba67358b0a882d449ff442124037feed5cac1e516
+  text chars:  579
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.629s | model=deepseek-v4-flash
+      tokens:   in=2306 | out=2646 | total=4952 | cached=1920 | uncached=386
+    [LLM graph.reference #2] sending...
+      provider: 2.828s | model=deepseek-v4-flash
+      tokens:   in=1113 | out=524 | total=1637 | cached=0 | uncached=1113
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 3
+
+    initial rejection #6
+      validator:
+        response.statements[6].object.value must use canonical decimal notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "decimal",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "$2.3 billion",
+                "segment": "text"
+              }
+            ],
+            "value": "2.3 billion"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "$2.3 billion",
+                "segment": "text"
+              }
+            ],
+            "value": "cost"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Yankee Stadium",
+                "segment": "title"
+              }
+            ],
+            "value": "Yankee Stadium"
+          }
+        }
+
+    initial rejection #7
+      validator:
+        response.statements[7].object.value must use canonical decimal notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "decimal",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "$1.2 billion",
+                "segment": "text"
+              }
+            ],
+            "value": "1.2 billion"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "built with $1.2 billion in public subsidies",
+                "segment": "text"
+              }
+            ],
+            "value": "builtWithPublicSubsidies"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Yankee Stadium",
+                "segment": "title"
+              }
+            ],
+            "value": "Yankee Stadium"
+          }
+        }
+
+    initial rejection #11
+      validator:
+        response.statements[11].predicate.evidence[0]: quote 'located ... on the 24 - acre (9.7 ha) former site of Macombs Dam Park' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Macombs Dam Park",
+                "segment": "text"
+              }
+            ],
+            "value": "Macombs Dam Park"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "located ... on the 24 - acre (9.7 ha) former site of Macombs Dam Park",
+                "segment": "text"
+              }
+            ],
+            "value": "locatedOnSiteOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Yankee Stadium",
+                "segment": "title"
+              }
+            ],
+            "value": "Yankee Stadium"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 18
+  coverage:
+    characters combined: 357 / 593 (60.2%)
+    characters text:     343 / 579 (59.2%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  49 chars
+      'of Major League Baseball (MLB), and is also the'
+    statement density:  30.35 / 1000 chars
+    title reliance:      14 / 18 (77.8%)
+
+[GRAPH 2/3] paragraph=5 title='Yankee Stadium'
+  source unit: u_ae204640991e816ceee263b772505553f14be351614b456c8597fdeeec119d79
+  text chars:  830
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 15.414s | model=deepseek-v4-flash
+      tokens:   in=2569 | out=3668 | total=6237 | cached=1920 | uncached=649
+    [LLM graph.reference #4] sending...
+      provider: 1.576s | model=deepseek-v4-flash
+      tokens:   in=689 | out=166 | total=855 | cached=0 | uncached=689
+  extraction: ACCEPTED
+  statements: 25
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    25
+    initially rejected: 1
+
+    initial rejection #21
+      validator:
+        response.statements[21].predicate.evidence[0]: quote 'off his' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lee",
+                "segment": "text"
+              }
+            ],
+            "value": "Cliff Lee"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "off his",
+                "segment": "text"
+              }
+            ],
+            "value": "hitOff"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jorge Posada",
+                "segment": "text"
+              }
+            ],
+            "value": "Jorge Posada"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'off his' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Lee",
+                "segment": "text"
+              }
+            ],
+            "value": "Cliff Lee"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "off his",
+                "segment": "text"
+              }
+            ],
+            "value": "hitOff"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Jorge Posada",
+                "segment": "text"
+              }
+            ],
+            "value": "Jorge Posada"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 25
+  coverage:
+    characters combined: 410 / 844 (48.6%)
+    characters text:     396 / 830 (47.7%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  54 chars
+      'Before the official Opening Day against the Cleveland'
+    statement density:  29.62 / 1000 chars
+    title reliance:      5 / 25 (20.0%)
+
+[GRAPH 3/3] paragraph=3 title='Jorge Posada'
+  source unit: u_c595cb2f7485c0a2ef5dd6b1e2744f7cc670dac8e6879b6577eb49926a96c77b
+  text chars:  489
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 10.312s | model=deepseek-v4-flash
+      tokens:   in=2766 | out=2358 | total=5124 | cached=2048 | uncached=718
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 305 / 501 (60.9%)
+    characters text:     293 / 489 (59.9%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  73 chars
+      '. Posada produced strong offensive numbers for his position, recording a'
+    statement density:  31.94 / 1000 chars
+    title reliance:      16 / 16 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 59
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 4
+  corrected valid: 3
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      57
+resource nodes:        40
+entity nodes:          40
+literal values:        15
+predicates:            38
+
+N-Triples:
+  <urn:graphragprov:entity:Heritage%20Field> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20park> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:area> "24 acre" .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:area> "9.7 ha" .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:builtWithPublicSubsidies> "1.2"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:cost> "2.3"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:homeBallparkOf> <urn:graphragprov:entity:New%20York%20Yankees> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:homeParkOf> <urn:graphragprov:entity:New%20York%20City%20FC> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:stadium> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bronx> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Concourse%20neighborhood> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20City> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:locatedOnSiteOf> <urn:graphragprov:entity:Macombs%20Dam%20Park> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:locatedOneBlockNorthOf> <urn:graphragprov:entity:original> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:original%20Yankee%20Stadium> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:replacedInYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:original%20Yankee%20Stadium> <urn:graphragprov:predicate:now> <urn:graphragprov:entity:Heritage%20Field> .
+  <urn:graphragprov:entity:original%20Yankee%20Stadium> <urn:graphragprov:predicate:siteArea> "3.2 ha" .
+  <urn:graphragprov:entity:original%20Yankee%20Stadium> <urn:graphragprov:predicate:siteArea> "8 acre" .
+  <urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:home%20run> .
+  <urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:hitAt> <urn:graphragprov:entity:old%20Yankee%20Stadium> .
+  <urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:hitInYear> "1923"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Cliff%20Lee> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Cy%20Young%20Award> .
+  <urn:graphragprov:entity:Cliff%20Lee> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Indians> .
+  <urn:graphragprov:entity:Cliff%20Lee> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:game> .
+  <urn:graphragprov:entity:D%C3%A1maso%20Marte> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Yankees> .
+  <urn:graphragprov:entity:Grady%20Sizemore> <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:grand%20slam> .
+  <urn:graphragprov:entity:Grady%20Sizemore> <urn:graphragprov:predicate:hitOff> <urn:graphragprov:entity:D%C3%A1maso%20Marte> .
+  <urn:graphragprov:entity:Grady%20Sizemore> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Indians> .
+  <urn:graphragprov:entity:Indians> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:game> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:home%20run> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:hitAt> <urn:graphragprov:entity:new%20ballpark> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Yankees> .
+  <urn:graphragprov:entity:Mohegan%20Sun%20Restaurant> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:center%20field> .
+  <urn:graphragprov:entity:Russell%20Branyan> <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:home%20run> .
+  <urn:graphragprov:entity:Russell%20Branyan> <urn:graphragprov:predicate:hitOff> <urn:graphragprov:entity:Mohegan%20Sun%20Restaurant> .
+  <urn:graphragprov:entity:Russell%20Branyan> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Seattle%20Mariners> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:exhibition%20series> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:hostedAgainst> <urn:graphragprov:entity:Chicago%20Cubs> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:hostedInYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:stadium> .
+  <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:openedInYear> "2009"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:bat> <urn:graphragprov:predicate:placedOn> <urn:graphragprov:entity:home%20plate> .
+  <urn:graphragprov:entity:bat> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Babe%20Ruth> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:allStar> <urn:graphragprov:entity:five-time%20All-Star> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:awardCount> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Silver%20Slugger%20Award> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:battingAverage> "0.273"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:battingHand> <urn:graphragprov:entity:switch%20hitter> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:bornOn> "1971-08-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:home%20run> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:hitCount> "275"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:former%20professional%20baseball%20catcher> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:New%20York%20Yankees> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Puerto%20Rican> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:playedInLeague> <urn:graphragprov:entity:Major%20League%20Baseball> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:playedSeasons> "17"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:runsBattedIn> "1065"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:worldSeriesChampion> <urn:graphragprov:entity:World%20Series%20championship%20team> .
+  <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:worldSeriesChampionshipCount> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.267s | model=deepseek-v4-flash
+      tokens:   in=3652 | out=340 | total=3992 | cached=640 | uncached=3012
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Yankee%20Stadium> <urn:graphragprov:predicate:homeBallparkOf> <urn:graphragprov:entity:New%20York%20Yankees> .
+  - <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:home%20run> .
+  - <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:hitAt> <urn:graphragprov:entity:new%20ballpark> .
+  - <urn:graphragprov:entity:Jorge%20Posada> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:New%20York%20Yankees> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?player <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:home%20run> . ?player <urn:graphragprov:predicate:hitAt> <urn:graphragprov:entity:new%20ballpark> . ?player <urn:graphragprov:predicate:memberOfSportsTeam> ?answer . ?answer <urn:graphragprov:predicate:homeBallparkOf> <urn:graphragprov:entity:Yankee%20Stadium> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5c0751e7f1a20d7c>
+  FROM <urn:graphragprov:unit:u_ae204640991e816c>
+  FROM <urn:graphragprov:unit:u_c595cb2f7485c0a2>
+  WHERE { ?player <urn:graphragprov:predicate:hit> <urn:graphragprov:entity:home%20run> . ?player <urn:graphragprov:predicate:hitAt> <urn:graphragprov:entity:new%20ballpark> . ?player <urn:graphragprov:predicate:memberOfSportsTeam> ?answer . ?answer <urn:graphragprov:predicate:homeBallparkOf> <urn:graphragprov:entity:Yankee%20Stadium> . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__88707_91850_685675
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__88707_91850_685675/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13095
+output tokens:         9702
+total tokens:          22797
+cached input tokens:   6528
+uncached input tokens: 6567
+cumulative LLM seconds: 44.026
+
+statement occurrences: 59
+semantic triples:      57
+entity nodes:          40
+literal values:        15
+predicates:            38
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 41.781s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.047s
+  graph.materialization [attempt=1]: 0.087s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.268s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.485s

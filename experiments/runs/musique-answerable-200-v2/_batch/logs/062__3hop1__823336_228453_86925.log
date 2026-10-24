@@ -1,0 +1,314 @@
+
+H0 one-case execution
+  case:          3hop1__823336_228453_86925
+  hops:          3
+  question:      What is the symbol of the Saints from the headquarters location of Ten High's manufacturer called?
+  expected:      fleur - de-lis
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__823336_228453_86925/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=2 title='Ten High'
+  source unit: u_8b1baba82468bf7967b86c1fd050af891c64c736851d72c2eca8773a98e41ae6
+  text chars:  458
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.669s | model=deepseek-v4-flash
+      tokens:   in=2244 | out=1308 | total=3552 | cached=1920 | uncached=324
+    [LLM graph.reference #2] sending...
+      provider: 1.029s | model=deepseek-v4-flash
+      tokens:   in=634 | out=8 | total=642 | cached=0 | uncached=634
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'introduced ... by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Hiram Walker & Sons",
+                "segment": "text"
+              }
+            ],
+            "value": "Hiram Walker & Sons"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "introduced ... by",
+                "segment": "text"
+              }
+            ],
+            "value": "introducedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Ten High",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "Ten High",
+                "segment": "text"
+              }
+            ],
+            "value": "Ten High"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 289 / 466 (62.0%)
+    characters text:     281 / 458 (61.4%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  121 chars
+      ', as barrels in the upper part of the aging warehouse mature faster. Although the brand name evoked this storage method,'
+    statement density:  15.02 / 1000 chars
+    title reliance:      6 / 7 (85.7%)
+
+[GRAPH 2/3] paragraph=7 title='Sazerac'
+  source unit: u_67b848f9821c5d7b2241f5cebe3418efe4594e0e0a5752662b02cf7e5e255794
+  text chars:  235
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 4.665s | model=deepseek-v4-flash
+      tokens:   in=2285 | out=889 | total=3174 | cached=1920 | uncached=365
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 117 / 242 (48.3%)
+    characters text:     110 / 235 (46.8%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  50 chars
+      '. The drink is most traditionally a combination of'
+    statement density:  24.79 / 1000 chars
+    title reliance:      4 / 6 (66.7%)
+
+[GRAPH 3/3] paragraph=19 title='Fleur-de-lis'
+  source unit: u_0efd05fd4cb2838d87934ba5846cd988de2dbdf27f39de0e6ce916f18aa5f670
+  text chars:  933
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 7.835s | model=deepseek-v4-flash
+      tokens:   in=2545 | out=1781 | total=4326 | cached=2048 | uncached=497
+    [LLM graph.reference #5] sending...
+      provider: 1.497s | model=deepseek-v4-flash
+      tokens:   in=747 | out=183 | total=930 | cached=0 | uncached=747
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 1
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'has a ... logo' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "fleur - de-lis",
+                "segment": "text"
+              }
+            ],
+            "value": "fleur-de-lis"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "has a ... logo",
+                "segment": "text"
+              }
+            ],
+            "value": "hasLogo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Marc - André Fleury",
+                "segment": "text"
+              }
+            ],
+            "value": "Marc-André Fleury"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 403 / 945 (42.6%)
+    characters text:     391 / 933 (41.9%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  76 chars
+      '(also known as Die Lilien -- The Lilies), the Major League Soccer team the'
+    statement density:  12.70 / 1000 chars
+    title reliance:      8 / 12 (66.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 25
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      25
+resource nodes:        27
+entity nodes:          27
+literal values:        1
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Detroit%20City%20FC> .
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Fiorentina> .
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Montreal%20Expos> .
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Montreal%20Impact> .
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Quebec%20Nordiques> .
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:SV%20Darmstadt%2098> .
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Wakefield%20Trinity%20Wildcats> .
+  <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:sports%20teams%20of%20New%20Orleans%2C%20Louisiana> .
+  <urn:graphragprov:entity:France> <urn:graphragprov:predicate:usedSymbolIn> <urn:graphragprov:entity:official%20emblem%20on%20the%202019%20FIFA%20Women%27s%20World%20Cup> .
+  <urn:graphragprov:entity:Georges%20St-Pierre> <urn:graphragprov:predicate:hasTattoo> <urn:graphragprov:entity:fleur-de-lis> .
+  <urn:graphragprov:entity:IT%20University%20of%20Copenhagen%27s%20soccer%20team%20ITU%20F.C.> <urn:graphragprov:predicate:hasLogo> <urn:graphragprov:entity:fleur-de-lis> .
+  <urn:graphragprov:entity:Marc-Andr%C3%A9%20Fleury> <urn:graphragprov:predicate:hasLogo> <urn:graphragprov:entity:fleur-de-lis> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:cocktail> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20Orleans> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:namedFor> <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> .
+  <urn:graphragprov:entity:Sazerac> <urn:graphragprov:predicate:originalMainIngredient> <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> .
+  <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:brand> .
+  <urn:graphragprov:entity:Sazerac%20de%20Forge%20et%20Fils> <urn:graphragprov:predicate:productType> <urn:graphragprov:entity:cognac%20brandy> .
+  <urn:graphragprov:entity:Barton%20Brands> <urn:graphragprov:predicate:divisionOf> <urn:graphragprov:entity:Sazerac%20Company> .
+  <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:brand> .
+  <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:introducedInYear> "1930s" .
+  <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:manufacturerPromise> <urn:graphragprov:entity:that%20the%20brand%20was%20from%20barrels%20aged%20in%20such%20locations> .
+  <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:nameOrigin> <urn:graphragprov:entity:barrel%20storage%20location%20at%20least%20ten%20ricks%20high> .
+  <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Barton%20Brands> .
+  <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:productType> <urn:graphragprov:entity:American%20whiskey> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.448s | model=deepseek-v4-flash
+      tokens:   in=2088 | out=331 | total=2419 | cached=640 | uncached=1448
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Barton%20Brands> .
+  - <urn:graphragprov:entity:Barton%20Brands> <urn:graphragprov:predicate:divisionOf> <urn:graphragprov:entity:Sazerac%20Company> .
+  - <urn:graphragprov:entity:Sazerac%20Company> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20Orleans> .
+  - <urn:graphragprov:entity:Fleur-de-lis> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:sports%20teams%20of%20New%20Orleans%2C%20Louisiana> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:producedBy> ?manufacturer . ?manufacturer <urn:graphragprov:predicate:divisionOf> ?parent . ?parent <urn:graphragprov:predicate:locatedIn> ?location . ?answer <urn:graphragprov:predicate:usedBy> ?team . ?team <urn:graphragprov:predicate:locatedIn> ?location . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_0efd05fd4cb2838d>
+  FROM <urn:graphragprov:unit:u_67b848f9821c5d7b>
+  FROM <urn:graphragprov:unit:u_8b1baba82468bf79>
+  WHERE { <urn:graphragprov:entity:Ten%20High> <urn:graphragprov:predicate:producedBy> ?manufacturer . ?manufacturer <urn:graphragprov:predicate:divisionOf> ?parent . ?parent <urn:graphragprov:predicate:locatedIn> ?location . ?answer <urn:graphragprov:predicate:usedBy> ?team . ?team <urn:graphragprov:predicate:locatedIn> ?location . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__823336_228453_86925
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__823336_228453_86925/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10543
+output tokens:         4500
+total tokens:          15043
+cached input tokens:   6528
+uncached input tokens: 4015
+cumulative LLM seconds: 24.144
+
+statement occurrences: 25
+semantic triples:      25
+entity nodes:          27
+literal values:        1
+predicates:            14
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 21.710s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.064s
+  graph.materialization [attempt=1]: 0.076s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.449s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.459s

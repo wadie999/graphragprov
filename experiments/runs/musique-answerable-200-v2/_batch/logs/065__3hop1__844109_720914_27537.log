@@ -1,0 +1,289 @@
+
+H0 one-case execution
+  case:          3hop1__844109_720914_27537
+  hops:          3
+  question:      Why did Roncalli leave the city where the creator of The Entombment died?
+  expected:      for the conclave in Rome
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__844109_720914_27537/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=7 title='The Entombment (Titian, 1559)'
+  source unit: u_546488bf2ef69fe2c5e0824c32dfc0dc4e2b4eafae41510276126c8b7ae94e66
+  text chars:  781
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 15.808s | model=deepseek-v4-flash
+      tokens:   in=2318 | out=3836 | total=6154 | cached=1920 | uncached=398
+  extraction: ACCEPTED
+  statements: 27
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    27
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     27
+  coverage:
+    characters combined: 543 / 810 (67.0%)
+    characters text:     543 / 781 (69.5%)
+    characters title:    0 / 29 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  39 chars
+      'that according to the Christian faith'
+    statement density:  33.33 / 1000 chars
+    title reliance:      0 / 27 (0.0%)
+
+[GRAPH 2/3] paragraph=11 title='The Martyrdom of Saint Lawrence (Titian)'
+  source unit: u_2eb7aa27b731672b487987427b81ef2ee9e5ac6a4b8d7d9e813e77f8eb96f222
+  text chars:  217
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.061s | model=deepseek-v4-flash
+      tokens:   in=2514 | out=1376 | total=3890 | cached=1920 | uncached=594
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 187 / 257 (72.8%)
+    characters text:     147 / 217 (67.7%)
+    characters title:    40 / 40 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  37 chars
+      'The Martyrdom of Saint Lawrence is a'
+    statement density:  35.02 / 1000 chars
+    title reliance:      6 / 9 (66.7%)
+
+[GRAPH 3/3] paragraph=15 title='Pope John XXIII'
+  source unit: u_24abbf134c20f7d9cbd82cf1e4c65b99b9f6e8820f65516d05063ce1585a9b5c
+  text chars:  518
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 8.997s | model=deepseek-v4-flash
+      tokens:   in=2718 | out=1895 | total=4613 | cached=2048 | uncached=670
+    [LLM graph.reference #4] sending...
+      provider: 1.790s | model=deepseek-v4-flash
+      tokens:   in=627 | out=178 | total=805 | cached=0 | uncached=627
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 1
+
+    initial rejection #10
+      validator:
+        response.statements[10].object.value must use canonical integer notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "integer",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "eleven",
+                "segment": "text"
+              }
+            ],
+            "value": "eleven"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "eleven ballots",
+                "segment": "text"
+              }
+            ],
+            "value": "electionBallots"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Pope John XXIII",
+                "segment": "title"
+              }
+            ],
+            "value": "Pope John XXIII"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 13
+  coverage:
+    characters combined: 245 / 533 (46.0%)
+    characters text:     230 / 518 (44.4%)
+    characters title:    15 / 15 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  132 chars
+      "on 11 October. His journal was specifically concerned with the funeral and the abused state of the late pontiff's corpse. Roncalli"
+    statement density:  24.39 / 1000 chars
+    title reliance:      12 / 13 (92.3%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 49
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      49
+resource nodes:        40
+entity nodes:          40
+literal values:        6
+predicates:            37
+
+N-Triples:
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roncalli> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:arrivedAt> <urn:graphragprov:entity:the%20Vatican> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:awareOf> <urn:graphragprov:entity:that%20he%20was%20papabile> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:the%20conclave%20in%20Rome> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:electedAs> <urn:graphragprov:entity:successor%20of%20Pope%20Pius%20XII> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:electionBallots> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:hadWith> <urn:graphragprov:entity:a%20return%20train%20ticket%20to%20Venice> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Pope> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:left> <urn:graphragprov:entity:Venice> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:name> <urn:graphragprov:entity:John%20XXIII> .
+  <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:watched> <urn:graphragprov:entity:the%20live%20funeral> .
+  <urn:graphragprov:entity:Pope%20Pius%20XII> <urn:graphragprov:predicate:deathDate> "1958-10-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Philip%20II%20of%20Spain> <urn:graphragprov:predicate:commissioned> <urn:graphragprov:entity:a%20second%20version> .
+  <urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Titian> .
+  <urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:impressed> <urn:graphragprov:entity:Philip%20II%20of%20Spain> .
+  <urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:painting> .
+  <urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+  <urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:church%20of%20I%20Gesuiti> .
+  <urn:graphragprov:entity:The%20Martyrdom%20of%20Saint%20Lawrence%20%28Titian%29> <urn:graphragprov:predicate:publicationYear> "1558"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:a%20second%20version> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:basilica%20at%20El%20Escorial> .
+  <urn:graphragprov:entity:a%20second%20version> <urn:graphragprov:predicate:publicationYear> "1567"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Michelangelo> <urn:graphragprov:predicate:depictsSelfAs> <urn:graphragprov:entity:Nicodemus> .
+  <urn:graphragprov:entity:Michelangelo> <urn:graphragprov:predicate:supports> <urn:graphragprov:entity:the%20body%20of%20Christ> .
+  <urn:graphragprov:entity:Michelangelo%27s%20idea> <urn:graphragprov:predicate:in> <urn:graphragprov:entity:his%20unfinished%20Piet%C3%A0> .
+  <urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:appearsIn> <urn:graphragprov:entity:The%20Entombment> .
+  <urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:bearsTraitsOf> <urn:graphragprov:entity:the%20artist%20himself> .
+  <urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Jewish%20elder> .
+  <urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:learn%20about%20his%20teachings> .
+  <urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:holding%20Christ%20body> .
+  <urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:visited> <urn:graphragprov:entity:Jesus> .
+  <urn:graphragprov:entity:Nicodemus> <urn:graphragprov:predicate:visitedAt> <urn:graphragprov:entity:night> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:brilliant%20colours> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:broad%20brushwork> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:commissionedBy> <urn:graphragprov:entity:Philip%20II%20of%20Spain> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Titian> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:The%20stone%20sarcophagus> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:inspiredBy> <urn:graphragprov:entity:Michelangelo%27s%20idea> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:painting> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:publicationYear> "1559"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:style> <urn:graphragprov:entity:mature%20style> .
+  <urn:graphragprov:entity:The%20stone%20sarcophagus> <urn:graphragprov:predicate:decoratedWith> <urn:graphragprov:entity:depictions%20of%20Cain%20and%20Abel> .
+  <urn:graphragprov:entity:The%20stone%20sarcophagus> <urn:graphragprov:predicate:decoratedWith> <urn:graphragprov:entity:the%20Sacrifice%20of%20Isaac> .
+  <urn:graphragprov:entity:Titian> <urn:graphragprov:predicate:creatorOf> <urn:graphragprov:entity:The%20Entombment> .
+  <urn:graphragprov:entity:depictions%20of%20Cain%20and%20Abel> <urn:graphragprov:predicate:theme> <urn:graphragprov:entity:themes> .
+  <urn:graphragprov:entity:his%20unfinished%20Piet%C3%A0> <urn:graphragprov:predicate:date> "1550"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:the%20Sacrifice%20of%20Isaac> <urn:graphragprov:predicate:theme> <urn:graphragprov:entity:themes> .
+  <urn:graphragprov:entity:the%20body%20of%20Christ> <urn:graphragprov:predicate:displayedIn> <urn:graphragprov:entity:the%20Cathedral%20in%20Florence> .
+  <urn:graphragprov:entity:themes> <urn:graphragprov:predicate:predicted> <urn:graphragprov:entity:the%20sacrifice%20of%20Jesus> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.678s | model=deepseek-v4-flash
+      tokens:   in=3314 | out=382 | total=3696 | cached=640 | uncached=2674
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Titian> .
+  - <urn:graphragprov:entity:Titian> <urn:graphragprov:predicate:creatorOf> <urn:graphragprov:entity:The%20Entombment> .
+  - <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roncalli> .
+  - <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:left> <urn:graphragprov:entity:Venice> .
+  - <urn:graphragprov:entity:Pope%20John%20XXIII> <urn:graphragprov:predicate:destination> <urn:graphragprov:entity:the%20conclave%20in%20Rome> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:creator> ?creator . ?creator <urn:graphragprov:predicate:creatorOf> <urn:graphragprov:entity:The%20Entombment> . ?person <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roncalli> . ?person <urn:graphragprov:predicate:left> ?city . ?person <urn:graphragprov:predicate:destination> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_24abbf134c20f7d9>
+  FROM <urn:graphragprov:unit:u_2eb7aa27b731672b>
+  FROM <urn:graphragprov:unit:u_546488bf2ef69fe2>
+  WHERE { <urn:graphragprov:entity:The%20Entombment> <urn:graphragprov:predicate:creator> ?creator . ?creator <urn:graphragprov:predicate:creatorOf> <urn:graphragprov:entity:The%20Entombment> . ?person <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Roncalli> . ?person <urn:graphragprov:predicate:left> ?city . ?person <urn:graphragprov:predicate:destination> ?answer . }
+
+GraphDB execution:
+  observed answers: ('the conclave in Rome',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Pope John XXIII', 'The Entombment (Titian, 1559)']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__844109_720914_27537
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__844109_720914_27537/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11491
+output tokens:         7667
+total tokens:          19158
+cached input tokens:   6528
+uncached input tokens: 4963
+cumulative LLM seconds: 35.333
+
+statement occurrences: 49
+semantic triples:      49
+entity nodes:          40
+literal values:        6
+predicates:            37
+query attempts:        1
+observed answers:      ('the conclave in Rome',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 32.673s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.094s
+  graph.materialization [attempt=1]: 0.084s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.679s
+  graphdb.semantic [attempt=1]: 0.011s
+  provenance.execution [attempt=1]: 0.545s

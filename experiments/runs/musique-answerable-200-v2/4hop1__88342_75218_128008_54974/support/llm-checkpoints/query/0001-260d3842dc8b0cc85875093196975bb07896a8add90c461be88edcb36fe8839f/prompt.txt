@@ -1,0 +1,217 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the longest home run hit in the league where the team with the most games in the series after which the MLB MVP is awarded plays?
+
+Expected answer: about 575 feet
+
+Gold decomposition:
+1. question='when do they give out the mlb mvp award'; answer='after the World Series'; support_paragraph=9
+2. question='who played in the most #1 games'; answer='the New York Yankees'; support_paragraph=2
+3. question='Which is the league of #2 ?'; answer='Major League Baseball'; support_paragraph=13
+4. question='what is the farthest home run ever hit in #3'; answer='about 575 feet'; support_paragraph=12
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Frank%20Farrell%20and%20Bill%20Devery> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:New%20York%20City> .
+<urn:graphragprov:entity:Frank%20Farrell%20and%20Bill%20Devery> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:the%20franchise> .
+<urn:graphragprov:entity:Frank%20Farrell%20and%20Bill%20Devery> <urn:graphragprov:predicate:renamed> <urn:graphragprov:entity:New%20York%20Highlanders> .
+<urn:graphragprov:entity:New%20York%20Highlanders> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:New%20York%20Yankees> .
+<urn:graphragprov:entity:New%20York%20Mets> <urn:graphragprov:predicate:league> <urn:graphragprov:entity:National%20League> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:beganPlayAs> <urn:graphragprov:entity:Baltimore%20Orioles> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:competesIn> <urn:graphragprov:entity:Major%20League%20Baseball> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:baseball%20team> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York%20City%20borough%20of%20the%20Bronx> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:American%20League%20East%20division> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:oneOf> <urn:graphragprov:entity:two%20major%20league%20clubs%20based%20in%20New%20York%20City> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:otherClubInCity> <urn:graphragprov:entity:New%20York%20Mets> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:purchasedBy> <urn:graphragprov:entity:Frank%20Farrell%20and%20Bill%20Devery> .
+<urn:graphragprov:entity:the%20franchise> <urn:graphragprov:predicate:hadCeasedOperations> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:beganByPolling> <urn:graphragprov:entity:three%20writers%20in%20each%20league%20city> .
+<urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:beganPollingInYear> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:doesNotOffer> <urn:graphragprov:entity:a%20clear-cut%20definition> .
+<urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:leavesJudgmentTo> <urn:graphragprov:entity:the%20individual%20voters> .
+<urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:reducedPollingInYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:BBWAA> <urn:graphragprov:predicate:reducedPollingTo> <urn:graphragprov:entity:two%20per%20league%20city> .
+<urn:graphragprov:entity:MVP%20voting> <urn:graphragprov:predicate:takesPlace> <urn:graphragprov:entity:before%20the%20postseason> .
+<urn:graphragprov:entity:MVP%20voting%20results> <urn:graphragprov:predicate:announcedAfter> <urn:graphragprov:entity:the%20World%20Series> .
+<urn:graphragprov:entity:American%20League> <urn:graphragprov:predicate:hasTeam> <urn:graphragprov:entity:Boston%20Red%20Sox> .
+<urn:graphragprov:entity:American%20League> <urn:graphragprov:predicate:hasTeam> <urn:graphragprov:entity:New%20York%20Yankees> .
+<urn:graphragprov:entity:American%20League> <urn:graphragprov:predicate:hasTeam> <urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> .
+<urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+<urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:playedInCount> "12"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:won> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Boston%20Red%20Sox> <urn:graphragprov:predicate:wonFirstWorldSeries> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:World%20Series> .
+<urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:appearedInCount> "19"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> <urn:graphragprov:predicate:won> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:World%20Series> .
+<urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:appearedInCount> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Cincinnati%20Reds> <urn:graphragprov:predicate:won> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:National%20League> <urn:graphragprov:predicate:hasTeam> <urn:graphragprov:entity:Brooklyn%20%2F%20Los%20Angeles%20Dodgers> .
+<urn:graphragprov:entity:National%20League> <urn:graphragprov:predicate:hasTeam> <urn:graphragprov:entity:Cincinnati%20Reds> .
+<urn:graphragprov:entity:National%20League> <urn:graphragprov:predicate:hasTeam> <urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> .
+<urn:graphragprov:entity:National%20League> <urn:graphragprov:predicate:hasTeam> <urn:graphragprov:entity:St.%20Louis%20Cardinals> .
+<urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+<urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:playedInCount> "20"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:New%20York%20%2F%20San%20Francisco%20Giants> <urn:graphragprov:predicate:won> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:playedInCount> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:New%20York%20Yankees> <urn:graphragprov:predicate:won> "27"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:playedIn> <urn:graphragprov:entity:World%20Series> .
+<urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:playedInCount> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Philadelphia%20%2F%20Kansas%20City%20%2F%20Oakland%20Athletics> <urn:graphragprov:predicate:won> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:appearedIn> <urn:graphragprov:entity:World%20Series> .
+<urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:appearedInCount> "19"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:St.%20Louis%20Cardinals> <urn:graphragprov:predicate:won> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:hitHomeRunAt> <urn:graphragprov:entity:Tiger%20Stadium> .
+<urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:hitHomeRunTo> <urn:graphragprov:entity:straightaway%20center%20field> .
+<urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:hitLongestVerifiableHomeRunInMajorLeagueBaseball> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:homeRunDistance> "about 575 feet" .
+<urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:homeRunDistanceInMeters> "175 m" .
+<urn:graphragprov:entity:Babe%20Ruth> <urn:graphragprov:predicate:homeRunLandedNear> <urn:graphragprov:entity:intersection%20of%20Trumbull%20and%20Cherry> .
+<urn:graphragprov:entity:Dave%20Kingman> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Denver%20Zephyrs> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:professional%20baseball%20team> .
+<urn:graphragprov:entity:Eddie%20Mathews> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Ernie%20Banks> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Harmon%20Killebrew> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Jimmie%20Foxx> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Joey%20Meyer> <urn:graphragprov:predicate:hitHomeRunIn> <urn:graphragprov:entity:Denver%27s%20Mile%20High%20Stadium> .
+<urn:graphragprov:entity:Joey%20Meyer> <urn:graphragprov:predicate:hitLongestVerifiableHomeRunInProfessionalBaseballHistory> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Joey%20Meyer> <urn:graphragprov:predicate:homeRunDistance> "582 feet" .
+<urn:graphragprov:entity:Joey%20Meyer> <urn:graphragprov:predicate:homeRunDistanceInMeters> "177 m" .
+<urn:graphragprov:entity:Joey%20Meyer> <urn:graphragprov:predicate:team> <urn:graphragprov:entity:Denver%20Zephyrs> .
+<urn:graphragprov:entity:Ken%20Griffey%2C%20Jr.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:longestVerifiableHomeRunDistance> "about 575 feet" .
+<urn:graphragprov:entity:Major%20League%20Baseball> <urn:graphragprov:predicate:longestVerifiableHomeRunDistanceInMeters> "175 m" .
+<urn:graphragprov:entity:Mel%20Ott> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Mickey%20Mantle> <urn:graphragprov:predicate:hitHomeRunOn> "1960-09-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mickey%20Mantle> <urn:graphragprov:predicate:hitLongestHomeRun> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Mickey%20Mantle> <urn:graphragprov:predicate:homeRunDistance> "643 feet" .
+<urn:graphragprov:entity:Mickey%20Mantle> <urn:graphragprov:predicate:homeRunDistanceInMeters> "196 m" .
+<urn:graphragprov:entity:Mickey%20Mantle> <urn:graphragprov:predicate:homeRunDistanceMeasuredAfterBallStoppedRolling> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Mickey%20Mantle> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Mike%20Schmidt> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Reggie%20Jackson> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Sammy%20Sosa> <urn:graphragprov:predicate:hit60OrMoreHomeRunsInSeasonCount> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Sammy%20Sosa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Ted%20Williams> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:home%20run%20hitter> .
+<urn:graphragprov:entity:Tiger%20Stadium> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Navin%20Field> .
+<urn:graphragprov:entity:Tiger%20Stadium> <urn:graphragprov:predicate:locatedBeforeDoubleDeck> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .

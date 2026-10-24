@@ -1,0 +1,158 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: In what region of the country containing the Cái River is the place where John Phan was born?
+
+Expected answer: South Central Coast
+
+Gold decomposition:
+1. question='Cái River >> country'; answer='Vietnam'; support_paragraph=19
+2. question='John Phan >> place of birth'; answer='Da Nang'; support_paragraph=6
+3. question='In what region of #1 is #2 located?'; answer='South Central Coast'; support_paragraph=14
+
+Frozen RDF graph:
+<urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:independent%20municipality> .
+<urn:graphragprov:entity:B%C3%ACnh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:province> .
+<urn:graphragprov:entity:B%C3%ACnh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southeast%20region> .
+<urn:graphragprov:entity:Ninh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:province> .
+<urn:graphragprov:entity:Ninh%20Thu%E1%BA%ADn> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southeast%20region> .
+<urn:graphragprov:entity:Paracel%20Islands> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Ho%C3%A0ng%20Sa%20District> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:%C4%90%C3%A0%20N%E1%BA%B5ng> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:Paracel%20Islands> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:Spratly%20Islands> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:seven%20other%20provinces> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:hasVietnameseName> <urn:graphragprov:entity:Duy%C3%AAn%20h%E1%BA%A3i%20Nam%20Trung%20B%E1%BB%99> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:region> .
+<urn:graphragprov:entity:South%20Central%20Coast> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Vietnam> .
+<urn:graphragprov:entity:Spratly%20Islands> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Tr%C6%B0%E1%BB%9Dng%20Sa%20District> .
+<urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:basinArea> "1904"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Vietnam> .
+<urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:flowsThrough> <urn:graphragprov:entity:%C4%90%E1%BA%AFk%20L%E1%BA%AFk%20Province> .
+<urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:flowsThrough> <urn:graphragprov:entity:Kh%C3%A1nh%20H%C3%B2a%20Province> .
+<urn:graphragprov:entity:C%C3%A1i%20River> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:river> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:Stockton%2C%20California> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Da%20Nang> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:bornOn> "1974-10-10"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:finalTablistOf> <urn:graphragprov:entity:World%20Poker%20Tour%20Championships> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:poker%20player> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Vietnamese-American> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:poker%20player> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:winnerOf> <urn:graphragprov:entity:World%20Poker%20Tour%20Championships> .
+<urn:graphragprov:entity:John%20Phan> <urn:graphragprov:predicate:winnerOf> <urn:graphragprov:entity:World%20Series%20of%20Poker%20bracelet> .

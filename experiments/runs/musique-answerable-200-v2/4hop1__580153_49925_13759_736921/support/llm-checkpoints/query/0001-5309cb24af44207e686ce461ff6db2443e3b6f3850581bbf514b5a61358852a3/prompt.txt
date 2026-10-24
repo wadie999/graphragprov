@@ -1,0 +1,187 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where is the district that the person who wanted to reform and address the religion that practices candidacy preach a sermon on Marian devotion before his death located?
+
+Expected answer: Saxony-Anhalt
+
+Gold decomposition:
+1. question='candidacy >> religion'; answer='Catholic Church'; support_paragraph=17
+2. question='who wanted #1 to reform and address'; answer='Martin Luther'; support_paragraph=15
+3. question='Where did #2 preach a sermon on Marian devotion a month before his death?'; answer='Wittenberg'; support_paragraph=14
+4. question='#3 >> located in the administrative territorial entity'; answer='Saxony-Anhalt'; support_paragraph=2
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Elbe-Elster> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brandenburg> .
+<urn:graphragprov:entity:Nordsachsen> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Free%20State%20of%20Saxony> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:district> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Germany> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Saxony-Anhalt> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Anhalt-Bitterfeld> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Dessau-Ro%C3%9Flau> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Elbe-Elster> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Nordsachsen> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Potsdam-Mittelmark> .
+<urn:graphragprov:entity:Wittenberg> <urn:graphragprov:predicate:neighboringDistrict> <urn:graphragprov:entity:Teltow-Fl%C3%A4ming> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:adheredTo> <urn:graphragprov:entity:Marian%20decrees%20of%20the%20ecumenical%20councils> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:adheredTo> <urn:graphragprov:entity:dogmas%20of%20the%20church> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:adherentOf> <urn:graphragprov:entity:Immaculate%20Conception> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:arguedAbout> <urn:graphragprov:entity:veneration%20of%20Mary> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:believed> <urn:graphragprov:entity:Assumption%20of%20Mary%20was%20an%20understood%20fact> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:believed> <urn:graphragprov:entity:Mary%20and%20the%20saints%20do%20live%20on%20after%20death> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:changedPositionOn> <urn:graphragprov:entity:Immaculate%20Conception> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:considered> <urn:graphragprov:entity:Roman%20Catholic%20practice%20of%20celebrating%20saints%27%20days%20and%20making%20intercessory%20requests%20addressed%20especially%20to%20Mary%20and%20other%20departed%20saints> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:criticized> <urn:graphragprov:entity:Papists> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:heldFastTo> <urn:graphragprov:entity:Theotokos%20or%20Mother%20of%20God> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:heldFastTo> <urn:graphragprov:entity:belief%20that%20Mary%20was%20a%20perpetual%20virgin> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:maintained> <urn:graphragprov:entity:sinlessness%20of%20Mary%20throughout%20her%20life> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preached> <urn:graphragprov:entity:veneration%20of%20Mary> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedSermonAt> <urn:graphragprov:entity:Wittenberg> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedSermonBeforeDeath> "a month before his death" .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:preachedSermonOn> <urn:graphragprov:entity:Marian%20devotion%20and%20veneration> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:stated> <urn:graphragprov:entity:Bible%20did%20not%20say%20anything%20about%20it> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:stoppedCelebrating> <urn:graphragprov:entity:its%20feast> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:taught> <urn:graphragprov:entity:veneration%20of%20Mary> .
+<urn:graphragprov:entity:Jan%20Hus> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:John%20Wycliffe> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:criticised> <urn:graphragprov:entity:sale%20of%20indulgences> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Catholic%20doctrine%20of%20the%20merits%20of%20the%20saints%20had%20no%20foundation%20in%20the%20Bible> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Pope%20had%20no%20authority%20over%20purgatory> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:Reformation> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:wantedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:Peter%20Waldo> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:hasCoreMotivation> <urn:graphragprov:entity:theological> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:incorporates> <urn:graphragprov:entity:belief%20that%20faith%20in%20Jesus%2C%20and%20not%20good%20works%2C%20is%20the%20only%20way%20to%20obtain%20God%27s%20pardon%20for%20sin> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:incorporates> <urn:graphragprov:entity:complete%20reliance%20on%20Scripture%20as%20a%20source%20of%20proper%20belief> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Western%20Schism> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:impact%20of%20humanism> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:new%20learning%20of%20the%20Renaissance> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:perceived%20corruption%20of%20the%20Roman%20Curia> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:rise%20of%20nationalism> .
+<urn:graphragprov:entity:Candidacy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rite> .
+<urn:graphragprov:entity:Candidacy> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Roman%20Catholic%20seminary%20formation> .
+<urn:graphragprov:entity:Candidacy> <urn:graphragprov:predicate:recognizes> <urn:graphragprov:entity:seminarian> .
+<urn:graphragprov:entity:Candidacy> <urn:graphragprov:predicate:recognizesAs> <urn:graphragprov:entity:worthy%20of%20being%20ordained> .
+<urn:graphragprov:entity:Permanent%20deacons> <urn:graphragprov:predicate:goThrough> <urn:graphragprov:entity:Candidacy> .
+<urn:graphragprov:entity:Permanent%20deacons> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Roman%20Catholic%20Church> .
+<urn:graphragprov:entity:Permanent%20deacons> <urn:graphragprov:predicate:ordainedAs> <urn:graphragprov:entity:permanent%20deacons> .
+<urn:graphragprov:entity:Permanent%20deacons> <urn:graphragprov:predicate:recognizedAs> <urn:graphragprov:entity:worthy%20of%20being%20ordained> .
+<urn:graphragprov:entity:candidate> <urn:graphragprov:predicate:for> <urn:graphragprov:entity:ordination%20to%20the%20priesthood> .
+<urn:graphragprov:entity:seminarian> <urn:graphragprov:predicate:becomes> <urn:graphragprov:entity:candidate> .

@@ -1,0 +1,151 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the spouse of Parysatis II die?
+
+Expected answer: 323 BC
+
+Gold decomposition:
+1. question='Parysatis II >> spouse'; answer='Alexander the Great'; support_paragraph=11
+2. question='When did #1 die?'; answer='323 BC'; support_paragraph=5
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Parysatis%20II> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:daughter> .
+<urn:graphragprov:entity:Parysatis%20II> <urn:graphragprov:predicate:marriedAt> <urn:graphragprov:entity:Susa%20weddings> .
+<urn:graphragprov:entity:Parysatis%20II> <urn:graphragprov:predicate:marriedInYear> "324 BC" .
+<urn:graphragprov:entity:Parysatis%20II> <urn:graphragprov:predicate:possibleMurderer> <urn:graphragprov:entity:Roxana> .
+<urn:graphragprov:entity:Parysatis%20II> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Alexander%20the%20Great> .
+<urn:graphragprov:entity:Alexander%20the%20Great> <urn:graphragprov:predicate:deathDate> "323 BC" .
+<urn:graphragprov:entity:Greek%20Science> <urn:graphragprov:predicate:advancedBy> <urn:graphragprov:entity:the%20works%20of%20the%20mathematician%20Euclid%20and%20the%20polymath%20Archimedes> .
+<urn:graphragprov:entity:Greek%20Science> <urn:graphragprov:predicate:advancedBy> <urn:graphragprov:entity:works%20of%20the%20mathematician%20Euclid> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:characterizedBy> <urn:graphragprov:entity:Greek%20cultural%20influence%20and%20power%20at%20its%20peak> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:period%20of%20ancient%20Greek%20%28Hellenic%29%20history%20and%20Mediterranean%20history> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:endDate> "31 BC" .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:experiencedIn> <urn:graphragprov:entity:prosperity%20and%20progress%20in%20the%20arts%2C%20exploration%2C%20literature%2C%20theatre%2C%20architecture%2C%20music%2C%20mathematics%2C%20philosophy%2C%20and%20science> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:followedBy> <urn:graphragprov:entity:Roman%20Empire> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:period> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:sawRiseOf> <urn:graphragprov:entity:Alexandrian%20poetry> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:sawRiseOf> <urn:graphragprov:entity:New%20Comedy> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:sawRiseOf> <urn:graphragprov:entity:Septuagint> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:sawRiseOf> <urn:graphragprov:entity:philosophies%20of%20Stoicism%20and%20Epicureanism> .
+<urn:graphragprov:entity:Hellenistic%20period> <urn:graphragprov:predicate:startDate> "323 BC" .
+<urn:graphragprov:entity:religious%20sphere> <urn:graphragprov:predicate:expandedToInclude> <urn:graphragprov:entity:Greek%20adoption%20of%20Buddhism> .
+<urn:graphragprov:entity:religious%20sphere> <urn:graphragprov:predicate:expandedToInclude> <urn:graphragprov:entity:eastern%20deities%20such%20as%20Attis%20and%20Cybele> .
+<urn:graphragprov:entity:religious%20sphere> <urn:graphragprov:predicate:expandedToInclude> <urn:graphragprov:entity:new%20gods%20such%20as%20the%20Greco-Egyptian%20Serapis> .

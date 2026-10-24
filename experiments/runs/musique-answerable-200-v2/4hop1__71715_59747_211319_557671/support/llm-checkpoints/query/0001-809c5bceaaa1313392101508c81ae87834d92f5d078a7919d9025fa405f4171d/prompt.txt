@@ -1,0 +1,203 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Which county shares a border with the county where the most populous city in the state where the Dukes of Hazzard took place is located?
+
+Expected answer: Presque Isle County
+
+Gold decomposition:
+1. question='dukes of hazzard took place in what state'; answer='Georgia'; support_paragraph=15
+2. question='what is the largest city in #1 by population'; answer='Atlanta'; support_paragraph=2
+3. question='#2 >> located in the administrative territorial entity'; answer='Montmorency County'; support_paragraph=0
+4. question='#3 >> shares border with'; answer='Presque Isle County'; support_paragraph=17
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:George%20N.%20Fletcher> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:foundedInYear> "1881"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Alpena%2C%20Michigan> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20utility%20company> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:most%20of%20Alpena%20County%2C%20Michigan> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:southeastern%20Presque%20Isle%20County> .
+<urn:graphragprov:entity:Alpena%20Power%20Company> <urn:graphragprov:predicate:providesElectricityTo> <urn:graphragprov:entity:village%20of%20Hillman> .
+<urn:graphragprov:entity:village%20of%20Hillman> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:largestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Atlanta> <urn:graphragprov:predicate:population> "420003"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:consolidated%20city%20-%20county> .
+<urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:landArea> "302.47"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Augusta> <urn:graphragprov:predicate:largestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:landArea> "0.18"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:population> "24"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:smallestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Edge%20Hill> <urn:graphragprov:predicate:smallestMunicipalityByPopulationIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Santa%20Claus> <urn:graphragprov:predicate:landArea> "0.18"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+<urn:graphragprov:entity:Santa%20Claus> <urn:graphragprov:predicate:smallestMunicipalityByLandAreaIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:frequency> "annually" .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:national%20championship%20event> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:hasPart> <urn:graphragprov:entity:two%20regional%20rally%20events> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Atlanta> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Michigan> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Rally%20America%20National%20Rally%20Championship%20event> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:rally%20racing%20event> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Michigan> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Montmorency%20County> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:organizedInto> <urn:graphragprov:entity:three%20distinct%20rallies> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:partOfSeason> <urn:graphragprov:entity:Rally%20America%20National%20Rally%20Championship%20season> .
+<urn:graphragprov:entity:Sno%2ADrift> <urn:graphragprov:predicate:seasonOrder> "first" .
+<urn:graphragprov:entity:competitors> <urn:graphragprov:predicate:mayEnter> <urn:graphragprov:entity:any%20or%20all%20of%20these%20events> .
+<urn:graphragprov:entity:competitors> <urn:graphragprov:predicate:mayEnter> <urn:graphragprov:entity:these%20events> .
+<urn:graphragprov:entity:national%20championship%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:both%20days%20of%20rallying> .
+<urn:graphragprov:entity:regional%20rally%20event> <urn:graphragprov:predicate:covers> <urn:graphragprov:entity:one%20of%20the%20two%20days> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:convictedOf> <urn:graphragprov:entity:illegal%20transportation%20of%20moonshine> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:John%20Schneider> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:probationOfficer> <urn:graphragprov:entity:Boss%20Hogg> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:probationStatus> <urn:graphragprov:entity:on%20probation> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:requiresPermissionFor> <urn:graphragprov:entity:leaving%20Hazzard%20County> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:family%20farm> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:restrictedFrom> <urn:graphragprov:entity:carrying%20firearms> .
+<urn:graphragprov:entity:Bo%20Duke> <urn:graphragprov:predicate:usesWeapon> <urn:graphragprov:entity:compound%20bows> .
+<urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:corrupt> .
+<urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:crooked> .
+<urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:county%20commissioner> .
+<urn:graphragprov:entity:Boss%20Hogg> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Sorrell%20Booke> .
+<urn:graphragprov:entity:Coy%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Coy%20and%20Vance%20Duke> .
+<urn:graphragprov:entity:Daisy%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Catherine%20Bach> .
+<urn:graphragprov:entity:Hazzard%20County> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:fictional%20county> .
+<urn:graphragprov:entity:Hazzard%20County> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:convictedOf> <urn:graphragprov:entity:illegal%20transportation%20of%20moonshine> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Tom%20Wopat> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:probationOfficer> <urn:graphragprov:entity:Boss%20Hogg> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:probationStatus> <urn:graphragprov:entity:on%20probation> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:requiresPermissionFor> <urn:graphragprov:entity:leaving%20Hazzard%20County> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:residence> <urn:graphragprov:entity:family%20farm> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:restrictedFrom> <urn:graphragprov:entity:carrying%20firearms> .
+<urn:graphragprov:entity:Luke%20Duke> <urn:graphragprov:predicate:usesWeapon> <urn:graphragprov:entity:compound%20bows> .
+<urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:bumbling> .
+<urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:characterTrait> <urn:graphragprov:entity:corrupt> .
+<urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Sheriff> .
+<urn:graphragprov:entity:Rosco%20P.%20Coltrane> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:James%20Best> .
+<urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:hasSetting> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:hasSetting> <urn:graphragprov:entity:Hazzard%20County> .
+<urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20series> .
+<urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:The%20Dukes%20of%20Hazzard> <urn:graphragprov:predicate:setIn> <urn:graphragprov:entity:Hazzard%20County> .
+<urn:graphragprov:entity:Uncle%20Jesse> <urn:graphragprov:predicate:agreedTo> <urn:graphragprov:entity:refrain%20from%20distilling%20moonshine> .
+<urn:graphragprov:entity:Uncle%20Jesse> <urn:graphragprov:predicate:madePleaBargainWith> <urn:graphragprov:entity:U.S.%20Government> .
+<urn:graphragprov:entity:Uncle%20Jesse> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Denver%20Pyle> .
+<urn:graphragprov:entity:Vance%20Duke> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Coy%20and%20Vance%20Duke> .

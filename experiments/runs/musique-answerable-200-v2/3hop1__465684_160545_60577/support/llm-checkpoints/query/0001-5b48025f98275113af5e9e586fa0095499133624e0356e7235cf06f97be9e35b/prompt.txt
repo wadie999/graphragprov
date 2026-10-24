@@ -1,0 +1,163 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where did they film The Beach in the country where Bodindecha died?
+
+Expected answer: Ko Phi Phi Leh
+
+Gold decomposition:
+1. question='Bodindecha >> place of birth'; answer='Bangkok'; support_paragraph=14
+2. question='Where is #1 located?'; answer='Thailand'; support_paragraph=16
+3. question='where did they film the beach in #2'; answer='Ko Phi Phi Leh'; support_paragraph=19
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:birthYear> "1777"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:deathYear> "1849"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:political%20and%20military%20figure> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:campaigns%20during%20the%20Siamese-Vietnamese%20Wars> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:putting%20down%20the%20Laotian%20Rebellion> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:reign%20of%20King%20Rama%20III> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Chief%20Minister> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:military%20general> .
+<urn:graphragprov:entity:Bodindecha> <urn:graphragprov:predicate:personalName> <urn:graphragprov:entity:Sing%20Sinhaseni> .
+<urn:graphragprov:entity:Laotian%20Rebellion> <urn:graphragprov:predicate:endYear> "1828"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Laotian%20Rebellion> <urn:graphragprov:predicate:startYear> "1826"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Lord%20Anouvong%20of%20Vientiane> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Lord> .
+<urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:endYear> "1834"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:endYear> "1845"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:startYear> "1831"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Siamese-Vietnamese%20Wars> <urn:graphragprov:predicate:startYear> "1841"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:20th%20Century%20Fox> <urn:graphragprov:predicate:alteredLandscapeOf> <urn:graphragprov:entity:Ko%20Phi%20Phi%20Leh> .
+<urn:graphragprov:entity:20th%20Century%20Fox> <urn:graphragprov:predicate:setAsideFund> <urn:graphragprov:entity:reconstruction%20fund> .
+<urn:graphragprov:entity:The%20Beach%20%28film%29> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Ko%20Phi%20Phi%20Leh> .
+<urn:graphragprov:entity:The%20Beach%20%28film%29> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:20th%20Century%20Fox> .
+<urn:graphragprov:entity:environmentalists> <urn:graphragprov:predicate:believed> <urn:graphragprov:entity:damage%20to%20the%20ecosystem%20was%20permanent> .
+<urn:graphragprov:entity:environmentalists> <urn:graphragprov:predicate:believed> <urn:graphragprov:entity:restoration%20attempts%20had%20failed> .
+<urn:graphragprov:entity:environmentalists> <urn:graphragprov:predicate:filedLawsuitAgainst> <urn:graphragprov:entity:20th%20Century%20Fox> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:district> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bangkok> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Thailand> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Bang%20Khae> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Bang%20Khun%20Thian> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Chom%20Thong> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Krathum%20Baen%20District> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Mueang%20Samut%20Sakhon%20District> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Nong%20Khaem%20District> .
+<urn:graphragprov:entity:Bang%20Bon%20District> <urn:graphragprov:predicate:neighbour> <urn:graphragprov:entity:Phasi%20Charoen> .

@@ -1,0 +1,188 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the maker of the Acura RLX, the owner of Scion, and Nissan open US assembly plants?
+
+Expected answer: 1981
+
+Gold decomposition:
+1. question='Scion >> owned by'; answer='Toyota'; support_paragraph=13
+2. question='Who made Acura RLX?'; answer='Honda'; support_paragraph=14
+3. question='When did #2 , #1 and Nissan open US assembly plants?'; answer='1981'; support_paragraph=17
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:hasVariant> <urn:graphragprov:entity:front-wheel%20drive%20base%20model> .
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:hasVariant> <urn:graphragprov:entity:hybrid%20variant> .
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:full-size%20luxury%20sedan> .
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:manufacturedBy> <urn:graphragprov:entity:Honda> .
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:offers> <urn:graphragprov:entity:two%20versions> .
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:releasedInYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:soldUnder> <urn:graphragprov:entity:Acura%20division> .
+<urn:graphragprov:entity:Acura%20RLX> <urn:graphragprov:predicate:succeeded> <urn:graphragprov:entity:Acura%20RL> .
+<urn:graphragprov:entity:Honda%20Legend> <urn:graphragprov:predicate:offeredWith> <urn:graphragprov:entity:SH-AWD%20powertrain> .
+<urn:graphragprov:entity:JDM%20version> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Honda%20Legend> .
+<urn:graphragprov:entity:front-wheel%20drive%20base%20model> <urn:graphragprov:predicate:equippedWith> <urn:graphragprov:entity:Acura%27s%20Precision%20All-Wheel%20Steer%20%28P-AWS%29%20four-wheel%20steering%20system> .
+<urn:graphragprov:entity:hybrid%20variant> <urn:graphragprov:predicate:featuring> <urn:graphragprov:entity:SH-AWD> .
+<urn:graphragprov:entity:hybrid%20variant> <urn:graphragprov:predicate:servesAs> <urn:graphragprov:entity:Acura%27s%20flagship> .
+<urn:graphragprov:entity:Datsun%20810> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:amenities> .
+<urn:graphragprov:entity:Datsun%20810> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:passenger%20space> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:affectedBy> <urn:graphragprov:entity:1981%20voluntary%20export%20restraints> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Acura> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:US%20assembly%20plants> .
+<urn:graphragprov:entity:Honda> <urn:graphragprov:predicate:openedInYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mazda> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Mazda%20616> .
+<urn:graphragprov:entity:Mazda%20616> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:amenities> .
+<urn:graphragprov:entity:Mazda%20616> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:passenger%20space> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:affectedBy> <urn:graphragprov:entity:1981%20voluntary%20export%20restraints> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Infiniti> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Datsun%20810> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:US%20assembly%20plants> .
+<urn:graphragprov:entity:Nissan> <urn:graphragprov:predicate:openedInYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:affectedBy> <urn:graphragprov:entity:1981%20voluntary%20export%20restraints> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:Lexus> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:introduced> <urn:graphragprov:entity:Toyota%20Cressida> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:opened> <urn:graphragprov:entity:US%20assembly%20plants> .
+<urn:graphragprov:entity:Toyota> <urn:graphragprov:predicate:openedInYear> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:amenities> .
+<urn:graphragprov:entity:Toyota%20Corona%20Mark%20II> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:passenger%20space> .
+<urn:graphragprov:entity:Toyota%20Cressida> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:amenities> .
+<urn:graphragprov:entity:Toyota%20Cressida> <urn:graphragprov:predicate:added> <urn:graphragprov:entity:passenger%20space> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:designedFor> <urn:graphragprov:entity:younger%20customers> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:discontinued> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:eschewed> <urn:graphragprov:entity:trim%20levels> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:expandedInto> <urn:graphragprov:entity:Canada> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:expandedIntoYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:expandedNationwideBy> "2004-02"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:featured> <urn:graphragprov:entity:sports%20compact%20vehicles> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:marque> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:nameMeaning> <urn:graphragprov:entity:descendant%20of%20a%20family%20or%20heir> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:nameRefersTo> <urn:graphragprov:entity:brand%27s%20cars%20and%20their%20owners> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:offered> <urn:graphragprov:entity:range%20of%20factory%20and%20aftermarket%20options> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:offered> <urn:graphragprov:entity:single%20trim%20for%20each%20vehicle> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Toyota> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:softLaunchedAt> <urn:graphragprov:entity:selected%20Toyota%20dealers> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:softLaunchedIn> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:softLaunchedInState> <urn:graphragprov:entity:California> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:softLaunchedOn> "2003-06"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:startedInYear> "2003"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:targetedDemographic> <urn:graphragprov:entity:generation%20Y%20demographic> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:usedBusinessModel> <urn:graphragprov:entity:simplified%20%22pure%20price%22%20model> .
+<urn:graphragprov:entity:Scion> <urn:graphragprov:predicate:usedMarketingTechnique> <urn:graphragprov:entity:guerrilla%20and%20viral%20marketing%20techniques> .

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_f28901e43744d4cb8f1930a881c4d68764d3e3a0de4ca6b4bd057e0992778fd5
+Title: Friedrich Hayek
+Text:
+During Hayek's years at the University of Vienna, Carl Menger's work on the explanatory strategy of social science and Friedrich von Wieser's commanding presence in the classroom left a lasting influence on him. Upon the completion of his examinations, Hayek was hired by Ludwig von Mises on the recommendation of Wieser as a specialist for the Austrian government working on the legal and economic details of the Treaty of Saint Germain. Between 1923 and 1924 Hayek worked as a research assistant to Prof. Jeremiah Jenks of New York University, compiling macroeconomic data on the American economy and the operations of the US Federal Reserve.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "Hayek",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Hayek",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "workedFor",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "working for",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "the Austrian government",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "the Austrian government",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].predicate.evidence[0]: quote 'working for' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

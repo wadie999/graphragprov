@@ -1,0 +1,490 @@
+
+H0 one-case execution
+  case:          3hop2__326964_7855_7713
+  hops:          3
+  question:      How long had the city considered to be a place that is popular with tourists been the capital city of the location of the Yaxing Coach headquarters?
+  expected:      about 400 years
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__326964_7855_7713/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=9 title='Yaxing Coach'
+  source unit: u_3e45bb064831ad6baeb5ed44e8d8350c61a0e8ab3259615d64b98e2151b5d12e
+  text chars:  265
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 6.012s | model=deepseek-v4-flash
+      tokens:   in=2252 | out=1309 | total=3561 | cached=1920 | uncached=332
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 142 / 277 (51.3%)
+    characters text:     130 / 265 (49.1%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  35 chars
+      'Yaxing Motor Coach Co., Ltd) is a'
+    statement density:  32.49 / 1000 chars
+    title reliance:      8 / 9 (88.9%)
+
+[GRAPH 2/3] paragraph=8 title='Nanjing'
+  source unit: u_865df6c29b5c9671fd4ca86bd98a1dc78a676b9a72f6d2728f31484953bf576f
+  text chars:  441
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.566s | model=deepseek-v4-flash
+      tokens:   in=2369 | out=1203 | total=3572 | cached=1920 | uncached=449
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 290 / 448 (64.7%)
+    characters text:     283 / 441 (64.2%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  73 chars
+      'a series of government-organised events throughout the year. The annual'
+    statement density:  17.86 / 1000 chars
+    title reliance:      5 / 8 (62.5%)
+
+[GRAPH 3/3] paragraph=16 title='Nanjing'
+  source unit: u_03e19494b8aa066125542d1dee8ce3cab0ee5aa14b1da7777511849a264b2c1e
+  text chars:  1363
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 64.299s | model=deepseek-v4-flash
+      tokens:   in=2730 | out=16384 | total=19114 | cached=2048 | uncached=682
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #4] sending...
+      provider: 33.024s | model=deepseek-v4-flash
+      tokens:   in=2775 | out=8032 | total=10807 | cached=2688 | uncached=87
+    [LLM graph.reference #5] sending...
+      provider: 2.421s | model=deepseek-v4-flash
+      tokens:   in=1225 | out=502 | total=1727 | cached=384 | uncached=841
+  extraction: ACCEPTED
+  statements: 33
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    54
+    initially rejected: 3
+
+    initial rejection #11
+      validator:
+        response.statements[11].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "495 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "-495"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "495 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nanjing",
+                "segment": "title"
+              }
+            ],
+            "value": "Nanjing"
+          }
+        }
+
+    initial rejection #12
+      validator:
+        response.statements[12].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "473 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "-473"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "473 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nanjing",
+                "segment": "title"
+              }
+            ],
+            "value": "Nanjing"
+          }
+        }
+
+    initial rejection #13
+      validator:
+        response.statements[13].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "333 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "-333"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "333 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nanjing",
+                "segment": "title"
+              }
+            ],
+            "value": "Nanjing"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     3
+
+    remaining rejection #0
+      validator:
+        response.statements[0].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "495 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "-0495"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "495 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nanjing",
+                "segment": "title"
+              }
+            ],
+            "value": "Nanjing"
+          }
+        }
+
+    remaining rejection #1
+      validator:
+        response.statements[1].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "473 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "-0473"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "473 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nanjing",
+                "segment": "title"
+              }
+            ],
+            "value": "Nanjing"
+          }
+        }
+
+    remaining rejection #2
+      validator:
+        response.statements[2].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "333 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "-0333"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "333 BC",
+                "segment": "text"
+              }
+            ],
+            "value": "foundedInYear"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Nanjing",
+                "segment": "title"
+              }
+            ],
+            "value": "Nanjing"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 33
+  coverage:
+    characters combined: 344 / 1370 (25.1%)
+    characters text:     337 / 1363 (24.7%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           9 / 10 (90.0%)
+    longest uncovered:  122 chars
+      '. Since then, the city experienced destruction and renewal many times.[citation needed] The area was successively part of'
+    statement density:  24.09 / 1000 chars
+    title reliance:      33 / 33 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 50
+  whole-source attempts: 4
+  whole-source retries: 1
+  targeted corrections: 1
+  initial rejections: 3
+  corrected valid: 0
+  remaining rejections: 3
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      50
+resource nodes:        42
+entity nodes:          42
+literal values:        3
+predicates:            16
+
+N-Triples:
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalDuration> "about 400 years" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Danyang%20Prefecture> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalPeriod> "from late Han to early Tang" .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Beiyinyangying%20culture> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Danyang%20Prefecture> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Han%20dynasty> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Hushu%20culture> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Jinling%20Yi> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Kuaiji> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Moling> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Nanjing%20Man> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Qin%20Shi%20Huang> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Shang%20dynasty> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:State%20of%20Chu> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:State%20of%20Yue> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Tang> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Taowu> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Wu%20state> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yangzhou> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yecheng> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yuanfeng> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Yuecheng> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Zhang> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hasHistoricalName> <urn:graphragprov:entity:Zhonghua%20Gate> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:capital%20city> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangnan> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Yangzhou%20region> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Danyang%20prefectures> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Kuaiji> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Yangzhou%20region> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Zhang> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:renamedTo> <urn:graphragprov:entity:Moling> .
+  <urn:graphragprov:entity:Jiangsu%20Yaxing> <urn:graphragprov:predicate:foundedInYear> "1998"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Yangzhou> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bus%20manufacturer> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:China> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Jiangsu> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Asiastar> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yangtse%EF%BC%88Yangzlv%EF%BC%89> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:producesBrand> <urn:graphragprov:entity:Yaxing> .
+  <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:subsidiaryOf> <urn:graphragprov:entity:Jiangsu%20Yaxing> .
+  <urn:graphragprov:entity:International%20Plum%20Blossom%20Festival> <urn:graphragprov:predicate:attracts> <urn:graphragprov:entity:thousands%20of%20tourists> .
+  <urn:graphragprov:entity:International%20Plum%20Blossom%20Festival> <urn:graphragprov:predicate:heldIn> <urn:graphragprov:entity:Plum%20Blossom%20Hill> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:International%20Plum%20Blossom%20Festival> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:Jiangxin%20Zhou%20Fruit%20Festival> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:Linggu%20Temple%20Sweet%20Osmanthus%20Festival> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:hostsEvent> <urn:graphragprov:entity:Nanjing%20Baima%20Peach%20Blossom%20and%20Kite%20Festival> .
+  <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:popular%20tourist%20destination> .
+  <urn:graphragprov:entity:Plum%20Blossom%20Hill> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:largest%20plum%20collection%20in%20China> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.117s | model=deepseek-v4-flash
+      tokens:   in=3086 | out=344 | total=3430 | cached=640 | uncached=2446
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Yangzhou> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:popular%20tourist%20destination> .
+  - <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalDuration> "about 400 years" .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:popular%20tourist%20destination> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalDuration> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_03e19494b8aa0661>
+  FROM <urn:graphragprov:unit:u_3e45bb064831ad6b>
+  FROM <urn:graphragprov:unit:u_865df6c29b5c9671>
+  WHERE { <urn:graphragprov:entity:Yaxing%20Coach> <urn:graphragprov:predicate:headquartersLocation> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Yangzhou> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:popular%20tourist%20destination> . <urn:graphragprov:entity:Nanjing> <urn:graphragprov:predicate:capitalDuration> ?answer . }
+
+GraphDB execution:
+  observed answers: ('about 400 years',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Nanjing', 'Yaxing Coach']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__326964_7855_7713
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__326964_7855_7713/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          14437
+output tokens:         27774
+total tokens:          42211
+cached input tokens:   9600
+uncached input tokens: 4837
+cumulative LLM seconds: 113.439
+
+statement occurrences: 50
+semantic triples:      50
+entity nodes:          42
+literal values:        3
+predicates:            16
+query attempts:        1
+observed answers:      ('about 400 years',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 111.346s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.109s
+  graph.materialization [attempt=1]: 0.121s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.118s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.468s

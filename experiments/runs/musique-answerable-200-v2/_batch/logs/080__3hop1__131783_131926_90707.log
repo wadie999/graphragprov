@@ -1,0 +1,240 @@
+
+H0 one-case execution
+  case:          3hop1__131783_131926_90707
+  hops:          3
+  question:      Where does the body of water by the city where The Minikahda Club is located and the Ohio River meet?
+  expected:      at the city of Cairo, Illinois
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__131783_131926_90707/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=5 title='The Minikahda Club'
+  source unit: u_db565019bd79bc8f4765b4c325c2b04dc694e17225f17296979eeb6f8f749afc
+  text chars:  211
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 58.676s | model=deepseek-v4-flash
+      tokens:   in=2232 | out=16384 | total=18616 | cached=1920 | uncached=312
+      provider failure: ValueError: DeepSeek response was truncated by the token limit
+      call failed: ValueError: DeepSeek response was truncated by the token limit
+  extraction attempt: REJECTED
+    stage:  provider
+    error:  ValueError: DeepSeek response was truncated by the token limit
+    action: whole-source retry
+  whole-source attempt: 2/3
+  previous failure: ValueError: DeepSeek response was truncated by the token limit
+    [LLM graph.reference #2] sending...
+      provider: 6.743s | model=deepseek-v4-flash
+      tokens:   in=2277 | out=1601 | total=3878 | cached=2176 | uncached=101
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 142 / 229 (62.0%)
+    characters text:     124 / 211 (58.8%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  24 chars
+      'The Minikahda Club is a'
+    statement density:  48.03 / 1000 chars
+    title reliance:      8 / 11 (72.7%)
+
+[GRAPH 2/3] paragraph=10 title='Minneapolis'
+  source unit: u_2f37f0312f96ff3c3002dde541773acbe60e6bd2319fb0c9a9c7e1b1b28e201b
+  text chars:  776
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.763s | model=deepseek-v4-flash
+      tokens:   in=2465 | out=2660 | total=5125 | cached=1920 | uncached=545
+  extraction: ACCEPTED
+  statements: 19
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    19
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     19
+  coverage:
+    characters combined: 507 / 787 (64.4%)
+    characters text:     496 / 776 (63.9%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  60 chars
+      '. As an integral link to the global economy, Minneapolis is'
+    statement density:  24.14 / 1000 chars
+    title reliance:      18 / 19 (94.7%)
+
+[GRAPH 3/3] paragraph=16 title='Ohio River'
+  source unit: u_e563b92c2edd0f69d46d298f70234ba6464634a3edc9f21e33861214f51d1d5a
+  text chars:  355
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 5.786s | model=deepseek-v4-flash
+      tokens:   in=2559 | out=1274 | total=3833 | cached=2048 | uncached=511
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 254 / 365 (69.6%)
+    characters text:     244 / 355 (68.7%)
+    characters title:    10 / 10 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  36 chars
+      'for most of its length. The course'
+    statement density:  24.66 / 1000 chars
+    title reliance:      9 / 9 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 39
+  whole-source attempts: 4
+  whole-source retries: 1
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      37
+resource nodes:        35
+entity nodes:          35
+literal values:        3
+predicates:            20
+
+N-Triples:
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:adjacentTo> <urn:graphragprov:entity:Saint%20Paul> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:categorizedAs> <urn:graphragprov:entity:global%20city> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:connectedBy> <urn:graphragprov:entity:Chain%20of%20Lakes> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:connectedBy> <urn:graphragprov:entity:Grand%20Rounds%20National%20Scenic%20Byway> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:13%20lakes> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:Mississippi%20River> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:creeks> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:waterfalls> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:wetlands> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:homeTo> <urn:graphragprov:entity:6%20Fortune%20500%20companies> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:isBusinessCenter> <urn:graphragprov:entity:between%20Chicago%20and%20Seattle> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Minnesota> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:confluence%20of%20Mississippi%20River%20and%20Minnesota%20River> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Mississippi%20River> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:wasOnce> <urn:graphragprov:entity:hub%20for%20timber> .
+  <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:wasOnce> <urn:graphragprov:entity:world%27s%20flour%20milling%20capital> .
+  <urn:graphragprov:entity:Twin%20Cities> <urn:graphragprov:predicate:were> <urn:graphragprov:entity:fifth-largest%20hub%20of%20major%20corporate%20headquarters%20in%20the%20United%20States> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:U.S.%20Amateur> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:U.S.%20Open> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:Walker%20Cup> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:course> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:golf%20club> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Lake%20Calhoun> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Minnesota> .
+  <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:southwest%20Minneapolis> .
+  <urn:graphragprov:entity:U.S.%20Amateur> <urn:graphragprov:predicate:year> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:U.S.%20Open> <urn:graphragprov:predicate:year> "1916"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Walker%20Cup> <urn:graphragprov:predicate:year> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:bendsTo> <urn:graphragprov:entity:west%20-%20southwest%20course> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:followsCourse> <urn:graphragprov:entity:roughly%20southwest%20and%20then%20west%20-%20northwest%20course%20until%20Cincinnati> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsNorthernBorderOf> <urn:graphragprov:entity:Kentucky> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsNorthernBorderOf> <urn:graphragprov:entity:West%20Virginia> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsSouthernBorderOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsSouthernBorderOf> <urn:graphragprov:entity:Indiana> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsSouthernBorderOf> <urn:graphragprov:entity:Ohio> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joins> <urn:graphragprov:entity:Mississippi%20River> .
+  <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joinsAt> <urn:graphragprov:entity:city%20of%20Cairo%2C%20Illinois> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.639s | model=deepseek-v4-flash
+      tokens:   in=2612 | out=341 | total=2953 | cached=640 | uncached=1972
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:southwest%20Minneapolis> .
+  - <urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:Mississippi%20River> .
+  - <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joins> <urn:graphragprov:entity:Mississippi%20River> .
+  - <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joinsAt> <urn:graphragprov:entity:city%20of%20Cairo%2C%20Illinois> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> ?city . ?city <urn:graphragprov:predicate:hasWaterFeature> ?bodyOfWater . <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joins> ?bodyOfWater . <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joinsAt> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2f37f0312f96ff3c>
+  FROM <urn:graphragprov:unit:u_db565019bd79bc8f>
+  FROM <urn:graphragprov:unit:u_e563b92c2edd0f69>
+  WHERE { <urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> ?city . ?city <urn:graphragprov:predicate:hasWaterFeature> ?bodyOfWater . <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joins> ?bodyOfWater . <urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joinsAt> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__131783_131926_90707
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__131783_131926_90707/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          12145
+output tokens:         22260
+total tokens:          34405
+cached input tokens:   8704
+uncached input tokens: 3441
+cumulative LLM seconds: 84.606
+
+statement occurrences: 39
+semantic triples:      37
+entity nodes:          35
+literal values:        3
+predicates:            20
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 81.977s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.060s
+  graph.materialization [attempt=1]: 0.078s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 2.640s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.463s

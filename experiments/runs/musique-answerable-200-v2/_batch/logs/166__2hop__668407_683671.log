@@ -1,0 +1,266 @@
+
+H0 one-case execution
+  case:          2hop__668407_683671
+  hops:          2
+  question:      Who is the father of Empress Wang's husband?
+  expected:      Yang Xingmi
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__668407_683671/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=18 title='Empress Wang (Yang Pu)'
+  source unit: u_5605ab8bbeed2d1833109ac78876e5dcd7282ce1312af3a8124d560f302371e8
+  text chars:  385
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.319s | model=deepseek-v4-flash
+      tokens:   in=2206 | out=2234 | total=4440 | cached=2048 | uncached=158
+  extraction: ACCEPTED
+  statements: 16
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     16
+  coverage:
+    characters combined: 107 / 407 (26.3%)
+    characters text:     85 / 385 (22.1%)
+    characters title:    22 / 22 (100.0%)
+    sentences:           1 / 2 (50.0%)
+    longest uncovered:  125 chars
+      '. As he was the only ruler who claimed the title of emperor, she was the only person to carry the title of empress during Wu.'
+    statement density:  39.31 / 1000 chars
+    title reliance:      8 / 16 (50.0%)
+
+[GRAPH 2/2] paragraph=3 title='Empress Dowager Wang (Rui)'
+  source unit: u_f9e3bff5da9882f4aaaa08ffab74f86a980bc9271760e3c43423d12f9accee11
+  text chars:  330
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.688s | model=deepseek-v4-flash
+      tokens:   in=2283 | out=1601 | total=3884 | cached=2048 | uncached=235
+    [LLM graph.reference #3] sending...
+      provider: 1.661s | model=deepseek-v4-flash
+      tokens:   in=802 | out=180 | total=982 | cached=0 | uncached=802
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 2
+
+    initial rejection #1
+      validator:
+        response.statements[1].object.value must use YYYY notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "year",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "928",
+                "segment": "text"
+              }
+            ],
+            "value": "928"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "died",
+                "segment": "text"
+              }
+            ],
+            "value": "diedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Empress Dowager Wang (Rui)",
+                "segment": "title"
+              }
+            ],
+            "value": "Empress Dowager Wang (Rui)"
+          }
+        }
+
+    initial rejection #8
+      validator:
+        response.statements[8].predicate.evidence[0]: quote 'ruler of the Wu state' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Wu state",
+                "segment": "text"
+              }
+            ],
+            "value": "Wu state"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "ruler of the Wu state",
+                "segment": "text"
+              }
+            ],
+            "value": "rulerOf"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Yang Pu",
+                "segment": "text"
+              }
+            ],
+            "value": "Yang Pu"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 10
+  coverage:
+    characters combined: 209 / 356 (58.7%)
+    characters text:     183 / 330 (55.5%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  51 chars
+      'Empress Dowager Wang (王太后, personal name unknown) ('
+    statement density:  28.09 / 1000 chars
+    title reliance:      5 / 10 (50.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 26
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      17
+resource nodes:        18
+entity nodes:          18
+literal values:        1
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Empress%20Wang%20%28Yang%20Pu%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:empress> .
+  <urn:graphragprov:entity:Empress%20Wang%20%28Yang%20Pu%29> <urn:graphragprov:predicate:knownAs> <urn:graphragprov:entity:Empress%20Rang> .
+  <urn:graphragprov:entity:Empress%20Wang%20%28Yang%20Pu%29> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southern%20Tang> .
+  <urn:graphragprov:entity:Empress%20Wang%20%28Yang%20Pu%29> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yang%20Pu> .
+  <urn:graphragprov:entity:Yang%20Pu> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Emperor%20Rui> .
+  <urn:graphragprov:entity:Yang%20Pu> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:final%20ruler> .
+  <urn:graphragprov:entity:Yang%20Pu> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:ruler> .
+  <urn:graphragprov:entity:Yang%20Pu> <urn:graphragprov:predicate:rulerOf> <urn:graphragprov:entity:Wu> .
+  <urn:graphragprov:entity:Empress%20Dowager%20Wang%20%28Rui%29> <urn:graphragprov:predicate:child> <urn:graphragprov:entity:Yang%20Pu> .
+  <urn:graphragprov:entity:Empress%20Dowager%20Wang%20%28Rui%29> <urn:graphragprov:predicate:diedOn> "0928"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Empress%20Dowager%20Wang%20%28Rui%29> <urn:graphragprov:predicate:honoredAs> <urn:graphragprov:entity:empress%20dowager> .
+  <urn:graphragprov:entity:Empress%20Dowager%20Wang%20%28Rui%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:concubine> .
+  <urn:graphragprov:entity:Empress%20Dowager%20Wang%20%28Rui%29> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yang%20Xingmi> .
+  <urn:graphragprov:entity:Wu%20state> <urn:graphragprov:predicate:foundedOn> <urn:graphragprov:entity:territory%20that%20Yang%20Xingmi%20took> .
+  <urn:graphragprov:entity:Yang%20Pu> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:emperor> .
+  <urn:graphragprov:entity:Yang%20Pu> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:final%20ruler> .
+  <urn:graphragprov:entity:Yang%20Xingmi> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:warlord> .
+  <urn:graphragprov:entity:Yang%20Xingmi> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:late-Tang%20Dynasty> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.750s | model=deepseek-v4-flash
+      tokens:   in=1712 | out=201 | total=1913 | cached=640 | uncached=1072
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Empress%20Wang%20%28Yang%20Pu%29> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yang%20Pu> .
+  - <urn:graphragprov:entity:Empress%20Dowager%20Wang%20%28Rui%29> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Yang%20Xingmi> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Empress%20Wang%20%28Yang%20Pu%29> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5605ab8bbeed2d18>
+  FROM <urn:graphragprov:unit:u_f9e3bff5da9882f4>
+  WHERE { <urn:graphragprov:entity:Empress%20Wang%20%28Yang%20Pu%29> <urn:graphragprov:predicate:spouse> ?husband . ?husband <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__668407_683671
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__668407_683671/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7003
+output tokens:         4216
+total tokens:          11219
+cached input tokens:   4736
+uncached input tokens: 2267
+cumulative LLM seconds: 20.419
+
+statement occurrences: 26
+semantic triples:      17
+entity nodes:          18
+literal values:        1
+predicates:            10
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.682s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.045s
+  graph.materialization [attempt=1]: 0.046s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.004s
+  query.reference.generation [attempt=1]: 1.751s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.510s

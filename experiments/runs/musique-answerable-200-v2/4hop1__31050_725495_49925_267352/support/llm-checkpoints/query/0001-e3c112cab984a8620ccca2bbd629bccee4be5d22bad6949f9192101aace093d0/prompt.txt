@@ -1,0 +1,211 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What movement did the person who wanted to reform and address the church that the general population converted to lead?
+
+Expected answer: German Renaissance
+
+Gold decomposition:
+1. question='What religion was the general population converted to?'; answer='Roman Catholicism'; support_paragraph=3
+2. question='#1 in Lesotho >> part of'; answer='Catholic Church'; support_paragraph=11
+3. question='who wanted #2 to reform and address'; answer='Martin Luther'; support_paragraph=10
+4. question='#3 >> movement'; answer='German Renaissance'; support_paragraph=15
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Chamorro%20culture> <urn:graphragprov:predicate:hasFewRemaining> <urn:graphragprov:entity:indigenous%20pre-Hispanic%20customs> .
+<urn:graphragprov:entity:Chamorro%20culture> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:American%20traditions> .
+<urn:graphragprov:entity:Chamorro%20culture> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Filipino%20traditions> .
+<urn:graphragprov:entity:Chamorro%20culture> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Mexican%20traditions> .
+<urn:graphragprov:entity:Chamorro%20culture> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Spanish%20traditions> .
+<urn:graphragprov:entity:Chamorro%20culture> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:other%20Micronesian%20Islander%20traditions> .
+<urn:graphragprov:entity:Post-contact%20Chamorro%20cuisine> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:corn> .
+<urn:graphragprov:entity:Post-contact%20Chamorro%20cuisine> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:atole> .
+<urn:graphragprov:entity:Post-contact%20Chamorro%20cuisine> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:chilaquiles> .
+<urn:graphragprov:entity:Post-contact%20Chamorro%20cuisine> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:tamales> .
+<urn:graphragprov:entity:Post-contact%20Chamorro%20cuisine> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:tortillas> .
+<urn:graphragprov:entity:Post-contact%20Chamorro%20cuisine> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Spanish%20trade%20between%20Mesoamerica%20and%20Asia> .
+<urn:graphragprov:entity:Spanish%20colonial%20rule> <urn:graphragprov:predicate:endYear> "1898"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Spanish%20colonial%20rule> <urn:graphragprov:predicate:startYear> "1668"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:majority%20of%20the%20population> <urn:graphragprov:predicate:convertedDuring> <urn:graphragprov:entity:Spanish%20colonial%20rule> .
+<urn:graphragprov:entity:majority%20of%20the%20population> <urn:graphragprov:predicate:convertedTo> <urn:graphragprov:entity:Roman%20Catholicism> .
+<urn:graphragprov:entity:many%20Chamorros> <urn:graphragprov:predicate:adoptedNamesFrom> <urn:graphragprov:entity:Cat%C3%A1logo%20alfab%C3%A9tico%20de%20apellidos> .
+<urn:graphragprov:entity:many%20Chamorros> <urn:graphragprov:predicate:convertedTo> <urn:graphragprov:entity:Roman%20Catholic%20Christianity> .
+<urn:graphragprov:entity:many%20Chamorros> <urn:graphragprov:predicate:haveSurname> <urn:graphragprov:entity:Spanish%20surnames> .
+<urn:graphragprov:entity:modern%20Chamorro%20language> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Filipino> .
+<urn:graphragprov:entity:modern%20Chamorro%20language> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Spanish> .
+<urn:graphragprov:entity:modern%20Chamorro%20language> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Malayo-Polynesian%20language> .
+<urn:graphragprov:entity:phenomenon> <urn:graphragprov:predicate:commonTo> <urn:graphragprov:entity:Philippines> .
+<urn:graphragprov:entity:religious%20festivities> <urn:graphragprov:predicate:becameWidespread> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:religious%20festivities> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christmas> .
+<urn:graphragprov:entity:religious%20festivities> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Easter> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:cuisine> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:dance> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:fashion> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:fishing> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:games> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:local%20language> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:music> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:sea%20navigation> .
+<urn:graphragprov:entity:these%20influences> <urn:graphragprov:predicate:manifestedIn> <urn:graphragprov:entity:songs> .
+<urn:graphragprov:entity:Jan%20Hus> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:John%20Wycliffe> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:Luther> <urn:graphragprov:predicate:criticised> <urn:graphragprov:entity:sale%20of%20indulgences> .
+<urn:graphragprov:entity:Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:the%20Catholic%20doctrine%20of%20the%20merits%20of%20the%20saints%20had%20no%20foundation%20in%20the%20Bible> .
+<urn:graphragprov:entity:Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:the%20Pope%20had%20no%20authority%20over%20purgatory> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:isAcknowledgedToHaveStarted> <urn:graphragprov:entity:Reformation> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:Reformation> .
+<urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:wrote> <urn:graphragprov:entity:Ninety%20-%20five%20Theses> .
+<urn:graphragprov:entity:Peter%20Waldo> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:included> <urn:graphragprov:entity:belief%20that%20faith%20in%20Jesus%2C%20and%20not%20good%20works%2C%20is%20the%20only%20way%20to%20obtain%20God%27s%20pardon%20for%20sin> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:included> <urn:graphragprov:entity:complete%20reliance%20on%20Scripture%20as%20a%20source%20of%20proper%20belief> .
+<urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:doctrinal%20changes> .
+<urn:graphragprov:entity:Western%20Schism> <urn:graphragprov:predicate:eroded> <urn:graphragprov:entity:loyalty%20to%20the%20Papacy> .
+<urn:graphragprov:entity:Western%20Schism> <urn:graphragprov:predicate:playedPartIn> <urn:graphragprov:entity:these%20changes> .
+<urn:graphragprov:entity:core%20motivation> <urn:graphragprov:predicate:was> <urn:graphragprov:entity:theological> .
+<urn:graphragprov:entity:impact%20of%20humanism> <urn:graphragprov:predicate:playedPartIn> <urn:graphragprov:entity:these%20changes> .
+<urn:graphragprov:entity:many%20other%20factors> <urn:graphragprov:predicate:playedPartIn> <urn:graphragprov:entity:these%20changes> .
+<urn:graphragprov:entity:new%20learning%20of%20the%20Renaissance> <urn:graphragprov:predicate:playedPartIn> <urn:graphragprov:entity:these%20changes> .
+<urn:graphragprov:entity:new%20learning%20of%20the%20Renaissance> <urn:graphragprov:predicate:questioned> <urn:graphragprov:entity:much%20traditional%20thought> .
+<urn:graphragprov:entity:perceived%20corruption%20of%20the%20Roman%20Curia> <urn:graphragprov:predicate:playedPartIn> <urn:graphragprov:entity:these%20changes> .
+<urn:graphragprov:entity:rise%20of%20nationalism> <urn:graphragprov:predicate:playedPartIn> <urn:graphragprov:entity:these%20changes> .
+<urn:graphragprov:entity:Many%20Christians> <urn:graphragprov:predicate:practice> <urn:graphragprov:entity:Christianity> .
+<urn:graphragprov:entity:Many%20Christians> <urn:graphragprov:predicate:practice> <urn:graphragprov:entity:traditional%20cultural%20beliefs%20and%20rituals> .
+<urn:graphragprov:entity:Sesotho> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:indigenous%20language> .
+<urn:graphragprov:entity:The%20Catholic%20Church> <urn:graphragprov:predicate:hasFused> <urn:graphragprov:entity:its%20services> .
+<urn:graphragprov:entity:The%20Catholic%20Church> <urn:graphragprov:predicate:hasFused> <urn:graphragprov:entity:some%20aspects%20of%20local%20culture> .
+<urn:graphragprov:entity:priests> <urn:graphragprov:predicate:areSeenDressedIn> <urn:graphragprov:entity:local%20dress> .
+<urn:graphragprov:entity:priests> <urn:graphragprov:predicate:during> <urn:graphragprov:entity:services> .
+<urn:graphragprov:entity:the%20singing%20of%20hymns%20during%20services> <urn:graphragprov:predicate:hasDevelopedInto> <urn:graphragprov:entity:a%20local%20and%20traditional%20way%20of%20singing> .
+<urn:graphragprov:entity:the%20singing%20of%20hymns%20during%20services> <urn:graphragprov:predicate:hasDevelopedInto> <urn:graphragprov:entity:a%20repetitive%20call%20and%20response%20style> .
+<urn:graphragprov:entity:the%20singing%20of%20hymns%20during%20services> <urn:graphragprov:predicate:inLanguage> <urn:graphragprov:entity:English> .
+<urn:graphragprov:entity:the%20singing%20of%20hymns%20during%20services> <urn:graphragprov:predicate:inLanguage> <urn:graphragprov:entity:Sesotho> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:birthDate> "1525-06-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:collaboratorOf> <urn:graphragprov:entity:Philipp%20Melanchthon> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:deathDate> "1585-07-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:discipleOf> <urn:graphragprov:entity:Martin%20Luther> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:friendOf> <urn:graphragprov:entity:Philipp%20Melanchthon> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:classical%20scholar> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:diplomat> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:educator> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:humanist> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:statesman> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theologian> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:movement> <urn:graphragprov:entity:German%20Renaissance> .
+<urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .

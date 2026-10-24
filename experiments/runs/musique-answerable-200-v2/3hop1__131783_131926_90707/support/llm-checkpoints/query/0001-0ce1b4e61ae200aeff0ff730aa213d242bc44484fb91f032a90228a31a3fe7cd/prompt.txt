@@ -1,0 +1,167 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where does the body of water by the city where The Minikahda Club is located and the Ohio River meet?
+
+Expected answer: at the city of Cairo, Illinois
+
+Gold decomposition:
+1. question='Which state is The Minikahda Club located?'; answer='Minneapolis'; support_paragraph=5
+2. question='Which is the body of water by #1 ?'; answer='Mississippi River'; support_paragraph=10
+3. question='where does #2 and ohio river meet'; answer='at the city of Cairo, Illinois'; support_paragraph=16
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:adjacentTo> <urn:graphragprov:entity:Saint%20Paul> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:categorizedAs> <urn:graphragprov:entity:global%20city> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:connectedBy> <urn:graphragprov:entity:Chain%20of%20Lakes> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:connectedBy> <urn:graphragprov:entity:Grand%20Rounds%20National%20Scenic%20Byway> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:13%20lakes> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:Mississippi%20River> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:creeks> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:waterfalls> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:hasWaterFeature> <urn:graphragprov:entity:wetlands> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:homeTo> <urn:graphragprov:entity:6%20Fortune%20500%20companies> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:isBusinessCenter> <urn:graphragprov:entity:between%20Chicago%20and%20Seattle> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Minnesota> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:confluence%20of%20Mississippi%20River%20and%20Minnesota%20River> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Mississippi%20River> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:wasOnce> <urn:graphragprov:entity:hub%20for%20timber> .
+<urn:graphragprov:entity:Minneapolis> <urn:graphragprov:predicate:wasOnce> <urn:graphragprov:entity:world%27s%20flour%20milling%20capital> .
+<urn:graphragprov:entity:Twin%20Cities> <urn:graphragprov:predicate:were> <urn:graphragprov:entity:fifth-largest%20hub%20of%20major%20corporate%20headquarters%20in%20the%20United%20States> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:U.S.%20Amateur> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:U.S.%20Open> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:hosted> <urn:graphragprov:entity:Walker%20Cup> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:course> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:golf%20club> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Lake%20Calhoun> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Minnesota> .
+<urn:graphragprov:entity:The%20Minikahda%20Club> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:southwest%20Minneapolis> .
+<urn:graphragprov:entity:U.S.%20Amateur> <urn:graphragprov:predicate:year> "1927"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:U.S.%20Open> <urn:graphragprov:predicate:year> "1916"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Walker%20Cup> <urn:graphragprov:predicate:year> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:bendsTo> <urn:graphragprov:entity:west%20-%20southwest%20course> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:followsCourse> <urn:graphragprov:entity:roughly%20southwest%20and%20then%20west%20-%20northwest%20course%20until%20Cincinnati> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsNorthernBorderOf> <urn:graphragprov:entity:Kentucky> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsNorthernBorderOf> <urn:graphragprov:entity:West%20Virginia> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsSouthernBorderOf> <urn:graphragprov:entity:Illinois> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsSouthernBorderOf> <urn:graphragprov:entity:Indiana> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:formsSouthernBorderOf> <urn:graphragprov:entity:Ohio> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joins> <urn:graphragprov:entity:Mississippi%20River> .
+<urn:graphragprov:entity:Ohio%20River> <urn:graphragprov:predicate:joinsAt> <urn:graphragprov:entity:city%20of%20Cairo%2C%20Illinois> .

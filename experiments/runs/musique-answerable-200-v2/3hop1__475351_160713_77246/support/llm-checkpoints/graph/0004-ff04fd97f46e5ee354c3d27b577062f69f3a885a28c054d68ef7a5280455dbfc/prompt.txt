@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_1e93daacd7116a52dfa6d7ba47229ce2a6d62f71de4f90a1b1389eba3fd3b011
+Title: Partition of India
+Text:
+Abul Kalam Azad expressed concern over the likelihood of violent riots, to which Mountbatten replied:At least on this question I shall give you complete assurance. I shall see to it that there is no bloodshed and riot. I am a soldier and not a civilian. Once the partition is accepted in principle, I shall issue orders to see that there are no communal disturbances anywhere in the country. If there should be the slightest agitation, I shall adopt the sternest measures to nip the trouble in the bud. Jagmohan has stated that this and what followed shows the "glaring" "failure of the government machinery".On 3 June 1947, the partition plan was accepted by the Congress Working Committee. Boloji states that in Punjab there were no riots but there was communal tension, while Gandhi was reportedly isolated by Nehru and Patel and observed maun vrat (day of silence). Mountbatten visited Gandhi and said he hoped that he would not oppose the partition, to which Gandhi wrote the reply: "Have I ever opposed you?"Within British India, the border between India and Pakistan (the Radcliffe Line) was determined by a British Government-commissioned report prepared under the chairmanship of a London barrister, Sir Cyril Radcliffe. Pakistan came into being with two non-contiguous enclaves, East Pakistan (today Bangladesh) and West Pakistan, separated geographically by India. India was formed out of the majority Hindu regions of British India, and Pakistan from the majority Muslim areas.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 24,
+    "statement": {
+      "subject": {
+        "value": "Pakistan",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Pakistan",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "formedFrom",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "formed from",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "majority Muslim areas",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "majority Muslim areas",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[24].predicate.evidence[0]: quote 'formed from' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

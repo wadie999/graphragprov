@@ -1,0 +1,192 @@
+
+H0 one-case execution
+  case:          2hop__80_59409
+  hops:          2
+  question:      Who was the artist who did a duet with Beyonce in the single "Deja Vu" talking about in the song "Cry"?
+  expected:      three different relationships he had in the past
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__80_59409/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=11 title='Beyoncé'
+  source unit: u_142f8382a402952cce3e82a3258732076ac422b5d6f25e8b394eda0c4fdccbb5
+  text chars:  686
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 15.981s | model=deepseek-v4-flash
+      tokens:   in=2319 | out=3181 | total=5500 | cached=1920 | uncached=399
+  extraction: ACCEPTED
+  statements: 22
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    22
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     22
+  coverage:
+    characters combined: 434 / 693 (62.6%)
+    characters text:     427 / 686 (62.2%)
+    characters title:    7 / 7 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  60 chars
+      ', in the US, to coincide with her twenty-fifth birthday. It'
+    statement density:  31.75 / 1000 chars
+    title reliance:      2 / 22 (9.1%)
+
+[GRAPH 2/2] paragraph=10 title='Song Cry'
+  source unit: u_fcd97afb99dbb9e5438a3037c72e49b791c2766e92567c4f45d6000db90009df
+  text chars:  216
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.520s | model=deepseek-v4-flash
+      tokens:   in=2424 | out=829 | total=3253 | cached=1920 | uncached=504
+  extraction: ACCEPTED
+  statements: 6
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     6
+  coverage:
+    characters combined: 153 / 224 (68.3%)
+    characters text:     145 / 216 (67.1%)
+    characters title:    8 / 8 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  21 chars
+      'In an interview with'
+    statement density:  26.79 / 1000 chars
+    title reliance:      1 / 6 (16.7%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 28
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      28
+resource nodes:        30
+entity nodes:          30
+literal values:        2
+predicates:            15
+
+N-Triples:
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:artist> <urn:graphragprov:entity:Beyonc%C3%A9> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:Billboard%20200> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number-one> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:hasSingle> <urn:graphragprov:entity:D%C3%A9j%C3%A0%20Vu> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:hasSingle> <urn:graphragprov:entity:Get%20Me%20Bodied> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:hasSingle> <urn:graphragprov:entity:Green%20Light> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:hasSingle> <urn:graphragprov:entity:Ring%20the%20Alarm> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:album> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:publicationDate> "2006-09-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:B%27Day> <urn:graphragprov:predicate:sales> "541000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Beyonc%C3%A9> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:solo%20album> .
+  <urn:graphragprov:entity:D%C3%A9j%C3%A0%20Vu> <urn:graphragprov:predicate:chart> <urn:graphragprov:entity:Billboard%20Hot%20100> .
+  <urn:graphragprov:entity:D%C3%A9j%C3%A0%20Vu> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:top%20five> .
+  <urn:graphragprov:entity:D%C3%A9j%C3%A0%20Vu> <urn:graphragprov:predicate:featuring> <urn:graphragprov:entity:Jay%20Z> .
+  <urn:graphragprov:entity:Green%20Light> <urn:graphragprov:predicate:releaseTerritory> <urn:graphragprov:entity:United%20Kingdom> .
+  <urn:graphragprov:entity:Irreplaceable> <urn:graphragprov:predicate:chartCountry> <urn:graphragprov:entity:Australia> .
+  <urn:graphragprov:entity:Irreplaceable> <urn:graphragprov:predicate:chartCountry> <urn:graphragprov:entity:Hungary> .
+  <urn:graphragprov:entity:Irreplaceable> <urn:graphragprov:predicate:chartCountry> <urn:graphragprov:entity:Ireland> .
+  <urn:graphragprov:entity:Irreplaceable> <urn:graphragprov:predicate:chartCountry> <urn:graphragprov:entity:New%20Zealand> .
+  <urn:graphragprov:entity:Irreplaceable> <urn:graphragprov:predicate:chartCountry> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Irreplaceable> <urn:graphragprov:predicate:chartPosition> <urn:graphragprov:entity:number%20one> .
+  <urn:graphragprov:entity:Irreplaceable> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Jay-Z> <urn:graphragprov:predicate:statedInInterview> <urn:graphragprov:entity:Bill%20Maher> .
+  <urn:graphragprov:entity:Jay-Z> <urn:graphragprov:predicate:wroteAbout> <urn:graphragprov:entity:his%20different%20experiences> .
+  <urn:graphragprov:entity:Song%20Cry> <urn:graphragprov:predicate:inspiredBy> <urn:graphragprov:entity:three%20different%20relationships> .
+  <urn:graphragprov:entity:Song%20Cry> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:his%20different%20experiences> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:different%20verses> .
+  <urn:graphragprov:entity:three%20different%20relationships> <urn:graphragprov:predicate:occurredInPast> <urn:graphragprov:entity:past> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.674s | model=deepseek-v4-flash
+      tokens:   in=2089 | out=197 | total=2286 | cached=640 | uncached=1449
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:D%C3%A9j%C3%A0%20Vu> <urn:graphragprov:predicate:featuring> <urn:graphragprov:entity:Jay%20Z> .
+  - <urn:graphragprov:entity:Song%20Cry> <urn:graphragprov:predicate:inspiredBy> <urn:graphragprov:entity:three%20different%20relationships> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:D%C3%A9j%C3%A0%20Vu> <urn:graphragprov:predicate:featuring> ?artist . <urn:graphragprov:entity:Song%20Cry> <urn:graphragprov:predicate:inspiredBy> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_142f8382a402952c>
+  FROM <urn:graphragprov:unit:u_fcd97afb99dbb9e5>
+  WHERE { <urn:graphragprov:entity:D%C3%A9j%C3%A0%20Vu> <urn:graphragprov:predicate:featuring> ?artist . <urn:graphragprov:entity:Song%20Cry> <urn:graphragprov:predicate:inspiredBy> ?answer . }
+
+GraphDB execution:
+  observed answers: ('three different relationships',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Beyoncé', 'Song Cry']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__80_59409
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__80_59409/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6832
+output tokens:         4207
+total tokens:          11039
+cached input tokens:   4480
+uncached input tokens: 2352
+cumulative LLM seconds: 22.174
+
+statement occurrences: 28
+semantic triples:      28
+entity nodes:          30
+literal values:        2
+predicates:            15
+query attempts:        1
+observed answers:      ('three different relationships',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 20.510s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.035s
+  graph.materialization [attempt=1]: 0.059s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.674s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.502s

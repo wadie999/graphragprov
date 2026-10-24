@@ -1,0 +1,76 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_977863de3fafb904041bab58668d9d57df30dc2f496d23976c4dbcd31a10cfe6
+Title: Natalie Turner
+Text:
+Turner is currently a professor for the Classical Animation program at Sheridan College in Oakville. Previously she taught for Max the Mutt Animation School in Toronto. She will teach the fifth year of the Animex (Animation Exploration) workshop at Visual Arts Brampton Creative Studio.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 2,
+    "statement": {
+      "subject": {
+        "value": "Natalie Turner",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Natalie Turner",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "Turner",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "teaches",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "teaches",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Classical Animation program",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Classical Animation program",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[2].predicate.evidence[0]: quote 'teaches' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

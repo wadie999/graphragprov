@@ -1,0 +1,252 @@
+
+H0 one-case execution
+  case:          2hop__267938_92763
+  hops:          2
+  question:      What is the enrollment at Jack Clay's employer?
+  expected:      16,801
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__267938_92763/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=1 title='Jack Clay'
+  source unit: u_d55b67b2cf7a0d1183cedeca73f5ce7a3076254bf2a84c4acd4344754a5dfe80
+  text chars:  491
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 15.709s | model=deepseek-v4-flash
+      tokens:   in=2229 | out=3392 | total=5621 | cached=2048 | uncached=181
+    [LLM graph.reference #2] sending...
+      provider: 1.604s | model=deepseek-v4-flash
+      tokens:   in=631 | out=8 | total=639 | cached=0 | uncached=631
+  extraction: ACCEPTED
+  statements: 22
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 1
+
+    initial rejection #17
+      validator:
+        response.statements[17].predicate.evidence[0]: quote 'at the University of Washington' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "University of Washington",
+                "segment": "text"
+              }
+            ],
+            "value": "University of Washington"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "at the University of Washington",
+                "segment": "text"
+              }
+            ],
+            "value": "locatedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Professional Actors Training Programs",
+                "segment": "text"
+              }
+            ],
+            "value": "Professional Actors Training Programs"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 22
+  coverage:
+    characters combined: 351 / 500 (70.2%)
+    characters text:     342 / 491 (69.7%)
+    characters title:    9 / 9 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  36 chars
+      ') and the University of Washington ('
+    statement density:  44.00 / 1000 chars
+    title reliance:      20 / 22 (90.9%)
+
+[GRAPH 2/2] paragraph=0 title='University of Miami'
+  source unit: u_a26a667515fa16927297fa2667aae19a907df0de39990724a9a294d02cb3d4e8
+  text chars:  659
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 12.645s | model=deepseek-v4-flash
+      tokens:   in=2512 | out=2970 | total=5482 | cached=2048 | uncached=464
+  extraction: ACCEPTED
+  statements: 20
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    20
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     20
+  coverage:
+    characters combined: 482 / 678 (71.1%)
+    characters text:     463 / 659 (70.3%)
+    characters title:    19 / 19 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  118 chars
+      'University of Miami Latin: Universitas Miamiensis Motto Magna est veritas (Latin) Motto in English Great is the truth'
+    statement density:  29.50 / 1000 chars
+    title reliance:      20 / 20 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 42
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      42
+resource nodes:        21
+entity nodes:          21
+literal values:        17
+predicates:            31
+
+N-Triples:
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:academicStaff> "3045"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:administrativeStaff> "10985"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:budget> "$3.3 billion" .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:campusArea> "453 acres" .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:campusType> <urn:graphragprov:entity:Suburban> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:chairman> <urn:graphragprov:entity:Richard%20D.%20Fain> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:colors> <urn:graphragprov:entity:Orange%2C%20Green%2C%20White> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:endowment> "$949 million" .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:enrollment> "16801"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:establishedInYear> "1925"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Private> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Coral%20Gables%2C%20Florida%2C%20U.S.> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:mascot> <urn:graphragprov:entity:Sebastian%20the%20Ibis> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Hurricanes> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:postgraduateEnrollment> "5952"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:president> <urn:graphragprov:entity:Julio%20Frenk> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:provost> <urn:graphragprov:entity:Jeffrey%20Duerk> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:sportingAffiliation> <urn:graphragprov:entity:NCAA%20Division%20I%20--%20ACC> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:undergraduateEnrollment> "10849"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:website> "www.miami.edu" .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:artisticDirectorOf> <urn:graphragprov:entity:Stage%20%231> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:artisticDirectorTenure> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Northwestern%20University> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Oberlin%20College> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:University%20of%20Miami> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:University%20of%20South%20Florida> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentEndYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentEndYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentEndYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentEndYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentEndYear> "1991"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentStartYear> "1956"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentStartYear> "1957"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentStartYear> "1961"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentStartYear> "1966"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employmentStartYear> "1986"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Stage%20%231> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:headed> <urn:graphragprov:entity:Professional%20Actors%20Training%20Programs> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:studiedAt> <urn:graphragprov:entity:school%20of%20speech> .
+  <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:studiedUnder> <urn:graphragprov:entity:Alvina%20Krause> .
+  <urn:graphragprov:entity:Professional%20Actors%20Training%20Programs> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:Southern%20Methodist%20University> .
+  <urn:graphragprov:entity:Stage%20%231> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:professional%20acting%20company> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.107s | model=deepseek-v4-flash
+      tokens:   in=2871 | out=179 | total=3050 | cached=640 | uncached=2231
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:University%20of%20Miami> .
+  - <urn:graphragprov:entity:University%20of%20Miami> <urn:graphragprov:predicate:enrollment> "16801"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employer> ?employer . ?employer <urn:graphragprov:predicate:enrollment> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_a26a667515fa1692>
+  FROM <urn:graphragprov:unit:u_d55b67b2cf7a0d11>
+  WHERE { <urn:graphragprov:entity:Jack%20Clay> <urn:graphragprov:predicate:employer> ?employer . ?employer <urn:graphragprov:predicate:enrollment> ?answer . }
+
+GraphDB execution:
+  observed answers: ('16801',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Jack Clay', 'University of Miami']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__267938_92763
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__267938_92763/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8243
+output tokens:         6549
+total tokens:          14792
+cached input tokens:   4736
+uncached input tokens: 3507
+cumulative LLM seconds: 32.065
+
+statement occurrences: 42
+semantic triples:      42
+entity nodes:          21
+literal values:        17
+predicates:            31
+query attempts:        1
+observed answers:      ('16801',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 29.974s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.051s
+  graph.materialization [attempt=1]: 0.057s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.108s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.456s

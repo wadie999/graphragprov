@@ -1,0 +1,174 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did the party with a majority in the body the President calls on for support of his appointments to the USAF gain control of the House?
+
+Expected answer: the 2010 election
+
+Gold decomposition:
+1. question='Upon whom does the President call on for support in his appointments to the USAF?'; answer='Senate'; support_paragraph=3
+2. question='what is the majority political party in the #1 now'; answer='Republicans'; support_paragraph=9
+3. question='when did the #2 gain control of the house'; answer='the 2010 election'; support_paragraph=16
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Assistant%20Secretaries%20of%20the%20Air%20Force> <urn:graphragprov:predicate:appointedBy> <urn:graphragprov:entity:President> .
+<urn:graphragprov:entity:Assistant%20Secretaries%20of%20the%20Air%20Force> <urn:graphragprov:predicate:appointedWithAdviceAndConsentOf> <urn:graphragprov:entity:Senate> .
+<urn:graphragprov:entity:Chief%20of%20Staff%20of%20the%20Air%20Force> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Air%20Staff> .
+<urn:graphragprov:entity:Department%20of%20the%20Air%20Force> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:military%20department> .
+<urn:graphragprov:entity:Department%20of%20the%20Air%20Force> <urn:graphragprov:predicate:managedBy> <urn:graphragprov:entity:Secretary%20of%20the%20Air%20Force> .
+<urn:graphragprov:entity:Department%20of%20the%20Air%20Force> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Department%20of%20Defense> .
+<urn:graphragprov:entity:General%20Counsel> <urn:graphragprov:predicate:appointedBy> <urn:graphragprov:entity:President> .
+<urn:graphragprov:entity:General%20Counsel> <urn:graphragprov:predicate:appointedWithAdviceAndConsentOf> <urn:graphragprov:entity:Senate> .
+<urn:graphragprov:entity:Secretary%20of%20the%20Air%20Force> <urn:graphragprov:predicate:underAuthorityOf> <urn:graphragprov:entity:Secretary%20of%20Defense> .
+<urn:graphragprov:entity:Under%20Secretary%20of%20the%20Air%20Force> <urn:graphragprov:predicate:appointedBy> <urn:graphragprov:entity:President> .
+<urn:graphragprov:entity:Under%20Secretary%20of%20the%20Air%20Force> <urn:graphragprov:predicate:appointedWithAdviceAndConsentOf> <urn:graphragprov:entity:Senate> .
+<urn:graphragprov:entity:Vice%20Chief%20of%20Staff%20of%20the%20Air%20Force> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Air%20Staff> .
+<urn:graphragprov:entity:2%20independents> <urn:graphragprov:predicate:caucusWith> <urn:graphragprov:entity:Democrats> .
+<urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:2%20independents> .
+<urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:47%20Democrats> .
+<urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:51%20Republicans> .
+<urn:graphragprov:entity:2010%20United%20States%20House%20of%20Representatives%20elections> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:elections> .
+<urn:graphragprov:entity:2010%20United%20States%20House%20of%20Representatives%20elections> <urn:graphragprov:predicate:isSecondConsecutiveMidtermElectionWithControlChange> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:2010%20United%20States%20House%20of%20Representatives%20elections> <urn:graphragprov:predicate:isThirdConsecutiveMidtermElection> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:2010%20United%20States%20House%20of%20Representatives%20elections> <urn:graphragprov:predicate:occurredInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:2010%20United%20States%20House%20of%20Representatives%20elections> <urn:graphragprov:predicate:resultedIn> <urn:graphragprov:entity:highest%20loss%20of%20a%20party%20in%20a%20House%20midterm%20election%20since%201938> .
+<urn:graphragprov:entity:2010%20United%20States%20House%20of%20Representatives%20elections> <urn:graphragprov:predicate:resultedIn> <urn:graphragprov:entity:largest%20House%20swing%20since%201948> .
+<urn:graphragprov:entity:Cory%20Gardner> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:freshman> .
+<urn:graphragprov:entity:Democratic%20Party> <urn:graphragprov:predicate:sufferedLosses> <urn:graphragprov:entity:heavy%20losses> .
+<urn:graphragprov:entity:Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:anger%20with%20President%20Obama> .
+<urn:graphragprov:entity:Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:large%20budget%20deficits> .
+<urn:graphragprov:entity:Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:opposition%20to%20the%20Affordable%20Care%20Act> .
+<urn:graphragprov:entity:Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:weak%20economy> .
+<urn:graphragprov:entity:Democrats> <urn:graphragprov:predicate:lostSeats> "63"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:James%20Lankford> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:freshman> .
+<urn:graphragprov:entity:Jeff%20Landry> <urn:graphragprov:predicate:futureAttorneyGeneralOf> <urn:graphragprov:entity:Louisiana> .
+<urn:graphragprov:entity:John%20Carney> <urn:graphragprov:predicate:futureGovernorOf> <urn:graphragprov:entity:Delaware> .
+<urn:graphragprov:entity:Mick%20Mulvaney> <urn:graphragprov:predicate:futureDirectorOf> <urn:graphragprov:entity:Office%20of%20Management%20and%20Budget> .
+<urn:graphragprov:entity:Mike%20Pompeo> <urn:graphragprov:predicate:futureSecretaryOfState> <urn:graphragprov:entity:United%20States> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeatedIncumbents> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlInYear> "2010"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedControlOf> <urn:graphragprov:entity:House%20of%20Representatives> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedSeats> "63"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedSeatsIn> <urn:graphragprov:entity:New%20York%20state> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:pickedUpSeats> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:wonOpenDistrict> <urn:graphragprov:entity:open%20Democratic%20district> .
+<urn:graphragprov:entity:Tim%20Griffin> <urn:graphragprov:predicate:futureLieutenantGovernorOf> <urn:graphragprov:entity:Arkansas> .
+<urn:graphragprov:entity:Tim%20Scott> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:freshman> .
+<urn:graphragprov:entity:Todd%20Young> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:freshman> .

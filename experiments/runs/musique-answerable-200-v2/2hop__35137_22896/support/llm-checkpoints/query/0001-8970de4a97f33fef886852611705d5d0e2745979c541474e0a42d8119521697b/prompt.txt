@@ -1,0 +1,165 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What is the name of one library that the author of The Canon of Medicine had access to?
+
+Expected answer: Hamadan
+
+Gold decomposition:
+1. question='Who wrote The Canon of Medicine?'; answer='Avicenna'; support_paragraph=7
+2. question='What is the name of one library that #1 had access to?'; answer='Hamadan'; support_paragraph=4
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Abulcasis> .
+<urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Kitab%20al-Tasrif> .
+<urn:graphragprov:entity:Abu%20al-Qasim%20al-Zahrawi> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:medical%20surgery> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:The%20Canon%20of%20Medicine> .
+<urn:graphragprov:entity:Ibn%20al-Nafis> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Egyptian> .
+<urn:graphragprov:entity:Ibn%20al-Nafis> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:physician> .
+<urn:graphragprov:entity:Ibn%20al-Nafis> <urn:graphragprov:predicate:proposedTheory> <urn:graphragprov:entity:pulmonary%20circulation> .
+<urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:medical%20encyclopedia> .
+<urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:translatedTo> <urn:graphragprov:entity:Latin> .
+<urn:graphragprov:entity:Kitab%20al-Tasrif> <urn:graphragprov:predicate:usedIn> <urn:graphragprov:entity:European%20and%20Muslim%20medical%20schools> .
+<urn:graphragprov:entity:Mansur%20ibn%20Muhammad%20ibn%20al-Faqih%20Ilyas> <urn:graphragprov:predicate:author> <urn:graphragprov:entity:Tashrih%20al-badan> .
+<urn:graphragprov:entity:Mansur%20ibn%20Muhammad%20ibn%20al-Faqih%20Ilyas> <urn:graphragprov:predicate:century> "15th century" .
+<urn:graphragprov:entity:Mansur%20ibn%20Muhammad%20ibn%20al-Faqih%20Ilyas> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Persian> .
+<urn:graphragprov:entity:Muslim%20physicians> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:anatomy%20and%20physiology> .
+<urn:graphragprov:entity:Muslim%20physicians> <urn:graphragprov:predicate:contributedTo> <urn:graphragprov:entity:field%20of%20medicine> .
+<urn:graphragprov:entity:Tashrih%20al-badan> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:comprehensive%20diagrams%20of%20the%20body%27s%20structural%2C%20nervous%20and%20circulatory%20systems> .
+<urn:graphragprov:entity:Tashrih%20al-badan> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:work> .
+<urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:authoritative%20medical%20textbook> .
+<urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:remainedAuthoritativeIn> <urn:graphragprov:entity:Europe> .
+<urn:graphragprov:entity:The%20Canon%20of%20Medicine> <urn:graphragprov:predicate:remainedAuthoritativeUntil> "18th century" .
+<urn:graphragprov:entity:Abu%20Nasr%20Iraqi> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:mathematician> .
+<urn:graphragprov:entity:Abu%20Sahl%20Masihi> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:philosopher> .
+<urn:graphragprov:entity:Abu%20al-Khayr%20Khammar> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:physician> .
+<urn:graphragprov:entity:Al-Biruni> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:astronomer> .
+<urn:graphragprov:entity:Al-Biruni> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:scientist> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:debatedWith> <urn:graphragprov:entity:Bahmanyar> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Balkh> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Gorgan> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Hamadan> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Isfahan> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Khwarezm> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:hadAccessTo> <urn:graphragprov:entity:Rey> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Abu%20Nasr%20Iraqi> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Abu%20Sahl%20Masihi> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Abu%20al-Khayr%20Khammar> .
+<urn:graphragprov:entity:Avicenna> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Al-Biruni> .

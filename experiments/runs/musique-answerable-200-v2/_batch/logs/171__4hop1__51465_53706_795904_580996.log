@@ -1,0 +1,467 @@
+
+H0 one-case execution
+  case:          4hop1__51465_53706_795904_580996
+  hops:          4
+  question:      What shares a border with the city where the person who went to the state where most billionaires in America live during the gold rush works?
+  expected:      Rio Linda
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__51465_53706_795904_580996/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=11 title='List of U.S. states by the number of billionaires'
+  source unit: u_2a3131b3c03a149e96f14298cdae23b73e90b5b691053affb1162a4988288ff3
+  text chars:  784
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 30.213s | model=deepseek-v4-flash
+      tokens:   in=2432 | out=7558 | total=9990 | cached=1920 | uncached=512
+  extraction: ACCEPTED
+  statements: 52
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    52
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     52
+  coverage:
+    characters combined: 563 / 833 (67.6%)
+    characters text:     563 / 784 (71.8%)
+    characters title:    0 / 49 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  20 chars
+      'Rank State / Region'
+    statement density:  62.42 / 1000 chars
+    title reliance:      0 / 52 (0.0%)
+
+[GRAPH 2/4] paragraph=14 title='California Gold Rush'
+  source unit: u_434f9adc04d4f3753071f8231be0c37ff03827690323cb0a9622dfecf2d7f44a
+  text chars:  329
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 8.332s | model=deepseek-v4-flash
+      tokens:   in=2826 | out=1857 | total=4683 | cached=1920 | uncached=906
+    [LLM graph.reference #3] sending...
+      provider: 3.128s | model=deepseek-v4-flash
+      tokens:   in=997 | out=507 | total=1504 | cached=0 | uncached=997
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 3
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'went to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "California",
+                "segment": "text"
+              }
+            ],
+            "value": "California"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "went to",
+                "segment": "text"
+              }
+            ],
+            "value": "wentTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Samuel Brannan",
+                "segment": "text"
+              }
+            ],
+            "value": "Samuel Brannan"
+          }
+        }
+
+    initial rejection #4
+      validator:
+        response.statements[4].predicate.evidence[0]: quote 'during the gold rush' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "gold rush",
+                "segment": "text"
+              }
+            ],
+            "value": "gold rush"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "during the gold rush",
+                "segment": "text"
+              }
+            ],
+            "value": "during"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Samuel Brannan",
+                "segment": "text"
+              }
+            ],
+            "value": "Samuel Brannan"
+          }
+        }
+
+    initial rejection #10
+      validator:
+        response.statements[10].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "March 1848",
+                "segment": "text"
+              }
+            ],
+            "value": "March 1848"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "confirmed in",
+                "segment": "text"
+              }
+            ],
+            "value": "confirmedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Rumors of the discovery of gold",
+                "segment": "text"
+              }
+            ],
+            "value": "Rumors of the discovery of gold"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    3
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 13
+  coverage:
+    characters combined: 274 / 349 (78.5%)
+    characters text:     274 / 329 (83.3%)
+    characters title:    0 / 20 (0.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  20 chars
+      '. Brannan hurriedly'
+    statement density:  37.25 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[GRAPH 3/4] paragraph=12 title='History of Sacramento, California'
+  source unit: u_f51c04694eadba8d12fdf0ecafd059934bb15933106fa28ffddf1a1092d41c4c
+  text chars:  261
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 5.940s | model=deepseek-v4-flash
+      tokens:   in=2961 | out=1326 | total=4287 | cached=2048 | uncached=913
+    [LLM graph.reference #5] sending...
+      provider: 1.203s | model=deepseek-v4-flash
+      tokens:   in=571 | out=171 | total=742 | cached=0 | uncached=571
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 1
+
+    initial rejection #6
+      validator:
+        response.statements[6].predicate.evidence[0]: quote 'constructed by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Sutter, Sr.",
+                "segment": "text"
+              }
+            ],
+            "value": "John Sutter, Sr."
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "constructed by",
+                "segment": "text"
+              }
+            ],
+            "value": "constructedBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "embarcadero",
+                "segment": "text"
+              }
+            ],
+            "value": "embarcadero"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 9
+  coverage:
+    characters combined: 207 / 294 (70.4%)
+    characters text:     174 / 261 (66.7%)
+    characters title:    33 / 33 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  54 chars
+      'The history of Sacramento, California, began with its'
+    statement density:  30.61 / 1000 chars
+    title reliance:      6 / 9 (66.7%)
+
+[GRAPH 4/4] paragraph=0 title='Rio Linda High School'
+  source unit: u_78ededf5377f2b1eb3939ef36935632d4cc7890b56db55a09b161970d6ec353d
+  text chars:  231
+  whole-source attempt: 1/3
+    [LLM graph.reference #6] sending...
+      provider: 4.419s | model=deepseek-v4-flash
+      tokens:   in=3076 | out=997 | total=4073 | cached=2048 | uncached=1028
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    7
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     7
+  coverage:
+    characters combined: 165 / 252 (65.5%)
+    characters text:     144 / 231 (62.3%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  18 chars
+      'High School is a'
+    statement density:  27.78 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 81
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 4
+  corrected valid: 4
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      81
+resource nodes:        77
+entity nodes:          77
+literal values:        37
+predicates:            25
+
+N-Triples:
+  <urn:graphragprov:entity:Alabama> <urn:graphragprov:predicate:numberOfBillionaires> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:numberOfBillionaires> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Arizona> <urn:graphragprov:predicate:numberOfBillionaires> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Arkansas> <urn:graphragprov:predicate:numberOfBillionaires> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:California> <urn:graphragprov:predicate:numberOfBillionaires> "124"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Colorado> <urn:graphragprov:predicate:numberOfBillionaires> "10"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Connecticut> <urn:graphragprov:predicate:numberOfBillionaires> "17"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Delaware> <urn:graphragprov:predicate:numberOfBillionaires> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Florida> <urn:graphragprov:predicate:numberOfBillionaires> "44"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Georgia%20%28U.S.%20state%29> <urn:graphragprov:predicate:numberOfBillionaires> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Hawaii> <urn:graphragprov:predicate:numberOfBillionaires> "51"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Idaho> <urn:graphragprov:predicate:numberOfBillionaires> "28"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Illinois> <urn:graphragprov:predicate:numberOfBillionaires> "17"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Indiana> <urn:graphragprov:predicate:numberOfBillionaires> "31"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Iowa> <urn:graphragprov:predicate:numberOfBillionaires> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Kansas> <urn:graphragprov:predicate:numberOfBillionaires> "39"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Kentucky> <urn:graphragprov:predicate:numberOfBillionaires> "20"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Louisiana> <urn:graphragprov:predicate:numberOfBillionaires> "43"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Maine> <urn:graphragprov:predicate:numberOfBillionaires> "37"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Maryland> <urn:graphragprov:predicate:numberOfBillionaires> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Massachusetts> <urn:graphragprov:predicate:numberOfBillionaires> "10"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Michigan> <urn:graphragprov:predicate:numberOfBillionaires> "11"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Minnesota> <urn:graphragprov:predicate:numberOfBillionaires> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Mississippi> <urn:graphragprov:predicate:numberOfBillionaires> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Missouri> <urn:graphragprov:predicate:numberOfBillionaires> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Montana> <urn:graphragprov:predicate:numberOfBillionaires> "30"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Nebraska> <urn:graphragprov:predicate:numberOfBillionaires> "50"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Nevada> <urn:graphragprov:predicate:numberOfBillionaires> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20Hampshire> <urn:graphragprov:predicate:numberOfBillionaires> "21"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20Jersey> <urn:graphragprov:predicate:numberOfBillionaires> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20Mexico> <urn:graphragprov:predicate:numberOfBillionaires> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:New%20York> <urn:graphragprov:predicate:numberOfBillionaires> "93"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:North%20Carolina> <urn:graphragprov:predicate:numberOfBillionaires> "16"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:North%20Dakota> <urn:graphragprov:predicate:numberOfBillionaires> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Ohio> <urn:graphragprov:predicate:numberOfBillionaires> "6"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Oklahoma> <urn:graphragprov:predicate:numberOfBillionaires> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Oregon> <urn:graphragprov:predicate:numberOfBillionaires> "22"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Pennsylvania> <urn:graphragprov:predicate:numberOfBillionaires> "10"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Rhode%20Island> <urn:graphragprov:predicate:numberOfBillionaires> "34"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:South%20Carolina> <urn:graphragprov:predicate:numberOfBillionaires> "35"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:South%20Dakota> <urn:graphragprov:predicate:numberOfBillionaires> "41"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Tennessee> <urn:graphragprov:predicate:numberOfBillionaires> "10"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Texas> <urn:graphragprov:predicate:numberOfBillionaires> "48"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:United%20States> <urn:graphragprov:predicate:numberOfBillionaires> "525"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Utah> <urn:graphragprov:predicate:numberOfBillionaires> "26"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Vermont> <urn:graphragprov:predicate:numberOfBillionaires> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Virginia> <urn:graphragprov:predicate:numberOfBillionaires> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Washington> <urn:graphragprov:predicate:numberOfBillionaires> "13"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Washington%2C%20D.C.> <urn:graphragprov:predicate:numberOfBillionaires> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:West%20Virginia> <urn:graphragprov:predicate:numberOfBillionaires> "49"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Wisconsin> <urn:graphragprov:predicate:numberOfBillionaires> "15"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Wyoming> <urn:graphragprov:predicate:numberOfBillionaires> "9"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Rumors%20of%20the%20discovery%20of%20gold> <urn:graphragprov:predicate:confirmedBy> <urn:graphragprov:entity:Samuel%20Brannan> .
+  <urn:graphragprov:entity:Rumors%20of%20the%20discovery%20of%20gold> <urn:graphragprov:predicate:confirmedIn> "1848-03"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:during> <urn:graphragprov:entity:gold%20rush> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:store> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:heldAloft> <urn:graphragprov:entity:vial%20of%20gold> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:merchant> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:newspaper%20publisher> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:publisherOf> <urn:graphragprov:entity:San%20Francisco%20newspaper> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:shouted> <urn:graphragprov:entity:Gold%21%20Gold%21%20Gold%20from%20the%20American%20River%21> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:walkedThrough> <urn:graphragprov:entity:San%20Francisco> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:wentTo> <urn:graphragprov:entity:San%20Francisco> .
+  <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:San%20Francisco> .
+  <urn:graphragprov:entity:store> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:selling%20gold%20prospecting%20supplies> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:enrollment> "2035"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:formerlyPartOf> <urn:graphragprov:entity:Grant%20Unified%20School%20District> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:high%20school> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:CA> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Rio%20Linda> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sacramento> .
+  <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Twin%20Rivers%20Unified%20School%20District> .
+  <urn:graphragprov:entity:History%20of%20Sacramento%2C%20California> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:history> .
+  <urn:graphragprov:entity:History%20of%20Sacramento%2C%20California> <urn:graphragprov:predicate:subject> <urn:graphragprov:entity:Sacramento%2C%20California> .
+  <urn:graphragprov:entity:John%20Sutter%2C%20Sr.> <urn:graphragprov:predicate:fatherOf> <urn:graphragprov:entity:John%20Augustus%20Sutter%2C%20Jr.> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:John%20Augustus%20Sutter%2C%20Jr.> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Samuel%20Brannan> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedInYear> "1848"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:locatedAt> <urn:graphragprov:entity:confluence%20of%20the%20American%20and%20Sacramento%20Rivers> .
+  <urn:graphragprov:entity:embarcadero> <urn:graphragprov:predicate:constructedBy> <urn:graphragprov:entity:John%20Sutter%2C%20Sr.> .
+  <urn:graphragprov:entity:embarcadero> <urn:graphragprov:predicate:constructedInYear> "a few years prior" .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.358s | model=deepseek-v4-flash
+      tokens:   in=4938 | out=358 | total=5296 | cached=640 | uncached=4298
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:California> <urn:graphragprov:predicate:numberOfBillionaires> "124"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  - <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:wentTo> <urn:graphragprov:entity:San%20Francisco> .
+  - <urn:graphragprov:entity:Samuel%20Brannan> <urn:graphragprov:predicate:workLocation> <urn:graphragprov:entity:San%20Francisco> .
+  - <urn:graphragprov:entity:Sacramento%2C%20California> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Samuel%20Brannan> .
+  - <urn:graphragprov:entity:Rio%20Linda%20High%20School> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Sacramento> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?state <urn:graphragprov:predicate:numberOfBillionaires> ?count . ?person <urn:graphragprov:predicate:wentTo> ?state . ?person <urn:graphragprov:predicate:workLocation> ?city . ?city <urn:graphragprov:predicate:foundedBy> ?person . ?answer <urn:graphragprov:predicate:locatedIn> ?city . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2a3131b3c03a149e>
+  FROM <urn:graphragprov:unit:u_434f9adc04d4f375>
+  FROM <urn:graphragprov:unit:u_78ededf5377f2b1e>
+  FROM <urn:graphragprov:unit:u_f51c04694eadba8d>
+  WHERE { ?state <urn:graphragprov:predicate:numberOfBillionaires> ?count . ?person <urn:graphragprov:predicate:wentTo> ?state . ?person <urn:graphragprov:predicate:workLocation> ?city . ?city <urn:graphragprov:predicate:foundedBy> ?person . ?answer <urn:graphragprov:predicate:locatedIn> ?city . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__51465_53706_795904_580996
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__51465_53706_795904_580996/support/result.json
+graph LLM executed:    6
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          17801
+output tokens:         12774
+total tokens:          30575
+cached input tokens:   8576
+uncached input tokens: 9225
+cumulative LLM seconds: 55.592
+
+statement occurrences: 81
+semantic triples:      81
+entity nodes:          77
+literal values:        37
+predicates:            25
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 53.264s
+  graph.reference.measurements [attempt=1]: 0.014s
+  graph.clear_support [attempt=1]: 0.111s
+  graph.materialization [attempt=1]: 0.103s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.359s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.524s

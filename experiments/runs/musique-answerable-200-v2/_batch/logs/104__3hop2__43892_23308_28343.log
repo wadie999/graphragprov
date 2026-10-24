@@ -1,0 +1,294 @@
+
+H0 one-case execution
+  case:          3hop2__43892_23308_28343
+  hops:          3
+  question:      When did the troops of the country blamed for the stagnation and failure of the Tripartite discussion leave the country that receives the most U.S. foreign aid?
+  expected:      February 1989
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__43892_23308_28343/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=16 title='United States foreign aid'
+  source unit: u_29e26b752f0ad7a4ae57d85fb2b4e3c1d10bf7d7a220f3ed19df57014190e6ff
+  text chars:  934
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 14.277s | model=deepseek-v4-flash
+      tokens:   in=2564 | out=3314 | total=5878 | cached=1920 | uncached=644
+  extraction: ACCEPTED
+  statements: 21
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     21
+  coverage:
+    characters combined: 342 / 959 (35.7%)
+    characters text:     342 / 934 (36.6%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  239 chars
+      'FY 2013 Reported in $US millions, Obligations Country Economic and Military Assistance FY 2013, $US millions Aid received per person recipient FY2013, $US Economic Assistance FY 2…'
+    statement density:  21.90 / 1000 chars
+    title reliance:      0 / 21 (0.0%)
+
+[GRAPH 2/3] paragraph=2 title='Molotov–Ribbentrop Pact'
+  source unit: u_2737fe5be3a0ef408be884dcaf781478a13bd890748a7578f82649ecbc73e161
+  text chars:  957
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.429s | model=deepseek-v4-flash
+      tokens:   in=2679 | out=1413 | total=4092 | cached=1920 | uncached=759
+  extraction: ACCEPTED
+  statements: 9
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    9
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     9
+  coverage:
+    characters combined: 729 / 980 (74.4%)
+    characters text:     729 / 957 (76.2%)
+    characters title:    0 / 23 (0.0%)
+    sentences:           5 / 6 (83.3%)
+    longest uncovered:  54 chars
+      'By the end of May, drafts were formally presented. In'
+    statement density:  9.18 / 1000 chars
+    title reliance:      0 / 9 (0.0%)
+
+[GRAPH 3/3] paragraph=8 title='War on Terror'
+  source unit: u_d43adfc725c444ef5a0ceb24f796f1bb1fed11feda114672bdc1d9ce2b5e495d
+  text chars:  1014
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 17.688s | model=deepseek-v4-flash
+      tokens:   in=2891 | out=4222 | total=7113 | cached=2048 | uncached=843
+    [LLM graph.reference #4] sending...
+      provider: 1.594s | model=deepseek-v4-flash
+      tokens:   in=749 | out=173 | total=922 | cached=0 | uncached=749
+  extraction: ACCEPTED
+  statements: 28
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    27
+    initially rejected: 1
+
+    initial rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'origins ... can be traced to' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Soviet war in Afghanistan",
+                "segment": "text"
+              }
+            ],
+            "value": "Soviet war in Afghanistan"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "origins ... can be traced to",
+                "segment": "text"
+              }
+            ],
+            "value": "originsTracedTo"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "al-Qaeda",
+                "segment": "text"
+              }
+            ],
+            "value": "al-Qaeda"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 28
+  coverage:
+    characters combined: 746 / 1027 (72.6%)
+    characters text:     746 / 1014 (73.6%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  57 chars
+      'Afghanistan, where the Islamist extremist regime of the'
+    statement density:  27.26 / 1000 chars
+    title reliance:      0 / 28 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 58
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      58
+resource nodes:        54
+entity nodes:          54
+literal values:        31
+predicates:            30
+
+N-Triples:
+  <urn:graphragprov:entity:Britain> <urn:graphragprov:predicate:feared> <urn:graphragprov:entity:the%20Soviets%27%20proposed%20language%20could%20justify%20a%20Soviet%20intervention%20in%20Finland%20and%20the%20Baltic%20states%2C%20or%20push%20those%20countries%20to%20seek%20closer%20relations%20with%20Germany> .
+  <urn:graphragprov:entity:Britain> <urn:graphragprov:predicate:opposed> <urn:graphragprov:entity:such%20proposals> .
+  <urn:graphragprov:entity:Soviets> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:must%20be%20entered%20into%20simultaneously%20with%20any%20political%20agreement> .
+  <urn:graphragprov:entity:Tripartite%20negotiations> <urn:graphragprov:predicate:focusedOn> <urn:graphragprov:entity:potential%20guarantees%20to%20central%20and%20east%20European%20countries> .
+  <urn:graphragprov:entity:Tripartite%20negotiations> <urn:graphragprov:predicate:startedIn> "mid-June" .
+  <urn:graphragprov:entity:USSR> <urn:graphragprov:predicate:proposed> <urn:graphragprov:entity:consider%20that%20a%20political%20turn%20towards%20Germany%20by%20the%20Baltic%20states%20would%20constitute%20an%20%22indirect%20aggression%22%20towards%20the%20Soviet%20Union> .
+  <urn:graphragprov:entity:discussion%20about%20a%20definition%20of%20%22indirect%20aggression%22> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:one%20of%20the%20sticking%20points%20between%20the%20parties> .
+  <urn:graphragprov:entity:parties> <urn:graphragprov:predicate:agreedToStart> <urn:graphragprov:entity:negotiations%20on%20a%20military%20agreement> .
+  <urn:graphragprov:entity:tripartite%20political%20negotiations> <urn:graphragprov:predicate:stalled> "by mid-July" .
+  <urn:graphragprov:entity:Afghanistan> <urn:graphragprov:predicate:recipientOfUSForeignAid> "4533.51"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Congo%20%28Kinshasa%29> <urn:graphragprov:predicate:recipientOfUSForeignAid> "379.24"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Egypt> <urn:graphragprov:predicate:recipientOfUSForeignAid> "1566.24"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Ethiopia> <urn:graphragprov:predicate:recipientOfUSForeignAid> "686.53"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Haiti> <urn:graphragprov:predicate:recipientOfUSForeignAid> "378.77"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Iraq> <urn:graphragprov:predicate:recipientOfUSForeignAid> "444.81"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:recipientOfUSForeignAid> "2961.04"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Jordan> <urn:graphragprov:predicate:recipientOfUSForeignAid> "1211.83"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Lebanon> <urn:graphragprov:predicate:recipientOfUSForeignAid> "376.41"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Malawi> <urn:graphragprov:predicate:recipientOfUSForeignAid> "571.18"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Mexico> <urn:graphragprov:predicate:recipientOfUSForeignAid> "419.94"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Nigeria> <urn:graphragprov:predicate:recipientOfUSForeignAid> "518.84"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Russia> <urn:graphragprov:predicate:recipientOfUSForeignAid> "465.16"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Somalia> <urn:graphragprov:predicate:recipientOfUSForeignAid> "367.18"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:South%20Africa> <urn:graphragprov:predicate:recipientOfUSForeignAid> "526.19"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:South%20Sudan> <urn:graphragprov:predicate:recipientOfUSForeignAid> "618.74"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Sudan%20%28former%29> <urn:graphragprov:predicate:recipientOfUSForeignAid> "290.05"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Tanzania> <urn:graphragprov:predicate:recipientOfUSForeignAid> "430.66"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Uganda> <urn:graphragprov:predicate:recipientOfUSForeignAid> "541.93"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:West%20Bank%20%2F%20Gaza> <urn:graphragprov:predicate:recipientOfUSForeignAid> "1007.73"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Zambia> <urn:graphragprov:predicate:recipientOfUSForeignAid> "310.8"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Afghan%20Arab%20volunteers> <urn:graphragprov:predicate:includes> <urn:graphragprov:entity:Osama%20bin%20Laden> .
+  <urn:graphragprov:entity:Afghan%20Arab%20volunteers> <urn:graphragprov:predicate:joined> <urn:graphragprov:entity:fight%20against%20the%20Soviets> .
+  <urn:graphragprov:entity:Afghan%20Arab%20volunteers> <urn:graphragprov:predicate:number> "small" .
+  <urn:graphragprov:entity:Afghan%20Arab%20volunteers> <urn:graphragprov:predicate:receivedExternalAssistance> "false"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Islamist%20Afghan%20mujahadeen%20guerillas> <urn:graphragprov:predicate:opponent> <urn:graphragprov:entity:Democratic%20Republic%20of%20Afghanistan> .
+  <urn:graphragprov:entity:Islamist%20Afghan%20mujahadeen%20guerillas> <urn:graphragprov:predicate:opponent> <urn:graphragprov:entity:military%20forces%20of%20the%20Soviet%20Union> .
+  <urn:graphragprov:entity:Osama%20bin%20Laden> <urn:graphragprov:predicate:role> <urn:graphragprov:entity:head%20of%20al-Qaeda> .
+  <urn:graphragprov:entity:Osama%20bin%20Laden> <urn:graphragprov:predicate:signedFatwa> <urn:graphragprov:entity:fatw%C4%81> .
+  <urn:graphragprov:entity:Pakistan> <urn:graphragprov:predicate:supported> <urn:graphragprov:entity:Islamist%20Afghan%20mujahadeen%20guerillas> .
+  <urn:graphragprov:entity:People%27s%20Republic%20of%20China> <urn:graphragprov:predicate:supported> <urn:graphragprov:entity:Islamist%20Afghan%20mujahadeen%20guerillas> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:supported> <urn:graphragprov:entity:Islamist%20Afghan%20mujahadeen%20guerillas> .
+  <urn:graphragprov:entity:Soviet%20war%20in%20Afghanistan> <urn:graphragprov:predicate:endDate> "1989-02"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Soviet%20war%20in%20Afghanistan> <urn:graphragprov:predicate:startDate> "1979-12"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Taliban> <urn:graphragprov:predicate:seizedPowerIn> <urn:graphragprov:entity:Afghanistan> .
+  <urn:graphragprov:entity:Taliban> <urn:graphragprov:predicate:seizedPowerInYear> "1996"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:United%20Kingdom> <urn:graphragprov:predicate:supported> <urn:graphragprov:entity:Islamist%20Afghan%20mujahadeen%20guerillas> .
+  <urn:graphragprov:entity:United%20States> <urn:graphragprov:predicate:supported> <urn:graphragprov:entity:Islamist%20Afghan%20mujahadeen%20guerillas> .
+  <urn:graphragprov:entity:World%20Islamic%20Front%20for%20Jihad%20Against%20Jews%20and%20Crusaders> <urn:graphragprov:predicate:laterReformedAs> <urn:graphragprov:entity:al-Qaeda> .
+  <urn:graphragprov:entity:World%20Islamic%20Front%20for%20Jihad%20Against%20Jews%20and%20Crusaders> <urn:graphragprov:predicate:sponsoredBy> <urn:graphragprov:entity:Osama%20bin%20Laden> .
+  <urn:graphragprov:entity:World%20Islamic%20Front%20for%20Jihad%20Against%20Jews%20and%20Crusaders> <urn:graphragprov:predicate:startDate> "1996-05"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:World%20Islamic%20Front%20for%20Jihad%20Against%20Jews%20and%20Crusaders> <urn:graphragprov:predicate:startedFormingBaseIn> <urn:graphragprov:entity:Afghanistan> .
+  <urn:graphragprov:entity:al-Qaeda> <urn:graphragprov:predicate:originsTracedTo> <urn:graphragprov:entity:Soviet%20war%20in%20Afghanistan> .
+  <urn:graphragprov:entity:al-Qaeda> <urn:graphragprov:predicate:releasedVideoDate> "1998-05"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:al-Qaeda> <urn:graphragprov:predicate:releasedVideoDeclaringWarOn> <urn:graphragprov:entity:U.S.> .
+  <urn:graphragprov:entity:al-Qaeda> <urn:graphragprov:predicate:releasedVideoDeclaringWarOn> <urn:graphragprov:entity:West> .
+  <urn:graphragprov:entity:fatw%C4%81> <urn:graphragprov:predicate:date> "1998-02"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:fatw%C4%81> <urn:graphragprov:predicate:declaredWarOn> <urn:graphragprov:entity:Israel> .
+  <urn:graphragprov:entity:fatw%C4%81> <urn:graphragprov:predicate:declaredWarOn> <urn:graphragprov:entity:West> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.136s | model=deepseek-v4-flash
+      tokens:   in=4196 | out=231 | total=4427 | cached=640 | uncached=3556
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Afghanistan> <urn:graphragprov:predicate:recipientOfUSForeignAid> "4533.51"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  - <urn:graphragprov:entity:Soviet%20war%20in%20Afghanistan> <urn:graphragprov:predicate:endDate> "1989-02"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?country <urn:graphragprov:predicate:recipientOfUSForeignAid> ?aid . ?war <urn:graphragprov:predicate:endDate> ?answer . FILTER(?country = <urn:graphragprov:entity:Afghanistan> && ?war = <urn:graphragprov:entity:Soviet%20war%20in%20Afghanistan>) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_2737fe5be3a0ef40>
+  FROM <urn:graphragprov:unit:u_29e26b752f0ad7a4>
+  FROM <urn:graphragprov:unit:u_d43adfc725c444ef>
+  WHERE { ?country <urn:graphragprov:predicate:recipientOfUSForeignAid> ?aid . ?war <urn:graphragprov:predicate:endDate> ?answer . FILTER(?country = <urn:graphragprov:entity:Afghanistan> && ?war = <urn:graphragprov:entity:Soviet%20war%20in%20Afghanistan>) }
+
+GraphDB execution:
+  observed answers: ('1989-02',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__43892_23308_28343
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__43892_23308_28343/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          13079
+output tokens:         9353
+total tokens:          22432
+cached input tokens:   6528
+uncached input tokens: 6551
+cumulative LLM seconds: 42.124
+
+statement occurrences: 58
+semantic triples:      58
+entity nodes:          54
+literal values:        31
+predicates:            30
+query attempts:        1
+observed answers:      ('1989-02',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 40.011s
+  graph.reference.measurements [attempt=1]: 0.007s
+  graph.clear_support [attempt=1]: 0.055s
+  graph.materialization [attempt=1]: 0.092s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.138s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.429s

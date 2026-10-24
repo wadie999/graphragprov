@@ -1,0 +1,179 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who sent naval ships to the body of water that joins the Atlantic and the sea where the Rhine ends?
+
+Expected answer: Caesar
+
+Gold decomposition:
+1. question='Where does the Rhine empty?'; answer='North Sea'; support_paragraph=19
+2. question='where does #1 meet the atlantic'; answer='the English Channel'; support_paragraph=17
+3. question='Who was ultimately responsible for the naval ships that were sent to #2 ?'; answer='Caesar'; support_paragraph=7
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Cologne> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Germany> .
+<urn:graphragprov:entity:Cologne> <urn:graphragprov:predicate:population> "more than 1,050,000" .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:averageDischarge> "about 2,900 m3/s" .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:beginsIn> <urn:graphragprov:entity:Swiss%20Alps> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:emptiesInto> <urn:graphragprov:entity:North%20Sea> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:flowsThrough> <urn:graphragprov:entity:Rhineland> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Franco-German%20border> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Swiss-Austrian%20border> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Swiss-German%20border> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:formsPartOfBorder> <urn:graphragprov:entity:Swiss-Liechtenstein%20border> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:European%20river> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:length> "about 1,230 km" .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Netherlands> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Swiss%20canton%20of%20Graub%C3%BCnden> .
+<urn:graphragprov:entity:Rhine> <urn:graphragprov:predicate:rank> <urn:graphragprov:entity:second-longest%20river%20in%20Central%20and%20Western%20Europe> .
+<urn:graphragprov:entity:Caesar> <urn:graphragprov:predicate:assembledInvasionFleet> <urn:graphragprov:entity:invasion%20fleet> .
+<urn:graphragprov:entity:Pompey> <urn:graphragprov:predicate:raisedLargeFleet> <urn:graphragprov:entity:large%20fleet> .
+<urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:declinedInSize> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:declinedInSizeFollowing> <urn:graphragprov:entity:subjugation%20of%20the%20Mediterranean> .
+<urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:underwentUpgradingAndRevitalisation> <urn:graphragprov:entity:short-term%20upgrading%20and%20revitalisation> .
+<urn:graphragprov:entity:Roman%20navy> <urn:graphragprov:predicate:upgradedIn> <urn:graphragprov:entity:late%20Republic> .
+<urn:graphragprov:entity:civil%20war> <urn:graphragprov:predicate:followed> <urn:graphragprov:entity:the%20events%20described> .
+<urn:graphragprov:entity:invasion%20fleet> <urn:graphragprov:predicate:assembledIn> <urn:graphragprov:entity:English%20Channel> .
+<urn:graphragprov:entity:invasion%20fleet> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:invasion%20of%20Britannia> .
+<urn:graphragprov:entity:large%20fleet> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:clearing%20the%20sea%20of%20Cilician%20pirates> .
+<urn:graphragprov:entity:large%20fleet> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:Mediterranean%20Sea> .
+<urn:graphragprov:entity:ships> <urn:graphragprov:predicate:constructedOrPressedIntoService> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:ships> <urn:graphragprov:predicate:constructedOrPressedIntoServiceFrom> <urn:graphragprov:entity:Greek%20cities> .
+<urn:graphragprov:entity:ships> <urn:graphragprov:predicate:count> "1000"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:English%20Channel> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Atlantic%20Ocean> .
+<urn:graphragprov:entity:Kattegat> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Denmark> .
+<urn:graphragprov:entity:Kattegat> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Sweden> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:becomes> <urn:graphragprov:entity:English%20Channel> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Belgium> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Denmark> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:France> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Germany> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Netherlands> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Norway> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:borderedBy> <urn:graphragprov:entity:Shetland%20Islands> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:boundedBy> <urn:graphragprov:entity:Orkney%20Islands> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:boundedBy> <urn:graphragprov:entity:east%20coast%20of%20Great%20Britain> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:boundedBy> <urn:graphragprov:entity:northern%20and%20central%20European%20mainland> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Atlantic%20Ocean> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Baltic%20Sea> .
+<urn:graphragprov:entity:North%20Sea> <urn:graphragprov:predicate:connectsTo> <urn:graphragprov:entity:Norwegian%20Sea> .
+<urn:graphragprov:entity:Norwegian%20Sea> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:north-eastern%20part%20of%20the%20Atlantic> .
+<urn:graphragprov:entity:Skagerrak> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Denmark> .
+<urn:graphragprov:entity:Skagerrak> <urn:graphragprov:predicate:separates> <urn:graphragprov:entity:Norway> .

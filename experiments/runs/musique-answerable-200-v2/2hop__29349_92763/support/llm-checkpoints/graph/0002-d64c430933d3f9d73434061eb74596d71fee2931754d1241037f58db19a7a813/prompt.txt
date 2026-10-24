@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_9fd7598591d5cedb4806b9f2f347954f2e016d4c32e4081c5adc24af281a9928
+Title: 2004 United States presidential election
+Text:
+The first debate was held on September 30 at the University of Miami, moderated by Jim Lehrer of PBS. During the debate, slated to focus on foreign policy, Kerry accused Bush of having failed to gain international support for the 2003 Invasion of Iraq, saying the only countries assisting the U.S. during the invasion were the United Kingdom and Australia. Bush replied to this by saying, "Well, actually, he forgot Poland." Later, a consensus formed among mainstream pollsters and pundits that Kerry won the debate decisively, strengthening what had come to be seen as a weak and troubled campaign. In the days after, coverage focused on Bush's apparent annoyance with Kerry and numerous scowls and negative facial expressions.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 16,
+    "statement": {
+      "subject": {
+        "value": "win",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "win",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "strengthened",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "strengthening",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "campaign",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "campaign",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[16].subject.evidence[0]: quote 'win' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

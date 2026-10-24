@@ -1,0 +1,72 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_2572df01e04f32b3335879c1dd54c5ecce4e07518560880cd58f4c48550c8ef0
+Title: Hungry Eyes
+Text:
+``Hungry Eyes ''is a song performed by American artist Eric Carmen, a former member of the band Raspberries, and was featured in the film Dirty Dancing. The song was recorded at Beachwood Studios in Beachwood, Ohio in 1987.`` Hungry Eyes'' peaked at # 4 on the Billboard Hot 100 chart and # 3 on the Cash Box Top 100 in 1988. The power ballad was not released commercially in the UK, but it managed to peak at # 82 in January 1988, having charted purely on import sales.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 10,
+    "statement": {
+      "subject": {
+        "value": "Hungry Eyes",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Hungry Eyes",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "chartPosition",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "peaked at # 3 on the Cash Box Top 100",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "3",
+        "datatype": "integer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "# 3",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[10].predicate.evidence[0]: quote 'peaked at # 3 on the Cash Box Top 100' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

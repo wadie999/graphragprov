@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_d59d7261dbad2cb2e4c36c6392d54b7916ca34e4a3e1fe72aa71d7004d2b9265
+Title: List of Super Bowl halftime shows
+Text:
+The NFL does not pay the halftime show performers an appearance fee, though it covers all expenses for the performers and their entourage of band members management, technical crew, security personnel, family, and friends. Super Bowl XXVII halftime show with Michael Jackson provided an exception, as the NFL and Frito - Lay agreed to make a donation and provide commercial time for Jackson's Heal the World Foundation. According to Nielsen SoundScan data, the halftime performers regularly experience significant spikes in weekly album sales and paid digital downloads due to the exposure. For Super Bowl XLIX, it was reported by the Wall Street Journal that league officials asked representatives of potential acts if they would be willing to provide financial compensation to the NFL in exchange for their appearance, in the form of either an up - front fee, or a cut of revenue from concert performances made after the Super Bowl. While these reports were denied by an NFL spokeswoman, the request had, according to the Journal, received a ``chilly ''response from those involved.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 12,
+    "statement": {
+      "subject": {
+        "value": "league officials",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "league officials",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "requestedFinancialCompensation",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "willing to provide financial compensation",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "NFL",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "the NFL",
+            "occurrence": 3
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[12].object.evidence[0]: quote 'the NFL' occurs 2 time(s) in source segment 'text'; occurrence 3 does not exist"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

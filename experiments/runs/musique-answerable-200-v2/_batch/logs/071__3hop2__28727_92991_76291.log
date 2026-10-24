@@ -1,0 +1,314 @@
+
+H0 one-case execution
+  case:          3hop2__28727_92991_76291
+  hops:          3
+  question:      When did the party Alaska generally supports take control of the determiner of rules of the US House and US Senate?
+  expected:      January 2015
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__28727_92991_76291/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=9 title='Alaska'
+  source unit: u_332c47b46ec8260f3891c0fcadfb6042c794354536d3340533e936f7cca89fb8
+  text chars:  844
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 16.148s | model=deepseek-v4-flash
+      tokens:   in=2347 | out=3690 | total=6037 | cached=1920 | uncached=427
+  extraction: ACCEPTED
+  statements: 25
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    25
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     25
+  coverage:
+    characters combined: 590 / 850 (69.4%)
+    characters text:     584 / 844 (69.2%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           9 / 9 (100.0%)
+    longest uncovered:  30 chars
+      'that it has participated in ('
+    statement density:  29.41 / 1000 chars
+    title reliance:      5 / 25 (20.0%)
+
+[GRAPH 2/3] paragraph=19 title='Standing Rules of the United States Senate'
+  source unit: u_d150dcb87414f2bcb442285d66467e3b26e066c910101f8ee927afa1dc5b1942
+  text chars:  299
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 4.320s | model=deepseek-v4-flash
+      tokens:   in=2528 | out=761 | total=3289 | cached=1920 | uncached=608
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 259 / 341 (76.0%)
+    characters text:     217 / 299 (72.6%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           2 / 3 (66.7%)
+    longest uncovered:  41 chars
+      'The Standing Rules of the Senate are the'
+    statement density:  14.66 / 1000 chars
+    title reliance:      3 / 5 (60.0%)
+
+[GRAPH 3/3] paragraph=12 title='2014 United States Senate elections'
+  source unit: u_03702665607c765fb0fe81a0bfe63c8dc14fe655761cf5dbdb5c172af2af8098
+  text chars:  362
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 5.775s | model=deepseek-v4-flash
+      tokens:   in=2627 | out=1162 | total=3789 | cached=2048 | uncached=579
+    [LLM graph.reference #4] sending...
+      provider: 2.136s | model=deepseek-v4-flash
+      tokens:   in=813 | out=351 | total=1164 | cached=0 | uncached=813
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 2
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.value must use YYYY-MM notation
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2015",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2015"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "started in",
+                "segment": "text"
+              }
+            ],
+            "value": "startedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "114th Congress",
+                "segment": "text"
+              }
+            ],
+            "value": "114th Congress"
+          }
+        }
+
+    initial rejection #3
+      validator:
+        response.statements[3].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist
+      proposed statement:
+        {
+          "object": {
+            "datatype": "yearMonth",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "January 2007",
+                "segment": "text"
+              }
+            ],
+            "value": "January 2007"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "had not controlled the Senate since",
+                "segment": "text"
+              }
+            ],
+            "value": "hadNotControlledSince"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 2,
+                "quote": "the Republicans",
+                "segment": "text"
+              }
+            ],
+            "value": "Republicans"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 8
+  coverage:
+    characters combined: 278 / 397 (70.0%)
+    characters text:     278 / 362 (76.8%)
+    characters title:    0 / 35 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  28 chars
+      'to obtain a majority. They'
+    statement density:  20.15 / 1000 chars
+    title reliance:      0 / 8 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 38
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      38
+resource nodes:        22
+entity nodes:          22
+literal values:        11
+predicates:            35
+
+N-Triples:
+  <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:five%20Democratic%20incumbents> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gained> <urn:graphragprov:entity:nine%20Democratic-held%20seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:hadNotControlledSince> "2007-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:heldAllOf> <urn:graphragprov:entity:their%20seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:neededNetGainOfAtLeast> <urn:graphragprov:entity:six%20seats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityOf> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:1960%20election> <urn:graphragprov:predicate:wasClose> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:1968%20election> <urn:graphragprov:predicate:wasClose> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:carriedBy> <urn:graphragprov:entity:Lyndon%20B.%20Johnson> .
+  <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:hasSupportedRepublicansSinceStatehood> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:regularlySupports> <urn:graphragprov:entity:Republicans> .
+  <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:supportsInPresidentialElections> <urn:graphragprov:entity:Republicans> .
+  <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:votedForDemocraticCandidateIn> "1964"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:capturedPercentageOfStateVoteIn> "40"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:isDemocrat> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:lostAlaskaIn> "2012"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:wasFirstDemocratToDoSoSince> "1968"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Barack%20Obama> <urn:graphragprov:predicate:wonPercentageInAlaska> "37.83"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Barack%20Obama> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:defeatedInAlaskaIn> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:isRepublican> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:John%20McCain> <urn:graphragprov:predicate:wonPercentageInAlaska> "59.49"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Lyndon%20B.%20Johnson> <urn:graphragprov:predicate:isDemocraticNominee> <urn:graphragprov:entity:Democratic> .
+  <urn:graphragprov:entity:Lyndon%20B.%20Johnson> <urn:graphragprov:predicate:wonLandslideElectionIn> "1964"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:carriedStateByLargeMarginsSince> "1972"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:wonAllButOneElection> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:wonElectionIn> "1964"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:wonElectoralCollegeVotesIn> <urn:graphragprov:entity:Alaska> .
+  <urn:graphragprov:entity:Sarah%20Palin> <urn:graphragprov:predicate:wasFirstAlaskanOnMajorPartyTicket> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Sarah%20Palin> <urn:graphragprov:predicate:wasGovernorOf> <urn:graphragprov:entity:Alaska> .
+  <urn:graphragprov:entity:Sarah%20Palin> <urn:graphragprov:predicate:wasRunningMateOf> <urn:graphragprov:entity:John%20McCain> .
+  <urn:graphragprov:entity:Each%20House> <urn:graphragprov:predicate:mayDetermine> <urn:graphragprov:entity:the%20rules%20of%20its%20proceedings> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20United%20States%20Senate> <urn:graphragprov:predicate:adoptedBy> <urn:graphragprov:entity:United%20States%20Senate> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20United%20States%20Senate> <urn:graphragprov:predicate:governs> <urn:graphragprov:entity:its%20procedure> .
+  <urn:graphragprov:entity:Standing%20Rules%20of%20the%20United%20States%20Senate> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:parliamentary%20procedures> .
+  <urn:graphragprov:entity:United%20States%20Senate> <urn:graphragprov:predicate:hasPowerToEstablishRulesFrom> <urn:graphragprov:entity:Article%20One%2C%20Section%205%20of%20the%20United%20States%20Constitution> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.686s | model=deepseek-v4-flash
+      tokens:   in=2808 | out=287 | total=3095 | cached=640 | uncached=2168
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:regularlySupports> <urn:graphragprov:entity:Republicans> .
+  - <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> .
+  - <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> "2015-01"^^<http://www.w3.org/2001/XMLSchema#gYearMonth> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:regularlySupports> <urn:graphragprov:entity:Republicans> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> . <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_03702665607c765f>
+  FROM <urn:graphragprov:unit:u_332c47b46ec8260f>
+  FROM <urn:graphragprov:unit:u_d150dcb87414f2bc>
+  WHERE { <urn:graphragprov:entity:Alaska> <urn:graphragprov:predicate:regularlySupports> <urn:graphragprov:entity:Republicans> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedMajorityIn> <urn:graphragprov:entity:114th%20Congress> . <urn:graphragprov:entity:114th%20Congress> <urn:graphragprov:predicate:startedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ('2015-01',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['2014 United States Senate elections', 'Alaska']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop2__28727_92991_76291
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop2__28727_92991_76291/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11123
+output tokens:         6251
+total tokens:          17374
+cached input tokens:   6528
+uncached input tokens: 4595
+cumulative LLM seconds: 30.066
+
+statement occurrences: 38
+semantic triples:      38
+entity nodes:          22
+literal values:        11
+predicates:            35
+query attempts:        1
+observed answers:      ('2015-01',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 28.394s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.062s
+  graph.materialization [attempt=1]: 0.080s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.687s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.444s

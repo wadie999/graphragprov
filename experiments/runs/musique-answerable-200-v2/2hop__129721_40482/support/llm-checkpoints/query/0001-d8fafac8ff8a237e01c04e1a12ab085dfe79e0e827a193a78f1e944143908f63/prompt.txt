@@ -1,0 +1,172 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: From whom did the Huguenots in the state encompassing Zubly Cemetery purchase land from?
+
+Expected answer: Edmund Bellinger
+
+Gold decomposition:
+1. question='In which state is Zubly Cemetery located?'; answer='South Carolina'; support_paragraph=18
+2. question='From whom did the Huguenots in #1 purchase land from?'; answer='Edmund Bellinger'; support_paragraph=14
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Beech%20Island> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:small%20community> .
+<urn:graphragprov:entity:Beech%20Island> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Aiken%20County> .
+<urn:graphragprov:entity:Beech%20Island> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:New%20Windsor%20Township> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:outpost%20for%20Indian%20traders> .
+<urn:graphragprov:entity:New%20Windsor%20Township> <urn:graphragprov:predicate:settledInYear> "1737"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:establishedBy> <urn:graphragprov:entity:Swiss%20settlers> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:establishedInYear> "1790"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:illustrates> <urn:graphragprov:entity:vernacular%20burial%20customs> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:listedOn> <urn:graphragprov:entity:National%20Register%20of%20Historic%20Places> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:listedOnDate> "2002-01-28"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Aiken%20County> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:Zubly%20Cemetery> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:New%20Windsor%20Township> .
+<urn:graphragprov:entity:Alexander%20Pepin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+<urn:graphragprov:entity:Antoine%20Poitevin> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Orsement%20France> .
+<urn:graphragprov:entity:Antoine%20Poitevin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+<urn:graphragprov:entity:Edmund%20Bohun> <urn:graphragprov:predicate:descendedFrom> <urn:graphragprov:entity:Humphrey%20de%20Bohun%20line%20of%20French%20royalty> .
+<urn:graphragprov:entity:Edmund%20Bohun> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Suffolk%20England> .
+<urn:graphragprov:entity:Edmund%20Bohun> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:immigratedInYear> "1685"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:immigratedTo> <urn:graphragprov:entity:Charleston%20Orange%20district> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:petitioned> <urn:graphragprov:entity:British%20Crown> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:petitionedInYear> "1697"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:prosperedAs> <urn:graphragprov:entity:slave%20owners> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchased> <urn:graphragprov:entity:plantations> .
+<urn:graphragprov:entity:Huguenot%20families> <urn:graphragprov:predicate:purchasedLandFrom> <urn:graphragprov:entity:Edmund%20Bellinger> .
+<urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> .
+<urn:graphragprov:entity:Huguenots> <urn:graphragprov:predicate:settledInYear> "early years" .
+<urn:graphragprov:entity:Humphrey%20de%20Bohun%20line%20of%20French%20royalty> <urn:graphragprov:predicate:descendedFrom> <urn:graphragprov:entity:Charlemagne> .
+<urn:graphragprov:entity:Jacques%20de%20Bordeaux> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Grenoble> .
+<urn:graphragprov:entity:Jacques%20de%20Bordeaux> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+<urn:graphragprov:entity:Jean%20Postell> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Dieppe%20France> .
+<urn:graphragprov:entity:Jean%20Postell> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:becamePastorOf> <urn:graphragprov:entity:first%20Huguenot%20church%20in%20North%20America> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:from> <urn:graphragprov:entity:Pons%2C%20France> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Huguenot> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:settledIn> <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> .
+<urn:graphragprov:entity:Rev.%20Elie%20Prioleau> <urn:graphragprov:predicate:settledInYear> "1685"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:descendants%20of%20Huguenot%20families> <urn:graphragprov:predicate:developed> <urn:graphragprov:entity:new%20plantations> .
+<urn:graphragprov:entity:descendants%20of%20Huguenot%20families> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Deep%20South> .
+<urn:graphragprov:entity:descendants%20of%20Huguenot%20families> <urn:graphragprov:predicate:movedTo> <urn:graphragprov:entity:Texas> .
+<urn:graphragprov:entity:first%20Huguenot%20church%20in%20North%20America> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Charleston%2C%20South%20Carolina> .
+<urn:graphragprov:entity:plantations> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Cooper%2C%20Ashepoo%2C%20Ashley%20and%20Santee%20River> .

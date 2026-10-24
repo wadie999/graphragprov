@@ -1,0 +1,370 @@
+
+H0 one-case execution
+  case:          4hop3__524186_219173_128875_72134
+  hops:          4
+  question:      When did the town WLUJ is licensed in become the capital of the state where The Poor Boob's screenwriter was born?
+  expected:      1839
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop3__524186_219173_128875_72134/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=18 title='The Poor Boob'
+  source unit: u_a6c89658368b030bb4c4df4b69c312555ea5873b08bb42581915c051a0ff1f38
+  text chars:  327
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.745s | model=deepseek-v4-flash
+      tokens:   in=2264 | out=2134 | total=4398 | cached=2048 | uncached=216
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 251 / 340 (73.8%)
+    characters text:     238 / 327 (72.8%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  24 chars
+      'The Poor Boob is a lost'
+    statement density:  44.12 / 1000 chars
+    title reliance:      15 / 15 (100.0%)
+
+[GRAPH 2/4] paragraph=5 title='Margaret Mayo (playwright)'
+  source unit: u_b3ddd4008cee52d429ddc8d0dba9c90c715b43c8a60e213e0360b8072882670d
+  text chars:  165
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 5.740s | model=deepseek-v4-flash
+      tokens:   in=2397 | out=1306 | total=3703 | cached=2048 | uncached=349
+  extraction: ACCEPTED
+  statements: 8
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    8
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     8
+  coverage:
+    characters combined: 148 / 191 (77.5%)
+    characters text:     135 / 165 (81.8%)
+    characters title:    13 / 26 (50.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  10 chars
+      '), was an'
+    statement density:  41.88 / 1000 chars
+    title reliance:      8 / 8 (100.0%)
+
+[GRAPH 3/4] paragraph=9 title='WLUJ'
+  source unit: u_00d4cdce5410acd071abc1238b74b96841f71145a4cad041eeefd75adb95ed37
+  text chars:  150
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 3.147s | model=deepseek-v4-flash
+      tokens:   in=2468 | out=666 | total=3134 | cached=2048 | uncached=420
+    [LLM graph.reference #4] sending...
+      provider: 1.052s | model=deepseek-v4-flash
+      tokens:   in=581 | out=8 | total=589 | cached=0 | uncached=581
+  extraction: ACCEPTED
+  statements: 3
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    3
+    initially rejected: 1
+
+    initial rejection #2
+      validator:
+        response.statements[2].object.evidence[0]: quote '89.7 MHz FM' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "89.7 MHz FM",
+                "segment": "text"
+              }
+            ],
+            "value": "89.7 MHz FM"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "broadcasting on",
+                "segment": "text"
+              }
+            ],
+            "value": "broadcastFrequency"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "WLUJ",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "WLUJ",
+                "segment": "text"
+              }
+            ],
+            "value": "WLUJ"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 3
+  coverage:
+    characters combined: 88 / 154 (57.1%)
+    characters text:     84 / 150 (56.0%)
+    characters title:    4 / 4 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  56 chars
+      ', Illinois, broadcasting on 89.7 MHz FM. The station is'
+    statement density:  19.48 / 1000 chars
+    title reliance:      3 / 3 (100.0%)
+
+[GRAPH 4/4] paragraph=11 title='Springfield, Illinois'
+  source unit: u_37d79d4f87ca02752e16ae2e0229cf9170ee922aede20f7ce5e54174e4f8fe3f
+  text chars:  1549
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 17.351s | model=deepseek-v4-flash
+      tokens:   in=2791 | out=4127 | total=6918 | cached=2048 | uncached=743
+    [LLM graph.reference #6] sending...
+      provider: 1.150s | model=deepseek-v4-flash
+      tokens:   in=835 | out=8 | total=843 | cached=0 | uncached=835
+  extraction: ACCEPTED
+  statements: 27
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    27
+    initially rejected: 1
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'built by' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "John Kelly",
+                "segment": "text"
+              }
+            ],
+            "value": "John Kelly"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "built by",
+                "segment": "text"
+              }
+            ],
+            "value": "firstCabinBuiltBy"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Springfield, Illinois",
+                "segment": "title"
+              }
+            ],
+            "value": "Springfield, Illinois"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 27
+  coverage:
+    characters combined: 875 / 1570 (55.7%)
+    characters text:     854 / 1549 (55.1%)
+    characters title:    21 / 21 (100.0%)
+    sentences:           14 / 14 (100.0%)
+    longest uncovered:  165 chars
+      '. Most importantly, it was a city that had built itself up from frontier outpost to national power through ingenuity -- an example that the newly named Springfield,'
+    statement density:  17.20 / 1000 chars
+    title reliance:      10 / 27 (37.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 53
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      53
+resource nodes:        41
+entity nodes:          41
+literal values:        12
+predicates:            39
+
+N-Triples:
+  <urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20radio%20station> .
+  <urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:licensedIn> <urn:graphragprov:entity:Springfield> .
+  <urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:Cornerstone%20Community%20Radio> .
+  <urn:graphragprov:entity:Abraham%20Lincoln%20and%20his%20associates> <urn:graphragprov:predicate:nicknamed> <urn:graphragprov:entity:Long%20Nine> .
+  <urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:becameCountySeatInYear> "1821"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:countySeatOf> <urn:graphragprov:entity:Sangamon%20County> .
+  <urn:graphragprov:entity:Calhoun> <urn:graphragprov:predicate:namedAfter> <urn:graphragprov:entity:John%20C.%20Calhoun> .
+  <urn:graphragprov:entity:John%20C.%20Calhoun> <urn:graphragprov:predicate:senatorOf> <urn:graphragprov:entity:South%20Carolina> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalFromYear> "1809"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois%20Territory> .
+  <urn:graphragprov:entity:Kaskaskia> <urn:graphragprov:predicate:capitalThroughYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Long%20Nine> <urn:graphragprov:predicate:combinedHeight> "54 feet (16 m)" .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:capitalDesignationDueTo> <urn:graphragprov:entity:Abraham%20Lincoln%20and%20his%20associates> .
+  <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinBuiltInYear> "1820"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:firstCabinLocatedAt> <urn:graphragprov:entity:northwest%20corner%20of%20Second%20Street%20and%20Jefferson%20Street> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:Sangamon%20River> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:originalName> <urn:graphragprov:entity:Calhoun> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedAfter> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:renamedInYear> "1832"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledBy> <urn:graphragprov:entity:trappers%20and%20traders> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledByPeopleFrom> <urn:graphragprov:entity:Kentucky%2C%20Virginia%2C%20and%20North%20Carolina> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:settledInYear> "1818"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Springfield%2C%20Illinois> <urn:graphragprov:predicate:soughtToEmulate> <urn:graphragprov:entity:Springfield%2C%20Massachusetts> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:comparableTo> <urn:graphragprov:entity:modern-day%20Silicon%20Valley> .
+  <urn:graphragprov:entity:Springfield%2C%20Massachusetts> <urn:graphragprov:predicate:knownFor> <urn:graphragprov:entity:industrial%20innovation%2C%20concentrated%20prosperity%2C%20and%20the%20celebrated%20Springfield%20Armory> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalFromYear> "1819"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois> .
+  <urn:graphragprov:entity:Vandalia> <urn:graphragprov:predicate:capitalToYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Donald%20Crisp> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:distributedBy> <urn:graphragprov:entity:Paramount%20Pictures> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:silent%20comedy%20film> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:publicationYear> "1919"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:releaseDate> "1919-03-09"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Bryant%20Washburn> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jay%20Dwiggins> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Raymond%20Hatton> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Richard%20Rosson> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Theodore%20Roberts> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wanda%20Hawley> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Gardner%20Hunting> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Margaret%20Mayo> .
+  <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Z.%20Wall%20Covington> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Lillian%20Elizabeth%20Slatten> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Brownsville%2C%20Illinois> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:bornOn> "1882-11-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:diedOn> "1951-02-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:playwright> .
+  <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:screenwriter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.601s | model=deepseek-v4-flash
+      tokens:   in=3512 | out=398 | total=3910 | cached=640 | uncached=2872
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Margaret%20Mayo> .
+  - <urn:graphragprov:entity:Margaret%20Mayo> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Brownsville%2C%20Illinois> .
+  - <urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:licensedIn> <urn:graphragprov:entity:Springfield> .
+  - <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:capitalOf> <urn:graphragprov:entity:Illinois> .
+  - <urn:graphragprov:entity:Springfield> <urn:graphragprov:predicate:becameCapitalInYear> "1839"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> ?writer . ?writer <urn:graphragprov:predicate:bornIn> ?birthplace . ?birthplace <urn:graphragprov:predicate:capitalOf> ?state . <urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:licensedIn> ?town . ?town <urn:graphragprov:predicate:capitalOf> ?state . ?town <urn:graphragprov:predicate:becameCapitalInYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_00d4cdce5410acd0>
+  FROM <urn:graphragprov:unit:u_37d79d4f87ca0275>
+  FROM <urn:graphragprov:unit:u_a6c89658368b030b>
+  FROM <urn:graphragprov:unit:u_b3ddd4008cee52d4>
+  WHERE { <urn:graphragprov:entity:The%20Poor%20Boob> <urn:graphragprov:predicate:writtenBy> ?writer . ?writer <urn:graphragprov:predicate:bornIn> ?birthplace . ?birthplace <urn:graphragprov:predicate:capitalOf> ?state . <urn:graphragprov:entity:WLUJ> <urn:graphragprov:predicate:licensedIn> ?town . ?town <urn:graphragprov:predicate:capitalOf> ?state . ?town <urn:graphragprov:predicate:becameCapitalInYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop3__524186_219173_128875_72134
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop3__524186_219173_128875_72134/support/result.json
+graph LLM executed:    6
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          14848
+output tokens:         8647
+total tokens:          23495
+cached input tokens:   8832
+uncached input tokens: 6016
+cumulative LLM seconds: 40.787
+
+statement occurrences: 53
+semantic triples:      53
+entity nodes:          41
+literal values:        12
+predicates:            39
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 38.211s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.084s
+  graph.materialization [attempt=1]: 0.103s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.602s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.502s

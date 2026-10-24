@@ -1,0 +1,108 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_03702665607c765fb0fe81a0bfe63c8dc14fe655761cf5dbdb5c172af2af8098
+Title: 2014 United States Senate elections
+Text:
+The Republicans regained the majority of the Senate in the 114th Congress, which started in January 2015; the Republicans had not controlled the Senate since January 2007. They had needed a net gain of at least six seats to obtain a majority. They held all of their seats, and gained nine Democratic - held seats. Republicans defeated five Democratic incumbents:
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "Republicans",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "the Republicans",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "lastControlled",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "had not controlled",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Senate",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "the Senate",
+            "occurrence": 2
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  },
+  {
+    "statement_index": 4,
+    "statement": {
+      "subject": {
+        "value": "Republicans",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "the Republicans",
+            "occurrence": 2
+          }
+        ]
+      },
+      "predicate": {
+        "value": "lastControlledUntil",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "since January 2007",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "2007-01",
+        "datatype": "yearMonth",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "January 2007",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[4].subject.evidence[0]: quote 'the Republicans' occurs 1 time(s) in source segment 'text'; occurrence 2 does not exist"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

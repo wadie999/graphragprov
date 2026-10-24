@@ -1,0 +1,282 @@
+
+H0 one-case execution
+  case:          3hop1__480375_709625_84283
+  hops:          3
+  question:      Who is the owner of the record label of the Please Remember Me performer?
+  expected:      Warner Music Group
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__480375_709625_84283/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=6 title='Please Remember Me'
+  source unit: u_39c5a092c4a56961e2d8bae86db2231152464df33185312aac21245234f18219
+  text chars:  308
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.454s | model=deepseek-v4-flash
+      tokens:   in=2215 | out=1824 | total=4039 | cached=2048 | uncached=167
+    [LLM graph.reference #2] sending...
+      provider: 0.996s | model=deepseek-v4-flash
+      tokens:   in=579 | out=8 | total=587 | cached=0 | uncached=579
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 1
+
+    initial rejection #11
+      validator:
+        response.statements[11].predicate.evidence[0]: quote 'Billboard country chart' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Billboard country chart",
+                "segment": "text"
+              }
+            ],
+            "value": "Billboard country chart"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Billboard country chart",
+                "segment": "text"
+              }
+            ],
+            "value": "chart"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Please Remember Me",
+                "segment": "title"
+              }
+            ],
+            "value": "Please Remember Me"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 12
+  coverage:
+    characters combined: 162 / 326 (49.7%)
+    characters text:     144 / 308 (46.8%)
+    characters title:    18 / 18 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  51 chars
+      '", his version was released as its lead (and only)'
+    statement density:  36.81 / 1000 chars
+    title reliance:      9 / 12 (75.0%)
+
+[GRAPH 2/3] paragraph=16 title="Ain't Living Long Like This"
+  source unit: u_dc139419c5df3680e62e6ee974ae51e5455946b8bba2dc4f327c3cc9a0aed9ec
+  text chars:  886
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 16.586s | model=deepseek-v4-flash
+      tokens:   in=2480 | out=3861 | total=6341 | cached=2048 | uncached=432
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     23
+  coverage:
+    characters combined: 726 / 913 (79.5%)
+    characters text:     699 / 886 (78.9%)
+    characters title:    27 / 27 (100.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  49 chars
+      '. Despite this, "Ain\'t Living Long Like This" is'
+    statement density:  25.19 / 1000 chars
+    title reliance:      16 / 23 (69.6%)
+
+[GRAPH 3/3] paragraph=9 title='Warner Records'
+  source unit: u_3a07514d717c83b8b54c5eafea3896139bbdcf5e990c63cbdc9e304315e0eb52
+  text chars:  373
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 7.117s | model=deepseek-v4-flash
+      tokens:   in=2782 | out=1482 | total=4264 | cached=2048 | uncached=734
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 280 / 387 (72.4%)
+    characters text:     280 / 373 (75.1%)
+    characters title:    0 / 14 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  32 chars
+      '; 60 years ago (1958 - 03 - 19)'
+    statement density:  25.84 / 1000 chars
+    title reliance:      0 / 10 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 45
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      45
+resource nodes:        27
+entity nodes:          27
+literal values:        13
+predicates:            29
+
+N-Triples:
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Jewel%20of%20the%20South> .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:chartDate> "early June" .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:chartPosition> "69"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:coWrittenBy> <urn:graphragprov:entity:Rodney%20Crowell> .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:coWrittenBy> <urn:graphragprov:entity:Will%20Jennings> .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:song> .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Rodney%20Crowell> .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:recordedOn> "1995"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:releaseType> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Rodney%20Crowell> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:country%20music> .
+  <urn:graphragprov:entity:Rodney%20Crowell> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Rodney%20Crowell> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:artist> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:countryOfOrigin> <urn:graphragprov:entity:United%20States> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:distributor> <urn:graphragprov:entity:Rhino%20Entertainment%20Company> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:distributor> <urn:graphragprov:entity:Self-distributed> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:distributor> <urn:graphragprov:entity:WEA%20International> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:foundedOn> "1958-03-19"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:founder> <urn:graphragprov:entity:James%20Conkling> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:Various> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:Burbank%2C%20California%2C%20U.S.> .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:officialWebsite> "warnerbrosrecords.com" .
+  <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:parentCompany> <urn:graphragprov:entity:Warner%20Music%20Group> .
+  <urn:graphragprov:entity:%28Now%20and%20Then%2C%20There%27s%29%20A%20Fool%20Such%20as%20I> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> .
+  <urn:graphragprov:entity:%28Now%20and%20Then%2C%20There%27s%29%20A%20Fool%20Such%20as%20I> <urn:graphragprov:predicate:chartPosition> "failed to chart within the top 40" .
+  <urn:graphragprov:entity:%28Now%20and%20Then%2C%20There%27s%29%20A%20Fool%20Such%20as%20I> <urn:graphragprov:predicate:releaseType> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:chartStatus> "failed to enter the Top Country Albums chart" .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:coverArtChange> "the font on the cover was enlarged to make it more legible" .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:criticalReception> "one Crowell's best and most influential albums" .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:debut> "debut" .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:studio%20album> .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:publicationYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:reReleaseYear> "2002"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Warner%20Bros.%20Records> .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Rodney%20Crowell> .
+  <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:reviewQuote> "not only showcases his songwriting prowess, but also his ability to deliver a song, whether it's one of his own or the work of another writer" .
+  <urn:graphragprov:entity:Alan%20Jackson> <urn:graphragprov:predicate:coveredSongFrom> <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> .
+  <urn:graphragprov:entity:Baby%20Better%20Start%20Turnin%27%20%27Em%20Down> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> .
+  <urn:graphragprov:entity:Baby%20Better%20Start%20Turnin%27%20%27Em%20Down> <urn:graphragprov:predicate:chartPosition> "failed to chart within the top 40" .
+  <urn:graphragprov:entity:Baby%20Better%20Start%20Turnin%27%20%27Em%20Down> <urn:graphragprov:predicate:releaseType> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:Brett%20Hartenbach> <urn:graphragprov:predicate:reviewed> <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> .
+  <urn:graphragprov:entity:Brett%20Hartenbach> <urn:graphragprov:predicate:reviewer> <urn:graphragprov:entity:Allmusic> .
+  <urn:graphragprov:entity:Elvira> <urn:graphragprov:predicate:appearsOnAlbum> <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> .
+  <urn:graphragprov:entity:Elvira> <urn:graphragprov:predicate:chartPosition> "failed to chart within the top 40" .
+  <urn:graphragprov:entity:Elvira> <urn:graphragprov:predicate:releaseType> <urn:graphragprov:entity:single> .
+  <urn:graphragprov:entity:The%20Oak%20Ridge%20Boys> <urn:graphragprov:predicate:coveredSongFrom> <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.159s | model=deepseek-v4-flash
+      tokens:   in=3228 | out=263 | total=3491 | cached=640 | uncached=2588
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:recordedBy> <urn:graphragprov:entity:Rodney%20Crowell> .
+  - <urn:graphragprov:entity:Ain%27t%20Living%20Long%20Like%20This> <urn:graphragprov:predicate:recordLabel> <urn:graphragprov:entity:Warner%20Bros.%20Records> .
+  - <urn:graphragprov:entity:Warner%20Bros.%20Records> <urn:graphragprov:predicate:parentCompany> <urn:graphragprov:entity:Warner%20Music%20Group> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:recordedBy> ?performer . ?performer <urn:graphragprov:predicate:recordLabel> ?label . ?label <urn:graphragprov:predicate:parentCompany> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_39c5a092c4a56961>
+  FROM <urn:graphragprov:unit:u_3a07514d717c83b8>
+  FROM <urn:graphragprov:unit:u_dc139419c5df3680>
+  WHERE { <urn:graphragprov:entity:Please%20Remember%20Me> <urn:graphragprov:predicate:recordedBy> ?performer . ?performer <urn:graphragprov:predicate:recordLabel> ?label . ?label <urn:graphragprov:predicate:parentCompany> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__480375_709625_84283
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__480375_709625_84283/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11284
+output tokens:         7438
+total tokens:          18722
+cached input tokens:   6784
+uncached input tokens: 4500
+cumulative LLM seconds: 35.313
+
+statement occurrences: 45
+semantic triples:      45
+entity nodes:          27
+literal values:        13
+predicates:            29
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 33.170s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.070s
+  graph.materialization [attempt=1]: 0.078s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.160s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.438s

@@ -1,0 +1,153 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where is the headquarter of the Radio Television of the country whose co-official language is the same as the one Politika is written in?
+
+Expected answer: Pristina
+
+Gold decomposition:
+1. question='What language is Politika written in?'; answer='Serbian'; support_paragraph=14
+2. question='#1 is the co-official language of what country?'; answer='Kosovo'; support_paragraph=6
+3. question='Radio Television of #2 >> headquarters location'; answer='Pristina'; support_paragraph=7
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Politika> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Vladislav%20F.%20Ribnikar> .
+<urn:graphragprov:entity:Politika> <urn:graphragprov:predicate:foundedInYear> "1904"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Politika> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:daily%20newspaper> .
+<urn:graphragprov:entity:Politika> <urn:graphragprov:predicate:language> <urn:graphragprov:entity:Serbian> .
+<urn:graphragprov:entity:Politika> <urn:graphragprov:predicate:newspaperOfRecordFor> <urn:graphragprov:entity:Serbia> .
+<urn:graphragprov:entity:Politika> <urn:graphragprov:predicate:oldestDailyNewspaperIn> <urn:graphragprov:entity:Balkans> .
+<urn:graphragprov:entity:Politika> <urn:graphragprov:predicate:publishedIn> <urn:graphragprov:entity:Belgrade> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:coOfficialLanguageIn> <urn:graphragprov:entity:Kosovo> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:standardized%20variety> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:languageFamily> <urn:graphragprov:entity:Serbo-Croatian%20language> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:officialLanguageIn> <urn:graphragprov:entity:Bosnia%20and%20Herzegovina> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:officialLanguageIn> <urn:graphragprov:entity:Serbia> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Croatia> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Czech%20Republic> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Hungary> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Montenegro> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:North%20Macedonia> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Romania> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:recognizedMinorityLanguageIn> <urn:graphragprov:entity:Slovakia> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:spokenByRelativeMajorityIn> <urn:graphragprov:entity:Montenegro> .
+<urn:graphragprov:entity:Serbian> <urn:graphragprov:predicate:usedBy> <urn:graphragprov:entity:Serbs> .
+<urn:graphragprov:entity:Media%20in%20Pristina> <urn:graphragprov:predicate:followed> <urn:graphragprov:entity:all%20elections%20held%20in%20Kosova> .
+<urn:graphragprov:entity:Media%20in%20Pristina> <urn:graphragprov:predicate:hadGreatImpactIn> <urn:graphragprov:entity:Kosova%20local%20elections%2C%202013> .

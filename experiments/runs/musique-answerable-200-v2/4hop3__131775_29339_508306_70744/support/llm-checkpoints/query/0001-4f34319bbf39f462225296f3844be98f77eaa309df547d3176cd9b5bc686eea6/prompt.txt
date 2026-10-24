@@ -1,0 +1,179 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Which has more national championships, university of the state having Fort Hill or university of the state whose primary was won by Edwards besides the state having Ted Wright Stadium?
+
+Expected answer: University of South Carolina
+
+Gold decomposition:
+1. question='Which state is Ted Wright Stadium located?'; answer='Georgia'; support_paragraph=3
+2. question='Besides #1 , what other state primary did Edwards win?'; answer='South Carolina'; support_paragraph=10
+3. question='Fort Hill >> located in the administrative territorial entity'; answer='Clemson'; support_paragraph=0
+4. question='who has more national championships #3 or #2'; answer='University of South Carolina'; support_paragraph=17
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Dean> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:Vermont> .
+<urn:graphragprov:entity:Edwards> <urn:graphragprov:predicate:finishedBehind> <urn:graphragprov:entity:Kerry> .
+<urn:graphragprov:entity:Edwards> <urn:graphragprov:predicate:finishedIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Edwards> <urn:graphragprov:predicate:withdrewFromRace> <urn:graphragprov:entity:presidential%20race> .
+<urn:graphragprov:entity:Edwards> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:South%20Carolina> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonCaucusIn> <urn:graphragprov:entity:Minnesota> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:California> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:Connecticut> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:Georgia> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:Maryland> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:Massachusetts> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:New%20York> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:Ohio> .
+<urn:graphragprov:entity:Kerry> <urn:graphragprov:predicate:wonPrimaryIn> <urn:graphragprov:entity:Rhode%20Island> .
+<urn:graphragprov:entity:Kuninch> <urn:graphragprov:predicate:withdrewFromRace> <urn:graphragprov:entity:presidential%20race> .
+<urn:graphragprov:entity:Sharpton> <urn:graphragprov:predicate:withdrewFromRace> <urn:graphragprov:entity:presidential%20race> .
+<urn:graphragprov:entity:Ted%20Wright%20Stadium> <urn:graphragprov:predicate:capacity> "13500"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Ted%20Wright%20Stadium> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:multi-purpose%20stadium> .
+<urn:graphragprov:entity:Ted%20Wright%20Stadium> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Savannah%2C%20Georgia> .
+<urn:graphragprov:entity:Ted%20Wright%20Stadium> <urn:graphragprov:predicate:locatedOnCampusOf> <urn:graphragprov:entity:Savannah%20State%20University> .
+<urn:graphragprov:entity:Ted%20Wright%20Stadium> <urn:graphragprov:predicate:namedInHonorOf> <urn:graphragprov:entity:Theodore%20Wright> .
+<urn:graphragprov:entity:Theodore%20Wright> <urn:graphragprov:predicate:employer> <urn:graphragprov:entity:Tiger%27s> .
+<urn:graphragprov:entity:Theodore%20Wright> <urn:graphragprov:predicate:endDate> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Theodore%20Wright> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:head%20football%20coach> .
+<urn:graphragprov:entity:Theodore%20Wright> <urn:graphragprov:predicate:startDate> "1947"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Clemson> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:mascot> <urn:graphragprov:entity:The%20Tiger> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:mascot> <urn:graphragprov:entity:The%20Tiger%20Cub> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:nationalChampionships> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Tigers> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:schoolColor> <urn:graphragprov:entity:Clemson%20Orange> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:schoolColor> <urn:graphragprov:entity:Regalia> .
+<urn:graphragprov:entity:Clemson%20University> <urn:graphragprov:predicate:studentCount> "23406"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:University%20of%20South%20Carolina> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Columbia> .
+<urn:graphragprov:entity:University%20of%20South%20Carolina> <urn:graphragprov:predicate:mascot> <urn:graphragprov:entity:Cocky> .
+<urn:graphragprov:entity:University%20of%20South%20Carolina> <urn:graphragprov:predicate:nationalChampionships> "10"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:University%20of%20South%20Carolina> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Gamecocks> .
+<urn:graphragprov:entity:University%20of%20South%20Carolina> <urn:graphragprov:predicate:schoolColor> <urn:graphragprov:entity:Black> .
+<urn:graphragprov:entity:University%20of%20South%20Carolina> <urn:graphragprov:predicate:schoolColor> <urn:graphragprov:entity:Garnet> .
+<urn:graphragprov:entity:University%20of%20South%20Carolina> <urn:graphragprov:predicate:studentCount> "34618"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Fort%20Hill> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:John%20C.%20Calhoun%20Mansion%20and%20Library> .
+<urn:graphragprov:entity:Fort%20Hill> <urn:graphragprov:predicate:currentUse> <urn:graphragprov:entity:museum%20and%20library> .
+<urn:graphragprov:entity:Fort%20Hill> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:National%20Historic%20Landmark> .
+<urn:graphragprov:entity:Fort%20Hill> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Clemson%2C%20South%20Carolina> .
+<urn:graphragprov:entity:Fort%20Hill> <urn:graphragprov:predicate:locatedOnCampusOf> <urn:graphragprov:entity:Clemson%20University> .
+<urn:graphragprov:entity:Fort%20Hill> <urn:graphragprov:predicate:maintainedInMemoryOf> <urn:graphragprov:entity:John%20C.%20Calhoun> .
+<urn:graphragprov:entity:Fort%20Hill> <urn:graphragprov:predicate:significantAs> <urn:graphragprov:entity:home%20from%201825-50%20of%20John%20C.%20Calhoun> .
+<urn:graphragprov:entity:John%20C.%20Calhoun> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:national%20politician> .

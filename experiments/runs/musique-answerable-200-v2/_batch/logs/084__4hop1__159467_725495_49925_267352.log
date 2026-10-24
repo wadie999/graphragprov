@@ -1,0 +1,334 @@
+
+H0 one-case execution
+  case:          4hop1__159467_725495_49925_267352
+  hops:          4
+  question:      In New Zealand, 12.6% of Christians belong to a church that is also active in Lesotho. What movement was led by a man who challenged this church?
+  expected:      German Renaissance
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__159467_725495_49925_267352/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=9 title='New Zealand'
+  source unit: u_c56925fdc41062afdf34b674caab2784977e106989f23e65d18dd813c25a8d45
+  text chars:  869
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 18.280s | model=deepseek-v4-flash
+      tokens:   in=2390 | out=4534 | total=6924 | cached=1920 | uncached=470
+  extraction: ACCEPTED
+  statements: 31
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    31
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     31
+  coverage:
+    characters combined: 517 / 880 (58.8%)
+    characters text:     506 / 869 (58.2%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  88 chars
+      '. Immigration and demographic change in recent decades has contributed to the growth of'
+    statement density:  35.23 / 1000 chars
+    title reliance:      5 / 31 (16.1%)
+
+[GRAPH 2/4] paragraph=5 title='Catholic Church in Lesotho'
+  source unit: u_9f9785a1dbd55c8489ba93cf56b7aff4729d065e37fa047c3bb8da5165d8e7f6
+  text chars:  454
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.993s | model=deepseek-v4-flash
+      tokens:   in=2661 | out=1603 | total=4264 | cached=1920 | uncached=741
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 296 / 480 (61.7%)
+    characters text:     270 / 454 (59.5%)
+    characters title:    26 / 26 (100.0%)
+    sentences:           3 / 4 (75.0%)
+    longest uncovered:  103 chars
+      'Many Christians still practice their traditional cultural beliefs and rituals along with Christianity.'
+    statement density:  22.92 / 1000 chars
+    title reliance:      4 / 11 (36.4%)
+
+[GRAPH 3/4] paragraph=2 title='Reformation'
+  source unit: u_6806d0b1dddb455b4ae2cad63fb3f67c72260a5e8ed4d38bd5d34405f427dff4
+  text chars:  1082
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.257s | model=deepseek-v4-flash
+      tokens:   in=2935 | out=2373 | total=5308 | cached=2048 | uncached=887
+    [LLM graph.reference #4] sending...
+      provider: 1.414s | model=deepseek-v4-flash
+      tokens:   in=723 | out=8 | total=731 | cached=0 | uncached=723
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 1
+
+    initial rejection #15
+      validator:
+        response.statements[15].predicate.evidence[0]: quote 'challenged' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "the Catholic Church",
+                "segment": "text"
+              }
+            ],
+            "value": "Catholic Church"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "challenged",
+                "segment": "text"
+              }
+            ],
+            "value": "challenged"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Martin Luther",
+                "segment": "text"
+              }
+            ],
+            "value": "Martin Luther"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 15
+  coverage:
+    characters combined: 644 / 1093 (58.9%)
+    characters text:     644 / 1082 (59.5%)
+    characters title:    0 / 11 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  48 chars
+      'with the Ninety - five Theses. Luther began by'
+    statement density:  13.72 / 1000 chars
+    title reliance:      0 / 15 (0.0%)
+
+[GRAPH 4/4] paragraph=6 title='Peter Agricola'
+  source unit: u_f8c19cd3f2e1e5901b1ac1047672f90ae59b5081940f74b63d6b44dfd5954677
+  text chars:  228
+  whole-source attempt: 1/3
+    [LLM graph.reference #5] sending...
+      provider: 8.122s | model=deepseek-v4-flash
+      tokens:   in=2993 | out=1847 | total=4840 | cached=2176 | uncached=817
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 183 / 242 (75.6%)
+    characters text:     169 / 228 (74.1%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  16 chars
+      'Peter Agricola ('
+    statement density:  53.72 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 70
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      70
+resource nodes:        59
+entity nodes:          59
+literal values:        16
+predicates:            33
+
+N-Triples:
+  <urn:graphragprov:entity:Jan%20Hus> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+  <urn:graphragprov:entity:John%20Wycliffe> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:criticised> <urn:graphragprov:entity:sale%20of%20indulgences> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Catholic%20doctrine%20of%20the%20merits%20of%20the%20saints%20had%20no%20foundation%20in%20the%20Bible> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:insisted> <urn:graphragprov:entity:Pope%20had%20no%20authority%20over%20purgatory> .
+  <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:Reformation> .
+  <urn:graphragprov:entity:Peter%20Waldo> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:hadCoreMotivation> <urn:graphragprov:entity:theological> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:belief%20that%20faith%20in%20Jesus%2C%20and%20not%20good%20works%2C%20is%20the%20only%20way%20to%20obtain%20God%27s%20pardon%20for%20sin> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:incorporated> <urn:graphragprov:entity:complete%20reliance%20on%20Scripture%20as%20a%20source%20of%20proper%20belief> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:Western%20Schism> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:impact%20of%20humanism> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:new%20learning%20of%20the%20Renaissance> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:perceived%20corruption%20of%20the%20Roman%20Curia> .
+  <urn:graphragprov:entity:Protestant%20Reformation> <urn:graphragprov:predicate:influencedBy> <urn:graphragprov:entity:rise%20of%20nationalism> .
+  <urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:fusedAspectsOfLocalCulture> <urn:graphragprov:entity:local%20culture> .
+  <urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:hasServiceElement> <urn:graphragprov:entity:singing%20of%20hymns> .
+  <urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Catholic%20Church> .
+  <urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Lesotho> .
+  <urn:graphragprov:entity:Sesotho> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:indigenous%20language> .
+  <urn:graphragprov:entity:local%20and%20traditional%20way%20of%20singing> <urn:graphragprov:predicate:hasStyle> <urn:graphragprov:entity:repetitive%20call%20and%20response%20style> .
+  <urn:graphragprov:entity:local%20and%20traditional%20way%20of%20singing> <urn:graphragprov:predicate:performedIn> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:local%20and%20traditional%20way%20of%20singing> <urn:graphragprov:predicate:performedIn> <urn:graphragprov:entity:Sesotho> .
+  <urn:graphragprov:entity:priests> <urn:graphragprov:predicate:during> <urn:graphragprov:entity:services> .
+  <urn:graphragprov:entity:priests> <urn:graphragprov:predicate:seenDressedIn> <urn:graphragprov:entity:local%20dress> .
+  <urn:graphragprov:entity:singing%20of%20hymns> <urn:graphragprov:predicate:hasDevelopedInto> <urn:graphragprov:entity:local%20and%20traditional%20way%20of%20singing> .
+  <urn:graphragprov:entity:Anglicanism> <urn:graphragprov:predicate:hasPercentageOfAdherents> "11.8"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Anglicanism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+  <urn:graphragprov:entity:Auckland%20Region> <urn:graphragprov:predicate:exhibitedGreatestReligiousDiversity> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Buddhism> <urn:graphragprov:predicate:hasPercentageOfAdherents> "1.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Buddhism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+  <urn:graphragprov:entity:Christian%20not%20further%20defined> <urn:graphragprov:predicate:hasPercentageOfAdherents> "5.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Christian%20not%20further%20defined> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+  <urn:graphragprov:entity:Christianity> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:religion> .
+  <urn:graphragprov:entity:Christianity> <urn:graphragprov:predicate:predominantReligionIn> <urn:graphragprov:entity:New%20Zealand> .
+  <urn:graphragprov:entity:Hinduism> <urn:graphragprov:predicate:hasPercentageOfAdherents> "2.1"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Hinduism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+  <urn:graphragprov:entity:Islam> <urn:graphragprov:predicate:hasPercentageOfAdherents> "1.2"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Islam> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+  <urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:hasCensusYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:hasPercentageIdentifyingAsChristian> "49.0"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:hasPercentageIdentifyingWithReligion> "55.0"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:hasPercentageNoReligion> "41.9"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:New%20Zealand> <urn:graphragprov:predicate:hasSociety> <urn:graphragprov:entity:New%20Zealand%20society> .
+  <urn:graphragprov:entity:New%20Zealand%20society> <urn:graphragprov:predicate:isAmong> <urn:graphragprov:entity:most%20secular%20in%20the%20world> .
+  <urn:graphragprov:entity:Presbyterianism> <urn:graphragprov:predicate:hasPercentageOfAdherents> "8.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Presbyterianism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+  <urn:graphragprov:entity:R%C4%81tana> <urn:graphragprov:predicate:hasPercentageOfAdherents> "1.4"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:R%C4%81tana> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:M%C4%81ori-based%20religion> .
+  <urn:graphragprov:entity:R%C4%81tana> <urn:graphragprov:predicate:isChristianInOrigin> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Ringat%C5%AB> <urn:graphragprov:predicate:hasPercentageOfAdherents> "1.4"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Ringat%C5%AB> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:M%C4%81ori-based%20religion> .
+  <urn:graphragprov:entity:Ringat%C5%AB> <urn:graphragprov:predicate:isChristianInOrigin> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Roman%20Catholicism> <urn:graphragprov:predicate:hasPercentageOfAdherents> "12.6"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Roman%20Catholicism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> .
+  <urn:graphragprov:entity:Sikhism> <urn:graphragprov:predicate:hasPercentageOfAdherents> "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  <urn:graphragprov:entity:Sikhism> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:minority%20religion> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:bornOn> "1525-06-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:collaboratorOf> <urn:graphragprov:entity:Philipp%20Melanchthon> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:diedOn> "1585-07-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:discipleOf> <urn:graphragprov:entity:Martin%20Luther> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:friendOf> <urn:graphragprov:entity:Philipp%20Melanchthon> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:classical%20scholar> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:diplomat> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:educator> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:humanist> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:statesman> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theologian> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:movement> <urn:graphragprov:entity:German%20Renaissance> .
+  <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:German> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.782s | model=deepseek-v4-flash
+      tokens:   in=4451 | out=391 | total=4842 | cached=640 | uncached=3811
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Roman%20Catholicism> <urn:graphragprov:predicate:hasPercentageOfAdherents> "12.6"^^<http://www.w3.org/2001/XMLSchema#decimal> .
+  - <urn:graphragprov:entity:Catholic%20Church%20in%20Lesotho> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Catholic%20Church> .
+  - <urn:graphragprov:entity:Martin%20Luther> <urn:graphragprov:predicate:attemptedToReform> <urn:graphragprov:entity:Catholic%20Church> .
+  - <urn:graphragprov:entity:Peter%20Agricola> <urn:graphragprov:predicate:movement> <urn:graphragprov:entity:German%20Renaissance> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { ?denom <urn:graphragprov:predicate:hasPercentageOfAdherents> "12.6"^^<http://www.w3.org/2001/XMLSchema#decimal> . ?denom <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> . ?church <urn:graphragprov:predicate:instanceOf> ?denom . ?church <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Lesotho> . ?person <urn:graphragprov:predicate:attemptedToReform> ?church . ?person <urn:graphragprov:predicate:movement> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6806d0b1dddb455b>
+  FROM <urn:graphragprov:unit:u_9f9785a1dbd55c84>
+  FROM <urn:graphragprov:unit:u_c56925fdc41062af>
+  FROM <urn:graphragprov:unit:u_f8c19cd3f2e1e590>
+  WHERE { ?denom <urn:graphragprov:predicate:hasPercentageOfAdherents> "12.6"^^<http://www.w3.org/2001/XMLSchema#decimal> . ?denom <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Christian%20denomination> . ?church <urn:graphragprov:predicate:instanceOf> ?denom . ?church <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Lesotho> . ?person <urn:graphragprov:predicate:attemptedToReform> ?church . ?person <urn:graphragprov:predicate:movement> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  4hop1__159467_725495_49925_267352
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__159467_725495_49925_267352/support/result.json
+graph LLM executed:    5
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          16153
+output tokens:         10756
+total tokens:          26909
+cached input tokens:   8704
+uncached input tokens: 7449
+cumulative LLM seconds: 47.847
+
+statement occurrences: 70
+semantic triples:      70
+entity nodes:          59
+literal values:        16
+predicates:            33
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 45.083s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.167s
+  graph.materialization [attempt=1]: 0.230s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 2.783s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.502s

@@ -1,0 +1,162 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where is the river that the engine pumped water from located in the world?
+
+Expected answer: northeastern Africa
+
+Gold decomposition:
+1. question='From what river did the engine pump water?'; answer='Nile River'; support_paragraph=4
+2. question='where is #1 located in the world'; answer='northeastern Africa'; support_paragraph=10
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:commonlyRegardedAs> <urn:graphragprov:entity:longest%20river%20in%20the%20world> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinCovers> <urn:graphragprov:entity:eleven%20countries> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Burundi> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Democratic%20Republic%20of%20the%20Congo> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Egypt> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Eritrea> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Ethiopia> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Kenya> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Republic%20of%20the%20Sudan> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Rwanda> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:South%20Sudan> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Tanzania> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:drainageBasinIncludes> <urn:graphragprov:entity:Uganda> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:flowDirection> <urn:graphragprov:entity:north> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:river> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:length> "6853 km" .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:northeastern%20Africa> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:primaryWaterSourceOf> <urn:graphragprov:entity:Egypt> .
+<urn:graphragprov:entity:Nile> <urn:graphragprov:predicate:primaryWaterSourceOf> <urn:graphragprov:entity:Sudan> .
+<urn:graphragprov:entity:Shuman> <urn:graphragprov:predicate:advocated> <urn:graphragprov:entity:solar%20energy%27s%20utilization> .
+<urn:graphragprov:entity:Shuman> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:world%E2%80%99s%20first%20solar%20thermal%20power%20station> .
+<urn:graphragprov:entity:Shuman> <urn:graphragprov:predicate:quotedIn> <urn:graphragprov:entity:media> .
+<urn:graphragprov:entity:Shuman%E2%80%99s%20plant> <urn:graphragprov:predicate:used> <urn:graphragprov:entity:parabolic%20troughs> .
+<urn:graphragprov:entity:Shuman%E2%80%99s%20vision%20and%20basic%20design> <urn:graphragprov:predicate:resurrectedIn> "1970s" .
+<urn:graphragprov:entity:discovery%20of%20cheap%20oil%20in%20the%201930s> <urn:graphragprov:predicate:discouraged> <urn:graphragprov:entity:advancement%20of%20solar%20energy> .
+<urn:graphragprov:entity:engine> <urn:graphragprov:predicate:power> "45–52 kilowatts (60–70 hp)" .
+<urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumped> <urn:graphragprov:entity:water> .
+<urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumpedAmount> "more than 22,000 litres (4,800 imp gal; 5,800 US gal) of water per minute" .
+<urn:graphragprov:entity:engine> <urn:graphragprov:predicate:pumpedFrom> <urn:graphragprov:entity:Nile%20River> .
+<urn:graphragprov:entity:outbreak%20of%20World%20War%20I> <urn:graphragprov:predicate:discouraged> <urn:graphragprov:entity:advancement%20of%20solar%20energy> .
+<urn:graphragprov:entity:water> <urn:graphragprov:predicate:pumpedTo> <urn:graphragprov:entity:adjacent%20cotton%20fields> .
+<urn:graphragprov:entity:world%E2%80%99s%20first%20solar%20thermal%20power%20station> <urn:graphragprov:predicate:builtInYear> "1912-1913" .
+<urn:graphragprov:entity:world%E2%80%99s%20first%20solar%20thermal%20power%20station> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Maadi%2C%20Egypt> .

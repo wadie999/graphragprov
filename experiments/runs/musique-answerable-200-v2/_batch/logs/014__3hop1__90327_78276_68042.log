@@ -1,0 +1,245 @@
+
+H0 one-case execution
+  case:          3hop1__90327_78276_68042
+  hops:          3
+  question:      When did the majority party in the body which approves members of the American Cabinet gain control of the House?
+  expected:      the 2010 election
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__90327_78276_68042/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=9 title='Cabinet of the United States'
+  source unit: u_aeefdd5865d9827ffccd8f2d290cfdc2998b6eb482ec92eedbd2401034eb8e42
+  text chars:  486
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.127s | model=deepseek-v4-flash
+      tokens:   in=2263 | out=1872 | total=4135 | cached=1920 | uncached=343
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 387 / 514 (75.3%)
+    characters text:     387 / 486 (79.6%)
+    characters title:    0 / 28 (0.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  28 chars
+      'to further consideration).'
+    statement density:  25.29 / 1000 chars
+    title reliance:      0 / 13 (0.0%)
+
+[GRAPH 2/3] paragraph=0 title='Party leaders of the United States Senate'
+  source unit: u_f57c4474116c07a2b6444627520d3e1951dd19e0bd223e000b8759cb9e7a8b92
+  text chars:  125
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 3.518s | model=deepseek-v4-flash
+      tokens:   in=2345 | out=561 | total=2906 | cached=1920 | uncached=425
+  extraction: ACCEPTED
+  statements: 4
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    4
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     4
+  coverage:
+    characters combined: 82 / 166 (49.4%)
+    characters text:     82 / 125 (65.6%)
+    characters title:    0 / 41 (0.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  15 chars
+      ', both of whom'
+    statement density:  24.10 / 1000 chars
+    title reliance:      0 / 4 (0.0%)
+
+[GRAPH 3/3] paragraph=14 title='2010 United States House of Representatives elections'
+  source unit: u_f81d1da0b5ab613012954949fb031bd6ed8861d76ba44dd60d23e686f4114453
+  text chars:  1408
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 21.474s | model=deepseek-v4-flash
+      tokens:   in=2648 | out=5197 | total=7845 | cached=2048 | uncached=600
+  extraction: ACCEPTED
+  statements: 36
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    36
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     36
+  coverage:
+    characters combined: 1059 / 1461 (72.5%)
+    characters text:     1059 / 1408 (75.2%)
+    characters title:    0 / 53 (0.0%)
+    sentences:           7 / 8 (87.5%)
+    longest uncovered:  93 chars
+      ". Although the sitting U.S. President's party usually loses seats in a midterm election, the"
+    statement density:  24.64 / 1000 chars
+    title reliance:      0 / 36 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 53
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      53
+resource nodes:        50
+entity nodes:          50
+literal values:        4
+predicates:            34
+
+N-Triples:
+  <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:confirmsOrRejectsBy> <urn:graphragprov:entity:simple%20majority> .
+  <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:couldHaveBlockedByFilibuster> <urn:graphragprov:entity:filibuster> .
+  <urn:graphragprov:entity:all%20other%20federal%20agency%20heads> <urn:graphragprov:predicate:nominatedBy> <urn:graphragprov:entity:President> .
+  <urn:graphragprov:entity:all%20other%20federal%20agency%20heads> <urn:graphragprov:predicate:presentedTo> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:cloture> <urn:graphragprov:predicate:requiresSupermajority> <urn:graphragprov:entity:supermajority> .
+  <urn:graphragprov:entity:filibuster> <urn:graphragprov:predicate:requiresCloture> <urn:graphragprov:entity:cloture> .
+  <urn:graphragprov:entity:heads%20of%20the%20executive%20departments> <urn:graphragprov:predicate:nominatedBy> <urn:graphragprov:entity:President> .
+  <urn:graphragprov:entity:heads%20of%20the%20executive%20departments> <urn:graphragprov:predicate:presentedTo> <urn:graphragprov:entity:Senate> .
+  <urn:graphragprov:entity:nominees> <urn:graphragprov:predicate:beginDuties> <urn:graphragprov:entity:duties> .
+  <urn:graphragprov:entity:nominees> <urn:graphragprov:predicate:receiveCommissionScroll> <urn:graphragprov:entity:commission%20scroll> .
+  <urn:graphragprov:entity:nominees> <urn:graphragprov:predicate:swornIn> <urn:graphragprov:entity:sworn%20in> .
+  <urn:graphragprov:entity:nuclear%20option> <urn:graphragprov:predicate:preventsFilibuster> <urn:graphragprov:entity:filibuster> .
+  <urn:graphragprov:entity:nuclear%20option> <urn:graphragprov:predicate:usedDuring> <urn:graphragprov:entity:113th%20US%20Congress> .
+  <urn:graphragprov:entity:2%20independents> <urn:graphragprov:predicate:caucusWith> <urn:graphragprov:entity:Democrats> .
+  <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:2%20independents> .
+  <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:47%20Democrats> .
+  <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:51%20Republicans> .
+  <urn:graphragprov:entity:2010%20election> <urn:graphragprov:predicate:resultedIn> <urn:graphragprov:entity:highest%20loss%20of%20a%20party%20in%20a%20House%20midterm%20election%20since%201938> .
+  <urn:graphragprov:entity:2010%20election> <urn:graphragprov:predicate:resultedIn> <urn:graphragprov:entity:largest%20House%20swing%20since%201948> .
+  <urn:graphragprov:entity:2010%20election> <urn:graphragprov:predicate:wasSecondConsecutiveMidtermElectionWhere> <urn:graphragprov:entity:party%20control%20of%20the%20said%20chamber%20changed%20hands> .
+  <urn:graphragprov:entity:2010%20election> <urn:graphragprov:predicate:wasThirdConsecutiveMidtermElectionInPresidentsFirstTermWhere> <urn:graphragprov:entity:Republican%20Party%20has%20made%20gains%20in%20the%20House%20of%20Representatives> .
+  <urn:graphragprov:entity:Cory%20Gardner> <urn:graphragprov:predicate:futureSenator> <urn:graphragprov:entity:Senator> .
+  <urn:graphragprov:entity:Cory%20Gardner> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:Democrats> <urn:graphragprov:predicate:madeIn> "2006 and 2008" .
+  <urn:graphragprov:entity:James%20Lankford> <urn:graphragprov:predicate:futureSenator> <urn:graphragprov:entity:Senator> .
+  <urn:graphragprov:entity:James%20Lankford> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:Jeff%20Landry> <urn:graphragprov:predicate:futureAttorneyGeneralOf> <urn:graphragprov:entity:Louisiana> .
+  <urn:graphragprov:entity:Jeff%20Landry> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:John%20Carney> <urn:graphragprov:predicate:futureGovernorOf> <urn:graphragprov:entity:Delaware> .
+  <urn:graphragprov:entity:John%20Carney> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:Mick%20Mulvaney> <urn:graphragprov:predicate:futureDirectorOf> <urn:graphragprov:entity:Office%20of%20Management%20and%20Budget> .
+  <urn:graphragprov:entity:Mick%20Mulvaney> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:Mike%20Pompeo> <urn:graphragprov:predicate:futureSecretaryOfState> <urn:graphragprov:entity:Secretary%20of%20State> .
+  <urn:graphragprov:entity:Mike%20Pompeo> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:five%20incumbents> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:erasedGains> <urn:graphragprov:entity:Democrats> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:gainedMostIn> <urn:graphragprov:entity:New%20York%20state> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:largestGainInHouseSeatsSince> "1938"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:lostIn> <urn:graphragprov:entity:2006%20midterm%20elections> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:pickedUp> "six seats" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:pickedUpNetTotal> "63 seats" .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedControlOf> <urn:graphragprov:entity:chamber> .
+  <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:open%20Democratic%20district> .
+  <urn:graphragprov:entity:Tim%20Griffin> <urn:graphragprov:predicate:futureLieutenantGovernorOf> <urn:graphragprov:entity:Arkansas> .
+  <urn:graphragprov:entity:Tim%20Griffin> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:Tim%20Scott> <urn:graphragprov:predicate:futureSenator> <urn:graphragprov:entity:Senator> .
+  <urn:graphragprov:entity:Tim%20Scott> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:Todd%20Young> <urn:graphragprov:predicate:futureSenator> <urn:graphragprov:entity:Senator> .
+  <urn:graphragprov:entity:Todd%20Young> <urn:graphragprov:predicate:wasFreshman> <urn:graphragprov:entity:notable%20freshmen> .
+  <urn:graphragprov:entity:heavy%20Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:anger%20with%20President%20Obama> .
+  <urn:graphragprov:entity:heavy%20Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:large%20budget%20deficits> .
+  <urn:graphragprov:entity:heavy%20Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:opposition%20to%20the%20Affordable%20Care%20Act> .
+  <urn:graphragprov:entity:heavy%20Democratic%20Party%20losses> <urn:graphragprov:predicate:attributedTo> <urn:graphragprov:entity:weak%20economy> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 3.074s | model=deepseek-v4-flash
+      tokens:   in=3377 | out=454 | total=3831 | cached=640 | uncached=2737
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:confirmsOrRejectsBy> <urn:graphragprov:entity:simple%20majority> .
+  - <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:51%20Republicans> .
+  - <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedControlOf> <urn:graphragprov:entity:chamber> .
+  - <urn:graphragprov:entity:2010%20election> <urn:graphragprov:predicate:wasSecondConsecutiveMidtermElectionWhere> <urn:graphragprov:entity:party%20control%20of%20the%20said%20chamber%20changed%20hands> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:confirmsOrRejectsBy> <urn:graphragprov:entity:simple%20majority> . <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:51%20Republicans> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedControlOf> <urn:graphragprov:entity:chamber> . <urn:graphragprov:entity:2010%20election> <urn:graphragprov:predicate:wasSecondConsecutiveMidtermElectionWhere> <urn:graphragprov:entity:party%20control%20of%20the%20said%20chamber%20changed%20hands> . BIND(<urn:graphragprov:entity:2010%20election> AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_aeefdd5865d9827f>
+  FROM <urn:graphragprov:unit:u_f57c4474116c07a2>
+  FROM <urn:graphragprov:unit:u_f81d1da0b5ab6130>
+  WHERE { <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:confirmsOrRejectsBy> <urn:graphragprov:entity:simple%20majority> . <urn:graphragprov:entity:Senate> <urn:graphragprov:predicate:currentlyComposedOf> <urn:graphragprov:entity:51%20Republicans> . <urn:graphragprov:entity:Republicans> <urn:graphragprov:predicate:regainedControlOf> <urn:graphragprov:entity:chamber> . <urn:graphragprov:entity:2010%20election> <urn:graphragprov:predicate:wasSecondConsecutiveMidtermElectionWhere> <urn:graphragprov:entity:party%20control%20of%20the%20said%20chamber%20changed%20hands> . BIND(<urn:graphragprov:entity:2010%20election> AS ?answer) }
+
+GraphDB execution:
+  observed answers: ('2010 election',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: failed
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__90327_78276_68042
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__90327_78276_68042/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10633
+output tokens:         8084
+total tokens:          18717
+cached input tokens:   6528
+uncached input tokens: 4105
+cumulative LLM seconds: 37.194
+
+statement occurrences: 53
+semantic triples:      53
+entity nodes:          50
+literal values:        4
+predicates:            34
+query attempts:        1
+observed answers:      ('2010 election',)
+provenance status:     failed
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 34.132s
+  graph.reference.measurements [attempt=1]: 0.006s
+  graph.clear_support [attempt=1]: 0.061s
+  graph.materialization [attempt=1]: 0.085s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 3.075s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.507s

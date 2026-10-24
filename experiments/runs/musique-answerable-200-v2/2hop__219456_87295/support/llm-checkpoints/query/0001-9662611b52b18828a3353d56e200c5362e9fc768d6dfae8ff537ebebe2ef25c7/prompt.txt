@@ -1,0 +1,157 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What character in Princess Diaries does the actress play who was also a cast member in On Golden Pond?
+
+Expected answer: Queen dowager Clarisse Renaldi
+
+Gold decomposition:
+1. question='On Golden Pond >> cast member'; answer='Julie Andrews'; support_paragraph=15
+2. question='who does #1 play in princess diaries'; answer='Queen dowager Clarisse Renaldi'; support_paragraph=1
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Anne%20Hathaway> <urn:graphragprov:predicate:character> <urn:graphragprov:entity:Mia%20Thermopolis> .
+<urn:graphragprov:entity:Kingdom%20of%20Genovia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:fictional%20kingdom> .
+<urn:graphragprov:entity:Kingdom%20of%20Genovia> <urn:graphragprov:predicate:ruledBy> <urn:graphragprov:entity:Queen%20dowager%20Clarisse%20Renaldi> .
+<urn:graphragprov:entity:Mia%20Thermopolis> <urn:graphragprov:predicate:discovers> <urn:graphragprov:entity:she%20is%20the%20heir%20to%20the%20throne%20of%20the%20fictional%20Kingdom%20of%20Genovia> .
+<urn:graphragprov:entity:Mia%20Thermopolis> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:teenager> .
+<urn:graphragprov:entity:Queen%20dowager%20Clarisse%20Renaldi> <urn:graphragprov:predicate:grandmotherOf> <urn:graphragprov:entity:Mia%20Thermopolis> .
+<urn:graphragprov:entity:Queen%20dowager%20Clarisse%20Renaldi> <urn:graphragprov:predicate:portrayedBy> <urn:graphragprov:entity:Julie%20Andrews> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Meg%20Cabot%27s%202000%20novel%20of%20the%20same%20name> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Garry%20Marshall> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:teen%20romantic%20comedy%20film> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:publicationYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Anne%20Hathaway> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:H%C3%A9ctor%20Elizondo> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Heather%20Matarazzo> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Mandy%20Moore> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Robert%20Schwartzman> .
+<urn:graphragprov:entity:The%20Princess%20Diaries%20%28film%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Gina%20Wendkos> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:airDate> "2001-04-29"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:CBS> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:the%20play> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:filmedIn> <urn:graphragprov:entity:Los%20Angeles%2C%20California> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20adaptation> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:promotedAs> <urn:graphragprov:entity:a%20live%20television%20event> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:publicationYear> "2001"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Christopher%20Plummer> .
+<urn:graphragprov:entity:On%20Golden%20Pond%20%282001%20film%29> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Julie%20Andrews> .

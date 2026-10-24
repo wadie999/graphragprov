@@ -1,0 +1,387 @@
+
+H0 one-case execution
+  case:          4hop1__638988_17130_70784_61381
+  hops:          4
+  question:      When was the region immediately north of the region where the country in which Aluf can be found is located and the Persian Gulf established?
+  expected:      1932
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__638988_17130_70784_61381/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 4
+
+[GRAPH 1/4] paragraph=5 title='Chaim Herzog'
+  source unit: u_6e72b551c87fe993d8b736b1d4fed8d689fe3467b8a790558c6c9e44435994e2
+  text chars:  855
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      checkpoint: reused
+    [LLM graph.reference #2] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 28
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    27
+    initially rejected: 1
+
+    initial rejection #16
+      validator:
+        response.statements[16].predicate.evidence[0]: quote 'served in the British Army' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "British Army",
+                "segment": "text"
+              }
+            ],
+            "value": "British Army"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "served in the British Army",
+                "segment": "text"
+              }
+            ],
+            "value": "servedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Chaim Herzog",
+                "segment": "title"
+              }
+            ],
+            "value": "Chaim Herzog"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 28
+  coverage:
+    characters combined: 450 / 867 (51.9%)
+    characters text:     438 / 855 (51.2%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  111 chars
+      "after the war and, following the end of the British Mandate and Israel's Declaration of Independence in 1948,"
+    statement density:  32.30 / 1000 chars
+    title reliance:      25 / 28 (89.3%)
+
+[GRAPH 2/4] paragraph=9 title='Israel'
+  source unit: u_9869e5d2319c8ff7ec9c17d36b26592c8bf3e17acb031b26aaee601c8ccedbc3
+  text chars:  1113
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 506 / 1119 (45.2%)
+    characters text:     500 / 1113 (44.9%)
+    characters title:    6 / 6 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  274 chars
+      "Israel (/ˈɪzreɪəl/ or /ˈɪzriːəl/; Hebrew: יִשְׂרָאֵל\u200e Yisrā'el; Arabic: إِسْرَائِيل\u200e Isrāʼīl), officially the State of Israel (Hebrew: מְדִינַת יִשְׂרָאֵל\u200e Medīnat Yisrā'el [mediˈ…"
+    statement density:  16.09 / 1000 chars
+    title reliance:      17 / 18 (94.4%)
+
+[GRAPH 3/4] paragraph=14 title='Geography of Saudi Arabia'
+  source unit: u_c90c433f1defefb862705f647dac6406183d78690d4e5ae25cd2d1305711d2d5
+  text chars:  1074
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      checkpoint: reused
+    [LLM graph.reference #5] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 22
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    21
+    initially rejected: 1
+
+    initial rejection #13
+      validator:
+        response.statements[13].predicate.evidence[0]: quote 'boundaries ... are undefined' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "undefined",
+                "segment": "text"
+              }
+            ],
+            "value": "undefined"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "boundaries ... are undefined",
+                "segment": "text"
+              }
+            ],
+            "value": "hasBoundaryStatus"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "The Kingdom of Saudi Arabia",
+                "segment": "text"
+              }
+            ],
+            "value": "Kingdom of Saudi Arabia"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 22
+  coverage:
+    characters combined: 715 / 1099 (65.1%)
+    characters text:     715 / 1074 (66.6%)
+    characters title:    0 / 25 (0.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  141 chars
+      "(formerly two separate countries: the Yemen Arab Republic or North Yemen; and the People's Democratic Republic of Yemen or South Yemen) are"
+    statement density:  20.02 / 1000 chars
+    title reliance:      0 / 22 (0.0%)
+
+[GRAPH 4/4] paragraph=15 title='Saudi Arabia'
+  source unit: u_d0835ed732619207b35a7e77494dc006b30c50b250a32b092d776b7e81aeef94
+  text chars:  1126
+  whole-source attempt: 1/3
+    [LLM graph.reference #6] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 29
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    29
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     29
+  coverage:
+    characters combined: 940 / 1138 (82.6%)
+    characters text:     940 / 1126 (83.5%)
+    characters title:    0 / 12 (0.0%)
+    sentences:           9 / 9 (100.0%)
+    longest uncovered:  31 chars
+      'through a series of conquests'
+    statement density:  25.48 / 1000 chars
+    title reliance:      0 / 29 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 4
+  statement occurrences: 97
+  whole-source attempts: 4
+  whole-source retries: 0
+  targeted corrections: 2
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   4
+semantic triples:      97
+resource nodes:        78
+entity nodes:          78
+literal values:        20
+predicates:            69
+
+N-Triples:
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Belfast> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:bornOn> "1918-09-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:childOf> <urn:graphragprov:entity:Yitzhak%20HaLevi%20Herzog> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:diedOn> "1997-04-17"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:emigratedInYear> "1935"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:emigratedTo> <urn:graphragprov:entity:Mandatory%20Palestine> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:author> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:general> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:lawyer> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:politician> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Haganah> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:militaryRank> <urn:graphragprov:entity:Major-General> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Israeli> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:nickname> <urn:graphragprov:entity:Vivian> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:1948%20Arab%E2%80%93Israeli%20War> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:battles%20for%20Latrun> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:positionEnd> "1993"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:President%20of%20Israel> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:positionStart> "1983"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:raisedIn> <urn:graphragprov:entity:Dublin> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:retiredFrom> <urn:graphragprov:entity:Israel%20Defence%20Forces> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:retiredInYear> "1962"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:returnedTo> <urn:graphragprov:entity:Palestine> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:servedDuring> <urn:graphragprov:entity:World%20War%20II> .
+  <urn:graphragprov:entity:Chaim%20Herzog> <urn:graphragprov:predicate:servedIn> <urn:graphragprov:entity:British%20Army> .
+  <urn:graphragprov:entity:Haganah> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:Jewish%20paramilitary%20group> .
+  <urn:graphragprov:entity:Yitzhak%20HaLevi%20Herzog> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Ireland> .
+  <urn:graphragprov:entity:Yitzhak%20HaLevi%20Herzog> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:Chief%20Rabbi> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Egypt> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Jordan> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Lebanon> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Palestinian%20territories> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Syria> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:capital> <urn:graphragprov:entity:Jerusalem> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:contains> <urn:graphragprov:entity:geographically%20diverse%20features> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:financialCenter> <urn:graphragprov:entity:Tel%20Aviv> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:sovereign%20state> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Gulf%20of%20Aqaba> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Mediterranean%20Sea> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Red%20Sea> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Western%20Asia> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:mostPopulousCity> <urn:graphragprov:entity:Jerusalem> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:sovereigntyOver> <urn:graphragprov:entity:Jerusalem> .
+  <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:technologyCenter> <urn:graphragprov:entity:Tel%20Aviv> .
+  <urn:graphragprov:entity:Israeli%20sovereignty%20over%20Jerusalem> <urn:graphragprov:predicate:internationallyUnrecognized> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:areaEstimate> "2217949"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:areaEstimateRange> "2149690-2240000" .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:areaUnit> <urn:graphragprov:entity:square%20kilometres> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Red%20Sea> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryStatus> <urn:graphragprov:entity:undefined> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Oman> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:Republic%20of%20Yemen> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasBoundaryWith> <urn:graphragprov:entity:United%20Arab%20Emirates> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCoastlineOn> <urn:graphragprov:entity:Persian%20Gulf> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCoastlineOn> <urn:graphragprov:entity:Red%20Sea> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasCultivableAreaPercentage> "less than 1%" .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasExactSize> <urn:graphragprov:entity:unknown> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationDistribution> <urn:graphragprov:entity:varied%20greatly> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:hasPopulationDistributionPeriod> "early 1990s" .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:largestCountryOf> <urn:graphragprov:entity:Arabia> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Southwest%20Asia> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Yemen> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupiesPartOf> <urn:graphragprov:entity:Arabian%20Peninsula> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:occupiesPercentageOf> "80%" .
+  <urn:graphragprov:entity:Saudi%20government> <urn:graphragprov:predicate:estimatesArea> "2217949"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram%20%28in%20Mecca%29> <urn:graphragprov:predicate:isOneOf> <urn:graphragprov:entity:the%20two%20holiest%20places%20in%20Islam> .
+  <urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi%20%28in%20Medina%29> <urn:graphragprov:predicate:isOneOf> <urn:graphragprov:entity:the%20two%20holiest%20places%20in%20Islam> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:beganConquestsInYear> "1902"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:captured> <urn:graphragprov:entity:Riyadh> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:united> <urn:graphragprov:entity:the%20four%20regions> .
+  <urn:graphragprov:entity:Ibn%20Saud> <urn:graphragprov:predicate:unitedInto> <urn:graphragprov:entity:a%20single%20state> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedBy> <urn:graphragprov:entity:Ibn%20Saud> .
+  <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Riyadh> <urn:graphragprov:predicate:isAncestralHomeOf> <urn:graphragprov:entity:House%20of%20Saud> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:effectively> <urn:graphragprov:entity:a%20hereditary%20dictatorship> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:governedAlong> <urn:graphragprov:entity:Islamic%20lines> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasBeen> <urn:graphragprov:entity:an%20absolute%20monarchy> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasReferenceTo> <urn:graphragprov:entity:Al%20-%20Masjid%20al%20-%20Haram%20%28in%20Mecca%29> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:hasReferenceTo> <urn:graphragprov:entity:Al%20-%20Masjid%20an%20-%20Nabawi%20%28in%20Medina%29> .
+  <urn:graphragprov:entity:Saudi%20Arabia> <urn:graphragprov:predicate:sometimesCalled> <urn:graphragprov:entity:the%20Land%20of%20the%20Two%20Holy%20Mosques> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:globalSpreadFinancedBy> <urn:graphragprov:entity:the%20oil%20and%20gas%20trade> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:hasBeenCalled> <urn:graphragprov:entity:the%20predominant%20feature%20of%20Saudi%20culture> .
+  <urn:graphragprov:entity:Wahhabi%20religious%20movement> <urn:graphragprov:predicate:within> <urn:graphragprov:entity:Sunni%20Islam> .
+  <urn:graphragprov:entity:modern-day%20Saudi%20Arabia> <urn:graphragprov:predicate:formerlyConsistedOf> <urn:graphragprov:entity:Hejaz> .
+  <urn:graphragprov:entity:modern-day%20Saudi%20Arabia> <urn:graphragprov:predicate:formerlyConsistedOf> <urn:graphragprov:entity:Najd> .
+  <urn:graphragprov:entity:modern-day%20Saudi%20Arabia> <urn:graphragprov:predicate:formerlyConsistedOf> <urn:graphragprov:entity:Southern%20Arabia%20%28%27Asir%29> .
+  <urn:graphragprov:entity:modern-day%20Saudi%20Arabia> <urn:graphragprov:predicate:formerlyConsistedOf> <urn:graphragprov:entity:parts%20of%20Eastern%20Arabia%20%28Al%20-%20Ahsa%29> .
+  <urn:graphragprov:entity:the%20state> <urn:graphragprov:predicate:hadForeigners> "8 million" .
+  <urn:graphragprov:entity:the%20state> <urn:graphragprov:predicate:hadPopulation> "33 million" .
+  <urn:graphragprov:entity:the%20state> <urn:graphragprov:predicate:hadPopulationInYear> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:the%20state> <urn:graphragprov:predicate:hadPopulationInYear> "2017"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:the%20state> <urn:graphragprov:predicate:hadSaudiNationals> "20 million" .
+  <urn:graphragprov:entity:the%20state> <urn:graphragprov:predicate:hadTotalPopulation> "28.7 million" .
+  <urn:graphragprov:entity:the%20state> <urn:graphragprov:predicate:officialLanguage> <urn:graphragprov:entity:Arabic> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      checkpoint: reused
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Aluf> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Israel> .
+  - <urn:graphragprov:entity:Israel> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Middle%20East> .
+  - <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:locatedNorthOf> <urn:graphragprov:entity:Middle%20East> .
+  - <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> .
+  - <urn:graphragprov:entity:Kingdom%20of%20Saudi%20Arabia> <urn:graphragprov:predicate:foundedInYear> "1932"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Aluf> <urn:graphragprov:predicate:country> ?country . ?country <urn:graphragprov:predicate:locatedIn> ?region . ?answer <urn:graphragprov:predicate:locatedNorthOf> ?region . ?answer <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> . ?answer <urn:graphragprov:predicate:foundedInYear> ?year . BIND(?year AS ?answer) }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6e72b551c87fe993>
+  FROM <urn:graphragprov:unit:u_9869e5d2319c8ff7>
+  FROM <urn:graphragprov:unit:u_c90c433f1defefb8>
+  FROM <urn:graphragprov:unit:u_d0835ed732619207>
+  WHERE { <urn:graphragprov:entity:Aluf> <urn:graphragprov:predicate:country> ?country . ?country <urn:graphragprov:predicate:locatedIn> ?region . ?answer <urn:graphragprov:predicate:locatedNorthOf> ?region . ?answer <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Persian%20Gulf> . ?answer <urn:graphragprov:predicate:foundedInYear> ?year . BIND(?year AS ?answer) }
+
+========================================================================
+H0 COLLECTION FAILED
+========================================================================
+case:                  4hop1__638988_17130_70784_61381
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/4hop1__638988_17130_70784_61381/support/result.json
+graph LLM executed:    0
+graph LLM reused:      6
+query LLM executed:    0
+query LLM reused:      1
+provider usage complete: True
+input tokens:          0
+output tokens:         0
+total tokens:          0
+cached input tokens:   0
+uncached input tokens: 0
+cumulative LLM seconds: 0.000
+
+NOTE: token totals describe provider calls made in this invocation only; reused checkpoints were not billed again.
+
+failure stage:         query_execution
+failure:               GraphDBError: GraphDB returned HTTP 400: MALFORMED QUERY: BIND clause alias 'answer' was previously used
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 0.033s
+  graph.reference.measurements [attempt=1]: 0.009s
+  graph.clear_support [attempt=1]: 0.091s
+  graph.materialization [attempt=1]: 0.108s
+  graph.observation [attempt=1]: 0.008s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 0.001s
+  graphdb.semantic [attempt=1]: 0.003s

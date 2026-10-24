@@ -1,0 +1,161 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: When did Mark Crossley's team win the FA cup?
+
+Expected answer: 1898 and 1959
+
+Gold decomposition:
+1. question='Mark Crossley >> member of sports team'; answer='Nottingham Forest'; support_paragraph=8
+2. question='when did #1 win the fa cup'; answer='1898 and 1959'; support_paragraph=11
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Brian%20Clough> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:Nottingham%20Forest%20F.C.> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:foundedInYear> "1889"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:hadPeriodOfSuccess> "1976-1982" .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:founder%20members> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:joinedLeague> <urn:graphragprov:entity:Football%20League> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:joinedLeagueInYear> "1892"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:memberOf> <urn:graphragprov:entity:Football%20Alliance> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:1977-78%20Football%20League%20title> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:1979%20European%20Cup> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:1980%20European%20Cup> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:FA%20Cup> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:won> <urn:graphragprov:entity:Football%20League%20Cup> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:wonInYear> "1898"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Nottingham%20Forest%20F.C.> <urn:graphragprov:predicate:wonInYear> "1959"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Peter%20Taylor> <urn:graphragprov:predicate:managed> <urn:graphragprov:entity:Nottingham%20Forest%20F.C.> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:activeYearsEndYear> "2011"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:activeYearsStartYear> "1988"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:country> <urn:graphragprov:entity:Wales> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:player> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:internationalCareerEndYear> "2004"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:internationalCareerStartYear> "1997"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Chesterfield> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Fulham> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Manchester%20United> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Middlesbrough> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Milwall> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Nottingham%20Forest> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Oldham%20Athletic> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Sheffield%20Wednesday> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:memberOfSportsTeam> <urn:graphragprov:entity:Stoke%20City> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:numberOfInternationalCaps> "8"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Mark%20Crossley> <urn:graphragprov:predicate:positionPlayed> <urn:graphragprov:entity:goalkeeper> .

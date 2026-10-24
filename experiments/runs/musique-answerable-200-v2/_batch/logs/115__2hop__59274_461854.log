@@ -1,0 +1,193 @@
+
+H0 one-case execution
+  case:          2hop__59274_461854
+  hops:          2
+  question:      Who was the spouse of the actor who played Scarlett in Gone With the Wind?
+  expected:      Laurence Olivier
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__59274_461854/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=13 title='Vivien Leigh'
+  source unit: u_5e4f18aa6bb23401752e5a99b3b1d38dfd0d17366bd7b6fbd760f2d82aae1d27
+  text chars:  506
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 11.047s | model=deepseek-v4-flash
+      tokens:   in=2256 | out=2493 | total=4749 | cached=1920 | uncached=336
+  extraction: ACCEPTED
+  statements: 17
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    17
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     17
+  coverage:
+    characters combined: 334 / 518 (64.5%)
+    characters text:     322 / 506 (63.6%)
+    characters title:    12 / 12 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  33 chars
+      ', for her iconic performances as'
+    statement density:  32.82 / 1000 chars
+    title reliance:      14 / 17 (82.4%)
+
+[GRAPH 2/2] paragraph=5 title='Darlings of the Gods'
+  source unit: u_fb78262b5210338b572ce1697f5682f5133bc9bb87d81cd6453c6920eac7cfaf
+  text chars:  189
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.988s | model=deepseek-v4-flash
+      tokens:   in=2376 | out=1481 | total=3857 | cached=1920 | uncached=456
+  extraction: ACCEPTED
+  statements: 10
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    10
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     10
+  coverage:
+    characters combined: 176 / 209 (84.2%)
+    characters text:     156 / 189 (82.5%)
+    characters title:    20 / 20 (100.0%)
+    sentences:           1 / 1 (100.0%)
+    longest uncovered:  26 chars
+      'Darlings of the Gods is a'
+    statement density:  47.85 / 1000 chars
+    title reliance:      5 / 10 (50.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 27
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      27
+resource nodes:        23
+entity nodes:          23
+literal values:        6
+predicates:            14
+
+N-Triples:
+  <urn:graphragprov:entity:A%20Streetcar%20Named%20Desire> <urn:graphragprov:predicate:publicationYear> "1951"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Gone%20with%20the%20Wind> <urn:graphragprov:predicate:publicationYear> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Tovarich> <urn:graphragprov:predicate:publicationYear> "1963"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Lady%20Olivier> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Academy%20Award%20for%20Best%20Actress> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:Tony%20Award> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Vivian%20Mary%20Hartley> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:bornOn> "1913-11-05"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:diedOn> "1967-07-08"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:English> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:film%20actress> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:stage%20actress> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:performedIn> <urn:graphragprov:entity:A%20Streetcar%20Named%20Desire> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:performedIn> <urn:graphragprov:entity:Tovarich> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Blanche%20DuBois> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Scarlett%20O%27Hara> .
+  <urn:graphragprov:entity:Darlings%20of%20the%20Gods> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:1948%20trip%20to%20Australia%20by%20Laurence%20Olivier%20and%20Vivien%20Leigh%20and%20the%20Old%20Vic%20Company> .
+  <urn:graphragprov:entity:Darlings%20of%20the%20Gods> <urn:graphragprov:predicate:about> <urn:graphragprov:entity:Olivier%20and%20Leigh%20met%20Peter%20Finch> .
+  <urn:graphragprov:entity:Darlings%20of%20the%20Gods> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:mini%20series> .
+  <urn:graphragprov:entity:Darlings%20of%20the%20Gods> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Australian> .
+  <urn:graphragprov:entity:Darlings%20of%20the%20Gods> <urn:graphragprov:predicate:publicationYear> "1989"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Laurence%20Olivier> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Peter%20Finch> .
+  <urn:graphragprov:entity:Laurence%20Olivier> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:1948%20trip%20to%20Australia> .
+  <urn:graphragprov:entity:Old%20Vic%20Company> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:1948%20trip%20to%20Australia> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:met> <urn:graphragprov:entity:Peter%20Finch> .
+  <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:participatedIn> <urn:graphragprov:entity:1948%20trip%20to%20Australia> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.532s | model=deepseek-v4-flash
+      tokens:   in=2249 | out=352 | total=2601 | cached=640 | uncached=1609
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Gone%20with%20the%20Wind> <urn:graphragprov:predicate:publicationYear> "1939"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  - <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Scarlett%20O%27Hara> .
+  - <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> .
+  - <urn:graphragprov:entity:Vivien%20Leigh> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Lady%20Olivier> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Gone%20with%20the%20Wind> <urn:graphragprov:predicate:publicationYear> ?year . ?actor <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Scarlett%20O%27Hara> . ?actor <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> . ?actor <urn:graphragprov:predicate:alsoKnownAs> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_5e4f18aa6bb23401>
+  FROM <urn:graphragprov:unit:u_fb78262b5210338b>
+  WHERE { <urn:graphragprov:entity:Gone%20with%20the%20Wind> <urn:graphragprov:predicate:publicationYear> ?year . ?actor <urn:graphragprov:predicate:playedRole> <urn:graphragprov:entity:Scarlett%20O%27Hara> . ?actor <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:actress> . ?actor <urn:graphragprov:predicate:alsoKnownAs> ?answer . }
+
+GraphDB execution:
+  observed answers: ('Lady Olivier',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Vivien Leigh']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__59274_461854
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__59274_461854/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6881
+output tokens:         4326
+total tokens:          11207
+cached input tokens:   4480
+uncached input tokens: 2401
+cumulative LLM seconds: 20.567
+
+statement occurrences: 27
+semantic triples:      27
+entity nodes:          23
+literal values:        6
+predicates:            14
+query attempts:        1
+observed answers:      ('Lady Olivier',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 18.042s
+  graph.reference.measurements [attempt=1]: 0.003s
+  graph.clear_support [attempt=1]: 0.040s
+  graph.materialization [attempt=1]: 0.117s
+  graph.observation [attempt=1]: 0.006s
+  graph.frozen.measurements [attempt=1]: 0.007s
+  query.reference.generation [attempt=1]: 2.533s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.496s

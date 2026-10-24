@@ -1,0 +1,188 @@
+
+H0 one-case execution
+  case:          2hop__342746_679190
+  hops:          2
+  question:      Who is the spouse of the screenwriter of The Actress?
+  expected:      Garson Kanin
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__342746_679190/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=10 title='The Actress'
+  source unit: u_6260601ad3ee142f778be1286dd339d188f5185f81053c7c65e5d8d391a1a564
+  text chars:  274
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.504s | model=deepseek-v4-flash
+      tokens:   in=2172 | out=1776 | total=3948 | cached=2048 | uncached=124
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 185 / 285 (64.9%)
+    characters text:     174 / 274 (63.5%)
+    characters title:    11 / 11 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  18 chars
+      'autobiographical'
+    statement density:  45.61 / 1000 chars
+    title reliance:      11 / 13 (84.6%)
+
+[GRAPH 2/2] paragraph=0 title="Adam's Rib"
+  source unit: u_7c0ddb5b33d7ad0562b706fb11ee673b9d6d632f422bc7276866f112bb477773
+  text chars:  428
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 6.864s | model=deepseek-v4-flash
+      tokens:   in=2326 | out=1557 | total=3883 | cached=2048 | uncached=278
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 225 / 438 (51.4%)
+    characters text:     225 / 428 (52.6%)
+    characters title:    0 / 10 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  60 chars
+      'as married lawyers who come to oppose each other in court.'
+    statement density:  25.11 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 24
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 0
+  initial rejections: 0
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      24
+resource nodes:        19
+entity nodes:          19
+literal values:        2
+predicates:            10
+
+N-Triples:
+  <urn:graphragprov:entity:Anthony%20Perkins> <urn:graphragprov:predicate:filmDebut> <urn:graphragprov:entity:The%20Actress> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:Years%20Ago> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:George%20Cukor> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:comedy-drama%20film> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:publicationYear> "1953"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:screenwriter> <urn:graphragprov:entity:Ruth%20Gordon> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Anthony%20Perkins> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jean%20Simmons> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Spencer%20Tracy> .
+  <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Teresa%20Wright> .
+  <urn:graphragprov:entity:Years%20Ago> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:play> .
+  <urn:graphragprov:entity:Years%20Ago> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Ruth%20Gordon> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:George%20Cukor> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:romantic%20comedy%20film> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:musicComposedBy> <urn:graphragprov:entity:Mikl%C3%B3s%20R%C3%B3zsa> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:publicationYear> "1949"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:screenwriter> <urn:graphragprov:entity:Garson%20Kanin> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:screenwriter> <urn:graphragprov:entity:Ruth%20Gordon> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Judy%20Holliday> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Katharine%20Hepburn> .
+  <urn:graphragprov:entity:Adam%27s%20Rib> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Spencer%20Tracy> .
+  <urn:graphragprov:entity:Farewell%2C%20Amanda> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Cole%20Porter> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.745s | model=deepseek-v4-flash
+      tokens:   in=1930 | out=165 | total=2095 | cached=640 | uncached=1290
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:screenwriter> <urn:graphragprov:entity:Ruth%20Gordon> .
+  - <urn:graphragprov:entity:Ruth%20Gordon> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:Garson%20Kanin> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:screenwriter> ?screenwriter . ?screenwriter <urn:graphragprov:predicate:spouse> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_6260601ad3ee142f>
+  FROM <urn:graphragprov:unit:u_7c0ddb5b33d7ad05>
+  WHERE { <urn:graphragprov:entity:The%20Actress> <urn:graphragprov:predicate:screenwriter> ?screenwriter . ?screenwriter <urn:graphragprov:predicate:spouse> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__342746_679190
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__342746_679190/support/result.json
+graph LLM executed:    2
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          6428
+output tokens:         3498
+total tokens:          9926
+cached input tokens:   4736
+uncached input tokens: 1692
+cumulative LLM seconds: 17.113
+
+statement occurrences: 24
+semantic triples:      24
+entity nodes:          19
+literal values:        2
+predicates:            10
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.377s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.048s
+  graph.materialization [attempt=1]: 0.052s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 1.746s
+  graphdb.semantic [attempt=1]: 0.003s
+  provenance.execution [attempt=1]: 0.457s

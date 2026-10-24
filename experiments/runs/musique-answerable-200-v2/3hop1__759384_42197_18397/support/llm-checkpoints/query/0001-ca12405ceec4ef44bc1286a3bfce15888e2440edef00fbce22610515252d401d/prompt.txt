@@ -1,0 +1,175 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Where did the person who argued that the country that Mark Fradkin is a citizen of had become an imperialist power declare he would intervene in the Korean conflict?
+
+Expected answer: the Politburo
+
+Gold decomposition:
+1. question='Mark Fradkin >> country of citizenship'; answer='USSR'; support_paragraph=1
+2. question='Who argued that the #1 had itself become an imperialist power?'; answer='Mao Zedong'; support_paragraph=12
+3. question='Where did #2 declare that he would intervene in the Korean conflict?'; answer='the Politburo'; support_paragraph=6
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Joseph%20Stalin> <urn:graphragprov:predicate:createdModelFor> <urn:graphragprov:entity:subsequent%20inward%20looking%20Stalinist%20states> .
+<urn:graphragprov:entity:Joseph%20Stalin> <urn:graphragprov:predicate:established> <urn:graphragprov:entity:socialism%20in%20one%20country> .
+<urn:graphragprov:entity:Joseph%20Stalin> <urn:graphragprov:predicate:establishedFor> <urn:graphragprov:entity:Soviet%20Union> .
+<urn:graphragprov:entity:Joseph%20Stalin> <urn:graphragprov:predicate:purged> <urn:graphragprov:entity:early%20Internationalist%20elements> .
+<urn:graphragprov:entity:Lenin> <urn:graphragprov:predicate:declared> "Imperialism was the highest stage of capitalism" .
+<urn:graphragprov:entity:Lenin> <urn:graphragprov:predicate:wroteExtensivelyOn> <urn:graphragprov:entity:the%20matter> .
+<urn:graphragprov:entity:Mao%20Zedong> <urn:graphragprov:predicate:argued> "the Soviet Union had itself become an imperialist power while maintaining a socialist façade" .
+<urn:graphragprov:entity:Nikita%20Khrushchev> <urn:graphragprov:predicate:announced> <urn:graphragprov:entity:the%20continuation%20of%20the%20war%20on%20imperialism> .
+<urn:graphragprov:entity:Nikita%20Khrushchev> <urn:graphragprov:predicate:putPressureOn> <urn:graphragprov:entity:Soviet-American%20relations> .
+<urn:graphragprov:entity:Nikita%20Khrushchev> <urn:graphragprov:predicate:started> <urn:graphragprov:entity:a%20new%20wave%20of%20anti-imperialist%20propaganda> .
+<urn:graphragprov:entity:Nikita%20Khrushchev> <urn:graphragprov:predicate:stated> "soon the people of different countries will come together and overthrow their imperialist leaders" .
+<urn:graphragprov:entity:Soviet%20Union> <urn:graphragprov:predicate:declaredItself> <urn:graphragprov:entity:anti-imperialist> .
+<urn:graphragprov:entity:Sultan%20Galiev> <urn:graphragprov:predicate:considered> "the Soviet Regime a renewed version of the Russian imperialism and colonialism" .
+<urn:graphragprov:entity:Trotsky> <urn:graphragprov:predicate:believed> "the revolution could only succeed in Russia as part of a world revolution" .
+<urn:graphragprov:entity:USSR> <urn:graphragprov:predicate:practiced> <urn:graphragprov:entity:colonialism> .
+<urn:graphragprov:entity:USSR> <urn:graphragprov:predicate:wasCarryingOn> <urn:graphragprov:entity:the%20old%20Russian%20tradition%20of%20expansion%20and%20control> .
+<urn:graphragprov:entity:Vasyl%20Shakhrai> <urn:graphragprov:predicate:considered> "the Soviet Regime a renewed version of the Russian imperialism and colonialism" .
+<urn:graphragprov:entity:critics> <urn:graphragprov:predicate:argue> "it exhibited tendencies common to historic empires" .
+<urn:graphragprov:entity:internationalist%20tendencies%20of%20the%20early%20revolution> <urn:graphragprov:predicate:abandonedUntil> "they returned in the framework of a client state in competition with the Americans during the Cold War" .
+<urn:graphragprov:entity:some%20scholars> <urn:graphragprov:predicate:hold> "the Soviet Union was a hybrid entity containing elements common to both multinational empires and nation states" .
+<urn:graphragprov:entity:China> <urn:graphragprov:predicate:justification> <urn:graphragprov:entity:American%20aggression%20in%20the%20guise%20of%20the%20UN> .
+<urn:graphragprov:entity:China> <urn:graphragprov:predicate:justifiedEntryInto> <urn:graphragprov:entity:Korean%20War> .
+<urn:graphragprov:entity:KPA> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:army> .
+<urn:graphragprov:entity:Korean%20War> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:war> .
+<urn:graphragprov:entity:Korean%20War> <urn:graphragprov:predicate:startDate> "1950-06-27"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mao%20Zedong> <urn:graphragprov:predicate:declaredInterventionIn> <urn:graphragprov:entity:Korea> .
+<urn:graphragprov:entity:Mao%20Zedong> <urn:graphragprov:predicate:reportedTo> <urn:graphragprov:entity:Politburo> .
+<urn:graphragprov:entity:Nationalist%20Republic%20of%20China%20%28Taiwan%29> <urn:graphragprov:predicate:involvedIn> <urn:graphragprov:entity:hostilities> .
+<urn:graphragprov:entity:People%27s%20Liberation%20Army%27s%20%28PLA%29%20Taiwan%20invasion%20force> <urn:graphragprov:predicate:reorganizedInto> <urn:graphragprov:entity:PLA%20North%20East%20Frontier%20Force> .
+<urn:graphragprov:entity:People%27s%20Republic%20of%20China%20%28PRC%29> <urn:graphragprov:predicate:involvedIn> <urn:graphragprov:entity:hostilities> .
+<urn:graphragprov:entity:President%20Truman> <urn:graphragprov:predicate:dispatched> <urn:graphragprov:entity:United%20States%20Seventh%20Fleet> .
+<urn:graphragprov:entity:United%20States%20Seventh%20Fleet> <urn:graphragprov:predicate:dispatchedTo> <urn:graphragprov:entity:Taiwan%20Strait> .
+<urn:graphragprov:entity:United%20States%20Seventh%20Fleet> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:prevent%20hostilities> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:authorOf> <urn:graphragprov:entity:numerous%20popular%20songs> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:People%E2%80%99s%20Artist%20of%20the%20USSR> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:awardReceived> <urn:graphragprov:entity:USSR%20State%20Prize> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Vitebsk> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:bornOn> "1914-05-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:collaboratedWith> <urn:graphragprov:entity:Yevgeny%20Dolmatovsky> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:composerOf> <urn:graphragprov:entity:musical%20scores%20for%20forty%20films> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:countryOfCitizenship> <urn:graphragprov:entity:USSR> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Moscow> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:diedOn> "1990-04-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:composer> .
+<urn:graphragprov:entity:Mark%20Fradkin> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Soviet> .

@@ -1,0 +1,71 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_65e81c7914083ca4f4b271ae1ecd6c841f18d3027ce4bc4899a527642e0c5c47
+Title: Presbyterianism
+Text:
+John Knox (1505–1572), a Scot who had spent time studying under Calvin in Geneva, returned to Scotland and urged his countrymen to reform the Church in line with Calvinist doctrines. After a period of religious convulsion and political conflict culminating in a victory for the Protestant party at the Siege of Leith the authority of the Church of Rome was abolished in favour of Reformation by the legislation of the Scottish Reformation Parliament in 1560. The Church was eventually organised by Andrew Melville along Presbyterian lines to become the national Church of Scotland. King James VI and I moved the Church of Scotland towards an episcopal form of government, and in 1637, James' successor, Charles I and William Laud, the Archbishop of Canterbury, attempted to force the Church of Scotland to use the Book of Common Prayer. What resulted was an armed insurrection, with many Scots signing the Solemn League and Covenant. The Covenanters would serve as the government of Scotland for nearly a decade, and would also send military support to the Parliamentarians during the English Civil War. Following the restoration of the monarchy in 1660, Charles II, despite the initial support that he received from the Covenanters, reinstated an episcopal form of government on the church.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 24,
+    "statement": {
+      "subject": {
+        "value": "attempt to force the Church of Scotland to use the Book of Common Prayer",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "attempted to force the Church of Scotland to use the Book of Common Prayer",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "resultedIn",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "resulted in",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "armed insurrection",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "armed insurrection",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[24].predicate.evidence[0]: quote 'resulted in' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

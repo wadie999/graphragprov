@@ -1,0 +1,234 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: Who played Spyder, from the "Once Upon a Time" film set in the place of death of the composer of Al gran sole carico d'amore?
+
+Expected answer: Jason Momoa
+
+Gold decomposition:
+1. question="Al gran sole carico d'amore >> composer"; answer='Luigi Nono'; support_paragraph=3
+2. question='#1 >> place of death'; answer='Venice'; support_paragraph=5
+3. question='spyder from once upon a time in #2'; answer='Jason Momoa'; support_paragraph=16
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Adam%20Goldberg> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Lou%20the%20Jew> .
+<urn:graphragprov:entity:Adrian%20Martinez> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Tino> .
+<urn:graphragprov:entity:Anne%20Phillips> <urn:graphragprov:predicate:exSpouseOf> <urn:graphragprov:entity:Dave%20Phillips> .
+<urn:graphragprov:entity:Bruce%20Willis> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Steve%20Ford> .
+<urn:graphragprov:entity:Christopher%20McDonald> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Mr.%20Carter> .
+<urn:graphragprov:entity:Dave%20Phillips> <urn:graphragprov:predicate:friendOf> <urn:graphragprov:entity:Steve%20Ford> .
+<urn:graphragprov:entity:Elisabeth%20R%C3%B6hm> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Anne%20Phillips> .
+<urn:graphragprov:entity:Emily%20Robinson> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Taylor> .
+<urn:graphragprov:entity:Famke%20Janssen> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Katey%20Ford> .
+<urn:graphragprov:entity:Jason%20Momoa> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Spyder> .
+<urn:graphragprov:entity:Jessica%20Gomes> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Nola> .
+<urn:graphragprov:entity:John> <urn:graphragprov:predicate:assistantTo> <urn:graphragprov:entity:Steve%20Ford> .
+<urn:graphragprov:entity:John%20Goodman> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Dave%20Phillips> .
+<urn:graphragprov:entity:Kal%20Penn> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Rajeesh> .
+<urn:graphragprov:entity:Katey%20Ford> <urn:graphragprov:predicate:sisterInLawOf> <urn:graphragprov:entity:Steve%20Ford> .
+<urn:graphragprov:entity:Ken%20Davitian> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Yuri> .
+<urn:graphragprov:entity:Lou%20the%20Jew> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:real%20estate%20developer> .
+<urn:graphragprov:entity:Lupe> <urn:graphragprov:predicate:girlfriendOf> <urn:graphragprov:entity:Spyder> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Adam%20Goldberg> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Adrian%20Martinez> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Bruce%20Willis> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Christopher%20McDonald> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Elisabeth%20R%C3%B6hm> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Emily%20Robinson> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Famke%20Janssen> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jason%20Momoa> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Jessica%20Gomes> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:John%20Goodman> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Kal%20Penn> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ken%20Davitian> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ralph%20Garman> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Ron%20Funches> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Stephanie%20Sigman> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Thomas%20Middleditch> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Victor%20Ortiz> .
+<urn:graphragprov:entity:Once%20Upon%20a%20Time%20in%20Venice> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Wood%20Harris> .
+<urn:graphragprov:entity:Rajeesh> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:grocery%20store%20clerk> .
+<urn:graphragprov:entity:Ralph%20Garman> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Bum> .
+<urn:graphragprov:entity:Ron%20Funches> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Mocha> .
+<urn:graphragprov:entity:Spyder> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:drug%20lord> .
+<urn:graphragprov:entity:Stephanie%20Sigman> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Lupe> .
+<urn:graphragprov:entity:Steve%20Ford> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:private%20detective> .
+<urn:graphragprov:entity:Steve%20Ford> <urn:graphragprov:predicate:residesIn> <urn:graphragprov:entity:Los%20Angeles> .
+<urn:graphragprov:entity:Thomas%20Middleditch> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:John> .
+<urn:graphragprov:entity:Tino> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:owner%20of%20a%20local%20pizza%20store> .
+<urn:graphragprov:entity:Tino> <urn:graphragprov:predicate:wantsToHelp> <urn:graphragprov:entity:Steve%20Ford> .
+<urn:graphragprov:entity:Victor%20Ortiz> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Chewy> .
+<urn:graphragprov:entity:Wood%20Harris> <urn:graphragprov:predicate:plays> <urn:graphragprov:entity:Prince> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:activeIn> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:createdWork> <urn:graphragprov:entity:Le%20rondini> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:createdWork> <urn:graphragprov:entity:Una%20calle> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedAt> <urn:graphragprov:entity:Mostra%20Triennale%20of%20the%20Brera%20Academy> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedAt> <urn:graphragprov:entity:Turin> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedIn> <urn:graphragprov:entity:Milan> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedIn> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedIn> <urn:graphragprov:entity:Rome> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedIn> <urn:graphragprov:entity:Venice> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedInYear> "1873"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedInYear> "1877"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedInYear> "1880"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedInYear> "1881"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedInYear> "1883"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedInYear> "1891"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:At%20the%20Predica> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:Half-figure%20of%20a%20Girl> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:Les%20pingeons%20de%20Saint%20Marc> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:Les%20saltimbanques> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:Mercante%20di%20ventagli> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:N%C3%A9%20sposo%20n%C3%A9%20figlio> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:Popolana> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:Scena%20famigliare> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:exhibitedWork> <urn:graphragprov:entity:The%20Lovers> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:painter> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:painted> <urn:graphragprov:entity:Love%20Letter> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:painted> <urn:graphragprov:entity:The%20Dockside%20of%20San%20Marco> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:painted> <urn:graphragprov:entity:Una%20fuga%20nel%201700> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:sentInYear> "1877-1878" .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:sentTo> <urn:graphragprov:entity:Paris> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:sentWork> <urn:graphragprov:entity:A%20venetian%20-%20A%20Daughter%20of%20the%20People> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:sentWork> <urn:graphragprov:entity:El-Mazrama> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:sentWork> <urn:graphragprov:entity:Los%20Saltimbanques> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:sentWork> <urn:graphragprov:entity:Pigeons%20of%20St%20Mark> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:studiedAt> <urn:graphragprov:entity:Academy%20of%20Fine%20Arts> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:studiedUnder> <urn:graphragprov:entity:Alessandro%20Milesi> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:studiedUnder> <urn:graphragprov:entity:Giacomo%20Favretto> .
+<urn:graphragprov:entity:Alessandro%20Zezzos> <urn:graphragprov:predicate:studiedUnder> <urn:graphragprov:entity:Luigi%20Nono> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:plays%20by%20Bertolt%20Brecht> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Luigi%20Nono> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:conductor> <urn:graphragprov:entity:Claudio%20Abbado> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:director> <urn:graphragprov:entity:Yuri%20Lyubimov> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:incorporatesTapedSounds> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:incorporatesTextsOf> <urn:graphragprov:entity:Che%20Guevara> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:incorporatesTextsOf> <urn:graphragprov:entity:Fidel%20Castro> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:incorporatesTextsOf> <urn:graphragprov:entity:Karl%20Marx> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:incorporatesTextsOf> <urn:graphragprov:entity:Vladimir%20Lenin> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:opera> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:librettist> <urn:graphragprov:entity:Nono%20himself> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:librettist> <urn:graphragprov:entity:Yuri%20Lyubimov> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:premiereDate> "1975-04-04"^^<http://www.w3.org/2001/XMLSchema#date> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:premieredAt> <urn:graphragprov:entity:Teatro%20alla%20Scala> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:productOfPoliticalActivism> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:ukPremiere> <urn:graphragprov:entity:32nd%20Edinburgh%20Festival> .
+<urn:graphragprov:entity:Al%20gran%20sole%20carico%20d%27amore> <urn:graphragprov:predicate:ukPremiereYear> "1978"^^<http://www.w3.org/2001/XMLSchema#gYear> .

@@ -1,0 +1,272 @@
+
+H0 one-case execution
+  case:          3hop1__801799_547811_80702
+  hops:          3
+  question:      What is the name of the famous bridge in the place of birth of the composer of La fida ninfa?
+  expected:      Rialto Bridge
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__801799_547811_80702/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=1 title='La fida ninfa'
+  source unit: u_e536a65cb0087980dd5da0991e441418cc97a0ece28d628bbc9f7d22076e281c
+  text chars:  288
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 5.667s | model=deepseek-v4-flash
+      tokens:   in=2248 | out=1060 | total=3308 | cached=2048 | uncached=200
+    [LLM graph.reference #2] sending...
+      provider: 1.891s | model=deepseek-v4-flash
+      tokens:   in=595 | out=177 | total=772 | cached=0 | uncached=595
+  extraction: ACCEPTED
+  statements: 7
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    6
+    initially rejected: 1
+
+    initial rejection #1
+      validator:
+        response.statements[1].predicate.evidence[0]: quote 'composer' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Antonio Vivaldi",
+                "segment": "text"
+              }
+            ],
+            "value": "Antonio Vivaldi"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "composer",
+                "segment": "text"
+              }
+            ],
+            "value": "composer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "La fida ninfa",
+                "segment": "title"
+              }
+            ],
+            "value": "La fida ninfa"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    1
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 7
+  coverage:
+    characters combined: 185 / 301 (61.5%)
+    characters text:     172 / 288 (59.7%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  43 chars
+      'La fida ninfa ("The Faithful Nymph") is an'
+    statement density:  23.26 / 1000 chars
+    title reliance:      7 / 7 (100.0%)
+
+[GRAPH 2/3] paragraph=6 title='Orlando furioso (Vivaldi, 1714)'
+  source unit: u_24dd0ff477ff62f864a786a739f66369c8ff6c3d61d6d0eae25cc9c811ffb7c1
+  text chars:  619
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 10.806s | model=deepseek-v4-flash
+      tokens:   in=2433 | out=2407 | total=4840 | cached=2048 | uncached=385
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 358 / 650 (55.1%)
+    characters text:     327 / 619 (52.8%)
+    characters title:    31 / 31 (100.0%)
+    sentences:           5 / 5 (100.0%)
+    longest uncovered:  100 chars
+      ", and whose music survives in a few fragments retained in the score of RV 819. Therefore, Vivaldi's"
+    statement density:  23.08 / 1000 chars
+    title reliance:      11 / 15 (73.3%)
+
+[GRAPH 3/3] paragraph=0 title='Rialto Bridge'
+  source unit: u_f8903abb4477b7a6deb1c793481a66ac121e9d5ec13c7143c7b06344bc3a9e0a
+  text chars:  372
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 8.479s | model=deepseek-v4-flash
+      tokens:   in=2679 | out=1891 | total=4570 | cached=2048 | uncached=631
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     13
+  coverage:
+    characters combined: 209 / 385 (54.3%)
+    characters text:     196 / 372 (52.7%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  35 chars
+      'since its first construction as a'
+    statement density:  33.77 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 35
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 1
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      35
+resource nodes:        28
+entity nodes:          28
+literal values:        7
+predicates:            26
+
+N-Triples:
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Ristori%29> <urn:graphragprov:predicate:stagedBy> <urn:graphragprov:entity:Vivaldi%20and%20his%20father%27s%20impresa> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Ristori%29> <urn:graphragprov:predicate:stagedInYear> "1713"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Ristori%29> <urn:graphragprov:predicate:writtenBy> <urn:graphragprov:entity:Giovanni%20Alberto%20Ristori> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:cataloguedAs> <urn:graphragprov:entity:RV%20Anh.%2084> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Antonio%20Vivaldi> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:firstPerformedAt> <urn:graphragprov:entity:Teatro%20San%20Angelo> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:firstPerformedIn> <urn:graphragprov:entity:Venice> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:firstPerformedOn> "1714"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:hasNumberOfActs> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:opera> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:librettoBy> <urn:graphragprov:entity:Grazio%20Braccioli> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:recompositionOf> <urn:graphragprov:entity:Orlando%20furioso%20%28Ristori%29> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:relatedTo> <urn:graphragprov:entity:Orlando%20furioso%20%28RV%20728%29> .
+  <urn:graphragprov:entity:Orlando%20furioso%20%28Vivaldi%2C%201714%29> <urn:graphragprov:predicate:survivesIn> <urn:graphragprov:entity:Antonio%20Vivaldi%27s%20personal%20library> .
+  <urn:graphragprov:entity:Peter%20Ryom> <urn:graphragprov:predicate:cataloguerOf> <urn:graphragprov:entity:Vivaldi> .
+  <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Antonio%20Vivaldi> .
+  <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:firstPerformedAt> <urn:graphragprov:entity:Teatro%20Filarmonico> .
+  <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:firstPerformedIn> <urn:graphragprov:entity:Verona> .
+  <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:firstPerformedOn> "1732-01-06"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:hasAria> <urn:graphragprov:entity:Alma%20oppressa%20de%20sorte%20crudele> .
+  <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:opera> .
+  <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:librettoBy> <urn:graphragprov:entity:Scipione%20Maffei> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:connects> <urn:graphragprov:entity:San%20Marco> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:connects> <urn:graphragprov:entity:San%20Polo> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:firstConstructedIn> "12th century" .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:hasBeenRebuilt> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:hasFirstConstructionType> <urn:graphragprov:entity:pontoon%20bridge> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:hasItalianName> <urn:graphragprov:entity:Ponte%20di%20Rialto> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:hasNumberOfSpans> "4"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:hasVenetianName> <urn:graphragprov:entity:Ponte%20de%20Rialto> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:bridge> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:isOldestOf> <urn:graphragprov:entity:four%20bridges%20spanning%20the%20Grand%20Canal> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:isTouristAttraction> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Italy> .
+  <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 2.326s | model=deepseek-v4-flash
+      tokens:   in=2796 | out=243 | total=3039 | cached=640 | uncached=2156
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:composer> <urn:graphragprov:entity:Antonio%20Vivaldi> .
+  - <urn:graphragprov:entity:Antonio%20Vivaldi> <urn:graphragprov:predicate:placeOfBirth> <urn:graphragprov:entity:Venice> .
+  - <urn:graphragprov:entity:Rialto%20Bridge> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Venice> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:placeOfBirth> ?birthplace . ?answer <urn:graphragprov:predicate:locatedIn> ?birthplace . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_24dd0ff477ff62f8>
+  FROM <urn:graphragprov:unit:u_e536a65cb0087980>
+  FROM <urn:graphragprov:unit:u_f8903abb4477b7a6>
+  WHERE { <urn:graphragprov:entity:La%20fida%20ninfa> <urn:graphragprov:predicate:composer> ?composer . ?composer <urn:graphragprov:predicate:placeOfBirth> ?birthplace . ?answer <urn:graphragprov:predicate:locatedIn> ?birthplace . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__801799_547811_80702
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__801799_547811_80702/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          10751
+output tokens:         5778
+total tokens:          16529
+cached input tokens:   6784
+uncached input tokens: 3967
+cumulative LLM seconds: 29.169
+
+statement occurrences: 35
+semantic triples:      35
+entity nodes:          28
+literal values:        7
+predicates:            26
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 26.859s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.071s
+  graph.materialization [attempt=1]: 0.075s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 2.326s
+  graphdb.semantic [attempt=1]: 0.005s
+  provenance.execution [attempt=1]: 0.454s

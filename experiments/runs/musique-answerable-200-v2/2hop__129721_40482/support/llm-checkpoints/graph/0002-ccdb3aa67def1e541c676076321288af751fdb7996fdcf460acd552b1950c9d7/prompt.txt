@@ -1,0 +1,118 @@
+You are correcting invalid grounded RDF statements produced by another extraction agent.
+
+Return the same extraction JSON schema used by the original extraction agent.
+
+Source unit ID: u_25cdc0b20aa19c56dce1425c0cfab055b50367514d9aa051e18d7448134a8346
+Title: Zubly Cemetery
+Text:
+The Zubly Cemetery near Beech Island, South Carolina, which is a small community in Aiken County, South Carolina was established around 1790 by Swiss settlers of the nearby New Windsor Township. It illustrates the vernacular burial customs of the period. The town of New Windsor, settled in 1737, eventually became an outpost for Indian traders. Zubly Cemetery was listed on the National Register of Historic Places on January 28, 2002.
+
+Rejected statements and validator errors:
+[
+  {
+    "statement_index": 3,
+    "statement": {
+      "subject": {
+        "value": "Zubly Cemetery",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Zubly Cemetery",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "Zubly Cemetery",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "establishedBy",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "established ... by Swiss settlers",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "Swiss settlers",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "Swiss settlers",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[3].predicate.evidence[0]: quote 'established ... by Swiss settlers' does not occur in source segment 'text'"
+  },
+  {
+    "statement_index": 6,
+    "statement": {
+      "subject": {
+        "value": "Zubly Cemetery",
+        "evidence": [
+          {
+            "segment": "title",
+            "quote": "Zubly Cemetery",
+            "occurrence": 1
+          },
+          {
+            "segment": "text",
+            "quote": "Zubly Cemetery",
+            "occurrence": 1
+          }
+        ]
+      },
+      "predicate": {
+        "value": "listedOnDate",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "listed on ... on January 28, 2002",
+            "occurrence": 1
+          }
+        ]
+      },
+      "object": {
+        "value": "2002-01-28",
+        "datatype": "date",
+        "evidence": [
+          {
+            "segment": "text",
+            "quote": "January 28, 2002",
+            "occurrence": 1
+          }
+        ]
+      }
+    },
+    "validator_error": "response.statements[6].predicate.evidence[0]: quote 'listed on ... on January 28, 2002' does not occur in source segment 'text'"
+  }
+]
+
+Correction rules:
+- Return only corrected replacements for the rejected statements.
+- Do not repeat statements that were already valid.
+- Every evidence quote must occur verbatim in the declared title or text segment.
+- Use the correct 1-based occurrence of each evidence quote.
+- Keep a statement only when its semantic claim is supported by the source.
+- Omit a statement when it cannot be corrected without inventing evidence or meaning.
+- Do not add unrelated statements or facts.
+
+Return exactly one JSON object:
+{
+  "statements": [
+    {
+      "subject": {"value": "...", "evidence": [...]},
+      "predicate": {"value": "...", "evidence": [...]},
+      "object": {"value": "...", "evidence": [...]}
+    }
+  ]
+}
+
+Object datatype is optional and uses the same original extraction contract.
+Do not return Markdown fences, commentary, repair actions, indices, or additional fields.

@@ -1,0 +1,194 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: How were the same people who the Somali Muslim Ajuran Empire declared independence from expelled from the natural boundary between Thailand and the country where Nam Theun is found?
+
+Expected answer: The dynasty regrouped and defeated the Portuguese
+
+Gold decomposition:
+1. question='Nam Theun >> country'; answer='Laos'; support_paragraph=11
+2. question='what natural boundary lies between thailand and #1'; answer='Myanmar'; support_paragraph=10
+3. question='New coins were a proclamation of independence by the Somali Muslim Ajuran Empire from whom?'; answer='the Portuguese'; support_paragraph=6
+4. question='How were the #3 expelled from #2 ?'; answer='The dynasty regrouped and defeated the Portuguese'; support_paragraph=18
+
+Frozen RDF graph:
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Burma> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Bangladesh> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:China> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:India> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Laos> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Thailand> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasSouthBorder> <urn:graphragprov:entity:Andaman%20Sea> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:hasWestBorder> <urn:graphragprov:entity:Bay%20of%20Bengal> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:country> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:mainland%20Southeast%20Asia> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedNear> <urn:graphragprov:entity:major%20Indian%20Ocean%20shipping%20lanes> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Eurasian%20Plate> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedOn> <urn:graphragprov:entity:Indian%20Plate> .
+<urn:graphragprov:entity:Myanmar> <urn:graphragprov:predicate:locatedRelativeTo> <urn:graphragprov:entity:Himalayas> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Khading> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:hasOption> <urn:graphragprov:entity:Nam%20Theun%201> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:hasOption> <urn:graphragprov:entity:Nam%20Theun%201-2> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:hasOption> <urn:graphragprov:entity:Nam%20Theun%202> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:hasTributary> <urn:graphragprov:entity:Nam%20Noy> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:hasTributary> <urn:graphragprov:entity:Nam%20One> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:hasTributary> <urn:graphragprov:entity:Nam%20Theun> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:river> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Bolikhamsai%20Province> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Khammouane%20Province> .
+<urn:graphragprov:entity:Nam%20Theun> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Laos> .
+<urn:graphragprov:entity:Nam%20Theun%202> <urn:graphragprov:predicate:consideredMostEconomic> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:graphragprov:entity:Nam%20Theun%202> <urn:graphragprov:predicate:status> <urn:graphragprov:entity:in%20operation> .
+<urn:graphragprov:entity:Hanthawaddy%20forces> <urn:graphragprov:predicate:sacked> <urn:graphragprov:entity:Ava> .
+<urn:graphragprov:entity:Hanthawaddy%20forces> <urn:graphragprov:predicate:sackedInYear> "1752"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Mon%20of%20Lower%20Myanmar> <urn:graphragprov:predicate:founded> <urn:graphragprov:entity:Restored%20Hanthawaddy%20Kingdom> .
+<urn:graphragprov:entity:Restored%20Toungoo%20kings> <urn:graphragprov:predicate:created> <urn:graphragprov:entity:legal%20and%20political%20framework> .
+<urn:graphragprov:entity:Toungoo%20Dynasty> <urn:graphragprov:predicate:age> "266"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<urn:graphragprov:entity:Toungoo%20Dynasty> <urn:graphragprov:predicate:endedInYear> "1752"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:crown> <urn:graphragprov:predicate:built> <urn:graphragprov:entity:prosperous%20economy> .
+<urn:graphragprov:entity:crown> <urn:graphragprov:predicate:reduced> <urn:graphragprov:entity:hereditary%20rights%20of%20Shan%20chiefs> .
+<urn:graphragprov:entity:crown> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:hereditary%20chieftainships> .
+<urn:graphragprov:entity:crown> <urn:graphragprov:predicate:replacedIn> <urn:graphragprov:entity:entire%20Irrawaddy%20valley> .
+<urn:graphragprov:entity:crown> <urn:graphragprov:predicate:replacedWith> <urn:graphragprov:entity:appointed%20governorships> .
+<urn:graphragprov:entity:dynasty> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Portuguese> .
+<urn:graphragprov:entity:dynasty> <urn:graphragprov:predicate:defeated> <urn:graphragprov:entity:Siam> .
+<urn:graphragprov:entity:dynasty> <urn:graphragprov:predicate:defeatedInYear> "1613"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:dynasty> <urn:graphragprov:predicate:defeatedInYear> "1614"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:dynasty> <urn:graphragprov:predicate:restored> <urn:graphragprov:entity:smaller%2C%20more%20manageable%20kingdom> .
+<urn:graphragprov:entity:kingdom> <urn:graphragprov:predicate:besetWith> <urn:graphragprov:entity:nagging%20rebellion%20in%20Lan%20Na> .
+<urn:graphragprov:entity:kingdom> <urn:graphragprov:predicate:besetWith> <urn:graphragprov:entity:repeated%20Meithei%20raids> .
+<urn:graphragprov:entity:legal%20and%20political%20framework> <urn:graphragprov:predicate:continuedUntil> "19th century" .
+<urn:graphragprov:entity:prosperous%20economy> <urn:graphragprov:predicate:lastedFor> "more than 80 years" .
+<urn:graphragprov:entity:smaller%2C%20more%20manageable%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Lan%20Na> .
+<urn:graphragprov:entity:smaller%2C%20more%20manageable%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Lower%20Myanmar> .
+<urn:graphragprov:entity:smaller%2C%20more%20manageable%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Shan%20states> .
+<urn:graphragprov:entity:smaller%2C%20more%20manageable%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:Upper%20Myanmar> .
+<urn:graphragprov:entity:smaller%2C%20more%20manageable%20kingdom> <urn:graphragprov:predicate:encompassing> <urn:graphragprov:entity:upper%20Tenasserim> .
+<urn:graphragprov:entity:Cape%20of%20Good%20Hope> <urn:graphragprov:predicate:discoveryYear> "1488"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:Portuguese> <urn:graphragprov:predicate:discovered> <urn:graphragprov:entity:Cape%20of%20Good%20Hope> .
+<urn:graphragprov:entity:Portuguese%20discovery%20of%20the%20Cape%20of%20Good%20Hope%20in%201488> <urn:graphragprov:predicate:initiated> <urn:graphragprov:entity:series%20of%20Ottoman-Portuguese%20naval%20wars%20in%20the%20Indian%20Ocean> .
+<urn:graphragprov:entity:Somali%20Muslim%20Ajuran%20Empire> <urn:graphragprov:predicate:alliedWith> <urn:graphragprov:entity:Ottomans> .
+<urn:graphragprov:entity:Somali%20Muslim%20Ajuran%20Empire> <urn:graphragprov:predicate:defied> <urn:graphragprov:entity:Portuguese%20economic%20monopoly%20in%20the%20Indian%20Ocean> .
+<urn:graphragprov:entity:Somali%20Muslim%20Ajuran%20Empire> <urn:graphragprov:predicate:employed> <urn:graphragprov:entity:new%20coinage> .
+<urn:graphragprov:entity:Western%20European%20states> <urn:graphragprov:predicate:avoided> <urn:graphragprov:entity:Ottoman%20trade%20monopoly> .
+<urn:graphragprov:entity:Western%20European%20states> <urn:graphragprov:predicate:discovered> <urn:graphragprov:entity:new%20maritime%20trade%20routes> .
+<urn:graphragprov:entity:new%20coinage> <urn:graphragprov:predicate:followed> <urn:graphragprov:entity:Ottoman%20pattern> .
+<urn:graphragprov:entity:new%20coinage> <urn:graphragprov:predicate:proclaimed> <urn:graphragprov:entity:attitude%20of%20economic%20independence%20in%20regard%20to%20the%20Portuguese> .
+<urn:graphragprov:entity:series%20of%20Ottoman-Portuguese%20naval%20wars%20in%20the%20Indian%20Ocean> <urn:graphragprov:predicate:occurredThroughout> <urn:graphragprov:entity:16th%20century> .

@@ -1,0 +1,362 @@
+Convert one source unit into a rich grounded RDF-style knowledge graph.
+
+The source has two immutable segments: `title` and `text`.
+
+Goals:
+1. extract as many useful explicit atomic facts as possible;
+2. represent them as reusable subject-predicate-object statements;
+3. ground every subject, predicate, and object to exact source substrings.
+
+Do not stop after finding only the facts needed for one downstream question.
+
+Return ONLY:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "...",
+        "datatype": "... optional ...",
+        "evidence": [
+          {"segment": "title|text", "quote": "...", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+RULES
+
+1. ATOMIC FACTS
+Each statement expresses one relation.
+Subjects and entity objects must be reusable entities/concepts, not sentences,
+clauses, explanations, or lists.
+
+Split dimensions:
+"American jazz guitarist" ->
+  nationality -> American
+  occupation -> guitarist
+  genre -> jazz
+
+Split lists:
+"CD and vinyl" -> two statements.
+
+2. ENTITIES VS LITERALS
+Subjects are always entities.
+Objects without `datatype` are entities.
+
+Use literals only for scalar values.
+
+Allowed datatypes:
+string, integer, decimal, boolean, year, yearMonth, date, dateTime
+
+Normalize when the source provides enough precision:
+
+"68,202,492" -> value "68202492", datatype "integer"
+"6 March 2018" -> value "2018-03-06", datatype "date"
+"March 2018" -> value "2018-03", datatype "yearMonth"
+"2018" -> value "2018", datatype "year"
+
+Keep imprecise scalars as strings:
+"the 1950s"
+"around 2018"
+"35 to 40 hours per week"
+
+Never invent missing precision.
+Every `value` is a JSON string.
+
+3. PREDICATES
+Use concise lowerCamelCase relations, normally 1-4 words, e.g.:
+
+instanceOf, nationality, occupation, genre, bornIn, bornOn,
+director, writtenBy, producedBy, starring, locatedIn,
+foundedBy, foundedInYear, publicationYear, headquarteredIn
+
+Predicate evidence should be the shortest exact phrase expressing the relation.
+
+4. LOCAL SUPPORT
+A statement must be supported by one local assertion, normally one clause or
+sentence.
+
+Cross-sentence resolution is allowed only for local identity/coreference:
+pronouns, aliases, abbreviations, omitted subjects, or the title.
+
+Do not combine unrelated fragments to manufacture a relation.
+
+5. EXACT GROUNDING
+Every subject, predicate, and object requires evidence.
+
+Each `quote` must be an exact non-empty substring of its declared segment.
+Preserve capitalization, spelling, punctuation, whitespace, Unicode, etc.
+
+Occurrences are counted independently per segment from left to right.
+Use occurrence 1 unless the same quote appears multiple times.
+
+Evidence roles must be meaningful:
+- subject evidence identifies the subject;
+- predicate evidence expresses the relation;
+- object evidence identifies/expresses the object.
+
+6. TITLE
+Use the title when needed to resolve a local subject/object.
+
+Example:
+Title: "Maria Torres"
+Text: "She founded Lumen Works."
+
+"Maria Torres" may use title evidence "Maria Torres" plus text evidence "She".
+
+Do not automatically make the title entity the subject of every statement.
+
+7. SOURCE BOUNDARY
+Use only explicit information in the supplied title and text.
+
+Do not automatically add inverse, symmetric, transitive, ontology-derived,
+cross-source, or external-world facts.
+
+8. BROAD COVERAGE
+Continue through the whole source.
+
+Extract useful explicit facts about identity, type, nationality, occupation,
+location, people, works, organizations, authorship, direction, production,
+membership, leadership, dates, quantities, genres, formats, and other grounded
+relations.
+
+Do not manufacture facts merely to increase graph size.
+
+Return {"statements": []} only when no useful fully grounded atomic fact exists.
+
+
+EXAMPLE
+
+Title:
+"Example Film"
+
+Text:
+"Example Film is a 2018 French drama film directed by Maria Torres and starring
+John Lee and Anna Smith."
+
+Output:
+
+{
+  "statements": [
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "instanceOf",
+        "evidence": [
+          {"segment": "text", "quote": "film", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "drama film",
+        "evidence": [
+          {"segment": "text", "quote": "drama film", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "publicationYear",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "2018",
+        "datatype": "year",
+        "evidence": [
+          {"segment": "text", "quote": "2018", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "nationality",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "French",
+        "evidence": [
+          {"segment": "text", "quote": "French", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "director",
+        "evidence": [
+          {"segment": "text", "quote": "directed by", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Maria Torres",
+        "evidence": [
+          {"segment": "text", "quote": "Maria Torres", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "John Lee",
+        "evidence": [
+          {"segment": "text", "quote": "John Lee", "occurrence": 1}
+        ]
+      }
+    },
+    {
+      "subject": {
+        "value": "Example Film",
+        "evidence": [
+          {"segment": "text", "quote": "Example Film", "occurrence": 1}
+        ]
+      },
+      "predicate": {
+        "value": "starring",
+        "evidence": [
+          {"segment": "text", "quote": "starring", "occurrence": 1}
+        ]
+      },
+      "object": {
+        "value": "Anna Smith",
+        "evidence": [
+          {"segment": "text", "quote": "Anna Smith", "occurrence": 1}
+        ]
+      }
+    }
+  ]
+}
+
+EXPERIMENT TASK — CONSTRUCT MUSIQUE QUESTION GRAPH
+
+We are constructing a grounded RDF graph for one MuSiQue benchmark question.
+
+The question, expected answer, and decomposition are coordination context. They
+help keep entity and predicate choices compatible across supporting paragraphs.
+They are not evidence.
+
+For the CURRENT SOURCE only, return grounded RDF statements using the extraction
+schema below. Reuse semantic names already present in the accepted graph when
+they denote the same thing.
+Extract all useful explicit atomic facts from CURRENT SOURCE.
+
+Do not restrict extraction to facts needed for the question.
+
+However, facts explicitly present in CURRENT SOURCE that are required
+to realize its MuSiQue decomposition hop(s) are mandatory and must not
+be omitted.
+
+Question/answer/decomposition/accepted graph are coordination context,
+not evidence.
+
+Every returned statement must be supported by the CURRENT SOURCE. Python owns
+source identity; never return source IDs.
+
+Question: When is the opening day of the league in which the team with the most games in the series after which the MLB MVP is awarded plays?
+
+Expected answer: Thursday, March 29
+
+Gold decomposition:
+1. question='when do they give out the mlb mvp award'; answer='after the World Series'; support_paragraph=19
+2. question='who played in the most #1 games'; answer='the New York Yankees'; support_paragraph=18
+3. question='Which is the league of #2 ?'; answer='Major League Baseball'; support_paragraph=3
+4. question='when is opening day of #3'; answer='Thursday, March 29'; support_paragraph=16
+
+Accepted semantic graph so far:
+BBWAA | beganByPolling | three writers in each league city
+BBWAA | beganPollingInYear | 1938
+BBWAA | doesNotOfferClearDefinitionOf | most valuable
+BBWAA | leavesJudgmentTo | individual voters
+BBWAA | reducedPollingNumberInYear | 1961
+BBWAA | reducedPollingNumberTo | two per league city
+Bill Devery | movedTo | New York City
+Bill Devery | purchased | franchise
+Boston Red Sox | playedInFirstWorldSeries | true
+Boston Red Sox | playedInWorldSeries | 12
+Boston Red Sox | wonWorldSeries | 8
+Brooklyn / Los Angeles Dodgers | appearedInWorldSeries | 19
+Brooklyn / Los Angeles Dodgers | wonWorldSeries | 6
+Cincinnati Reds | appearedInWorldSeries | 9
+Cincinnati Reds | wonWorldSeries | 5
+Frank Farrell | movedTo | New York City
+Frank Farrell | purchased | franchise
+MVP voting | takesPlaceBefore | postseason
+New York / San Francisco Giants | playedInWorldSeries | 20
+New York / San Francisco Giants | wonWorldSeries | 8
+New York Highlanders | renamedTo | New York Yankees
+New York Mets | basedIn | New York City
+New York Mets | instanceOf | major league club
+New York Mets | league | National League
+New York Yankees | basedIn | New York City borough of the Bronx
+New York Yankees | beganPlayIn | American League
+New York Yankees | competesIn | Major League Baseball
+New York Yankees | formerlyNamed | Baltimore Orioles
+New York Yankees | formerlyNamed | New York Highlanders
+New York Yankees | instanceOf | professional baseball team
+New York Yankees | memberOf | American League East division
+New York Yankees | nationality | American
+New York Yankees | oneOf | two major league clubs based in New York City
+New York Yankees | playedInWorldSeries | 40
+New York Yankees | renamedTo | New York Highlanders
+New York Yankees | wonWorldSeries | 27
+Philadelphia / Kansas City / Oakland Athletics | playedInWorldSeries | 14
+Philadelphia / Kansas City / Oakland Athletics | wonWorldSeries | 9
+St. Louis Cardinals | appearedInWorldSeries | 19
+St. Louis Cardinals | wonWorldSeries | 11
+results | announcedAfter | World Series
+
+CURRENT SOURCE — MuSiQue paragraph 16
+
+{
+  "title": "Opening Day",
+  "text": "Major League Baseball had most of its teams open the 2011 season on a Thursday (March 31) or Friday (April 1) rather than the traditional Monday, in order to prevent the World Series from extending into November. Similarly, most teams opened the 2012 season on Thursday (April 5) or Friday (April 6). However, subsequent seasons through 2017 returned to Monday openers for most teams. For the 2018 season, all 30 teams were scheduled to open the season on Thursday, March 29 (the earliest domestic start for a regular season in MLB history, and the first time since 1968 that all major league teams were scheduled to start the season on the same day, although two games were subsequently rained out and postponed to Friday, March 30)."
+}

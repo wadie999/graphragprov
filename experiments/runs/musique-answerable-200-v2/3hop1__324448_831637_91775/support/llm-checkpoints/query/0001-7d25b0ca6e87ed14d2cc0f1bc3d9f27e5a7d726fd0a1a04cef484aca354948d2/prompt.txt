@@ -1,0 +1,160 @@
+EXPERIMENT TASK — WRITE SPARQL FOR MUSIQUE QUESTION
+
+Prompt version: musique-sparql-evidence-first-v1
+
+ROLE
+
+You are constructing the SPARQL computation for a multi-hop question-answering
+experiment over a frozen RDF graph.
+
+Your job is not merely to state or force the expected answer.
+
+Your job is to express a query whose ?answer value is obtained by executing
+graph patterns against the RDF graph supplied below.
+
+WHY THE QUERY STRUCTURE MATTERS
+
+The query is executed over the frozen graph.
+
+After execution, the computation is traced backwards to determine which RDF
+statements contributed to each returned answer, and those RDF statements are
+resolved back to their exact source occurrences.
+
+Therefore the answer must genuinely arise from graph matching.
+
+A query that simply injects an already-known answer may return the right value,
+but it does not express the computation we need to observe.
+
+THE FROZEN GRAPH IS THE SOURCE OF TRUTH FOR THIS TASK
+
+Every triple pattern you rely on must correspond to relations actually available
+in the frozen RDF graph.
+
+Do not invent a relation because it would make the reasoning chain work.
+
+Do not assume a benchmark relation exists unless you can locate the corresponding
+RDF triple in the supplied graph.
+
+If the graph does not contain the relation needed for an intended reasoning
+step, do not fabricate it.
+
+DECOMPOSITION
+
+The MuSiQue decomposition describes the intended semantic dependency of the
+question.
+
+Use it to understand what each reasoning step means and to look for corresponding
+relations in the frozen graph.
+
+The decomposition does not create facts in the graph.
+
+An intermediate answer from the decomposition may help you recognize entities,
+but the SPARQL computation must still derive its bindings through the graph
+relations that actually exist.
+
+CONSTRUCT THE QUERY
+
+Find the RDF triples in the frozen graph that can realize the question.
+
+Use variables to connect dependent graph patterns.
+
+The final ?answer variable must occur in an RDF triple pattern that retrieves
+its value from the graph.
+
+Example:
+
+Graph:
+    <Organization> <abbreviatedAs> <FIFA> .
+
+To retrieve the organization represented by FIFA:
+
+    ?answer <abbreviatedAs> <FIFA> .
+
+Do not instead write:
+
+    <Organization> <abbreviatedAs> <FIFA> .
+    BIND(<Organization> AS ?answer)
+
+The first query derives the answer.
+The second query inserts an answer that was already known.
+
+SUPPORTED QUERY FORM
+
+Use a SELECT query with ?answer as the answer variable.
+
+Use basic RDF triple patterns and joins through shared variables.
+
+Do not use:
+- BIND
+- VALUES
+- SELECT DISTINCT
+- GRAPH
+- SERVICE
+- SPARQL updates
+- FROM clauses
+
+Python adds dataset scoping after your semantic query is produced.
+
+MATCHED TRIPLES
+
+matched_triples is your record of the exact frozen-graph statements you relied
+on while constructing the query.
+
+Copy those N-Triples lines exactly from the supplied frozen graph.
+
+Do not report a triple that is not present in the graph.
+
+matched_triples describes your evidence selection; the SPARQL query describes
+the computation you construct from that evidence.
+
+OUTPUT
+
+Return only valid JSON:
+
+{
+  "matched_triples": [
+    "<subject> <predicate> <object> ."
+  ],
+  "sparql": "SELECT ?answer WHERE { ... }"
+}
+
+Question: What does SEAL stand for in the military branch that operates USS Prevail?
+
+Expected answer: Sea, Air, and Land
+
+Gold decomposition:
+1. question='USS Prevail >> operator'; answer='United States Navy'; support_paragraph=13
+2. question='list of destroyer classes of #1 >> operator'; answer='U.S. Navy'; support_paragraph=2
+3. question='what does seal stand for in #2 seals'; answer='Sea, Air, and Land'; support_paragraph=17
+
+Frozen RDF graph:
+<urn:graphragprov:entity:United%20States%20Navy%20SEALs> <urn:graphragprov:predicate:abbreviatedAs> <urn:graphragprov:entity:Navy%20SEALs> .
+<urn:graphragprov:entity:United%20States%20Navy%20SEALs> <urn:graphragprov:predicate:expansionOfAbbreviation> <urn:graphragprov:entity:Sea%2C%20Air%2C%20and%20Land> .
+<urn:graphragprov:entity:United%20States%20Navy%20SEALs> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:special%20operations%20force> .
+<urn:graphragprov:entity:United%20States%20Navy%20SEALs> <urn:graphragprov:predicate:mainFunction> <urn:graphragprov:entity:conducting%20small-unit%20maritime%20military%20operations> .
+<urn:graphragprov:entity:United%20States%20Navy%20SEALs> <urn:graphragprov:predicate:namedFor> <urn:graphragprov:entity:Sea%2C%20Air%2C%20and%20Land> .
+<urn:graphragprov:entity:United%20States%20Navy%20SEALs> <urn:graphragprov:predicate:partOf> <urn:graphragprov:entity:Naval%20Special%20Warfare%20Command> .
+<urn:graphragprov:entity:United%20States%20Navy%20SEALs> <urn:graphragprov:predicate:trainedToOperateIn> <urn:graphragprov:entity:all%20environments%20%28Sea%2C%20Air%2C%20and%20Land%29> .
+<urn:graphragprov:entity:USS%20Prevail%20%28AM-107%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:acquired%20by%20the%20United%20States%20Navy> .
+<urn:graphragprov:entity:USS%20Prevail%20%28AM-107%29> <urn:graphragprov:predicate:operator> <urn:graphragprov:entity:United%20States%20Navy> .
+<urn:graphragprov:entity:USS%20Prevail%20%28AM-107%29> <urn:graphragprov:predicate:purpose> <urn:graphragprov:entity:removing%20mines%20from%20minefields%20laid%20in%20the%20water%20to%20prevent%20ships%20from%20passing> .
+<urn:graphragprov:entity:List%20of%20destroyer%20classes%20of%20the%20United%20States%20Navy> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:list> .
+<urn:graphragprov:entity:List%20of%20destroyer%20classes%20of%20the%20United%20States%20Navy> <urn:graphragprov:predicate:relatedTo> <urn:graphragprov:entity:United%20States%20Navy> .
+<urn:graphragprov:entity:List%20of%20destroyer%20classes%20of%20the%20United%20States%20Navy> <urn:graphragprov:predicate:topic> <urn:graphragprov:entity:destroyer%20classes> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:afterEvent> <urn:graphragprov:entity:World%20War%20II> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:designation> <urn:graphragprov:entity:frigates> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:evolvedFrom> <urn:graphragprov:entity:last%20all-gun%20destroyers%20of%20the%201950s> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:exception> <urn:graphragprov:entity:guided%20missile%20destroyers> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:warship> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:originallyDesignated> <urn:graphragprov:entity:destroyer%20leaders> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:U.S.%20Navy> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:reclassifiedAs> <urn:graphragprov:entity:guided%20missile%20cruisers> .
+<urn:graphragprov:entity:first%20major%20warship%20produced%20by%20the%20U.S.%20Navy%20after%20World%20War%20II> <urn:graphragprov:predicate:reclassifiedInYear> "1975"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+<urn:graphragprov:entity:last%20all-gun%20destroyers%20of%20the%201950s> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:destroyers> .
+<urn:graphragprov:entity:last%20all-gun%20destroyers%20of%20the%201950s> <urn:graphragprov:predicate:timePeriod> "1950s" .
+<urn:graphragprov:entity:s> <urn:graphragprov:predicate:enteredServiceIn> "middle 1970s" .
+<urn:graphragprov:entity:s> <urn:graphragprov:predicate:optimizedFor> <urn:graphragprov:entity:anti-submarine%20warfare> .
+<urn:graphragprov:entity:special%20class%20of%20guided%20missile%20destroyers> <urn:graphragprov:predicate:addedTo> <urn:graphragprov:entity:U.S.%20Navy> .
+<urn:graphragprov:entity:special%20class%20of%20guided%20missile%20destroyers> <urn:graphragprov:predicate:couldNotBeDeliveredDueTo> <urn:graphragprov:entity:Iranian%20Revolution> .
+<urn:graphragprov:entity:special%20class%20of%20guided%20missile%20destroyers> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:guided%20missile%20destroyers> .
+<urn:graphragprov:entity:special%20class%20of%20guided%20missile%20destroyers> <urn:graphragprov:predicate:producedFor> <urn:graphragprov:entity:Shah%20of%20Iran> .

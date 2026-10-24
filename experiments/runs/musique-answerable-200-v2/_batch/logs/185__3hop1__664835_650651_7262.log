@@ -1,0 +1,283 @@
+
+H0 one-case execution
+  case:          3hop1__664835_650651_7262
+  hops:          3
+  question:      Who was a prominent figure in the radio division of the network of the version of The Biggest Loser: The Final Chance, set in the country where Bokok is located?
+  expected:      Walter Sabo
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__664835_650651_7262/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=14 title='Bokok, Temburong'
+  source unit: u_4493464060cc185143a198627a980a58cfd4f9f054b2548fcfa6cee01445fc0a
+  text chars:  352
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 9.128s | model=deepseek-v4-flash
+      tokens:   in=2287 | out=1754 | total=4041 | cached=1920 | uncached=367
+    [LLM graph.reference #2] sending...
+      provider: 0.714s | model=deepseek-v4-flash
+      tokens:   in=601 | out=8 | total=609 | cached=0 | uncached=601
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 1
+
+    initial rejection #9
+      validator:
+        response.statements[9].object.value must not be empty
+      proposed statement:
+        {
+          "object": {
+            "datatype": "string",
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "",
+                "segment": "text"
+              }
+            ],
+            "value": ""
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "has a total area of",
+                "segment": "text"
+              }
+            ],
+            "value": "hasTotalArea"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Bokok",
+                "segment": "text"
+              }
+            ],
+            "value": "Bokok"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 11
+  coverage:
+    characters combined: 212 / 368 (57.6%)
+    characters text:     212 / 352 (60.2%)
+    characters title:    0 / 16 (0.0%)
+    sentences:           3 / 3 (100.0%)
+    longest uncovered:  42 chars
+      'to the west. Bokok has a total area of ;'
+    statement density:  29.89 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 2/3] paragraph=16 title='The Biggest Loser Brunei: Lose It All'
+  source unit: u_25ae3e3f8091f044f26ec0fb655d65fbcee98bf15c4d826db36a1ab759b66525
+  text chars:  521
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 7.869s | model=deepseek-v4-flash
+      tokens:   in=2425 | out=1675 | total=4100 | cached=1920 | uncached=505
+  extraction: ACCEPTED
+  statements: 11
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    11
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     11
+  coverage:
+    characters combined: 226 / 558 (40.5%)
+    characters text:     226 / 521 (43.4%)
+    characters title:    0 / 37 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  178 chars
+      "called Lose It All because this is the biggest show of this Brunei's series and to prove to people for keep losing weight weather on the ranch or outside the ranch. This season"
+    statement density:  19.71 / 1000 chars
+    title reliance:      0 / 11 (0.0%)
+
+[GRAPH 3/3] paragraph=11 title='Adult contemporary music'
+  source unit: u_9635c4d5fccd26c5321b348759ebf47a9bc36dc5128b79a6dc27859961f6ea02
+  text chars:  870
+  whole-source attempt: 1/3
+    [LLM graph.reference #4] sending...
+      provider: 14.562s | model=deepseek-v4-flash
+      tokens:   in=2699 | out=3372 | total=6071 | cached=2048 | uncached=651
+  extraction: ACCEPTED
+  statements: 23
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    23
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     23
+  coverage:
+    characters combined: 631 / 894 (70.6%)
+    characters text:     631 / 870 (72.5%)
+    characters title:    0 / 24 (0.0%)
+    sentences:           4 / 5 (80.0%)
+    longest uncovered:  119 chars
+      '. By the 1980s, tastes had changed and radio formats reflected this change, including musical artists such as Journey.'
+    statement density:  25.73 / 1000 chars
+    title reliance:      0 / 23 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 45
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      45
+resource nodes:        43
+entity nodes:          43
+literal values:        6
+predicates:            25
+
+N-Triples:
+  <urn:graphragprov:entity:Cristine%20Phoebe> <urn:graphragprov:predicate:replaced> <urn:graphragprov:entity:Juliana%20Mikael> .
+  <urn:graphragprov:entity:Juliana%20Mikael> <urn:graphragprov:predicate:didNotReturnForSeason> <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:reality%20television%20series> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser> <urn:graphragprov:predicate:network> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei> <urn:graphragprov:predicate:basedOn> <urn:graphragprov:entity:The%20Biggest%20Loser> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:version> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:season> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:introducedTrainer> <urn:graphragprov:entity:Cristine%20Phoebe> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:partOfSeries> <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:premiereDate> "2012-03-13"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:The%20Biggest%20Loser%20Brunei%20%28season%203%29%3A%20Lose%20It%20All> <urn:graphragprov:predicate:seasonNumber> "3"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Limbang%2C%20Sarawak%20%28Malaysia%29> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Mukim%20Amo> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Mukim%20Bangar> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:borders> <urn:graphragprov:entity:Sarawak%20%28Malaysia%29> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:hasPopulation> "3583"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:mukim> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:subdistrict> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brunei> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Temburong%20District> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:west%20of%20the%20Temburong%20District> .
+  <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:populationAsOf> "2016"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Dan%20Daniel> <urn:graphragprov:predicate:wasAddedAsRadioStar> <urn:graphragprov:entity:major%20radio%20stars> .
+  <urn:graphragprov:entity:Dick%20Summers> <urn:graphragprov:predicate:wasAddedAsRadioStar> <urn:graphragprov:entity:major%20radio%20stars> .
+  <urn:graphragprov:entity:Don%20Bleu> <urn:graphragprov:predicate:wasAddedAsRadioStar> <urn:graphragprov:entity:major%20radio%20stars> .
+  <urn:graphragprov:entity:Rumours%20%281977%29> <urn:graphragprov:predicate:wasBestSellingAlbumOfDecade> "the 1970s" .
+  <urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:hadActs> <urn:graphragprov:entity:Air%20Supply> .
+  <urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:hadActs> <urn:graphragprov:entity:America> .
+  <urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:hadActs> <urn:graphragprov:entity:England%20Dan%20%26%20John%20Ford%20Coley> .
+  <urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:hadActs> <urn:graphragprov:entity:Seals%20and%20Crofts> .
+  <urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:hadActs> <urn:graphragprov:entity:Toto> .
+  <urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:hadActs> <urn:graphragprov:entity:the%20reformed%20Fleetwood%20Mac> .
+  <urn:graphragprov:entity:Soft%20rock> <urn:graphragprov:predicate:reachedCommercialPeakIn> "mid-to-late 1970s" .
+  <urn:graphragprov:entity:Steve%20O%27Brien> <urn:graphragprov:predicate:wasAddedAsRadioStar> <urn:graphragprov:entity:major%20radio%20stars> .
+  <urn:graphragprov:entity:The%20addition%20of%20major%20radio%20stars> <urn:graphragprov:predicate:madeItPossibleToFullyMonetizeFormat> <urn:graphragprov:entity:the%20format> .
+  <urn:graphragprov:entity:The%20addition%20of%20major%20radio%20stars> <urn:graphragprov:predicate:providedFoundationForFinancialSuccess> <urn:graphragprov:entity:financial%20success> .
+  <urn:graphragprov:entity:Tom%20Parker> <urn:graphragprov:predicate:wasAddedAsRadioStar> <urn:graphragprov:entity:major%20radio%20stars> .
+  <urn:graphragprov:entity:WTFM> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:WTFM> <urn:graphragprov:predicate:switchedToAllSoftRockFormat> <urn:graphragprov:entity:all-soft%20rock%20format> .
+  <urn:graphragprov:entity:WYNY> <urn:graphragprov:predicate:ownedBy> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:WYNY> <urn:graphragprov:predicate:switchedToAllSoftRockFormat> <urn:graphragprov:entity:all-soft%20rock%20format> .
+  <urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:broughtInMajorPersonalitiesFromAMBandToFMBand> <urn:graphragprov:entity:major%20personalities> .
+  <urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:ledTeam> <urn:graphragprov:entity:his%20team> .
+  <urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:tookFormatFromBackgroundToForeground> <urn:graphragprov:entity:the%20format> .
+  <urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:NBC> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.798s | model=deepseek-v4-flash
+      tokens:   in=3181 | out=261 | total=3442 | cached=640 | uncached=2541
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brunei> .
+  - <urn:graphragprov:entity:The%20Biggest%20Loser> <urn:graphragprov:predicate:network> <urn:graphragprov:entity:NBC> .
+  - <urn:graphragprov:entity:Walter%20Sabo> <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:NBC> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brunei> . <urn:graphragprov:entity:The%20Biggest%20Loser> <urn:graphragprov:predicate:network> <urn:graphragprov:entity:NBC> . ?answer <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:NBC> . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_25ae3e3f8091f044>
+  FROM <urn:graphragprov:unit:u_4493464060cc1851>
+  FROM <urn:graphragprov:unit:u_9635c4d5fccd26c5>
+  WHERE { <urn:graphragprov:entity:Bokok> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Brunei> . <urn:graphragprov:entity:The%20Biggest%20Loser> <urn:graphragprov:predicate:network> <urn:graphragprov:entity:NBC> . ?answer <urn:graphragprov:predicate:workedAt> <urn:graphragprov:entity:NBC> . }
+
+GraphDB execution:
+  observed answers: ('Walter Sabo',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Adult contemporary music', 'Bokok, Temburong', 'The Biggest Loser Brunei: Lose It All']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__664835_650651_7262
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__664835_650651_7262/support/result.json
+graph LLM executed:    4
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          11193
+output tokens:         7070
+total tokens:          18263
+cached input tokens:   6528
+uncached input tokens: 4665
+cumulative LLM seconds: 34.071
+
+statement occurrences: 45
+semantic triples:      45
+entity nodes:          43
+literal values:        6
+predicates:            25
+query attempts:        1
+observed answers:      ('Walter Sabo',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 32.293s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.066s
+  graph.materialization [attempt=1]: 0.102s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.799s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.483s

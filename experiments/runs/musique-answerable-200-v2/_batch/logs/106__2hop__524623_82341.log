@@ -1,0 +1,275 @@
+
+H0 one-case execution
+  case:          2hop__524623_82341
+  hops:          2
+  question:      Where is Chris Meffert's birth place in the state of Florida?
+  expected:      in Northern Florida
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__524623_82341/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=14 title='Chris Meffert'
+  source unit: u_3e07931fd64bfef10214fc9f268eeb0f3a66964c7a62330c8bdf43ab7fbf7e93
+  text chars:  653
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 10.625s | model=deepseek-v4-flash
+      tokens:   in=2269 | out=2360 | total=4629 | cached=2048 | uncached=221
+    [LLM graph.reference #2] sending...
+      provider: 1.482s | model=deepseek-v4-flash
+      tokens:   in=693 | out=203 | total=896 | cached=0 | uncached=693
+  extraction: ACCEPTED
+  statements: 13
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    13
+    initially rejected: 1
+
+    initial rejection #3
+      validator:
+        response.statements[3].predicate.evidence[0]: quote 'received his law degree from' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Florida State University College of Law",
+                "segment": "text"
+              }
+            ],
+            "value": "Florida State University College of Law"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "received his law degree from",
+                "segment": "text"
+              }
+            ],
+            "value": "educatedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Chris Meffert",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "his",
+                "segment": "text"
+              }
+            ],
+            "value": "Chris Meffert"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'received his law degree from' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Florida State University College of Law",
+                "segment": "text"
+              }
+            ],
+            "value": "Florida State University College of Law"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "received his law degree from",
+                "segment": "text"
+              }
+            ],
+            "value": "educatedAt"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Chris Meffert",
+                "segment": "title"
+              },
+              {
+                "occurrence": 1,
+                "quote": "his",
+                "segment": "text"
+              }
+            ],
+            "value": "Chris Meffert"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 13
+  coverage:
+    characters combined: 461 / 666 (69.2%)
+    characters text:     448 / 653 (68.6%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           8 / 8 (100.0%)
+    longest uncovered:  73 chars
+      'and his law degree from the Florida State University College of Law. He'
+    statement density:  19.52 / 1000 chars
+    title reliance:      13 / 13 (100.0%)
+
+[GRAPH 2/2] paragraph=6 title='Ocala, Florida'
+  source unit: u_1e4a9c7361cf920992ce740fe9259dfb56d05bded9e2ba9df87d09a8a95610ca
+  text chars:  220
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      provider: 3.571s | model=deepseek-v4-flash
+      tokens:   in=2356 | out=722 | total=3078 | cached=2048 | uncached=308
+  extraction: ACCEPTED
+  statements: 5
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    5
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     5
+  coverage:
+    characters combined: 116 / 234 (49.6%)
+    characters text:     102 / 220 (46.4%)
+    characters title:    14 / 14 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  52 chars
+      ', estimated by the United States Census Bureau, was'
+    statement density:  21.37 / 1000 chars
+    title reliance:      5 / 5 (100.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 18
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      18
+resource nodes:        16
+entity nodes:          16
+literal values:        4
+predicates:            13
+
+N-Triples:
+  <urn:graphragprov:entity:Ocala> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:city> .
+  <urn:graphragprov:entity:Ocala> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Northern%20Florida> .
+  <urn:graphragprov:entity:Ocala> <urn:graphragprov:predicate:population> "57468"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Ocala> <urn:graphragprov:predicate:populationAsOf> "2013"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Ocala> <urn:graphragprov:predicate:populationRankInFlorida> "45"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Ocala%2C%20Florida> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:diagnosedWith> <urn:graphragprov:entity:amyotrophic%20lateral%20sclerosis%20%28ALS%29> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:diedIn> <urn:graphragprov:entity:Salt%20Springs%2C%20Florida> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:diedOn> "2014"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Florida%20State%20University> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:educatedAt> <urn:graphragprov:entity:Ocala%20High%20School> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:assistant%20attorney%20general%20of%20Florida> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:lawyer> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:occupation> <urn:graphragprov:entity:lobbyist> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:politicalParty> <urn:graphragprov:entity:Democrat> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:Mayor%20of%20Ocala%2C%20Florida> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:executive%20director%20of%20the%20Florida%20State%20Boxing%20Commission> .
+  <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:positionHeld> <urn:graphragprov:entity:member%20of%20the%20Florida%20House%20of%20Representatives> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.934s | model=deepseek-v4-flash
+      tokens:   in=1720 | out=170 | total=1890 | cached=640 | uncached=1080
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:bornIn> <urn:graphragprov:entity:Ocala%2C%20Florida> .
+  - <urn:graphragprov:entity:Ocala> <urn:graphragprov:predicate:locatedIn> <urn:graphragprov:entity:Northern%20Florida> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:bornIn> ?birthPlace . ?birthPlace <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_1e4a9c7361cf9209>
+  FROM <urn:graphragprov:unit:u_3e07931fd64bfef1>
+  WHERE { <urn:graphragprov:entity:Chris%20Meffert> <urn:graphragprov:predicate:bornIn> ?birthPlace . ?birthPlace <urn:graphragprov:predicate:locatedIn> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__524623_82341
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__524623_82341/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          7038
+output tokens:         3455
+total tokens:          10493
+cached input tokens:   4736
+uncached input tokens: 2302
+cumulative LLM seconds: 17.612
+
+statement occurrences: 18
+semantic triples:      18
+entity nodes:          16
+literal values:        4
+predicates:            13
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 15.691s
+  graph.reference.measurements [attempt=1]: 0.004s
+  graph.clear_support [attempt=1]: 0.055s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.007s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.935s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.435s

@@ -1,0 +1,291 @@
+
+H0 one-case execution
+  case:          2hop__433694_20273
+  hops:          2
+  question:      In what year did Margaret Knox's spouse pass away?
+  expected:      1572
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__433694_20273/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 2
+
+[GRAPH 1/2] paragraph=10 title='Margaret Knox'
+  source unit: u_8347ecd7c849d2e78268e7f445173090a99a2b1fcf5acc71538ac0c186b2ffbb
+  text chars:  304
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      provider: 8.845s | model=deepseek-v4-flash
+      tokens:   in=2182 | out=1920 | total=4102 | cached=2048 | uncached=134
+  extraction: ACCEPTED
+  statements: 12
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    12
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     12
+  coverage:
+    characters combined: 191 / 317 (60.3%)
+    characters text:     178 / 304 (58.6%)
+    characters title:    13 / 13 (100.0%)
+    sentences:           2 / 2 (100.0%)
+    longest uncovered:  25 chars
+      'and he 54. The marriage'
+    statement density:  37.85 / 1000 chars
+    title reliance:      11 / 12 (91.7%)
+
+[GRAPH 2/2] paragraph=3 title='Presbyterianism'
+  source unit: u_65e81c7914083ca4f4b271ae1ecd6c841f18d3027ce4bc4899a527642e0c5c47
+  text chars:  1291
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      provider: 19.760s | model=deepseek-v4-flash
+      tokens:   in=2471 | out=4863 | total=7334 | cached=2048 | uncached=423
+    [LLM graph.reference #3] sending...
+      provider: 1.385s | model=deepseek-v4-flash
+      tokens:   in=785 | out=191 | total=976 | cached=0 | uncached=785
+  extraction: ACCEPTED
+  statements: 33
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    33
+    initially rejected: 1
+
+    initial rejection #24
+      validator:
+        response.statements[24].predicate.evidence[0]: quote 'resulted in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "armed insurrection",
+                "segment": "text"
+              }
+            ],
+            "value": "armed insurrection"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "resulted in",
+                "segment": "text"
+              }
+            ],
+            "value": "resultedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "attempted to force the Church of Scotland to use the Book of Common Prayer",
+                "segment": "text"
+              }
+            ],
+            "value": "attempt to force the Church of Scotland to use the Book of Common Prayer"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    0
+    still rejected:     1
+
+    remaining rejection #0
+      validator:
+        response.statements[0].predicate.evidence[0]: quote 'resulted in' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "armed insurrection",
+                "segment": "text"
+              }
+            ],
+            "value": "armed insurrection"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "resulted in",
+                "segment": "text"
+              }
+            ],
+            "value": "resultedIn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "attempted to force the Church of Scotland to use the Book of Common Prayer",
+                "segment": "text"
+              }
+            ],
+            "value": "attempt to force the Church of Scotland to use the Book of Common Prayer"
+          }
+        }
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 33
+  coverage:
+    characters combined: 823 / 1306 (63.0%)
+    characters text:     823 / 1291 (63.7%)
+    characters title:    0 / 15 (0.0%)
+    sentences:           7 / 7 (100.0%)
+    longest uncovered:  140 chars
+      '. After a period of religious convulsion and political conflict culminating in a victory for the Protestant party at the Siege of Leith the'
+    statement density:  25.27 / 1000 chars
+    title reliance:      0 / 33 (0.0%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 2
+  statement occurrences: 45
+  whole-source attempts: 2
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 1
+  corrected valid: 0
+  remaining rejections: 1
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   2
+semantic triples:      44
+resource nodes:        36
+entity nodes:          36
+literal values:        10
+predicates:            38
+
+N-Triples:
+  <urn:graphragprov:entity:Charles%20I> <urn:graphragprov:predicate:attemptedToForce> <urn:graphragprov:entity:Church%20of%20Scotland> .
+  <urn:graphragprov:entity:Charles%20I> <urn:graphragprov:predicate:attemptedToForceUseOf> <urn:graphragprov:entity:Book%20of%20Common%20Prayer> .
+  <urn:graphragprov:entity:Charles%20I> <urn:graphragprov:predicate:successorOf> <urn:graphragprov:entity:King%20James%20VI%20and%20I> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:receivedInitialSupportFrom> <urn:graphragprov:entity:Covenanters> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:reinstated> <urn:graphragprov:entity:episcopal%20form%20of%20government> .
+  <urn:graphragprov:entity:Charles%20II> <urn:graphragprov:predicate:reinstatedOn> <urn:graphragprov:entity:church> .
+  <urn:graphragprov:entity:Church> <urn:graphragprov:predicate:became> <urn:graphragprov:entity:national%20Church%20of%20Scotland> .
+  <urn:graphragprov:entity:Church> <urn:graphragprov:predicate:organisedAlong> <urn:graphragprov:entity:Presbyterian%20lines> .
+  <urn:graphragprov:entity:Church> <urn:graphragprov:predicate:organisedBy> <urn:graphragprov:entity:Andrew%20Melville> .
+  <urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedBy> <urn:graphragprov:entity:Scottish%20Reformation%20Parliament> .
+  <urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedIn> <urn:graphragprov:entity:Scotland> .
+  <urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedInFavourOf> <urn:graphragprov:entity:Reformation> .
+  <urn:graphragprov:entity:Church%20of%20Rome> <urn:graphragprov:predicate:authorityAbolishedInYear> "1560"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:sentMilitarySupportDuring> <urn:graphragprov:entity:English%20Civil%20War> .
+  <urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:sentMilitarySupportTo> <urn:graphragprov:entity:Parliamentarians> .
+  <urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:servedAs> <urn:graphragprov:entity:government%20of%20Scotland> .
+  <urn:graphragprov:entity:Covenanters> <urn:graphragprov:predicate:servedForDuration> "nearly a decade" .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:birthYear> "1505"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:deathYear> "1572"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Scot> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:returnedTo> <urn:graphragprov:entity:Scotland> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:studiedIn> <urn:graphragprov:entity:Geneva> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:studiedUnder> <urn:graphragprov:entity:Calvin> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:urged> <urn:graphragprov:entity:his%20countrymen> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:urgedReformInLineWith> <urn:graphragprov:entity:Calvinist%20doctrines> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:urgedTo> <urn:graphragprov:entity:reform%20the%20Church> .
+  <urn:graphragprov:entity:King%20James%20VI%20and%20I> <urn:graphragprov:predicate:moved> <urn:graphragprov:entity:Church%20of%20Scotland> .
+  <urn:graphragprov:entity:King%20James%20VI%20and%20I> <urn:graphragprov:predicate:movedTowards> <urn:graphragprov:entity:episcopal%20form%20of%20government> .
+  <urn:graphragprov:entity:William%20Laud> <urn:graphragprov:predicate:archbishopOf> <urn:graphragprov:entity:Canterbury> .
+  <urn:graphragprov:entity:William%20Laud> <urn:graphragprov:predicate:attemptedToForce> <urn:graphragprov:entity:Church%20of%20Scotland> .
+  <urn:graphragprov:entity:William%20Laud> <urn:graphragprov:predicate:attemptedToForceUseOf> <urn:graphragprov:entity:Book%20of%20Common%20Prayer> .
+  <urn:graphragprov:entity:many%20Scots> <urn:graphragprov:predicate:signed> <urn:graphragprov:entity:Solemn%20League%20and%20Covenant> .
+  <urn:graphragprov:entity:restoration%20of%20the%20monarchy> <urn:graphragprov:predicate:occurredInYear> "1660"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:marriageAge> "54"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:birthName> <urn:graphragprov:entity:Stewart> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:birthYear> "1547"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:deathYear> "after 1612" .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:noblewoman> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriageAge> "17"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriageCausedConsternationFrom> <urn:graphragprov:entity:Mary%2C%20Queen%20of%20Scots> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriageWithoutRoyalConsent> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:marriedTo> <urn:graphragprov:entity:John%20Knox> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:Scottish> .
+  <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:John%20Knox> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 1.774s | model=deepseek-v4-flash
+      tokens:   in=2899 | out=176 | total=3075 | cached=640 | uncached=2259
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:spouse> <urn:graphragprov:entity:John%20Knox> .
+  - <urn:graphragprov:entity:John%20Knox> <urn:graphragprov:predicate:deathYear> "1572"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:spouse> ?spouse . ?spouse <urn:graphragprov:predicate:deathYear> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_65e81c7914083ca4>
+  FROM <urn:graphragprov:unit:u_8347ecd7c849d2e7>
+  WHERE { <urn:graphragprov:entity:Margaret%20Knox> <urn:graphragprov:predicate:spouse> ?spouse . ?spouse <urn:graphragprov:predicate:deathYear> ?answer . }
+
+GraphDB execution:
+  observed answers: ('1572',)
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: decoded
+  derivations: 1
+  provenance sources: ['Margaret Knox', 'Presbyterianism']
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  2hop__433694_20273
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/2hop__433694_20273/support/result.json
+graph LLM executed:    3
+graph LLM reused:      0
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          8337
+output tokens:         7150
+total tokens:          15487
+cached input tokens:   4736
+uncached input tokens: 3601
+cumulative LLM seconds: 31.764
+
+statement occurrences: 45
+semantic triples:      44
+entity nodes:          36
+literal values:        10
+predicates:            38
+query attempts:        1
+observed answers:      ('1572',)
+provenance status:     decoded
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 30.011s
+  graph.reference.measurements [attempt=1]: 0.008s
+  graph.clear_support [attempt=1]: 0.073s
+  graph.materialization [attempt=1]: 0.055s
+  graph.observation [attempt=1]: 0.005s
+  graph.frozen.measurements [attempt=1]: 0.005s
+  query.reference.generation [attempt=1]: 1.774s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.531s

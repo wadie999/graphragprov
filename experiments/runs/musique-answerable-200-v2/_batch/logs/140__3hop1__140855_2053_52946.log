@@ -1,0 +1,326 @@
+
+H0 one-case execution
+  case:          3hop1__140855_2053_52946
+  hops:          3
+  question:      When is Celebrity Big Brother coming to the network that, along with the original network of Then Came Bronson and ABC, is based in New York?
+  expected:      February 7, 2018
+  query scope:   support
+  model:         deepseek-v4-flash
+  max tokens:    16384
+  LLM timeout:   60.0s
+  verbose:       True
+  dataset:       /home/wadie/graphragprov/external/benchmarks/musique/data/musique_ans_v1.0_dev.jsonl
+  artifacts:     /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__140855_2053_52946/support
+  GraphDB:       http://localhost:7200/repositories/graphragprov
+  NPCS:          http://localhost:8002/api/content/rewrite
+preflight: GraphDB OK; NPCS OK
+
+========================================================================
+REFERENCE GRAPH EXTRACTION
+========================================================================
+supporting sources: 3
+
+[GRAPH 1/3] paragraph=18 title='Then Came Bronson'
+  source unit: u_c0634da4cd47acef50d1dc0f9de39b47cbbe414c91e0c9c1979ea6ad88eb7a74
+  text chars:  446
+  whole-source attempt: 1/3
+    [LLM graph.reference #1] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 15
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    15
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     15
+  coverage:
+    characters combined: 338 / 463 (73.0%)
+    characters text:     321 / 446 (72.0%)
+    characters title:    17 / 17 (100.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  25 chars
+      '. This was followed by a'
+    statement density:  32.40 / 1000 chars
+    title reliance:      10 / 15 (66.7%)
+
+[GRAPH 2/3] paragraph=5 title='New York City'
+  source unit: u_506d54c6e20e71977a3842f260fd71862643db29f663c52320ba7a67191a38ee
+  text chars:  528
+  whole-source attempt: 1/3
+    [LLM graph.reference #2] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    18
+    initially rejected: 0
+    targeted correction: not needed
+    final grounded:     18
+  coverage:
+    characters combined: 381 / 541 (70.4%)
+    characters text:     381 / 528 (72.2%)
+    characters title:    0 / 13 (0.0%)
+    sentences:           4 / 4 (100.0%)
+    longest uncovered:  29 chars
+      'the city as well, including'
+    statement density:  33.27 / 1000 chars
+    title reliance:      0 / 18 (0.0%)
+
+[GRAPH 3/3] paragraph=14 title='Celebrity Big Brother (American TV series)'
+  source unit: u_d60217ecd58ddf117e01796258456122982d999ebe4415d41e78059cce529d26
+  text chars:  688
+  whole-source attempt: 1/3
+    [LLM graph.reference #3] sending...
+      checkpoint: reused
+    [LLM graph.reference #4] sending...
+      checkpoint: reused
+  extraction: ACCEPTED
+  statements: 18
+
+  [DETERMINISTIC GROUNDING]
+    initially valid:    16
+    initially rejected: 2
+
+    initial rejection #7
+      validator:
+        response.statements[7].predicate.evidence[0]: quote 'air ... on CBS' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "CBS",
+                "segment": "text"
+              }
+            ],
+            "value": "CBS"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "air ... on CBS",
+                "segment": "text"
+              }
+            ],
+            "value": "airedOn"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Celebrity Big Brother (American TV series)",
+                "segment": "title"
+              }
+            ],
+            "value": "Celebrity Big Brother (American TV series)"
+          }
+        }
+
+    initial rejection #10
+      validator:
+        response.statements[10].predicate.evidence[0]: quote 'Allison Grodner ... returning as executive producers' does not occur in source segment 'text'
+      proposed statement:
+        {
+          "object": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Allison Grodner",
+                "segment": "text"
+              }
+            ],
+            "value": "Allison Grodner"
+          },
+          "predicate": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Allison Grodner ... returning as executive producers",
+                "segment": "text"
+              }
+            ],
+            "value": "executiveProducer"
+          },
+          "subject": {
+            "evidence": [
+              {
+                "occurrence": 1,
+                "quote": "Celebrity Big Brother (American TV series)",
+                "segment": "title"
+              }
+            ],
+            "value": "Celebrity Big Brother (American TV series)"
+          }
+        }
+
+  [TARGETED CORRECTION]
+    response:           received
+    corrected valid:    2
+    still rejected:     0
+
+  [FINAL GROUNDED EXTRACTION]
+    grounded statements: 18
+  coverage:
+    characters combined: 541 / 730 (74.1%)
+    characters text:     499 / 688 (72.5%)
+    characters title:    42 / 42 (100.0%)
+    sentences:           6 / 6 (100.0%)
+    longest uncovered:  52 chars
+      'to air outside the usual summer television season,'
+    statement density:  24.66 / 1000 chars
+    title reliance:      17 / 18 (94.4%)
+
+[REFERENCE EXTRACTION TOTALS]
+  sources: 3
+  statement occurrences: 51
+  whole-source attempts: 3
+  whole-source retries: 0
+  targeted corrections: 1
+  initial rejections: 2
+  corrected valid: 2
+  remaining rejections: 0
+
+[MATERIALIZATION]
+  writing grounded extractions to GraphDB...
+  materialization: COMPLETE
+
+========================================================================
+FROZEN SEMANTIC GRAPH
+========================================================================
+named source graphs:   3
+semantic triples:      51
+resource nodes:        41
+entity nodes:          41
+literal values:        9
+predicates:            30
+
+N-Triples:
+  <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:AMC> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:Bravo> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:City%20of%20New%20York> <urn:graphragprov:predicate:operates> <urn:graphragprov:entity:NYCTV> .
+  <urn:graphragprov:entity:Comedy%20Central> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:Food%20Network> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:Fox%20News> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:HBO> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:MTV> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:NBC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:public%20broadcast%20service> .
+  <urn:graphragprov:entity:NYCTV> <urn:graphragprov:predicate:produced> <urn:graphragprov:entity:original%20Emmy%20Award-winning%20shows> .
+  <urn:graphragprov:entity:Showtime> <urn:graphragprov:predicate:basedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:original%20Emmy%20Award-winning%20shows> <urn:graphragprov:predicate:covering> <urn:graphragprov:entity:music%20and%20culture%20in%20city%20neighborhoods%20and%20city%20government> .
+  <urn:graphragprov:entity:television%20industry> <urn:graphragprov:predicate:developedIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:television%20industry> <urn:graphragprov:predicate:significantEmployerIn> <urn:graphragprov:entity:city%27s%20economy> .
+  <urn:graphragprov:entity:three%20major%20American%20broadcast%20networks> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:airDate> "1969-03-24"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:airDateRange> "1969-09-17/1970-04-01" .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:creator> <urn:graphragprov:entity:Denne%20Bart%20Petitclerc> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:genre> <urn:graphragprov:entity:adventure%2Fdrama> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20film%20pilot> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:television%20series> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:theatrical%20feature%20film> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:numberOfEpisodes> "26"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:originalNetwork> <urn:graphragprov:entity:NBC> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:MGM%20Television> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:releasedIn> <urn:graphragprov:entity:Europe> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:seasonCount> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:starring> <urn:graphragprov:entity:Michael%20Parks> .
+  <urn:graphragprov:entity:Big%20Brother%209> <urn:graphragprov:predicate:airDate> "2008"^^<http://www.w3.org/2001/XMLSchema#gYear> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airDateRange> "2017-12/2018-02" .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:CBS> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:alsoKnownAs> <urn:graphragprov:entity:Big%20Brother%3A%20Celebrity%20Edition> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:announcedBy> <urn:graphragprov:entity:CBS> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Allison%20Grodner> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:executiveProducer> <urn:graphragprov:entity:Rich%20Meehan> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:host> <urn:graphragprov:entity:Julie%20Chen> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:American%20reality%20television%20series> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:instanceOf> <urn:graphragprov:entity:spin%20-%20off%20series> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:nationality> <urn:graphragprov:entity:American> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:precededBy> <urn:graphragprov:entity:Big%20Brother%209> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:producedBy> <urn:graphragprov:entity:Fly%20on%20the%20Wall%20Entertainment> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:productionCompany> <urn:graphragprov:entity:Endemol%20Shine%20North%20America> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonFinaleDate> "2018-02-25"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonNumber> "2"^^<http://www.w3.org/2001/XMLSchema#integer> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonPremiereDate> "2018-02-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+  <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:spinOffOf> <urn:graphragprov:entity:Big%20Brother> .
+
+========================================================================
+QUERY ATTEMPT 1/5
+========================================================================
+    [LLM query.reference #1] sending...
+      provider: 4.215s | model=deepseek-v4-flash
+      tokens:   in=3623 | out=604 | total=4227 | cached=3584 | uncached=39
+deterministic validation: PASSED
+
+matched triples:
+  - <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:originalNetwork> <urn:graphragprov:entity:NBC> .
+  - <urn:graphragprov:entity:NBC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  - <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  - <urn:graphragprov:entity:CBS> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> .
+  - <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> <urn:graphragprov:entity:CBS> .
+  - <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonPremiereDate> "2018-02-07"^^<http://www.w3.org/2001/XMLSchema#date> .
+
+semantic SPARQL:
+  SELECT ?answer WHERE { <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:originalNetwork> ?network . ?network <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?network <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?network <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> ?network . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonPremiereDate> ?answer . }
+
+execution SPARQL:
+  SELECT ?answer
+  FROM <urn:graphragprov:unit:u_506d54c6e20e7197>
+  FROM <urn:graphragprov:unit:u_c0634da4cd47acef>
+  FROM <urn:graphragprov:unit:u_d60217ecd58ddf11>
+  WHERE { <urn:graphragprov:entity:Then%20Came%20Bronson> <urn:graphragprov:predicate:originalNetwork> ?network . ?network <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . <urn:graphragprov:entity:ABC> <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?network <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . ?network <urn:graphragprov:predicate:headquarteredIn> <urn:graphragprov:entity:New%20York> . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:airedOn> ?network . <urn:graphragprov:entity:Celebrity%20Big%20Brother%20%28American%20TV%20series%29> <urn:graphragprov:predicate:seasonPremiereDate> ?answer . }
+
+GraphDB execution:
+  observed answers: ()
+
+[PROVENANCE]
+  executing NPCS rewrite and provenance decoding...
+  status: no_answers
+  derivations: 0
+  provenance sources: []
+
+========================================================================
+H0 COLLECTION COMPLETE
+========================================================================
+case:                  3hop1__140855_2053_52946
+result:                /home/wadie/graphragprov/experiments/runs/musique-answerable-200-v2/3hop1__140855_2053_52946/support/result.json
+graph LLM executed:    0
+graph LLM reused:      4
+query LLM executed:    1
+query LLM reused:      0
+provider usage complete: True
+input tokens:          3623
+output tokens:         604
+total tokens:          4227
+cached input tokens:   3584
+uncached input tokens: 39
+cumulative LLM seconds: 4.215
+
+NOTE: token totals describe provider calls made in this invocation only; reused checkpoints were not billed again.
+
+statement occurrences: 51
+semantic triples:      51
+entity nodes:          41
+literal values:        9
+predicates:            30
+query attempts:        1
+observed answers:      ()
+provenance status:     no_answers
+
+[STAGE TIMINGS]
+  graph.reference.extraction [attempt=1]: 0.021s
+  graph.reference.measurements [attempt=1]: 0.005s
+  graph.clear_support [attempt=1]: 0.070s
+  graph.materialization [attempt=1]: 0.102s
+  graph.observation [attempt=1]: 0.004s
+  graph.frozen.measurements [attempt=1]: 0.006s
+  query.reference.generation [attempt=1]: 4.217s
+  graphdb.semantic [attempt=1]: 0.004s
+  provenance.execution [attempt=1]: 0.437s
