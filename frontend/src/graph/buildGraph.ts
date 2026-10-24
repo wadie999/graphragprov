@@ -6,7 +6,9 @@ import { GRAPH_VISUAL } from "./visualConfig";
 
 export type RenderGraph = MultiGraph;
 
-export function buildRenderGraph(snapshot: CaseSnapshot): RenderGraph {
+export function buildRenderGraph(
+  snapshot: CaseSnapshot,
+): RenderGraph {
   const graph = new MultiGraph();
 
   const nodes = snapshot.graph?.nodes ?? [];
@@ -35,7 +37,8 @@ export function buildRenderGraph(snapshot: CaseSnapshot): RenderGraph {
 
       forceLabel:
         node.kind !== "literal" &&
-        nodes.length < GRAPH_VISUAL.labels.forceNodeLabelsBelow,
+        nodes.length <
+          GRAPH_VISUAL.labels.forceNodeLabelsBelow,
     });
   }
 
@@ -47,11 +50,12 @@ export function buildRenderGraph(snapshot: CaseSnapshot): RenderGraph {
       continue;
     }
 
-    graph.addEdgeWithKey(
+    graph.addDirectedEdgeWithKey(
       edge.edge_id,
       edge.subject_node_id,
       edge.object_node_id,
       {
+        type: "arrow",
         label: edge.predicate_label,
 
         size: GRAPH_VISUAL.edges.size,
@@ -60,14 +64,80 @@ export function buildRenderGraph(snapshot: CaseSnapshot): RenderGraph {
         occurrenceIds: edge.occurrence_ids,
 
         forceLabel:
-          edges.length < GRAPH_VISUAL.labels.forceEdgeLabelsBelow,
+          edges.length <
+          GRAPH_VISUAL.labels.forceEdgeLabelsBelow,
       },
     );
   }
 
+  separateParallelEdges(graph);
   layoutGraph(graph);
 
   return graph;
+}
+
+function separateParallelEdges(graph: RenderGraph): void {
+  const groups = new Map<string, string[]>();
+
+  // Group edges by unordered endpoints, including edges
+  // pointing in opposite directions.
+  graph.forEachEdge((edge) => {
+    const source = graph.source(edge);
+    const target = graph.target(edge);
+
+    const endpoints =
+      source < target
+        ? [source, target]
+        : [target, source];
+
+    const key = JSON.stringify(endpoints);
+    const group = groups.get(key);
+
+    if (group) {
+      group.push(edge);
+    } else {
+      groups.set(key, [edge]);
+    }
+  });
+
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+
+    // Stable ordering keeps each edge on the same side
+    // when the graph is rebuilt.
+    group.sort();
+
+    const middle = (group.length - 1) / 2;
+
+    group.forEach((edge, index) => {
+      const source = graph.source(edge);
+      const target = graph.target(edge);
+
+      // Self-loops require a dedicated loop renderer.
+      if (source === target) return;
+
+      const offset = index - middle;
+
+      // With an odd number of parallel edges, keep
+      // the middle edge straight.
+      if (offset === 0) {
+        graph.mergeEdgeAttributes(edge, {
+          type: "arrow",
+          curvature: 0,
+        });
+        return;
+      }
+
+      // Reverse the sign for reverse-direction edges
+      // so every edge occupies a distinct physical path.
+      const direction = source < target ? 1 : -1;
+
+      graph.mergeEdgeAttributes(edge, {
+        type: "curved",
+        curvature: direction * offset * 0.35,
+      });
+    });
+  }
 }
 
 function layoutGraph(graph: RenderGraph): void {
